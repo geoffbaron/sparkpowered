@@ -33,6 +33,7 @@ const navLinks = [
   { href: "/news", label: "News" },
   { href: "/calculator", label: "EV Finder" },
   { href: "/solar-finder", label: "Solar Finder" },
+  { href: "/battery-calculator", label: "Battery Sizer" },
   { href: "/objections", label: "Objections" },
 ];
 

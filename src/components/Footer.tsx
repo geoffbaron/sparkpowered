@@ -23,6 +23,7 @@ export default function Footer() {
                 { href: "/news", label: "Latest News" },
                 { href: "/calculator", label: "EV Finder" },
                 { href: "/solar-finder", label: "Solar Finder" },
+                { href: "/battery-calculator", label: "Battery Sizer" },
                 { href: "/objections", label: "Objections & FAQs" },
               ].map((link) => (
                 <li key={link.href}>
