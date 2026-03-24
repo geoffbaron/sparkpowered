@@ -1,0 +1,99 @@
+@import "tailwindcss";
+
+:root {
+  --background: #0f0f14;
+  --foreground: #f0f0f5;
+  --spark-yellow: #fbbf24;
+  --spark-orange: #f97316;
+  --spark-amber: #f59e0b;
+  --electric-blue: #3b82f6;
+  --green-energy: #22c55e;
+  --surface: #1a1a24;
+  --surface-light: #24243a;
+  --muted: #9ca3af;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-spark-yellow: var(--spark-yellow);
+  --color-spark-orange: var(--spark-orange);
+  --color-spark-amber: var(--spark-amber);
+  --color-electric-blue: var(--electric-blue);
+  --color-green-energy: var(--green-energy);
+  --color-surface: var(--surface);
+  --color-surface-light: var(--surface-light);
+  --color-muted: var(--muted);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+/* Spark particle animation */
+@keyframes spark-float {
+  0% { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(-120px) scale(0); opacity: 0; }
+}
+
+@keyframes spark-glow {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.spark-particle {
+  animation: spark-float 2s ease-out forwards;
+}
+
+.spark-glow {
+  animation: spark-glow 2s ease-in-out infinite;
+}
+
+.gradient-animated {
+  background-size: 200% 200%;
+  animation: gradient-shift 6s ease infinite;
+}
+
+/* Spark button hover effect */
+.spark-btn {
+  position: relative;
+  overflow: hidden;
+}
+
+.spark-btn::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: radial-gradient(circle, rgba(251, 191, 36, 0.3) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+  border-radius: 50%;
+}
+
+.spark-btn:hover::after {
+  width: 300px;
+  height: 300px;
+}
+
+/* Card hover glow */
+.card-glow {
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.card-glow:hover {
+  box-shadow: 0 0 30px rgba(251, 191, 36, 0.15), 0 0 60px rgba(249, 115, 22, 0.05);
+  transform: translateY(-2px);
+}
