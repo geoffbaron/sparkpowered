@@ -1,20 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import type { Installer } from "@/data/installers";
 
-interface Provider {
-  name: string;
-  rating: number;
-  reviews: number;
-  yearsInBusiness: number;
-  services: string[];
-  certifications: string[];
-  description: string;
-  phone: string;
-  badge?: string;
-}
+// ── Types ───────────────────────────────────────────────────────────────────
 
-interface FormState {
+interface PrefsForm {
   zip: string;
   homeOwner: string;
   roofAge: string;
@@ -22,158 +13,15 @@ interface FormState {
   interest: string[];
 }
 
-// Simulated provider database keyed by region (first digit of zip)
-// In production this would call an API like EnergySage, Google Places, or a proprietary installer DB
-function getProviders(zip: string): Provider[] {
-  const region = zip[0];
-  const seed = parseInt(zip.slice(-2)) || 42;
-
-  const providerPool: Provider[] = [
-    {
-      name: "SunRise Solar Solutions",
-      rating: 4.9,
-      reviews: 312,
-      yearsInBusiness: 14,
-      services: ["Solar Panels", "Home Batteries", "EV Chargers"],
-      certifications: ["NABCEP Certified", "Tesla Powerwall Partner"],
-      description: "Family-owned installer specializing in full home electrification packages. Transparent pricing and no high-pressure sales.",
-      phone: "(800) 555-0101",
-      badge: "Top Rated",
-    },
-    {
-      name: "Volt & Ray Energy",
-      rating: 4.8,
-      reviews: 189,
-      yearsInBusiness: 9,
-      services: ["Solar Panels", "Home Batteries", "Roof Assessment"],
-      certifications: ["NABCEP Certified", "Enphase Platinum Installer"],
-      description: "Experts in difficult roof configurations and shading solutions. Microinverter specialists for maximum output.",
-      phone: "(800) 555-0102",
-    },
-    {
-      name: "Bright Path Solar",
-      rating: 4.7,
-      reviews: 427,
-      yearsInBusiness: 17,
-      services: ["Solar Panels", "Community Solar", "Commercial Solar"],
-      certifications: ["SEIA Member", "BBB A+ Rating"],
-      description: "One of the region's largest solar installers with competitive pricing and same-week site assessments available.",
-      phone: "(800) 555-0103",
-    },
-    {
-      name: "GridFree Home Energy",
-      rating: 4.9,
-      reviews: 98,
-      yearsInBusiness: 6,
-      services: ["Solar Panels", "Home Batteries", "EV Chargers", "Smart Home"],
-      certifications: ["NABCEP Certified", "Certified Energy Auditor"],
-      description: "Boutique installer focused on premium whole-home energy systems. Every install includes a custom energy monitoring dashboard.",
-      phone: "(800) 555-0104",
-      badge: "Best for Batteries",
-    },
-    {
-      name: "Apex Solar Group",
-      rating: 4.6,
-      reviews: 560,
-      yearsInBusiness: 12,
-      services: ["Solar Panels", "Roof Replacement", "Home Batteries"],
-      certifications: ["SEIA Member", "GAF Roofing Partner"],
-      description: "One-stop shop for solar + roof replacement. Ideal if your roof needs work before installation.",
-      phone: "(800) 555-0105",
-    },
-  ];
-
-  // Shuffle deterministically based on zip so results feel location-specific
-  const shuffled = [...providerPool].sort(
-    (a, b) => ((a.name.charCodeAt(0) + seed + parseInt(region || "0")) % 5) - ((b.name.charCodeAt(0) + seed) % 5)
-  );
-
-  return shuffled.slice(0, 4);
+interface LeadForm {
+  name: string;
+  email: string;
+  phone: string;
 }
 
-function StarRating({ rating }: { rating: number }) {
-  return (
-    <span className="flex items-center gap-1">
-      {[1, 2, 3, 4, 5].map((i) => (
-        <svg
-          key={i}
-          width="14"
-          height="14"
-          viewBox="0 0 14 14"
-          fill={i <= Math.round(rating) ? "#fbbf24" : "none"}
-          stroke="#fbbf24"
-          strokeWidth="1"
-        >
-          <path d="M7 1l1.5 3.5L12 5l-2.5 2.5.5 3.5L7 9.5 4 11l.5-3.5L2 5l3.5-.5L7 1z" />
-        </svg>
-      ))}
-      <span className="text-spark-yellow font-semibold text-sm ml-1">{rating}</span>
-    </span>
-  );
-}
+type Step = "prefs" | "results" | "contact" | "done";
 
-function ProviderCard({ provider, rank }: { provider: Provider; rank: number }) {
-  return (
-    <div className="card-glow bg-surface rounded-2xl border border-black/6 overflow-hidden">
-      <div className="flex items-start gap-4 p-6">
-        {/* Rank / Logo placeholder */}
-        <div className="shrink-0 w-14 h-14 rounded-xl bg-gradient-to-br from-amber-100 to-orange-100 flex items-center justify-center text-spark-orange font-bold text-lg">
-          #{rank}
-        </div>
-
-        <div className="flex-1 min-w-0">
-          <div className="flex flex-wrap items-center gap-2 mb-1">
-            <h3 className="text-lg font-bold">{provider.name}</h3>
-            {provider.badge && (
-              <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-green-energy/20 text-green-energy border border-green-energy/30">
-                {provider.badge}
-              </span>
-            )}
-          </div>
-
-          <div className="flex flex-wrap items-center gap-4 mb-3">
-            <StarRating rating={provider.rating} />
-            <span className="text-xs text-muted">{provider.reviews.toLocaleString()} reviews</span>
-            <span className="text-xs text-muted">{provider.yearsInBusiness} yrs in business</span>
-          </div>
-
-          <p className="text-sm text-muted leading-relaxed mb-4">{provider.description}</p>
-
-          <div className="flex flex-wrap gap-2 mb-4">
-            {provider.services.map((s) => (
-              <span key={s} className="px-2.5 py-1 rounded-full text-xs bg-electric-blue/10 text-electric-blue border border-electric-blue/20">
-                {s}
-              </span>
-            ))}
-          </div>
-
-          <div className="flex flex-wrap gap-2">
-            {provider.certifications.map((c) => (
-              <span key={c} className="px-2.5 py-1 rounded-full text-xs bg-amber-50 text-spark-amber border border-amber-200">
-                ✓ {c}
-              </span>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div className="border-t border-black/6 bg-amber-50/40 px-6 py-4 flex flex-col sm:flex-row items-center gap-3">
-        <a
-          href={`tel:${provider.phone}`}
-          className="spark-btn w-full sm:w-auto flex-1 flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-spark-yellow to-spark-orange text-white font-semibold text-sm shadow-md shadow-orange-200 hover:shadow-lg hover:shadow-orange-300 transition-all"
-        >
-          <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 10.8a19.79 19.79 0 01-3.07-8.67A2 2 0 012 0h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 14.92v2z" />
-          </svg>
-          Get a Free Quote
-        </a>
-        <button className="w-full sm:w-auto px-6 py-2.5 rounded-xl border-2 border-amber-200 text-sm font-semibold bg-white hover:bg-amber-50 hover:border-amber-300 transition-all">
-          Learn More
-        </button>
-      </div>
-    </div>
-  );
-}
+// ── Constants ────────────────────────────────────────────────────────────────
 
 const interestOptions = [
   { value: "solar", label: "Solar Panels", icon: "☀️" },
@@ -182,20 +30,127 @@ const interestOptions = [
   { value: "community", label: "Community Solar", icon: "🏘️" },
 ];
 
+// ── Sub-components ───────────────────────────────────────────────────────────
+
+function StarRating({ rating }: { rating: number }) {
+  return (
+    <span className="flex items-center gap-0.5">
+      {[1, 2, 3, 4, 5].map((i) => (
+        <svg
+          key={i}
+          width="14"
+          height="14"
+          viewBox="0 0 14 14"
+          fill={i <= Math.round(rating) ? "#f59e0b" : "none"}
+          stroke="#f59e0b"
+          strokeWidth="1"
+        >
+          <path d="M7 1l1.5 3.5L12 5l-2.5 2.5.5 3.5L7 9.5 4 11l.5-3.5L2 5l3.5-.5L7 1z" />
+        </svg>
+      ))}
+      <span className="text-spark-amber font-semibold text-sm ml-1">{rating}</span>
+    </span>
+  );
+}
+
+function InstallerCard({
+  installer,
+  rank,
+  onSelect,
+}: {
+  installer: Installer;
+  rank: number;
+  onSelect: () => void;
+}) {
+  return (
+    <div className="card-glow bg-surface rounded-2xl border border-black/6 overflow-hidden">
+      <div className="flex items-start gap-4 p-6">
+        <div className={`shrink-0 w-12 h-12 rounded-xl flex items-center justify-center font-bold text-base ${
+          installer.tier === "featured"
+            ? "bg-gradient-to-br from-spark-yellow to-spark-orange text-white"
+            : "bg-gradient-to-br from-amber-100 to-orange-100 text-spark-orange"
+        }`}>
+          #{rank}
+        </div>
+
+        <div className="flex-1 min-w-0">
+          <div className="flex flex-wrap items-center gap-2 mb-1">
+            <h3 className="text-lg font-bold truncate">{installer.name}</h3>
+            {installer.tier === "featured" && (
+              <span className="px-2 py-0.5 rounded-full text-xs font-semibold bg-green-energy/15 text-green-energy border border-green-energy/25">
+                Featured
+              </span>
+            )}
+          </div>
+
+          <p className="text-xs text-muted mb-3">
+            {installer.city}{installer.founded ? ` · Est. ${installer.founded}` : ""}
+            {installer.nationwide ? " · Serves all 50 states" : ` · Serves ${installer.states.length} states`}
+          </p>
+
+          <p className="text-sm text-muted leading-relaxed mb-3">{installer.description}</p>
+
+          <div className="flex flex-wrap gap-2 mb-2">
+            {installer.services.map((s) => (
+              <span key={s} className="px-2.5 py-1 rounded-full text-xs bg-electric-blue/10 text-electric-blue border border-electric-blue/20">
+                {s}
+              </span>
+            ))}
+          </div>
+
+          <div className="flex flex-wrap gap-2">
+            {installer.certifications.map((c) => (
+              <span key={c} className="px-2.5 py-1 rounded-full text-xs bg-amber-50 text-spark-amber border border-amber-200">
+                ✓ {c}
+              </span>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="border-t border-black/6 bg-amber-50/40 px-6 py-4 flex flex-col sm:flex-row gap-3">
+        <button
+          onClick={onSelect}
+          className="spark-btn flex-1 flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-gradient-to-r from-spark-yellow to-spark-orange text-white font-semibold text-sm shadow-md shadow-orange-200 hover:shadow-lg hover:shadow-orange-300 transition-all"
+        >
+          Get a Free Quote
+        </button>
+        <a
+          href={installer.website}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center justify-center px-6 py-2.5 rounded-xl border-2 border-amber-200 text-sm font-semibold bg-white hover:bg-amber-50 hover:border-amber-300 transition-all"
+        >
+          Visit Website
+        </a>
+      </div>
+    </div>
+  );
+}
+
+// ── Main page ────────────────────────────────────────────────────────────────
+
 export default function SolarFinderPage() {
-  const [form, setForm] = useState<FormState>({
+  const [step, setStep] = useState<Step>("prefs");
+  const [loading, setLoading] = useState(false);
+  const [zipError, setZipError] = useState("");
+  const [apiError, setApiError] = useState("");
+  const [installers, setInstallers] = useState<Installer[]>([]);
+  const [selectedInstaller, setSelectedInstaller] = useState<Installer | null>(null);
+
+  const [prefs, setPrefs] = useState<PrefsForm>({
     zip: "",
     homeOwner: "",
     roofAge: "",
     monthlyBill: "",
     interest: ["solar"],
   });
-  const [results, setResults] = useState<Provider[] | null>(null);
-  const [loading, setLoading] = useState(false);
-  const [zipError, setZipError] = useState("");
+
+  const [lead, setLead] = useState<LeadForm>({ name: "", email: "", phone: "" });
+  const [leadErrors, setLeadErrors] = useState<Partial<LeadForm>>({});
 
   function toggleInterest(value: string) {
-    setForm((f) => ({
+    setPrefs((f) => ({
       ...f,
       interest: f.interest.includes(value)
         ? f.interest.filter((v) => v !== value)
@@ -203,80 +158,298 @@ export default function SolarFinderPage() {
     }));
   }
 
-  function handleSearch() {
-    if (!/^\d{5}$/.test(form.zip)) {
+  async function handlePrefsSubmit() {
+    if (!/^\d{5}$/.test(prefs.zip)) {
       setZipError("Please enter a valid 5-digit ZIP code.");
       return;
     }
     setZipError("");
+    setApiError("");
     setLoading(true);
-    // Simulate async API call
-    setTimeout(() => {
-      setResults(getProviders(form.zip));
+
+    try {
+      const res = await fetch(`/api/solar-installers?zip=${prefs.zip}`);
+      const data = await res.json();
+
+      if (!res.ok) {
+        setApiError(data.error ?? "Something went wrong. Please try again.");
+        return;
+      }
+
+      setInstallers(data.installers);
+      setStep("results");
+    } catch {
+      setApiError("Network error. Please check your connection and try again.");
+    } finally {
       setLoading(false);
-    }, 900);
+    }
   }
 
-  function reset() {
-    setForm({ zip: "", homeOwner: "", roofAge: "", monthlyBill: "", interest: ["solar"] });
-    setResults(null);
+  function handleSelectInstaller(installer: Installer | null) {
+    setSelectedInstaller(installer);
+    setStep("contact");
   }
 
-  if (results) {
+  function validateLead(): boolean {
+    const errors: Partial<LeadForm> = {};
+    if (!lead.name.trim()) errors.name = "Please enter your name.";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(lead.email))
+      errors.email = "Please enter a valid email.";
+    if (lead.phone && !/^[\d\s\-()+]{7,}$/.test(lead.phone))
+      errors.phone = "Please enter a valid phone number.";
+    setLeadErrors(errors);
+    return Object.keys(errors).length === 0;
+  }
+
+  async function handleLeadSubmit() {
+    if (!validateLead()) return;
+    setLoading(true);
+    // TODO: POST to your backend / CRM
+    // await fetch('/api/leads', {
+    //   method: 'POST',
+    //   body: JSON.stringify({ ...prefs, ...lead, installer: selectedInstaller }),
+    // })
+    await new Promise((r) => setTimeout(r, 700));
+    setLoading(false);
+    setStep("done");
+  }
+
+  function restart() {
+    setStep("prefs");
+    setPrefs({ zip: "", homeOwner: "", roofAge: "", monthlyBill: "", interest: ["solar"] });
+    setLead({ name: "", email: "", phone: "" });
+    setLeadErrors({});
+    setInstallers([]);
+    setSelectedInstaller(null);
+    setApiError("");
+  }
+
+  // ── Step: Done ─────────────────────────────────────────────────────────────
+  if (step === "done") {
     return (
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="text-center mb-12">
-          <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-amber-100 border border-amber-200 text-spark-amber text-sm font-semibold">
-            ☀️ {results.length} providers near {form.zip}
-          </div>
-          <h1 className="text-4xl font-extrabold mb-3">
-            Top Solar Installers{" "}
-            <span className="bg-gradient-to-r from-spark-yellow to-spark-orange bg-clip-text text-transparent">
-              Near You
-            </span>
-          </h1>
-          <p className="text-muted max-w-xl mx-auto">
-            These highly-rated local installers offer free site assessments and no-obligation quotes.
-          </p>
-        </div>
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
+        <div className="text-6xl mb-6">🎉</div>
+        <h1 className="text-3xl sm:text-4xl font-extrabold mb-4">You&apos;re all set!</h1>
+        <p className="text-muted text-lg mb-8 leading-relaxed">
+          {selectedInstaller ? (
+            <>
+              Your request has been sent to <strong>{selectedInstaller.name}</strong>. They&apos;ll reach out with a free, no-obligation quote.
+            </>
+          ) : (
+            <>
+              Your request has been sent to local installers near <strong>{prefs.zip}</strong>. Expect to hear back within 1 business day.
+            </>
+          )}
+        </p>
 
-        <div className="space-y-6 mb-10">
-          {results.map((provider, i) => (
-            <ProviderCard key={provider.name} provider={provider} rank={i + 1} />
+        <div className="bg-amber-50 rounded-2xl p-6 border border-amber-100 mb-8 text-left space-y-3">
+          <h2 className="font-bold text-base mb-1">What happens next</h2>
+          {[
+            "They review your project details and confirm they serve your area.",
+            "They contact you to schedule a free, no-pressure site assessment.",
+            "You compare quotes and choose — or walk away. No obligation, ever.",
+          ].map((text, i) => (
+            <div key={i} className="flex items-start gap-3 text-sm text-muted">
+              <span className="text-spark-orange font-bold mt-0.5">{i + 1}</span>
+              <span>{text}</span>
+            </div>
           ))}
         </div>
 
-        {/* Savings callout */}
-        <div className="bg-amber-50 rounded-2xl p-6 border border-amber-100 grid sm:grid-cols-3 gap-6 text-center mb-10">
-          <div>
-            <div className="text-2xl font-bold text-spark-yellow mb-1">$1,400/yr</div>
-            <div className="text-xs text-muted">Average electricity savings</div>
+        <p className="text-sm text-muted mb-8">
+          Want more quotes?{" "}
+          <a
+            href="https://www.energysage.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-spark-orange font-semibold hover:underline"
+          >
+            EnergySage.com
+          </a>{" "}
+          lets you compare verified installers side-by-side instantly.
+        </p>
+
+        <button
+          onClick={restart}
+          className="px-8 py-3 rounded-xl border-2 border-amber-200 font-semibold text-sm bg-white hover:bg-amber-50 hover:border-amber-300 transition-all"
+        >
+          Start a new search
+        </button>
+      </div>
+    );
+  }
+
+  // ── Step: Contact ──────────────────────────────────────────────────────────
+  if (step === "contact") {
+    return (
+      <div className="max-w-xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="text-center mb-10">
+          <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-amber-100 border border-amber-200 text-spark-amber text-sm font-semibold">
+            ☀️ Almost there
           </div>
-          <div>
-            <div className="text-2xl font-bold text-spark-yellow mb-1">30%</div>
-            <div className="text-xs text-muted">Federal tax credit (ITC)</div>
-          </div>
-          <div>
-            <div className="text-2xl font-bold text-spark-yellow mb-1">7–10 yrs</div>
-            <div className="text-xs text-muted">Typical payback period</div>
-          </div>
+          <h1 className="text-3xl sm:text-4xl font-extrabold mb-3">
+            How should{" "}
+            <span className="bg-gradient-to-r from-spark-yellow to-spark-orange bg-clip-text text-transparent">
+              {selectedInstaller ? selectedInstaller.name : "installers"}
+            </span>{" "}
+            reach you?
+          </h1>
+          <p className="text-muted">
+            Leave your details and they&apos;ll contact you with a free quote — no pressure.
+          </p>
         </div>
 
-        <div className="text-center">
+        <div className="bg-surface rounded-2xl border border-black/6 p-8 space-y-6 shadow-sm">
+          {[
+            { key: "name", label: "Your name", type: "text", placeholder: "Jane Smith" },
+            { key: "email", label: "Email address", type: "email", placeholder: "jane@example.com" },
+            { key: "phone", label: "Phone number", type: "tel", placeholder: "(555) 000-0000", optional: true },
+          ].map(({ key, label, type, placeholder, optional }) => (
+            <div key={key}>
+              <label className="block text-sm font-semibold mb-2">
+                {label}{" "}
+                {optional && <span className="text-muted font-normal">(optional)</span>}
+              </label>
+              <input
+                type={type}
+                placeholder={placeholder}
+                value={lead[key as keyof LeadForm]}
+                onChange={(e) => setLead({ ...lead, [key]: e.target.value })}
+                className="w-full bg-surface-light border border-black/10 rounded-xl px-4 py-3 text-foreground placeholder-muted focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100 transition-colors"
+              />
+              {leadErrors[key as keyof LeadForm] && (
+                <p className="mt-1.5 text-sm text-red-500">{leadErrors[key as keyof LeadForm]}</p>
+              )}
+            </div>
+          ))}
+
           <button
-            onClick={reset}
-            className="px-8 py-3 rounded-xl border-2 border-amber-200 font-semibold text-sm bg-white hover:bg-amber-50 hover:border-amber-300 transition-all"
+            onClick={handleLeadSubmit}
+            disabled={loading}
+            className="spark-btn w-full py-4 rounded-xl bg-gradient-to-r from-spark-yellow to-spark-orange text-white font-bold text-lg shadow-lg shadow-orange-200 hover:shadow-xl hover:shadow-orange-300 transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-3"
           >
-            Search a different ZIP
+            {loading ? (
+              <>
+                <svg className="animate-spin" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
+                </svg>
+                Submitting...
+              </>
+            ) : (
+              "Send My Request"
+            )}
+          </button>
+
+          <p className="text-center text-xs text-muted">
+            Only shared with the installer you selected. No spam, ever.
+          </p>
+        </div>
+
+        <div className="mt-6 text-center">
+          <button
+            onClick={() => setStep("results")}
+            className="text-sm text-muted hover:text-spark-orange transition-colors"
+          >
+            &larr; Back to results
           </button>
         </div>
       </div>
     );
   }
 
+  // ── Step: Results ──────────────────────────────────────────────────────────
+  if (step === "results") {
+    return (
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="text-center mb-12">
+          <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-amber-100 border border-amber-200 text-spark-amber text-sm font-semibold">
+            ☀️ {installers.length} installer{installers.length !== 1 ? "s" : ""} near {prefs.zip}
+          </div>
+          <h1 className="text-4xl font-extrabold mb-3">
+            Solar Installers{" "}
+            <span className="bg-gradient-to-r from-spark-yellow to-spark-orange bg-clip-text text-transparent">
+              Near You
+            </span>
+          </h1>
+          <p className="text-muted max-w-xl mx-auto">
+            Real businesses from Yelp, sorted by best match. Click{" "}
+            <strong>Get a Free Quote</strong> to send your project details directly to an installer.
+          </p>
+        </div>
+
+        {installers.length === 0 ? (
+          <div className="text-center py-12 bg-surface rounded-2xl border border-black/6 shadow-sm">
+            <div className="text-5xl mb-4">🔍</div>
+            <h2 className="text-xl font-bold mb-2">No results for {prefs.zip}</h2>
+            <p className="text-muted mb-6 max-w-sm mx-auto text-sm">
+              Yelp didn&apos;t find solar installers in that ZIP. Try a nearby city ZIP, or browse{" "}
+              <a href="https://www.energysage.com" target="_blank" rel="noopener noreferrer" className="text-spark-orange font-semibold hover:underline">
+                EnergySage.com
+              </a>{" "}
+              for a nationwide directory.
+            </p>
+            <button
+              onClick={() => setStep("prefs")}
+              className="px-6 py-2.5 rounded-xl border-2 border-amber-200 font-semibold text-sm bg-white hover:bg-amber-50 transition-all"
+            >
+              Try a different ZIP
+            </button>
+          </div>
+        ) : (
+          <>
+            <div className="space-y-6 mb-10">
+              {installers.map((installer, i) => (
+                <InstallerCard
+                  key={installer.id}
+                  installer={installer}
+                  rank={i + 1}
+                  onSelect={() => handleSelectInstaller(installer)}
+                />
+              ))}
+            </div>
+
+            <div className="bg-amber-50 rounded-2xl p-6 border border-amber-100 grid sm:grid-cols-3 gap-6 text-center mb-8">
+              {[
+                { value: "$1,400/yr", label: "Avg. electricity savings" },
+                { value: "30%", label: "Federal tax credit (ITC)" },
+                { value: "7–10 yrs", label: "Typical payback period" },
+              ].map(({ value, label }) => (
+                <div key={label}>
+                  <div className="text-2xl font-bold text-spark-amber mb-1">{value}</div>
+                  <div className="text-xs text-muted">{label}</div>
+                </div>
+              ))}
+            </div>
+
+            <div className="text-center space-y-3">
+              <p className="text-sm text-muted">
+                Want even more options?{" "}
+                <a
+                  href="https://www.energysage.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-spark-orange font-semibold hover:underline"
+                >
+                  EnergySage.com
+                </a>{" "}
+                has a nationwide verified installer directory.
+              </p>
+              <button
+                onClick={() => setStep("prefs")}
+                className="px-8 py-3 rounded-xl border-2 border-amber-200 font-semibold text-sm bg-white hover:bg-amber-50 hover:border-amber-300 transition-all"
+              >
+                Search a different ZIP
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+    );
+  }
+
+  // ── Step: Prefs ────────────────────────────────────────────────────────────
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      {/* Header */}
       <div className="text-center mb-12">
         <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-amber-100 border border-amber-200 text-spark-amber text-sm font-semibold">
           ☀️ Free quotes, no pressure
@@ -288,40 +461,40 @@ export default function SolarFinderPage() {
           </span>
         </h1>
         <p className="text-muted max-w-xl mx-auto text-lg">
-          Answer a few quick questions and we&apos;ll match you with top-rated solar
-          providers in your area — all vetted, certified, and ready to help.
+          We search Yelp for real, rated solar installers near you — then help you request a free quote in seconds.
         </p>
       </div>
 
       <div className="bg-surface rounded-2xl border border-black/6 p-8 space-y-8 shadow-sm">
         {/* ZIP */}
         <div>
-          <label className="block text-sm font-semibold mb-2">
-            Your ZIP code
-          </label>
+          <label className="block text-sm font-semibold mb-2">Your ZIP code</label>
           <input
             type="text"
             inputMode="numeric"
             maxLength={5}
             placeholder="e.g. 90210"
-            value={form.zip}
+            value={prefs.zip}
             onChange={(e) => {
-              setForm({ ...form, zip: e.target.value.replace(/\D/g, "") });
+              setPrefs({ ...prefs, zip: e.target.value.replace(/\D/g, "") });
               setZipError("");
+              setApiError("");
             }}
             className="w-full bg-surface-light border border-black/10 rounded-xl px-4 py-3 text-foreground placeholder-muted focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100 transition-colors"
           />
-          {zipError && <p className="mt-1.5 text-sm text-red-400">{zipError}</p>}
+          {zipError && <p className="mt-1.5 text-sm text-red-500">{zipError}</p>}
+          {apiError && <p className="mt-1.5 text-sm text-red-500">{apiError}</p>}
         </div>
 
-        {/* What are you interested in? */}
+        {/* Interests */}
         <div>
           <label className="block text-sm font-semibold mb-3">
-            What are you interested in? <span className="text-muted font-normal">(select all that apply)</span>
+            What are you interested in?{" "}
+            <span className="text-muted font-normal">(select all that apply)</span>
           </label>
           <div className="grid grid-cols-2 gap-3">
             {interestOptions.map((opt) => {
-              const selected = form.interest.includes(opt.value);
+              const selected = prefs.interest.includes(opt.value);
               return (
                 <button
                   key={opt.value}
@@ -349,9 +522,9 @@ export default function SolarFinderPage() {
               <button
                 key={opt}
                 type="button"
-                onClick={() => setForm({ ...form, homeOwner: opt })}
+                onClick={() => setPrefs({ ...prefs, homeOwner: opt })}
                 className={`flex-1 py-3 rounded-xl border text-sm font-medium transition-all ${
-                  form.homeOwner === opt
+                  prefs.homeOwner === opt
                     ? "border-amber-400 bg-amber-50 text-spark-amber font-semibold"
                     : "border-black/10 hover:border-amber-300 text-muted bg-white"
                 }`}
@@ -360,18 +533,16 @@ export default function SolarFinderPage() {
               </button>
             ))}
           </div>
-          {form.homeOwner === "No" && (
+          {prefs.homeOwner === "No" && (
             <p className="mt-2 text-xs text-muted">
-              No problem — ask us about community solar programs that let renters save 10–20% on electricity.
+              Community solar lets renters save 10–20% on their bill with no installation needed.
             </p>
           )}
         </div>
 
         {/* Roof age */}
         <div>
-          <label className="block text-sm font-semibold mb-3">
-            How old is your roof?
-          </label>
+          <label className="block text-sm font-semibold mb-3">How old is your roof?</label>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {[
               { value: "new", label: "Under 5 yrs" },
@@ -382,9 +553,9 @@ export default function SolarFinderPage() {
               <button
                 key={opt.value}
                 type="button"
-                onClick={() => setForm({ ...form, roofAge: opt.value })}
+                onClick={() => setPrefs({ ...prefs, roofAge: opt.value })}
                 className={`py-3 rounded-xl border text-xs font-medium transition-all ${
-                  form.roofAge === opt.value
+                  prefs.roofAge === opt.value
                     ? "border-amber-400 bg-amber-50 text-spark-amber font-semibold"
                     : "border-black/10 hover:border-amber-300 text-muted bg-white"
                 }`}
@@ -393,18 +564,16 @@ export default function SolarFinderPage() {
               </button>
             ))}
           </div>
-          {form.roofAge === "older" && (
+          {prefs.roofAge === "older" && (
             <p className="mt-2 text-xs text-muted">
-              Roofs over 15 years old may benefit from replacement before solar installation. Some installers offer solar + roof bundles.
+              Some installers offer solar + roof bundle deals — worth asking about.
             </p>
           )}
         </div>
 
         {/* Monthly bill */}
         <div>
-          <label className="block text-sm font-semibold mb-3">
-            Average monthly electricity bill
-          </label>
+          <label className="block text-sm font-semibold mb-3">Average monthly electricity bill</label>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {[
               { value: "low", label: "Under $100" },
@@ -415,9 +584,9 @@ export default function SolarFinderPage() {
               <button
                 key={opt.value}
                 type="button"
-                onClick={() => setForm({ ...form, monthlyBill: opt.value })}
+                onClick={() => setPrefs({ ...prefs, monthlyBill: opt.value })}
                 className={`py-3 rounded-xl border text-xs font-medium transition-all ${
-                  form.monthlyBill === opt.value
+                  prefs.monthlyBill === opt.value
                     ? "border-amber-400 bg-amber-50 text-spark-amber font-semibold"
                     : "border-black/10 hover:border-amber-300 text-muted bg-white"
                 }`}
@@ -430,7 +599,7 @@ export default function SolarFinderPage() {
 
         {/* Submit */}
         <button
-          onClick={handleSearch}
+          onClick={handlePrefsSubmit}
           disabled={loading}
           className="spark-btn w-full py-4 rounded-xl bg-gradient-to-r from-spark-yellow to-spark-orange text-white font-bold text-lg shadow-lg shadow-orange-200 hover:shadow-xl hover:shadow-orange-300 transition-all disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-3"
         >
@@ -439,17 +608,30 @@ export default function SolarFinderPage() {
               <svg className="animate-spin" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
               </svg>
-              Finding providers near you...
+              Searching Yelp...
             </>
           ) : (
-            "Find Solar Installers"
+            "Find Solar Installers →"
           )}
         </button>
 
         <p className="text-center text-xs text-muted">
-          Your information is never shared without your permission. No spam, no obligation.
+          Results powered by Yelp. Your info is never shared without your permission.
         </p>
       </div>
+
+      <p className="mt-8 text-center text-sm text-muted">
+        Want to browse now?{" "}
+        <a
+          href="https://www.energysage.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-spark-orange font-semibold hover:underline"
+        >
+          EnergySage.com
+        </a>{" "}
+        has verified reviews and instant quotes nationwide.
+      </p>
     </div>
   );
 }
