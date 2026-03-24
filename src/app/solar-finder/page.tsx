@@ -384,7 +384,7 @@ export default function SolarFinderPage() {
             </span>
           </h1>
           <p className="text-muted max-w-xl mx-auto">
-            Real businesses from Yelp, sorted by best match. Click{" "}
+            Vetted national installers, sorted by best match for your area. Click{" "}
             <strong>Get a Free Quote</strong> to send your project details directly to an installer.
           </p>
         </div>
@@ -394,7 +394,7 @@ export default function SolarFinderPage() {
             <div className="text-5xl mb-4">🔍</div>
             <h2 className="text-xl font-bold mb-2">No results for {prefs.zip}</h2>
             <p className="text-muted mb-6 max-w-sm mx-auto text-sm">
-              Yelp didn&apos;t find solar installers in that ZIP. Try a nearby city ZIP, or browse{" "}
+              No installers found for that ZIP. Try a nearby city ZIP, or browse{" "}
               <a href="https://www.energysage.com" target="_blank" rel="noopener noreferrer" className="text-spark-orange font-semibold hover:underline">
                 EnergySage.com
               </a>{" "}
@@ -473,7 +473,7 @@ export default function SolarFinderPage() {
           </span>
         </h1>
         <p className="text-muted max-w-xl mx-auto text-lg">
-          We search Yelp for real, rated solar installers near you — then help you request a free quote in seconds.
+          We match you with vetted solar installers that serve your area — then help you request a free quote in seconds.
         </p>
       </div>
 
@@ -620,7 +620,7 @@ export default function SolarFinderPage() {
               <svg className="animate-spin" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
               </svg>
-              Searching Yelp...
+              Searching...
             </>
           ) : (
             "Find Solar Installers →"
@@ -628,7 +628,7 @@ export default function SolarFinderPage() {
         </button>
 
         <p className="text-center text-xs text-muted">
-          Results powered by Yelp. Your info is never shared without your permission.
+          Your info is never shared without your permission.
         </p>
       </div>
 

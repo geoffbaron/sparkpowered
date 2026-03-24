@@ -209,8 +209,8 @@ const DURATION_DAYS: Record<Duration, number> = {
 function calcNeededKwh(coverage: Coverage, duration: Duration): number {
   const daily = DAILY_KWH[coverage];
   const days = DURATION_DAYS[duration];
-  // Divide by 0.85 usable capacity factor
-  return Math.ceil((daily * days) / 0.85);
+  // Divide by 0.85 usable capacity factor; minimum practical battery is 5 kWh
+  return Math.max(5, Math.ceil((daily * days) / 0.85));
 }
 
 function getMatches(quiz: QuizState): BatteryProduct[] {
