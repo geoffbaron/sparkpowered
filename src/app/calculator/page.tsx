@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 
 // ── EV Database ───────────────────────────────────────────────────────────────
 
@@ -356,7 +356,7 @@ interface StepOption {
   value: string;
   label: string;
   sublabel?: string;
-  Icon: () => JSX.Element;
+  Icon: () => React.ReactElement;
 }
 
 interface Step {
