@@ -180,7 +180,7 @@ export default function CalculatorPage() {
             </p>
             <button
               onClick={reset}
-              className="spark-btn px-8 py-3 rounded-xl bg-gradient-to-r from-spark-yellow to-spark-orange text-background font-bold"
+              className="spark-btn px-8 py-3 rounded-xl bg-gradient-to-r from-spark-yellow to-spark-orange text-white font-bold shadow-lg shadow-orange-200"
             >
               Try Again
             </button>
@@ -191,14 +191,14 @@ export default function CalculatorPage() {
               {results.map((ev, i) => (
                 <div
                   key={ev.name}
-                  className="card-glow bg-surface rounded-2xl p-6 border border-white/5 flex flex-col sm:flex-row gap-6"
+                  className="card-glow bg-surface rounded-2xl p-6 border border-black/6 flex flex-col sm:flex-row gap-6"
                 >
-                  <div className="flex items-center justify-center w-16 h-16 rounded-xl bg-gradient-to-br from-spark-yellow/20 to-spark-orange/20 text-3xl font-bold text-spark-yellow shrink-0">
+                  <div className="flex items-center justify-center w-16 h-16 rounded-xl bg-gradient-to-br from-amber-100 to-orange-100 text-3xl font-bold text-spark-orange shrink-0">
                     #{i + 1}
                   </div>
                   <div className="flex-1">
                     <h3 className="text-xl font-bold mb-1">{ev.name}</h3>
-                    <p className="text-spark-yellow text-sm font-medium mb-3">
+                    <p className="text-spark-orange text-sm font-medium mb-3">
                       {ev.highlight}
                     </p>
                     <div className="flex flex-wrap gap-4 text-sm text-muted">
@@ -220,13 +220,13 @@ export default function CalculatorPage() {
             <div className="mt-8 text-center">
               <button
                 onClick={reset}
-                className="px-8 py-3 rounded-xl border border-white/10 font-bold hover:bg-surface hover:border-spark-yellow/30 transition-all"
+                className="px-8 py-3 rounded-xl border-2 border-amber-200 font-bold bg-white hover:bg-amber-50 hover:border-amber-300 transition-all"
               >
                 Start Over
               </button>
             </div>
 
-            <div className="mt-12 bg-surface rounded-2xl p-8 border border-white/5">
+            <div className="mt-12 bg-amber-50 rounded-2xl p-8 border border-amber-100">
               <h3 className="text-lg font-bold mb-2">💡 Did you know?</h3>
               <p className="text-muted text-sm leading-relaxed">
                 The federal EV tax credit can save you up to $7,500, and many
@@ -244,8 +244,8 @@ export default function CalculatorPage() {
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
       <div className="text-center mb-12">
-        <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-spark-yellow/10 border border-spark-yellow/20 text-spark-yellow text-sm font-medium">
-          Step {quiz.step + 1} of {steps.length}
+        <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-amber-100 border border-amber-200 text-spark-amber text-sm font-semibold">
+          ⚡ Step {quiz.step + 1} of {steps.length}
         </div>
         <h1 className="text-4xl sm:text-5xl font-extrabold mb-4">
           What EV is{" "}
@@ -256,7 +256,7 @@ export default function CalculatorPage() {
       </div>
 
       {/* Progress bar */}
-      <div className="w-full h-2 bg-surface rounded-full mb-12 overflow-hidden">
+      <div className="w-full h-2 bg-amber-100 rounded-full mb-12 overflow-hidden">
         <div
           className="h-full bg-gradient-to-r from-spark-yellow to-spark-orange rounded-full transition-all duration-500"
           style={{ width: `${progress}%` }}
@@ -273,10 +273,10 @@ export default function CalculatorPage() {
           <button
             key={option.value}
             onClick={() => selectOption(option.value)}
-            className="card-glow bg-surface rounded-2xl p-6 border border-white/5 text-left hover:border-spark-yellow/30 transition-all group"
+            className="card-glow bg-surface rounded-2xl p-6 border border-black/6 text-left hover:border-amber-300 transition-all group"
           >
             <div className="text-3xl mb-3">{option.icon}</div>
-            <div className="text-lg font-bold group-hover:text-spark-yellow transition-colors">
+            <div className="text-lg font-bold group-hover:text-spark-orange transition-colors">
               {option.label}
             </div>
           </button>
@@ -287,7 +287,7 @@ export default function CalculatorPage() {
         <div className="mt-8 text-center">
           <button
             onClick={goBack}
-            className="text-muted hover:text-spark-yellow text-sm transition-colors"
+            className="text-muted hover:text-spark-orange text-sm transition-colors"
           >
             &larr; Go back
           </button>

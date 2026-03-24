@@ -15,13 +15,13 @@ function SparkIcon() {
       <path
         d="M18 2L6 18h8l-2 12 12-16h-8l2-12z"
         fill="url(#spark-gradient)"
-        stroke="rgba(251,191,36,0.6)"
+        stroke="rgba(245,158,11,0.4)"
         strokeWidth="1"
       />
       <defs>
         <linearGradient id="spark-gradient" x1="8" y1="2" x2="22" y2="32">
           <stop offset="0%" stopColor="#fbbf24" />
-          <stop offset="100%" stopColor="#f97316" />
+          <stop offset="100%" stopColor="#ea580c" />
         </linearGradient>
       </defs>
     </svg>
@@ -32,6 +32,7 @@ const navLinks = [
   { href: "/", label: "Home" },
   { href: "/news", label: "News" },
   { href: "/calculator", label: "EV Finder" },
+  { href: "/solar-finder", label: "Solar Finder" },
   { href: "/objections", label: "Objections" },
 ];
 
@@ -39,7 +40,7 @@ export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-lg border-b border-white/5">
+    <header className="sticky top-0 z-50 bg-background/90 backdrop-blur-lg border-b border-black/8 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-2 group">
@@ -55,7 +56,7 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm font-medium text-muted hover:text-spark-yellow transition-colors"
+                className="text-sm font-medium text-muted hover:text-spark-orange transition-colors"
               >
                 {link.label}
               </Link>
@@ -64,7 +65,7 @@ export default function Header() {
 
           {/* Mobile toggle */}
           <button
-            className="md:hidden p-2 text-muted hover:text-spark-yellow"
+            className="md:hidden p-2 text-muted hover:text-spark-orange"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
           >
@@ -81,12 +82,12 @@ export default function Header() {
 
       {/* Mobile nav */}
       {mobileOpen && (
-        <nav className="md:hidden border-t border-white/5 bg-background/95 backdrop-blur-lg">
+        <nav className="md:hidden border-t border-black/8 bg-background/98 backdrop-blur-lg">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="block px-6 py-3 text-sm font-medium text-muted hover:text-spark-yellow hover:bg-surface transition-colors"
+              className="block px-6 py-3 text-sm font-medium text-muted hover:text-spark-orange hover:bg-surface-light transition-colors"
               onClick={() => setMobileOpen(false)}
             >
               {link.label}

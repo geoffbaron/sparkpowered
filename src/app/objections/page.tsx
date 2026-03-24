@@ -111,8 +111,8 @@ export default function ObjectionsPage() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
       {/* Header */}
       <div className="text-center mb-16">
-        <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-spark-yellow/10 border border-spark-yellow/20 text-spark-yellow text-sm font-medium">
-          Facts over fear
+        <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-amber-100 border border-amber-200 text-spark-amber text-sm font-semibold">
+          💡 Facts over fear
         </div>
         <h1 className="text-4xl sm:text-5xl font-extrabold mb-4">
           Common{" "}
@@ -133,7 +133,7 @@ export default function ObjectionsPage() {
           <a
             key={cat}
             href={`#${cat.toLowerCase().replace(/\s+/g, "-")}`}
-            className="px-4 py-1.5 rounded-full text-sm font-medium border border-white/10 text-muted hover:text-spark-yellow hover:border-spark-yellow/30 transition-colors"
+            className="px-4 py-1.5 rounded-full text-sm font-medium border border-black/10 text-muted hover:text-spark-orange hover:border-amber-300 bg-white hover:bg-amber-50 transition-colors"
           >
             {cat}
           </a>
@@ -155,13 +155,13 @@ export default function ObjectionsPage() {
               .map((faq, i) => (
                 <details
                   key={i}
-                  className="group bg-surface rounded-2xl border border-white/5 overflow-hidden card-glow"
+                  className="group bg-surface rounded-2xl border border-black/6 overflow-hidden card-glow"
                 >
                   <summary className="flex items-center justify-between p-6 cursor-pointer list-none">
-                    <h3 className="text-lg font-semibold pr-4 group-hover:text-spark-yellow transition-colors">
+                    <h3 className="text-lg font-semibold pr-4 group-hover:text-spark-orange transition-colors">
                       {faq.question}
                     </h3>
-                    <span className="shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-surface-light text-spark-yellow group-open:rotate-45 transition-transform">
+                    <span className="shrink-0 w-8 h-8 flex items-center justify-center rounded-full bg-amber-100 text-spark-orange font-bold group-open:rotate-45 transition-transform">
                       +
                     </span>
                   </summary>
@@ -175,7 +175,7 @@ export default function ObjectionsPage() {
       ))}
 
       {/* Bottom CTA */}
-      <div className="mt-16 bg-gradient-to-br from-surface to-surface-light rounded-2xl p-8 border border-white/5 text-center">
+      <div className="mt-16 bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-8 border border-amber-100 text-center">
         <h3 className="text-2xl font-bold mb-3">Still have questions?</h3>
         <p className="text-muted mb-6 max-w-lg mx-auto">
           The best way to experience the electric difference is to test drive
@@ -184,7 +184,7 @@ export default function ObjectionsPage() {
         </p>
         <a
           href="/calculator"
-          className="spark-btn inline-flex items-center justify-center px-8 py-3 rounded-xl bg-gradient-to-r from-spark-yellow to-spark-orange text-background font-bold hover:shadow-lg hover:shadow-spark-yellow/20 transition-all"
+          className="spark-btn inline-flex items-center justify-center px-8 py-3 rounded-xl bg-gradient-to-r from-spark-yellow to-spark-orange text-white font-bold shadow-lg shadow-orange-200 hover:shadow-xl hover:shadow-orange-300 transition-all"
         >
           Find Your Perfect EV
         </a>

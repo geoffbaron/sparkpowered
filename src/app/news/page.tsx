@@ -133,8 +133,8 @@ export default async function NewsPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
       {/* Header */}
       <div className="text-center mb-16">
-        <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-spark-yellow/10 border border-spark-yellow/20 text-spark-yellow text-sm font-medium">
-          Updated daily
+        <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-amber-100 border border-amber-200 text-spark-amber text-sm font-semibold">
+          ☀️ Updated daily
         </div>
         <h1 className="text-4xl sm:text-5xl font-extrabold mb-4">
           Clean Energy{" "}
@@ -170,7 +170,7 @@ export default async function NewsPage() {
           return (
             <article
               key={i}
-              className="card-glow bg-surface rounded-2xl p-6 border border-white/5 flex flex-col"
+              className="card-glow bg-surface rounded-2xl p-6 border border-black/6 flex flex-col"
             >
               <div className="flex items-center gap-3 mb-4">
                 <span
@@ -178,7 +178,9 @@ export default async function NewsPage() {
                 >
                   {config.label}
                 </span>
-                <span className="text-xs text-muted">{item.publishedAt}</span>
+                <span className="text-xs text-muted">
+                  {item.publishedAt.replace(/^(\d{4})-(\d{2})-(\d{2})$/, (_, y, m, d) => `${m}/${d}/${y.slice(2)}`)}
+                </span>
               </div>
               <h2 className="text-lg font-bold mb-2 leading-snug">
                 {item.title}
@@ -195,7 +197,7 @@ export default async function NewsPage() {
       </div>
 
       {/* Info box */}
-      <div className="mt-16 bg-surface rounded-2xl p-8 border border-white/5 text-center">
+      <div className="mt-16 bg-surface rounded-2xl p-8 border border-black/6 text-center shadow-sm">
         <h3 className="text-xl font-bold mb-2">About Our News Feed</h3>
         <p className="text-muted max-w-2xl mx-auto text-sm leading-relaxed">
           Spark Powered aggregates positive news about clean energy from trusted

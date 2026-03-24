@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-white/5 bg-surface/50">
+    <footer className="border-t border-black/8 bg-surface-light">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
@@ -22,12 +22,13 @@ export default function Footer() {
               {[
                 { href: "/news", label: "Latest News" },
                 { href: "/calculator", label: "EV Finder" },
+                { href: "/solar-finder", label: "Solar Finder" },
                 { href: "/objections", label: "Objections & FAQs" },
               ].map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className="text-sm text-muted hover:text-spark-yellow transition-colors"
+                    className="text-sm text-muted hover:text-spark-orange transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -47,7 +48,7 @@ export default function Footer() {
             </ul>
           </div>
         </div>
-        <div className="mt-8 pt-8 border-t border-white/5 text-center text-sm text-muted">
+        <div className="mt-8 pt-8 border-t border-black/8 text-center text-sm text-muted">
           &copy; {new Date().getFullYear()} Spark Powered. Built with clean
           energy enthusiasm.
         </div>
