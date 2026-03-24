@@ -204,12 +204,24 @@ export default function SolarFinderPage() {
   async function handleLeadSubmit() {
     if (!validateLead()) return;
     setLoading(true);
-    // TODO: POST to your backend / CRM
-    // await fetch('/api/leads', {
-    //   method: 'POST',
-    //   body: JSON.stringify({ ...prefs, ...lead, installer: selectedInstaller }),
-    // })
-    await new Promise((r) => setTimeout(r, 700));
+    try {
+      await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...lead,
+          zip: prefs.zip,
+          homeOwner: prefs.homeOwner,
+          roofAge: prefs.roofAge,
+          monthlyBill: prefs.monthlyBill,
+          interest: prefs.interest,
+          installerId: selectedInstaller?.id ?? "",
+          installerName: selectedInstaller?.name ?? "",
+        }),
+      });
+    } catch {
+      // Fail silently — don't block the user if storage has an issue
+    }
     setLoading(false);
     setStep("done");
   }
