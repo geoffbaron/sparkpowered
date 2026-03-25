@@ -15,12 +15,39 @@ const FEEDS = [
   { url: "https://solarpowerworld.com/feed/",      source: "Solar Power World" },
 ];
 
-// Fallback thumbnails by category (Unsplash)
-const FALLBACK: Record<RSSArticle["category"], string> = {
-  ev:      "https://images.unsplash.com/photo-1593941707882-a5bba14938c7?w=600&q=75&auto=format&fit=crop",
-  solar:   "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=600&q=75&auto=format&fit=crop",
-  battery: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=75&auto=format&fit=crop",
+// Fallback thumbnail pools by category — cycled by URL hash so each article
+// gets a stable, non-repeating image when the feed provides no thumbnail.
+const FALLBACKS: Record<RSSArticle["category"], string[]> = {
+  ev: [
+    "https://images.unsplash.com/photo-1593941707882-a5bba14938c7?w=600&q=75&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1647166545674-ce28ce93bdca?w=600&q=75&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=600&q=75&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600&q=75&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1571987502951-3cc4c4d76cc4?w=600&q=75&auto=format&fit=crop",
+  ],
+  solar: [
+    "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=600&q=75&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=600&q=75&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?w=600&q=75&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?w=600&q=75&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1548348384-a82d027b70f0?w=600&q=75&auto=format&fit=crop",
+  ],
+  battery: [
+    "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=75&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1620714223084-8fcacc2dfd03?w=600&q=75&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1548337138-e87d889cc369?w=600&q=75&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=600&q=75&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=600&q=75&auto=format&fit=crop",
+  ],
 };
+
+/** Pick a fallback deterministically from the pool based on the article URL. */
+function pickFallback(category: RSSArticle["category"], url: string): string {
+  const pool = FALLBACKS[category];
+  let hash = 0;
+  for (let i = 0; i < url.length; i++) hash = (hash * 31 + url.charCodeAt(i)) >>> 0;
+  return pool[hash % pool.length];
+}
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -140,7 +167,7 @@ async function fetchFeed(feed: { url: string; source: string }): Promise<RSSArti
       }
 
       const category = categorize(title, description);
-      const thumbnail = extractThumbnail(item) ?? FALLBACK[category];
+      const thumbnail = extractThumbnail(item) ?? pickFallback(category, url);
 
       articles.push({ title, description, url, publishedAt, thumbnail, source: feed.source, category });
     }
