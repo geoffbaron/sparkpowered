@@ -40,16 +40,13 @@ const evDatabase: EVResult[] = [
 // ── Scoring ───────────────────────────────────────────────────────────────────
 
 const typeMap: Record<string, string> = {
-  sedan: "Sedan",
-  suv: "SUV",
-  truck: "Truck",
-  hatchback: "Hatchback",
+  sedan: "Sedan", suv: "SUV", truck: "Truck", hatchback: "Hatchback",
 };
 
 const budgetRanges: Record<string, [number, number]> = {
-  under35:  [0,      35000],
-  "35to50": [35000,  50000],
-  "50to80": [50000,  80000],
+  under35:  [0, 35000],
+  "35to50": [35000, 50000],
+  "50to80": [50000, 80000],
   over80:   [80000, Infinity],
 };
 
@@ -64,59 +61,35 @@ function priceNum(ev: EVResult) {
 function scoreEV(ev: EVResult, quiz: QuizState): number {
   let score = 0;
 
-  // Body type — strong preference (35 pts), but not eliminated if wrong type
   if (quiz.bodyType && ev.type === typeMap[quiz.bodyType]) score += 35;
   else score -= 5;
 
-  // Budget — reward being in range (25 pts), penalize being way over
   if (quiz.budget) {
     const [lo, hi] = budgetRanges[quiz.budget];
     const p = priceNum(ev);
-    if (p >= lo && p <= hi) {
-      score += 25;
-    } else if (p < lo) {
-      // Under budget is fine, slight penalty for being much cheaper (might miss features)
-      score += 15;
-    } else {
-      // Over budget: penalize proportionally
-      const pct = (p - hi) / hi;
-      score += Math.max(-25, -Math.round(pct * 40));
-    }
+    if (p >= lo && p <= hi) score += 25;
+    else if (p < lo) score += 15;
+    else score += Math.max(-25, -Math.round(((p - hi) / hi) * 40));
   }
 
-  // Range vs. daily miles (20 pts)
   if (quiz.dailyMiles) {
     const minRange = { under30: 100, "30to60": 150, "60to100": 200, over100: 300 }[quiz.dailyMiles] ?? 0;
-    if (ev.range >= minRange * 2) score += 20;       // very comfortable
+    if (ev.range >= minRange * 2) score += 20;
     else if (ev.range >= minRange * 1.5) score += 15;
     else if (ev.range >= minRange) score += 10;
-    else score -= 10; // range anxiety risk
+    else score -= 10;
   }
 
-  // Passengers (15 pts)
   if (quiz.passengers) {
-    if (quiz.passengers === "5plus") {
-      if (ev.seats >= 7) score += 15;
-      else score += 5; // 5-seaters aren't eliminated, just ranked lower
-    } else if (quiz.passengers === "3to4") {
-      if (ev.seats >= 5) score += 15;
-    } else {
-      score += 15; // any car works for 1-2
-    }
+    if (quiz.passengers === "5plus") score += ev.seats >= 7 ? 15 : 5;
+    else if (quiz.passengers === "3to4") score += ev.seats >= 5 ? 15 : 0;
+    else score += 15;
   }
 
-  // Priority tiebreaker (up to 10 pts)
-  if (quiz.priority === "range") {
-    score += Math.min(10, Math.floor(ev.range / 40));
-  } else if (quiz.priority === "value") {
-    const p = priceNum(ev);
-    score += Math.min(10, Math.floor((80000 - p) / 7000));
-  } else if (quiz.priority === "performance") {
-    // Proxy: higher price tends to mean more performance
-    score += Math.min(10, Math.floor(priceNum(ev) / 12000));
-  } else if (quiz.priority === "space") {
-    score += (cargoOrder[ev.cargo] || 0) * 2;
-  }
+  if (quiz.priority === "range") score += Math.min(10, Math.floor(ev.range / 40));
+  else if (quiz.priority === "value") score += Math.min(10, Math.floor((80000 - priceNum(ev)) / 7000));
+  else if (quiz.priority === "performance") score += Math.min(10, Math.floor(priceNum(ev) / 12000));
+  else if (quiz.priority === "space") score += (cargoOrder[ev.cargo] || 0) * 2;
 
   return score;
 }
@@ -140,282 +113,61 @@ interface QuizState {
   passengers: string;
 }
 
-// ── SVG Icons ─────────────────────────────────────────────────────────────────
+// ── Steps ─────────────────────────────────────────────────────────────────────
 
-function IconBudgetLow() {
-  return (
-    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="18" cy="18" r="14" />
-      <path d="M18 11v14M14 14.5c0-1.933 1.791-3.5 4-3.5s4 1.567 4 3.5c0 4-8 3-8 7 0 1.933 1.791 3.5 4 3.5s4-1.567 4-3.5" />
-    </svg>
-  );
-}
-
-function IconBudgetMid() {
-  return (
-    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="4" y="10" width="28" height="18" rx="3" />
-      <path d="M4 16h28" />
-      <circle cx="18" cy="23" r="2.5" />
-      <path d="M9 13h.01M27 13h.01" />
-    </svg>
-  );
-}
-
-function IconBudgetPremium() {
-  return (
-    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M18 5l3.5 7.5L30 13.5l-6 5.8 1.4 8.2L18 23.5l-7.4 4 1.4-8.2L6 13.5l8.5-1L18 5z" />
-    </svg>
-  );
-}
-
-function IconBudgetLuxury() {
-  return (
-    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M8 26l4-10 6 6 6-12 4 16" />
-      <path d="M5 26h26" />
-    </svg>
-  );
-}
-
-function IconSedan() {
-  return (
-    <svg width="44" height="36" viewBox="0 0 44 28" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M2 20h40v-2l-4-8-8-4H14L8 12l-6 4v4z" />
-      <path d="M14 6h16l6 10H8L14 6z" />
-      <circle cx="11" cy="22" r="3.5" />
-      <circle cx="33" cy="22" r="3.5" />
-      <path d="M7.5 22H2M36.5 22H42" />
-    </svg>
-  );
-}
-
-function IconSUV() {
-  return (
-    <svg width="44" height="36" viewBox="0 0 46 28" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M2 22h42v-4l-4-10H10L4 14l-2 4v4z" />
-      <path d="M10 8h24l6 10H4L10 8z" />
-      <circle cx="12" cy="24" r="3.5" />
-      <circle cx="34" cy="24" r="3.5" />
-      <path d="M2 18h42" />
-    </svg>
-  );
-}
-
-function IconTruck() {
-  return (
-    <svg width="48" height="36" viewBox="0 0 50 28" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M2 22h46v-4L44 8H28V22" />
-      <rect x="2" y="8" width="26" height="14" rx="1.5" />
-      <circle cx="10" cy="24" r="3.5" />
-      <circle cx="38" cy="24" r="3.5" />
-      <path d="M28 8v10" />
-    </svg>
-  );
-}
-
-function IconHatchback() {
-  return (
-    <svg width="40" height="36" viewBox="0 0 40 28" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M2 20h36v-2l-4-8H10L4 14l-2 4v2z" />
-      <path d="M10 10h16l6 8H4l6-8z" />
-      <circle cx="10" cy="22" r="3" />
-      <circle cx="30" cy="22" r="3" />
-    </svg>
-  );
-}
-
-function IconCityDrive() {
-  return (
-    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="10" y="8" width="8" height="20" rx="1" />
-      <rect x="20" y="14" width="8" height="14" rx="1" />
-      <path d="M4 28h28" />
-      <path d="M10 12h8M10 16h8M10 20h8" strokeWidth="1" />
-      <path d="M20 18h8M20 22h8" strokeWidth="1" />
-    </svg>
-  );
-}
-
-function IconCommute() {
-  return (
-    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M4 28h28" />
-      <path d="M4 28c0-8 5-16 14-16s14 8 14 16" />
-      <path d="M18 12V8" />
-      <path d="M18 20l4-4" />
-    </svg>
-  );
-}
-
-function IconRoadTrip() {
-  return (
-    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M4 28h28" />
-      <path d="M4 28Q8 14 18 14Q28 14 32 28" />
-      <path d="M13 28Q15 20 18 20Q21 20 23 28" />
-      <circle cx="18" cy="9" r="3" />
-      <path d="M18 12v2" />
-    </svg>
-  );
-}
-
-function IconHighMileage() {
-  return (
-    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M6 28a12 12 0 0 1 24 0" />
-      <path d="M18 16v-4M9.5 19.5l-2.8-2.8M26.5 19.5l2.8-2.8" />
-      <path d="M18 28l-4-8" strokeWidth="2" />
-      <circle cx="18" cy="28" r="2" fill="currentColor" stroke="none" />
-    </svg>
-  );
-}
-
-function IconValue() {
-  return (
-    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M6 6l24 24M26 6H10a4 4 0 0 0-4 4v6l14 14 10-10L16 6" />
-      <circle cx="13" cy="13" r="2.5" />
-    </svg>
-  );
-}
-
-function IconRange() {
-  return (
-    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="5" y="12" width="22" height="12" rx="2" />
-      <path d="M27 16v4a2 2 0 0 1 0-4z" />
-      <rect x="8" y="15" width="5" height="6" rx="1" fill="currentColor" stroke="none" />
-      <rect x="15" y="15" width="5" height="6" rx="1" fill="currentColor" stroke="none" />
-      <path d="M18 6l3 3-3 3" />
-      <path d="M11 6l-3 3 3 3" />
-      <path d="M15 6h3" />
-    </svg>
-  );
-}
-
-function IconPerformance() {
-  return (
-    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M18 8l-4 10h8L16 28" strokeWidth="2" />
-    </svg>
-  );
-}
-
-function IconSpace() {
-  return (
-    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M8 28V12l10-6 10 6v16H8z" />
-      <path d="M8 12l10 6 10-6" />
-      <path d="M18 18v10" />
-      <path d="M13 15l-5 3M23 15l5 3" />
-    </svg>
-  );
-}
-
-function IconPerson1() {
-  return (
-    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="18" cy="12" r="5" />
-      <path d="M8 30c0-5.523 4.477-10 10-10s10 4.477 10 10" />
-    </svg>
-  );
-}
-
-function IconPerson2() {
-  return (
-    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="14" cy="12" r="4.5" />
-      <path d="M4 30c0-5 4-9 10-9" />
-      <circle cx="24" cy="12" r="4.5" />
-      <path d="M32 30c0-5-4-9-10-9" />
-      <path d="M14 21c1.3-.3 2.6-.5 4-.5h2" />
-    </svg>
-  );
-}
-
-function IconFamily() {
-  return (
-    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
-      <circle cx="10" cy="10" r="4" />
-      <path d="M2 28c0-4.4 3.6-8 8-8s8 3.6 8 28" />
-      <circle cx="26" cy="10" r="4" />
-      <path d="M34 28c0-4.4-3.6-8-8-8" />
-      <circle cx="18" cy="14" r="3" />
-      <path d="M11 28c0-3.9 3.1-7 7-7s7 3.1 7 7" />
-    </svg>
-  );
-}
-
-// ── Steps definition ──────────────────────────────────────────────────────────
-
-type StepKey = "budget" | "bodyType" | "dailyMiles" | "priority" | "passengers";
-
-interface StepOption {
-  value: string;
-  label: string;
-  sublabel?: string;
-  Icon: () => React.ReactElement;
-}
-
-interface Step {
-  key: StepKey;
-  question: string;
-  options: StepOption[];
-}
-
-const steps: Step[] = [
+const steps = [
   {
     key: "budget",
     question: "What's your budget?",
     options: [
-      { value: "under35",  label: "Under $35,000", sublabel: "Affordable", Icon: IconBudgetLow },
-      { value: "35to50",   label: "$35,000–$50,000", sublabel: "Mid-range",  Icon: IconBudgetMid },
-      { value: "50to80",   label: "$50,000–$80,000", sublabel: "Premium",   Icon: IconBudgetPremium },
-      { value: "over80",   label: "$80,000+",         sublabel: "Luxury",    Icon: IconBudgetLuxury },
+      { value: "under35",  label: "Under $35,000", sublabel: "Affordable",  icon: "savings" },
+      { value: "35to50",   label: "$35,000–$50,000", sublabel: "Mid-range", icon: "credit_card" },
+      { value: "50to80",   label: "$50,000–$80,000", sublabel: "Premium",   icon: "diamond" },
+      { value: "over80",   label: "$80,000+",         sublabel: "Luxury",   icon: "workspace_premium" },
     ],
   },
   {
     key: "bodyType",
     question: "What type of vehicle?",
     options: [
-      { value: "sedan",    label: "Sedan",               sublabel: "Sleek & efficient", Icon: IconSedan },
-      { value: "suv",      label: "SUV / Crossover",     sublabel: "Versatile & popular", Icon: IconSUV },
-      { value: "truck",    label: "Truck",               sublabel: "Work & adventure", Icon: IconTruck },
-      { value: "hatchback",label: "Hatchback / City Car",sublabel: "Compact & nimble", Icon: IconHatchback },
+      { value: "sedan",     label: "Sedan",                sublabel: "Sleek & efficient",   icon: "directions_car" },
+      { value: "suv",       label: "SUV / Crossover",      sublabel: "Versatile & popular", icon: "airport_shuttle" },
+      { value: "truck",     label: "Truck",                sublabel: "Work & adventure",    icon: "local_shipping" },
+      { value: "hatchback", label: "Hatchback / City Car", sublabel: "Compact & nimble",    icon: "electric_car" },
     ],
   },
   {
     key: "dailyMiles",
     question: "How far do you drive daily?",
     options: [
-      { value: "under30",  label: "Under 30 miles",  sublabel: "Around town",     Icon: IconCityDrive },
-      { value: "30to60",   label: "30–60 miles",     sublabel: "Daily commute",   Icon: IconCommute },
-      { value: "60to100",  label: "60–100 miles",    sublabel: "Longer commute",  Icon: IconRoadTrip },
-      { value: "over100",  label: "100+ miles",      sublabel: "High mileage",    Icon: IconHighMileage },
+      { value: "under30",  label: "Under 30 miles", sublabel: "Around town",    icon: "location_city" },
+      { value: "30to60",   label: "30–60 miles",    sublabel: "Daily commute",  icon: "commute" },
+      { value: "60to100",  label: "60–100 miles",   sublabel: "Longer commute", icon: "map" },
+      { value: "over100",  label: "100+ miles",     sublabel: "High mileage",   icon: "speed" },
     ],
   },
   {
     key: "priority",
     question: "What matters most to you?",
     options: [
-      { value: "value",       label: "Best Value",       sublabel: "Most car for the money",  Icon: IconValue },
-      { value: "range",       label: "Maximum Range",    sublabel: "Never worry about range",  Icon: IconRange },
-      { value: "performance", label: "Performance",      sublabel: "Thrilling acceleration",   Icon: IconPerformance },
-      { value: "space",       label: "Cargo & Space",    sublabel: "Maximize room inside",     Icon: IconSpace },
+      { value: "value",       label: "Best Value",    sublabel: "Most car for the money",  icon: "local_offer" },
+      { value: "range",       label: "Max Range",     sublabel: "Never worry about range", icon: "battery_charging_full" },
+      { value: "performance", label: "Performance",   sublabel: "Thrilling acceleration",  icon: "speed" },
+      { value: "space",       label: "Cargo & Space", sublabel: "Maximize room inside",    icon: "inventory_2" },
     ],
   },
   {
     key: "passengers",
     question: "How many people ride regularly?",
     options: [
-      { value: "1to2", label: "Just me or 1–2", sublabel: "Solo or couple",  Icon: IconPerson1 },
-      { value: "3to4", label: "3–4 people",     sublabel: "Small family",    Icon: IconPerson2 },
-      { value: "5plus",label: "5+ people",      sublabel: "Large family",    Icon: IconFamily },
+      { value: "1to2", label: "Just me or 1–2", sublabel: "Solo or couple", icon: "person" },
+      { value: "3to4", label: "3–4 people",     sublabel: "Small family",   icon: "group" },
+      { value: "5plus",label: "5+ people",      sublabel: "Large family",   icon: "groups" },
     ],
   },
-];
+] as const;
+
+type StepKey = (typeof steps)[number]["key"];
 
 // ── Page component ────────────────────────────────────────────────────────────
 
@@ -429,7 +181,7 @@ export default function CalculatorPage() {
   const progress = (quiz.step / steps.length) * 100;
 
   function selectOption(value: string) {
-    const newQuiz = { ...quiz, [currentStep.key]: value };
+    const newQuiz = { ...quiz, [currentStep.key as StepKey]: value };
     if (quiz.step < steps.length - 1) {
       setQuiz({ ...newQuiz, step: quiz.step + 1 });
     } else {
@@ -460,9 +212,7 @@ export default function CalculatorPage() {
               Perfect EVs
             </span>
           </h1>
-          <p className="text-muted text-lg">
-            Based on your preferences, here are our top recommendations.
-          </p>
+          <p className="text-muted text-lg">Based on your preferences, here are our top recommendations.</p>
         </div>
 
         <div className="space-y-6">
@@ -545,25 +295,23 @@ export default function CalculatorPage() {
             onClick={() => selectOption(option.value)}
             className="bg-surface rounded-2xl p-6 border border-black/8 text-left hover:border-amber-400 hover:bg-amber-50/40 hover:shadow-sm transition-all group"
           >
-            <div className="text-muted group-hover:text-spark-orange transition-colors mb-4">
-              <option.Icon />
-            </div>
+            <span
+              className="material-symbols-outlined text-muted group-hover:text-spark-orange transition-colors mb-4 block"
+              style={{ fontSize: 36 }}
+            >
+              {option.icon}
+            </span>
             <div className="text-lg font-bold group-hover:text-spark-orange transition-colors leading-tight">
               {option.label}
             </div>
-            {option.sublabel && (
-              <div className="text-sm text-muted mt-1">{option.sublabel}</div>
-            )}
+            <div className="text-sm text-muted mt-1">{option.sublabel}</div>
           </button>
         ))}
       </div>
 
       {quiz.step > 0 && (
         <div className="mt-8 text-center">
-          <button
-            onClick={goBack}
-            className="text-muted hover:text-spark-orange text-sm transition-colors"
-          >
+          <button onClick={goBack} className="text-muted hover:text-spark-orange text-sm transition-colors">
             ← Go back
           </button>
         </div>
