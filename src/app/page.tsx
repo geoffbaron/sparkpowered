@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Metadata } from "next";
 import { fetchAllNews } from "@/lib/rss";
 import type { RSSArticle } from "@/lib/rss";
+import NewsImage from "@/components/NewsImage";
 
 export const metadata: Metadata = {
   title: "Spark Powered — EV, Solar & Clean Energy News",
@@ -45,11 +46,11 @@ function NewsGrid({ news }: { news: RSSArticle[] }) {
               rel="noopener noreferrer"
               className="block overflow-hidden aspect-[16/9] bg-surface-light"
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={item.thumbnail ?? ""}
+              <NewsImage
+                src={item.thumbnail}
                 alt={item.title}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                category={item.category}
+                articleUrl={item.url}
               />
             </a>
 
