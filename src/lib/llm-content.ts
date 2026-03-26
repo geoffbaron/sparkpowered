@@ -56,171 +56,9 @@ const FALLBACK_EVS: EVResult[] = [
   { name: "Toyota bZ4X", range: 252, price: "$42,000", type: "SUV", highlight: "Toyota reliability meets electric efficiency", seats: 5, cargo: "Large", url: "https://www.toyota.com/bz4x" },
 ];
 
-const FALLBACK_BATTERIES: BatteryProduct[] = [
-  // ── Affordable / portable-home-hybrid ──────────────────────────────────────
-  {
-    id: "ecoflow-delta-pro-3",
-    name: "DELTA Pro 3",
-    brand: "EcoFlow",
-    kwh: 4.096,
-    scalable: true,
-    maxKwh: 48,
-    power_kw: 4.0,
-    warranty_years: 5,
-    price_low: 2000,
-    price_high: 3500,
-    solar_compatible: true,
-    grid_tied: false,
-    highlights: ["No professional installation required", "Expandable up to 48 kWh", "120V/240V dual output"],
-    learnMoreUrl: "https://us.ecoflow.com/products/delta-pro-3-portable-power-station",
-  },
-  {
-    id: "anker-solix-f3800",
-    name: "SOLIX F3800 Plus",
-    brand: "Anker",
-    kwh: 3.84,
-    scalable: true,
-    maxKwh: 53.76,
-    power_kw: 6.0,
-    warranty_years: 5,
-    price_low: 2600,
-    price_high: 5000,
-    solar_compatible: true,
-    grid_tied: false,
-    highlights: ["6 kW continuous output (best in class)", "Expandable up to 53 kWh", "Frequent discounts to ~$2,600"],
-    learnMoreUrl: "https://www.ankersolix.com/products/f3800-plus",
-  },
-  {
-    id: "bluetti-apex-300",
-    name: "Apex 300",
-    brand: "Bluetti",
-    kwh: 2.765,
-    scalable: true,
-    maxKwh: 14,
-    power_kw: 3.84,
-    warranty_years: 5,
-    price_low: 2400,
-    price_high: 4500,
-    solar_compatible: true,
-    grid_tied: false,
-    highlights: ["Industry-leading 6,000 cycle LFP battery", "120V/240V output", "Expandable with B300K modules"],
-    learnMoreUrl: "https://www.bluettipower.com/products/apex-300-home-battery-backup",
-  },
-  // ── Entry-level professional (grid-tied) ──────────────────────────────────
-  {
-    id: "enphase-iq5p",
-    name: "IQ Battery 5P",
-    brand: "Enphase",
-    kwh: 5.0,
-    scalable: true,
-    maxKwh: 30,
-    power_kw: 3.84,
-    warranty_years: 15,
-    price_low: 7000,
-    price_high: 10000,
-    solar_compatible: true,
-    grid_tied: true,
-    highlights: ["Best-in-class 15-year warranty", "Modular — add units as needed", "Microinverter architecture (most reliable)"],
-    learnMoreUrl: "https://enphase.com/store/storage/gen3/iq-battery-5p",
-  },
-  // ── Mid-range ──────────────────────────────────────────────────────────────
-  {
-    id: "tesla-powerwall-3",
-    name: "Powerwall 3",
-    brand: "Tesla",
-    kwh: 13.5,
-    scalable: true,
-    maxKwh: 27,
-    power_kw: 11.5,
-    warranty_years: 10,
-    price_low: 11000,
-    price_high: 15500,
-    solar_compatible: true,
-    grid_tied: true,
-    highlights: ["Built-in solar inverter (no separate unit needed)", "11.5 kW continuous output", "Storm Watch auto backup mode"],
-    learnMoreUrl: "https://www.tesla.com/powerwall",
-  },
-  {
-    id: "enphase-iq10t",
-    name: "IQ Battery 10T",
-    brand: "Enphase",
-    kwh: 10.08,
-    scalable: true,
-    maxKwh: 40.32,
-    power_kw: 3.84,
-    warranty_years: 15,
-    price_low: 13000,
-    price_high: 16000,
-    solar_compatible: true,
-    grid_tied: true,
-    highlights: ["15-year warranty — longest of any major brand", "Stack up to 4 units for 40 kWh", "No single point of failure"],
-    learnMoreUrl: "https://enphase.com/store/storage/iq-battery-10t",
-  },
-  // ── Premium ────────────────────────────────────────────────────────────────
-  {
-    id: "generac-pwrcell-2",
-    name: "PWRcell 2",
-    brand: "Generac",
-    kwh: 9,
-    maxKwh: 18,
-    scalable: true,
-    power_kw: 9,
-    warranty_years: 10,
-    price_low: 17000,
-    price_high: 25000,
-    solar_compatible: true,
-    grid_tied: true,
-    highlights: ["Highest continuous power output at 9 kW", "Modular LFP design (9–18 kWh)", "Whole-home backup capable"],
-    learnMoreUrl: "https://www.generac.com/solar-battery-solutions/pwrcell-2/",
-  },
-  {
-    id: "sonnen-core-plus",
-    name: "sonnenCore+",
-    brand: "Sonnen",
-    kwh: 10,
-    maxKwh: 20,
-    scalable: true,
-    power_kw: 4.8,
-    warranty_years: 10,
-    price_low: 14000,
-    price_high: 18000,
-    solar_compatible: true,
-    grid_tied: true,
-    highlights: ["10,000 cycle warranty (longest cycle life)", "German-engineered LFP chemistry", "Virtual power plant / peer-to-peer energy sharing"],
-    learnMoreUrl: "https://www.sonnenusa.com/residential/sonnencoreplus",
-  },
-  {
-    id: "lg-resu-prime-16",
-    name: "RESU Prime 16H",
-    brand: "LG Energy Solution",
-    kwh: 16,
-    scalable: false,
-    power_kw: 7,
-    warranty_years: 10,
-    price_low: 13000,
-    price_high: 20000,
-    solar_compatible: true,
-    grid_tied: true,
-    highlights: ["Large 16 kWh in a single compact unit", "High 7 kW continuous output", "Proven LG battery reliability"],
-    learnMoreUrl: "https://www.lgessbattery.com/m/us/home-battery/product-info.lg",
-  },
-  {
-    id: "franklin-wh-apower2",
-    name: "aPower 2",
-    brand: "Franklin WH",
-    kwh: 13.6,
-    scalable: true,
-    maxKwh: 136,
-    power_kw: 10.0,
-    warranty_years: 12,
-    price_low: 17000,
-    price_high: 22000,
-    solar_compatible: true,
-    grid_tied: true,
-    highlights: ["Massively scalable — up to 136 kWh", "10 kW continuous output", "12-year warranty with aGate controller"],
-    learnMoreUrl: "https://www.franklinwh.com/products/apower2-home-battery-backup/",
-  },
-];
+// No hardcoded battery fallback — product options, prices, and availability
+// change too frequently. When the API key is unavailable or research fails,
+// the quiz shows an EnergySage search CTA instead of stale product cards.
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -300,36 +138,36 @@ export async function getDailyBatteries(): Promise<BatteryProduct[]> {
   cacheLife("days");
 
   if (!process.env.ANTHROPIC_API_KEY) {
-    console.warn("ANTHROPIC_API_KEY not set — using fallback battery data");
-    return FALLBACK_BATTERIES;
+    console.warn("ANTHROPIC_API_KEY not set — battery research unavailable");
+    return [];
   }
 
   try {
     const today = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long" });
     const text = await runResearch(
-      `Today is ${today}. Search the web for the best home battery storage options available in the US right now, covering ALL budget levels.
+      `Today is ${today}. Search the web for the best home battery storage options currently available in the US, covering ALL budget levels — from portable power stations to whole-home grid-tied systems.
 
-Include a mix of:
-- 2-3 affordable options ($2,000–$6,000 per unit installed): EcoFlow DELTA Pro 3, Anker SOLIX F3800 Plus, Bluetti Apex 300 or similar portable-home-hybrid systems that don't require professional installation
-- 2-3 mid-range professional systems ($7,000–$15,000 installed): Enphase IQ Battery 5P, Tesla Powerwall 3, etc.
-- 2-3 premium whole-home systems ($15,000+ installed): Generac PWRcell 2, Sonnen sonnenCore+, LG RESU Prime, Franklin WH aPower 2, etc.
+Find at least:
+- 3 affordable options ($1,500–$6,000 per unit, no professional install needed): e.g. EcoFlow DELTA Pro 3, Anker SOLIX F3800 Plus, Bluetti Apex 300, Goal Zero Yeti
+- 3 mid-range professional systems ($6,000–$16,000 installed): e.g. Enphase IQ Battery 5P, Tesla Powerwall 3
+- 3 premium whole-home systems ($16,000+ installed): e.g. Generac PWRcell 2, Sonnen sonnenCore+, LG RESU Prime, Franklin WH aPower 2
 
-For each product find: product name, brand, usable capacity in kWh, whether it is stackable/scalable and maximum system size in kWh, continuous power output in kW, warranty length in years, REALISTIC estimated installed price range in USD (include equipment + installation for professional systems; equipment only for DIY systems), whether it works with solar, and the official manufacturer product URL.
+For each: verify the current price on the manufacturer website, check if the product is still available (skip discontinued products), and get the exact product page URL.
 
 Return ONLY a valid JSON array — no markdown, no explanation, no code fences:
-[{"id":"brand-slug","name":"Product Name","brand":"Brand","kwh":4.1,"maxKwh":48,"scalable":true,"power_kw":4.0,"warranty_years":5,"price_low":2000,"price_high":3500,"solar_compatible":true,"grid_tied":false,"highlights":["key feature 1","key feature 2","key feature 3"],"learnMoreUrl":"https://manufacturer.com/product"}]
+[{"id":"brand-model-slug","name":"Exact Product Name","brand":"Brand Name","kwh":4.1,"maxKwh":48,"scalable":true,"power_kw":4.0,"warranty_years":5,"price_low":2000,"price_high":3500,"solar_compatible":true,"grid_tied":false,"highlights":["one short feature","one short feature","one short feature"],"learnMoreUrl":"https://exact-product-page-url.com"}]
 
-Rules: id must be a lowercase hyphen-slug. kwh, maxKwh, power_kw must be numbers. price_low and price_high must be realistic integers (do NOT understate — verify current prices). scalable, solar_compatible, grid_tied must be booleans. highlights must be an array of exactly 3 short strings. Return exactly 9 items covering all three price tiers.`
+Rules: id is lowercase-hyphen-slug. All numeric fields are numbers not strings. price_low/price_high are realistic installed costs in USD integers — do not understate. grid_tied:false for portable/DIY systems. highlights is exactly 3 short strings. Return 9–12 items total.`
     );
 
     const parsed = extractJson<BatteryProduct[]>(text);
     if (parsed && Array.isArray(parsed) && parsed.length >= 4) {
       return parsed;
     }
-    console.warn("getDailyBatteries: could not parse response, using fallback");
-    return FALLBACK_BATTERIES;
+    console.warn("getDailyBatteries: could not parse LLM response");
+    return [];
   } catch (err) {
-    console.error("getDailyBatteries failed, using fallback:", err);
-    return FALLBACK_BATTERIES;
+    console.error("getDailyBatteries failed:", err);
+    return [];
   }
 }
