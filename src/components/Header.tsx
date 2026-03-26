@@ -29,8 +29,7 @@ function SparkIcon() {
 }
 
 const navLinks = [
-  { href: "/", label: "Home" },
-  { href: "/news", label: "News" },
+  { href: "/", label: "News" },
   { href: "/calculator", label: "EV Finder" },
   { href: "/solar-finder", label: "Solar Finder" },
   { href: "/battery-calculator", label: "Battery Sizer" },

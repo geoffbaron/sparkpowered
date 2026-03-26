@@ -1,186 +1,214 @@
+import { Suspense } from "react";
 import Link from "next/link";
-import SparkBackground from "@/components/SparkBackground";
+import { Metadata } from "next";
+import { fetchAllNews } from "@/lib/rss";
+import type { RSSArticle } from "@/lib/rss";
 
-function FeatureCard({
-  icon,
-  title,
-  description,
-  href,
-  cta,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-  href: string;
-  cta: string;
-}) {
-  return (
-    <Link
-      href={href}
-      className="card-glow block bg-surface rounded-2xl p-8 border border-black/6 group"
-    >
-      <div className="mb-4">{icon}</div>
-      <h3 className="text-xl font-bold mb-2 group-hover:text-spark-orange transition-colors">
-        {title}
-      </h3>
-      <p className="text-muted text-sm leading-relaxed mb-4">{description}</p>
-      <span className="text-spark-orange text-sm font-semibold group-hover:underline">
-        {cta} &rarr;
-      </span>
-    </Link>
-  );
-}
+export const metadata: Metadata = {
+  title: "Spark Powered — EV, Solar & Clean Energy News",
+  description:
+    "The latest news on electric vehicles, solar power, and home batteries — refreshed every hour from Electrek, CleanTechnica, InsideEVs, and more.",
+};
 
-function StatCard({ value, label }: { value: string; label: string }) {
-  return (
-    <div className="text-center">
-      <div className="text-3xl sm:text-4xl font-bold bg-gradient-to-r from-spark-yellow to-spark-orange bg-clip-text text-transparent">
-        {value}
+const categoryConfig = {
+  ev:      { label: "EV",      color: "bg-blue-50 text-blue-600 border-blue-200" },
+  solar:   { label: "Solar",   color: "bg-amber-50 text-amber-600 border-amber-200" },
+  battery: { label: "Battery", color: "bg-green-50 text-green-600 border-green-200" },
+};
+
+function NewsGrid({ news }: { news: RSSArticle[] }) {
+  if (news.length === 0) {
+    return (
+      <div className="text-center py-24 text-muted">
+        <div className="mb-4">
+          <span className="material-symbols-outlined" style={{ fontSize: 48, color: "var(--color-muted)" }}>wifi_off</span>
+        </div>
+        <p className="text-lg font-medium">Couldn&apos;t reach the news feeds right now.</p>
+        <p className="text-sm mt-2">Check back in a few minutes.</p>
       </div>
-      <div className="text-sm text-muted mt-1">{label}</div>
+    );
+  }
+
+  return (
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {news.map((item, i) => {
+        const config = categoryConfig[item.category];
+        return (
+          <article
+            key={i}
+            className="bg-surface rounded-2xl border border-black/6 flex flex-col overflow-hidden group hover:shadow-md transition-shadow"
+          >
+            {/* Thumbnail */}
+            <a
+              href={item.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block overflow-hidden aspect-[16/9] bg-surface-light"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={item.thumbnail ?? ""}
+                alt={item.title}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+              />
+            </a>
+
+            {/* Content */}
+            <div className="p-6 flex flex-col flex-1">
+              <div className="flex items-center gap-3 mb-3">
+                <span className={`px-3 py-1 rounded-full text-xs font-medium border ${config.color}`}>
+                  {config.label}
+                </span>
+                <span className="text-xs text-muted">
+                  {item.publishedAt.replace(
+                    /^(\d{4})-(\d{2})-(\d{2})$/,
+                    (_, y, m, d) => `${m}/${d}/${y.slice(2)}`
+                  )}
+                </span>
+              </div>
+
+              <a
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group/title"
+              >
+                <h2 className="text-lg font-bold mb-2 leading-snug group-hover/title:text-spark-orange transition-colors line-clamp-3">
+                  {item.title}
+                </h2>
+              </a>
+
+              <p className="text-sm text-muted leading-relaxed mb-4 flex-1 line-clamp-3">
+                {item.description}
+              </p>
+
+              <div className="flex items-center justify-between text-xs text-muted">
+                <span className="font-medium">{item.source}</span>
+                <a
+                  href={item.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1 text-spark-orange font-medium hover:underline"
+                >
+                  Read more
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                    <path
+                      d="M2.5 9.5L9.5 2.5M9.5 2.5H4.5M9.5 2.5V7.5"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </article>
+        );
+      })}
     </div>
   );
 }
 
-export default function Home() {
+function NewsSkeleton() {
   return (
-    <>
-      {/* Hero */}
-      <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-amber-50 via-orange-50/60 to-sky-50">
-        <SparkBackground />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_60%_30%,rgba(251,191,36,0.18)_0%,transparent_60%)]" />
-        <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
-          <div className="inline-block mb-6 px-4 py-1.5 rounded-full bg-amber-100 border border-amber-200 text-spark-amber text-sm font-semibold">
-            <span className="material-symbols-outlined" style={{ fontSize: 16, verticalAlign: "middle", marginRight: 4 }}>bolt</span>The future is electric
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {[...Array(6)].map((_, i) => (
+        <div key={i} className="bg-surface rounded-2xl border border-black/6 overflow-hidden animate-pulse">
+          <div className="aspect-[16/9] bg-surface-light" />
+          <div className="p-6 space-y-3">
+            <div className="flex gap-2">
+              <div className="h-5 w-14 bg-surface-light rounded-full" />
+              <div className="h-5 w-16 bg-surface-light rounded-full" />
+            </div>
+            <div className="h-5 bg-surface-light rounded w-full" />
+            <div className="h-5 bg-surface-light rounded w-4/5" />
+            <div className="h-4 bg-surface-light rounded w-full" />
+            <div className="h-4 bg-surface-light rounded w-3/4" />
           </div>
-          <h1 className="text-5xl sm:text-7xl font-extrabold leading-tight mb-6 text-foreground">
-            Power Your Life{" "}
-            <span className="bg-gradient-to-r from-spark-yellow via-spark-orange to-spark-amber bg-clip-text text-transparent gradient-animated">
-              With Sparks
+        </div>
+      ))}
+    </div>
+  );
+}
+
+async function NewsLoader() {
+  const news = await fetchAllNews();
+  return <NewsGrid news={news} />;
+}
+
+export default function HomePage() {
+  return (
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      {/* Header */}
+      <div className="text-center mb-12">
+        <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-amber-100 border border-amber-200 text-amber-700 text-sm font-semibold">
+          <span className="material-symbols-outlined" style={{ fontSize: 16, verticalAlign: "middle", marginRight: 4 }}>wb_sunny</span>Live from Electrek, CleanTechnica & more
+        </div>
+        <h1 className="text-4xl sm:text-5xl font-extrabold mb-4">
+          Clean Energy{" "}
+          <span className="bg-gradient-to-r from-spark-yellow to-spark-orange bg-clip-text text-transparent">
+            News
+          </span>
+        </h1>
+        <p className="text-muted max-w-2xl mx-auto text-lg">
+          The latest on electric vehicles, solar power, and battery technology —
+          pulled fresh from the web every hour.
+        </p>
+      </div>
+
+      {/* Category legend */}
+      <div className="flex flex-wrap gap-3 justify-center mb-10">
+        {(["ev", "solar", "battery"] as const).map((cat) => {
+          const config = categoryConfig[cat];
+          return (
+            <span
+              key={cat}
+              className={`px-4 py-1.5 rounded-full text-sm font-medium border ${config.color}`}
+            >
+              {config.label}
             </span>
-          </h1>
-          <p className="text-lg sm:text-xl text-muted max-w-2xl mx-auto mb-10 leading-relaxed">
-            Electric vehicles. Solar panels. Home batteries. The clean energy
-            revolution isn&apos;t coming &mdash; it&apos;s here. Let us help you
-            make the switch.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/calculator"
-              className="spark-btn inline-flex items-center justify-center px-8 py-4 rounded-xl bg-gradient-to-r from-spark-yellow to-spark-orange text-white font-bold text-lg shadow-lg shadow-orange-200 hover:shadow-xl hover:shadow-orange-300 transition-all"
-            >
-              Find Your EV
-            </Link>
-            <Link
-              href="/news"
-              className="inline-flex items-center justify-center px-8 py-4 rounded-xl border-2 border-amber-200 text-foreground font-bold text-lg bg-white/70 hover:bg-white hover:border-amber-300 transition-all"
-            >
-              Latest News
-            </Link>
-          </div>
-        </div>
-      </section>
+          );
+        })}
+      </div>
 
-      {/* Stats */}
-      <section className="py-16 border-y border-black/6 bg-white">
-        <div className="max-w-5xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-8">
-          <StatCard value="$1,500+" label="Annual fuel savings with EVs" />
-          <StatCard value="30%" label="Tax credits available" />
-          <StatCard value="25yr" label="Solar panel lifespan" />
-          <StatCard value="90%" label="EV owner satisfaction" />
-        </div>
-      </section>
+      {/* News grid */}
+      <Suspense fallback={<NewsSkeleton />}>
+        <NewsLoader />
+      </Suspense>
 
-      {/* Features */}
-      <section className="py-24 bg-background">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-              Explore the Electric Future
-            </h2>
-            <p className="text-muted max-w-2xl mx-auto">
-              Whether you&apos;re shopping for your first EV, considering solar
-              panels, or want to store your own energy, we&apos;ve got you
-              covered.
-            </p>
-          </div>
+      {/* Tools strip */}
+      <div className="mt-16 grid sm:grid-cols-3 gap-4">
+        {[
+          { href: "/calculator",         icon: "electric_car",          label: "EV Finder",      desc: "Find the right EV for your budget" },
+          { href: "/solar-finder",        icon: "wb_sunny",              label: "Solar Finder",   desc: "Get free quotes from local installers" },
+          { href: "/battery-calculator",  icon: "battery_charging_full", label: "Battery Sizer",  desc: "Right-size a home battery system" },
+        ].map((tool) => (
+          <Link
+            key={tool.href}
+            href={tool.href}
+            className="group flex items-center gap-4 bg-surface border border-black/6 rounded-2xl p-5 hover:border-amber-300 hover:shadow-sm transition-all"
+          >
+            <span className="material-symbols-outlined text-muted group-hover:text-spark-orange transition-colors" style={{ fontSize: 32 }}>
+              {tool.icon}
+            </span>
+            <div>
+              <div className="font-bold group-hover:text-spark-orange transition-colors">{tool.label}</div>
+              <div className="text-xs text-muted">{tool.desc}</div>
+            </div>
+            <span className="material-symbols-outlined text-muted group-hover:text-spark-orange transition-colors ml-auto" style={{ fontSize: 20 }}>arrow_forward</span>
+          </Link>
+        ))}
+      </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            <FeatureCard
-              icon={
-                <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                  <rect x="8" y="20" width="32" height="14" rx="4" fill="#fef3c7" stroke="#f59e0b" strokeWidth="2" />
-                  <circle cx="15" cy="36" r="3" fill="#ea580c" />
-                  <circle cx="33" cy="36" r="3" fill="#ea580c" />
-                  <path d="M26 14l-4 6h4l-2 6" stroke="#f59e0b" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              }
-              title="Electric Vehicles"
-              description="From city commuters to family haulers, find the perfect EV for your lifestyle and budget."
-              href="/calculator"
-              cta="Find your EV"
-            />
-            <FeatureCard
-              icon={
-                <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                  <rect x="10" y="14" width="28" height="20" rx="2" fill="#fef9c3" stroke="#f59e0b" strokeWidth="2" />
-                  <path d="M24 6v8M15 9l2.5 4.5M33 9l-2.5 4.5" stroke="#ea580c" strokeWidth="2.5" strokeLinecap="round" />
-                  <line x1="10" y1="24" x2="38" y2="24" stroke="#f59e0b" strokeWidth="1.5" opacity="0.6" />
-                  <line x1="24" y1="14" x2="24" y2="34" stroke="#f59e0b" strokeWidth="1.5" opacity="0.6" />
-                </svg>
-              }
-              title="Solar Power"
-              description="Harness the sun to power your home. Learn about panels, installation, and incentives."
-              href="/solar-finder"
-              cta="Find installers"
-            />
-            <FeatureCard
-              icon={
-                <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                  <rect x="14" y="10" width="20" height="28" rx="3" fill="#f0fdf4" stroke="#16a34a" strokeWidth="2" />
-                  <rect x="18" y="16" width="12" height="4" rx="1" fill="#16a34a" />
-                  <rect x="18" y="22" width="12" height="4" rx="1" fill="#16a34a" opacity="0.6" />
-                  <rect x="18" y="28" width="12" height="4" rx="1" fill="#16a34a" opacity="0.3" />
-                  <rect x="22" y="6" width="4" height="4" rx="1" fill="#ea580c" />
-                </svg>
-              }
-              title="Home Batteries"
-              description="Store energy for when you need it. Backup power, savings, and energy independence."
-              href="/news"
-              cta="Explore options"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-24 relative overflow-hidden bg-gradient-to-br from-amber-50 to-orange-50">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_30%_60%,rgba(234,88,12,0.08)_0%,transparent_60%)]" />
-        <div className="relative max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-            Ready to Make the Switch?
-          </h2>
-          <p className="text-muted text-lg mb-8 max-w-2xl mx-auto">
-            Thousands of people are switching to electric every day. Use our
-            tools to find the right EV, bust the myths, and join the clean
-            energy revolution.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/calculator"
-              className="spark-btn inline-flex items-center justify-center px-8 py-4 rounded-xl bg-gradient-to-r from-spark-yellow to-spark-orange text-white font-bold shadow-lg shadow-orange-200 hover:shadow-xl hover:shadow-orange-300 transition-all"
-            >
-              Take the EV Quiz
-            </Link>
-            <Link
-              href="/objections"
-              className="inline-flex items-center justify-center px-8 py-4 rounded-xl border-2 border-amber-200 font-bold bg-white/70 hover:bg-white hover:border-amber-300 transition-all"
-            >
-              Read the FAQs
-            </Link>
-          </div>
-        </div>
-      </section>
-    </>
+      {/* Footer note */}
+      <div className="mt-12 bg-surface rounded-2xl p-8 border border-black/6 text-center shadow-sm">
+        <h3 className="text-xl font-bold mb-2">About Our News Feed</h3>
+        <p className="text-muted max-w-2xl mx-auto text-sm leading-relaxed">
+          Spark Powered pulls live RSS feeds from Electrek, CleanTechnica, InsideEVs, and Solar
+          Power World — refreshed every hour. Articles link directly to their original source.
+        </p>
+      </div>
+    </div>
   );
 }
