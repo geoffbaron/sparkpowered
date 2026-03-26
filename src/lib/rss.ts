@@ -101,8 +101,17 @@ function extractThumbnail(xml: string): string | null {
   return null;
 }
 
+// Domains known to block hotlinking from third-party sites
+const HOTLINK_BLOCKED = [
+  "cleantechnica.com",
+  "insideevs.com",
+];
+
 function isUsableImage(url: string): boolean {
-  return !url.includes(".gif") && !url.includes("pixel") && url.startsWith("http");
+  if (!url.startsWith("http")) return false;
+  if (url.includes(".gif") || url.includes("pixel")) return false;
+  if (HOTLINK_BLOCKED.some((d) => url.includes(d))) return false;
+  return true;
 }
 
 /** Strip HTML tags and decode common entities. */

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 
 const FALLBACKS: Record<"ev" | "solar" | "battery", string[]> = {
   ev: [
@@ -45,29 +45,15 @@ export default function NewsImage({
   articleUrl: string;
 }) {
   const fallback = pickFallback(category, articleUrl);
-  const initial = src && src !== "" ? src : fallback;
-  const [imgSrc, setImgSrc] = useState(initial);
-  const imgRef = useRef<HTMLImageElement>(null);
-
-  // The image may have already errored before React attached the onError handler
-  // (common with hotlink-blocked images that fail instantly). Check after mount.
-  useEffect(() => {
-    const img = imgRef.current;
-    if (img && img.complete && img.naturalWidth === 0 && imgSrc !== fallback) {
-      setImgSrc(fallback);
-    }
-  }, [fallback, imgSrc]);
+  const [imgSrc, setImgSrc] = useState(src && src !== "" ? src : fallback);
 
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      ref={imgRef}
       src={imgSrc}
       alt={alt}
       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-      onError={() => {
-        if (imgSrc !== fallback) setImgSrc(fallback);
-      }}
+      onError={() => setImgSrc(fallback)}
     />
   );
 }
