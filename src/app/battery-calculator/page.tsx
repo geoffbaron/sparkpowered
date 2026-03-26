@@ -20,7 +20,7 @@ function QuizSkeleton() {
       <div className="bg-gradient-to-br from-sky-50 via-amber-50/40 to-orange-50 border-b border-black/6 py-16">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 text-center">
           <div className="inline-flex items-center gap-2 bg-white/80 border border-black/8 rounded-full px-4 py-1.5 text-sm font-medium text-muted mb-4 animate-pulse">
-            🔋 Researching battery systems…
+            <span className="material-symbols-outlined" style={{ fontSize: 16, verticalAlign: "middle", marginRight: 4 }}>battery_charging_full</span>Researching battery systems…
           </div>
           <div className="h-10 bg-black/5 rounded-xl max-w-md mx-auto mb-3 animate-pulse" />
           <div className="h-6 bg-black/5 rounded-lg max-w-sm mx-auto animate-pulse" />

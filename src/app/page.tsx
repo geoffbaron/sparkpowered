@@ -51,7 +51,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_60%_30%,rgba(251,191,36,0.18)_0%,transparent_60%)]" />
         <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
           <div className="inline-block mb-6 px-4 py-1.5 rounded-full bg-amber-100 border border-amber-200 text-spark-amber text-sm font-semibold">
-            ⚡ The future is electric
+            <span className="material-symbols-outlined" style={{ fontSize: 16, verticalAlign: "middle", marginRight: 4 }}>bolt</span>The future is electric
           </div>
           <h1 className="text-5xl sm:text-7xl font-extrabold leading-tight mb-6 text-foreground">
             Power Your Life{" "}

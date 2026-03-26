@@ -70,10 +70,10 @@ const STEPS = [
     question: "What's your main goal?",
     subtitle: "This helps us focus on what matters most to you.",
     options: [
-      { value: "backup",  label: "Power outage backup",       emoji: "🔦", desc: "Keep the lights on when the grid goes down" },
-      { value: "savings", label: "Reduce electricity bills",  emoji: "💰", desc: "Store cheap off-peak power, use it at peak times" },
-      { value: "solar",   label: "Store solar energy",        emoji: "☀️", desc: "Maximize self-consumption from your solar panels" },
-      { value: "all",     label: "All of the above",          emoji: "⚡", desc: "Full energy independence and resilience" },
+      { value: "backup",  label: "Power outage backup",       icon: "flashlight_on",          desc: "Keep the lights on when the grid goes down" },
+      { value: "savings", label: "Reduce electricity bills",  icon: "savings",                desc: "Store cheap off-peak power, use it at peak times" },
+      { value: "solar",   label: "Store solar energy",        icon: "wb_sunny",               desc: "Maximize self-consumption from your solar panels" },
+      { value: "all",     label: "All of the above",          icon: "bolt",                   desc: "Full energy independence and resilience" },
     ],
   },
   {
@@ -81,9 +81,9 @@ const STEPS = [
     question: "What do you want to keep running?",
     subtitle: "More coverage = more capacity needed.",
     options: [
-      { value: "essentials", label: "Essentials only",    emoji: "💡", desc: "Lights, fridge, Wi-Fi, phone charging (~5 kWh/day)" },
-      { value: "major",      label: "Major appliances",   emoji: "🏠", desc: "Essentials + HVAC and TV (~15 kWh/day)" },
-      { value: "whole",      label: "Whole home",         emoji: "🏡", desc: "Everything running as normal (~30 kWh/day)" },
+      { value: "essentials", label: "Essentials only",    icon: "lightbulb",   desc: "Lights, fridge, Wi-Fi, phone charging (~5 kWh/day)" },
+      { value: "major",      label: "Major appliances",   icon: "home",        desc: "Essentials + HVAC and TV (~15 kWh/day)" },
+      { value: "whole",      label: "Whole home",         icon: "cottage",     desc: "Everything running as normal (~30 kWh/day)" },
     ],
   },
   {
@@ -91,10 +91,10 @@ const STEPS = [
     question: "How long do you want backup power?",
     subtitle: "Longer backup = larger battery system.",
     options: [
-      { value: "hours4",  label: "4 hours",    emoji: "⏱️", desc: "Short outages, storm events" },
-      { value: "hours12", label: "12 hours",   emoji: "🌙", desc: "Overnight coverage" },
-      { value: "day1",    label: "1 full day", emoji: "📅", desc: "One-day outage protection" },
-      { value: "days3",   label: "3+ days",    emoji: "🌩️", desc: "Extended outage resilience" },
+      { value: "hours4",  label: "4 hours",    icon: "timer",         desc: "Short outages, storm events" },
+      { value: "hours12", label: "12 hours",   icon: "bedtime",       desc: "Overnight coverage" },
+      { value: "day1",    label: "1 full day", icon: "calendar_today",desc: "One-day outage protection" },
+      { value: "days3",   label: "3+ days",    icon: "thunderstorm",  desc: "Extended outage resilience" },
     ],
   },
   {
@@ -102,9 +102,9 @@ const STEPS = [
     question: "Do you have solar panels?",
     subtitle: "Solar + battery is the most powerful combo.",
     options: [
-      { value: "have",     label: "Yes, I have solar",      emoji: "☀️", desc: "Already generating clean energy at home" },
-      { value: "planning", label: "Planning to add solar",  emoji: "🔧", desc: "Looking to bundle solar + battery" },
-      { value: "none",     label: "No solar (yet!)",        emoji: "🔌", desc: "Grid-only or want to explore options" },
+      { value: "have",     label: "Yes, I have solar",      icon: "wb_sunny",  desc: "Already generating clean energy at home" },
+      { value: "planning", label: "Planning to add solar",  icon: "handyman",  desc: "Looking to bundle solar + battery" },
+      { value: "none",     label: "No solar (yet!)",        icon: "power",     desc: "Grid-only or want to explore options" },
     ],
   },
   {
@@ -112,10 +112,10 @@ const STEPS = [
     question: "What's your average monthly electricity bill?",
     subtitle: "Helps estimate your potential savings.",
     options: [
-      { value: "under100",  label: "Under $100",  emoji: "💚", desc: "Very efficient home" },
-      { value: "100to200",  label: "$100–$200",   emoji: "📊", desc: "Typical single-family home" },
-      { value: "200to300",  label: "$200–$300",   emoji: "📈", desc: "Larger home or EV charging" },
-      { value: "over300",   label: "$300+",        emoji: "🔥", desc: "High usage or high-rate area" },
+      { value: "under100",  label: "Under $100",  icon: "eco",          desc: "Very efficient home" },
+      { value: "100to200",  label: "$100–$200",   icon: "bar_chart",    desc: "Typical single-family home" },
+      { value: "200to300",  label: "$200–$300",   icon: "trending_up",  desc: "Larger home or EV charging" },
+      { value: "over300",   label: "$300+",       icon: "local_fire_department", desc: "High usage or high-rate area" },
     ],
   },
 ] as const;
@@ -175,7 +175,7 @@ export default function BatteryQuiz({ initialBatteries }: { initialBatteries: Ba
         <div className="bg-gradient-to-br from-sky-50 via-amber-50/40 to-orange-50 border-b border-black/6 py-12">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
             <div className="inline-flex items-center gap-2 bg-white/80 border border-black/8 rounded-full px-4 py-1.5 text-sm font-medium text-muted mb-4">
-              🔋 Your Battery Recommendation
+              <span className="material-symbols-outlined" style={{ fontSize: 16, verticalAlign: "middle", marginRight: 4 }}>battery_charging_full</span>Your Battery Recommendation
             </div>
             <h1 className="text-3xl sm:text-4xl font-bold mb-3">
               You need about{" "}
@@ -194,12 +194,12 @@ export default function BatteryQuiz({ initialBatteries }: { initialBatteries: Ba
           {/* Stats */}
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {[
-              { label: "Storage needed", value: `${needed} kWh`, icon: "⚡" },
-              { label: "Est. annual savings", value: `$${savings.low.toLocaleString()}–$${savings.high.toLocaleString()}`, icon: "💰" },
-              { label: "Approx. payback (w/ 30% ITC)", value: `${avgPayback} years`, icon: "📅" },
+              { label: "Storage needed", value: `${needed} kWh`, icon: "bolt" },
+              { label: "Est. annual savings", value: `$${savings.low.toLocaleString()}–$${savings.high.toLocaleString()}`, icon: "savings" },
+              { label: "Approx. payback (w/ 30% ITC)", value: `${avgPayback} years`, icon: "calendar_today" },
             ].map((stat) => (
               <div key={stat.label} className="bg-surface border border-black/8 rounded-2xl p-5 text-center shadow-sm">
-                <div className="text-2xl mb-1">{stat.icon}</div>
+                <div className="mb-1"><span className="material-symbols-outlined" style={{ fontSize: 28, color: "#f59e0b" }}>{stat.icon}</span></div>
                 <div className="text-2xl font-bold">{stat.value}</div>
                 <div className="text-sm text-muted mt-1">{stat.label}</div>
               </div>
@@ -231,7 +231,7 @@ export default function BatteryQuiz({ initialBatteries }: { initialBatteries: Ba
                   >
                     {i === 0 && (
                       <div className="inline-flex items-center gap-1 bg-gradient-to-r from-spark-yellow to-spark-orange text-white text-xs font-bold px-3 py-1 rounded-full mb-3">
-                        ⭐ Best Match
+                        <span className="material-symbols-outlined" style={{ fontSize: 14 }}>star</span> Best Match
                       </div>
                     )}
                     <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
@@ -239,13 +239,13 @@ export default function BatteryQuiz({ initialBatteries }: { initialBatteries: Ba
                         <div className="text-xs font-medium text-muted uppercase tracking-wider mb-1">{product.brand}</div>
                         <h3 className="text-lg font-bold">{product.name}</h3>
                         <div className="flex flex-wrap gap-3 mt-2 text-sm text-muted">
-                          <span>🔋 {product.kwh} kWh{product.scalable && product.maxKwh ? ` (up to ${product.maxKwh} kWh)` : ""}</span>
-                          <span>⚡ {product.power_kw} kW output</span>
-                          <span>🛡️ {product.warranty_years}-yr warranty</span>
+                          <span className="inline-flex items-center gap-1"><span className="material-symbols-outlined" style={{ fontSize: 16 }}>battery_charging_full</span>{product.kwh} kWh{product.scalable && product.maxKwh ? ` (up to ${product.maxKwh} kWh)` : ""}</span>
+                          <span className="inline-flex items-center gap-1"><span className="material-symbols-outlined" style={{ fontSize: 16 }}>bolt</span>{product.power_kw} kW output</span>
+                          <span className="inline-flex items-center gap-1"><span className="material-symbols-outlined" style={{ fontSize: 16 }}>verified_user</span>{product.warranty_years}-yr warranty</span>
                         </div>
                         {units > 1 && (
                           <div className="mt-2 text-sm font-medium text-amber-700 bg-amber-50 inline-flex items-center gap-1 px-2 py-0.5 rounded-lg">
-                            ℹ️ {units} units recommended for {needed} kWh
+                            <span className="material-symbols-outlined" style={{ fontSize: 16 }}>info</span>{units} units recommended for {needed} kWh
                           </div>
                         )}
                         <ul className="mt-3 space-y-1">
@@ -309,7 +309,7 @@ export default function BatteryQuiz({ initialBatteries }: { initialBatteries: Ba
           {/* Solar upsell */}
           {quiz.solar === "none" && (
             <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-2xl p-6">
-              <div className="text-2xl mb-2">☀️</div>
+              <div className="mb-2"><span className="material-symbols-outlined" style={{ fontSize: 32, color: "#f59e0b" }}>wb_sunny</span></div>
               <h3 className="font-bold text-lg mb-1">Add solar and maximize your savings</h3>
               <p className="text-muted text-sm mb-4">
                 A battery alone can shift energy use and provide backup. But pairing with solar lets
@@ -350,7 +350,7 @@ export default function BatteryQuiz({ initialBatteries }: { initialBatteries: Ba
       <div className="bg-gradient-to-br from-sky-50 via-amber-50/40 to-orange-50 border-b border-black/6 py-16">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 text-center">
           <div className="inline-flex items-center gap-2 bg-white/80 border border-black/8 rounded-full px-4 py-1.5 text-sm font-medium text-muted mb-4">
-            🔋 Home Battery Calculator
+            <span className="material-symbols-outlined" style={{ fontSize: 16, verticalAlign: "middle", marginRight: 4 }}>battery_charging_full</span>Home Battery Calculator
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold mb-3">
             Right-size your{" "}
@@ -391,14 +391,14 @@ export default function BatteryQuiz({ initialBatteries }: { initialBatteries: Ba
               <button
                 key={option.value}
                 onClick={() => select(currentStep.id as StepId, option.value)}
-                className={`w-full text-left p-4 rounded-2xl border transition-all ${
+                className={`group w-full text-left p-4 rounded-2xl border transition-all ${
                   isSelected
                     ? "border-amber-400 bg-amber-50 ring-2 ring-amber-200"
                     : "border-black/8 bg-surface hover:border-amber-300 hover:bg-amber-50/50 hover:shadow-sm"
                 }`}
               >
                 <div className="flex items-center gap-4">
-                  <span className="text-2xl">{option.emoji}</span>
+                  <span className="material-symbols-outlined text-muted group-hover:text-spark-orange transition-colors" style={{ fontSize: 28 }}>{option.icon}</span>
                   <div>
                     <div className="font-semibold">{option.label}</div>
                     <div className="text-sm text-muted">{option.desc}</div>

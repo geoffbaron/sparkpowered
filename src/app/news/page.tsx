@@ -21,7 +21,7 @@ export default async function NewsPage() {
       {/* Header */}
       <div className="text-center mb-16">
         <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-amber-100 border border-amber-200 text-amber-700 text-sm font-semibold">
-          ☀️ Live from Electrek, CleanTechnica & more
+          <span className="material-symbols-outlined" style={{ fontSize: 16, verticalAlign: "middle", marginRight: 4 }}>wb_sunny</span>Live from Electrek, CleanTechnica & more
         </div>
         <h1 className="text-4xl sm:text-5xl font-extrabold mb-4">
           Clean Energy{" "}
@@ -53,7 +53,7 @@ export default async function NewsPage() {
       {/* News grid */}
       {news.length === 0 ? (
         <div className="text-center py-24 text-muted">
-          <div className="text-4xl mb-4">📡</div>
+          <div className="mb-4"><span className="material-symbols-outlined" style={{ fontSize: 48, color: "var(--color-muted)" }}>wifi_off</span></div>
           <p className="text-lg font-medium">Couldn&apos;t reach the news feeds right now.</p>
           <p className="text-sm mt-2">Check back in a few minutes.</p>
         </div>

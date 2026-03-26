@@ -24,10 +24,10 @@ type Step = "prefs" | "results" | "contact" | "done";
 // ── Constants ────────────────────────────────────────────────────────────────
 
 const interestOptions = [
-  { value: "solar", label: "Solar Panels", icon: "☀️" },
-  { value: "battery", label: "Home Battery", icon: "🔋" },
-  { value: "ev-charger", label: "EV Charger", icon: "⚡" },
-  { value: "community", label: "Community Solar", icon: "🏘️" },
+  { value: "solar", label: "Solar Panels", icon: "wb_sunny" },
+  { value: "battery", label: "Home Battery", icon: "battery_charging_full" },
+  { value: "ev-charger", label: "EV Charger", icon: "ev_station" },
+  { value: "community", label: "Community Solar", icon: "location_city" },
 ];
 
 // ── Sub-components ───────────────────────────────────────────────────────────
@@ -240,7 +240,7 @@ export default function SolarFinderPage() {
   if (step === "done") {
     return (
       <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
-        <div className="text-6xl mb-6">🎉</div>
+        <div className="mb-6"><span className="material-symbols-outlined" style={{ fontSize: 64, color: "#f59e0b" }}>celebration</span></div>
         <h1 className="text-3xl sm:text-4xl font-extrabold mb-4">You&apos;re all set!</h1>
         <p className="text-muted text-lg mb-8 leading-relaxed">
           {selectedInstaller ? (
@@ -297,7 +297,7 @@ export default function SolarFinderPage() {
       <div className="max-w-xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center mb-10">
           <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-amber-100 border border-amber-200 text-spark-amber text-sm font-semibold">
-            ☀️ Almost there
+            <span className="material-symbols-outlined" style={{ fontSize: 16, verticalAlign: "middle", marginRight: 4 }}>wb_sunny</span>Almost there
           </div>
           <h1 className="text-3xl sm:text-4xl font-extrabold mb-3">
             How should{" "}
@@ -375,7 +375,7 @@ export default function SolarFinderPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center mb-12">
           <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-amber-100 border border-amber-200 text-spark-amber text-sm font-semibold">
-            ☀️ {installers.length} installer{installers.length !== 1 ? "s" : ""} near {prefs.zip}
+            <span className="material-symbols-outlined" style={{ fontSize: 16, verticalAlign: "middle", marginRight: 4 }}>wb_sunny</span>{installers.length} installer{installers.length !== 1 ? "s" : ""} near {prefs.zip}
           </div>
           <h1 className="text-4xl font-extrabold mb-3">
             Solar Installers{" "}
@@ -391,7 +391,7 @@ export default function SolarFinderPage() {
 
         {installers.length === 0 ? (
           <div className="text-center py-12 bg-surface rounded-2xl border border-black/6 shadow-sm">
-            <div className="text-5xl mb-4">🔍</div>
+            <div className="mb-4"><span className="material-symbols-outlined" style={{ fontSize: 48, color: "var(--color-muted)" }}>search_off</span></div>
             <h2 className="text-xl font-bold mb-2">No results for {prefs.zip}</h2>
             <p className="text-muted mb-6 max-w-sm mx-auto text-sm">
               No installers found for that ZIP. Try a nearby city ZIP, or browse{" "}
@@ -464,7 +464,7 @@ export default function SolarFinderPage() {
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
       <div className="text-center mb-12">
         <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-amber-100 border border-amber-200 text-spark-amber text-sm font-semibold">
-          ☀️ Free quotes, no pressure
+          <span className="material-symbols-outlined" style={{ fontSize: 16, verticalAlign: "middle", marginRight: 4 }}>wb_sunny</span>Free quotes, no pressure
         </div>
         <h1 className="text-4xl sm:text-5xl font-extrabold mb-4">
           Find Local{" "}
@@ -518,7 +518,7 @@ export default function SolarFinderPage() {
                       : "border-black/10 hover:border-amber-300 text-muted bg-white"
                   }`}
                 >
-                  <span className="text-2xl">{opt.icon}</span>
+                  <span className="material-symbols-outlined" style={{ fontSize: 24 }}>{opt.icon}</span>
                   <span className="text-sm font-medium">{opt.label}</span>
                 </button>
               );

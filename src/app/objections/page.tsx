@@ -112,7 +112,7 @@ export default function ObjectionsPage() {
       {/* Header */}
       <div className="text-center mb-16">
         <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-amber-100 border border-amber-200 text-spark-amber text-sm font-semibold">
-          💡 Facts over fear
+          <span className="material-symbols-outlined" style={{ fontSize: 16, verticalAlign: "middle", marginRight: 4 }}>lightbulb</span>Facts over fear
         </div>
         <h1 className="text-4xl sm:text-5xl font-extrabold mb-4">
           Common{" "}
