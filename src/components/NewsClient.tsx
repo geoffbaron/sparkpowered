@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react";
 import NewsImage from "@/components/NewsImage";
 import type { RSSArticle } from "@/lib/rss";
+import { useNoTesla } from "@/hooks/useNoTesla";
 
 const TESLA_TERMS = /\btesla\b|\belon\b|\bmusk\b|\btsla\b/i;
 
@@ -19,7 +20,7 @@ const categoryConfig = {
 type Category = keyof typeof categoryConfig;
 
 export default function NewsClient({ news }: { news: RSSArticle[] }) {
-  const [noTesla, setNoTesla] = useState(false);
+  const [noTesla, setNoTesla] = useNoTesla();
   const [activeCategory, setActiveCategory] = useState<Category | null>(null);
 
   const filtered = useMemo(() => {

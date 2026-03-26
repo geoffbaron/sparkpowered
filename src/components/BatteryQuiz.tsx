@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import type { BatteryProduct } from "@/lib/llm-content";
+import { useNoTesla } from "@/hooks/useNoTesla";
 
 // ── Estimation logic ──────────────────────────────────────────────────────────
 
@@ -152,6 +153,12 @@ export default function BatteryQuiz({ initialBatteries }: { initialBatteries: Ba
     goal: null, coverage: null, duration: null, solar: null, budget: null,
   });
   const [showResults, setShowResults] = useState(false);
+  const [noTesla, setNoTesla] = useNoTesla();
+
+  // Respect the global No Tesla preference
+  const batteries = noTesla
+    ? initialBatteries.filter((b) => !/tesla/i.test(b.brand) && !/tesla/i.test(b.name))
+    : initialBatteries;
 
   const currentStep = STEPS[step];
   const progress = (step / STEPS.length) * 100;
@@ -195,7 +202,7 @@ export default function BatteryQuiz({ initialBatteries }: { initialBatteries: Ba
       : quiz.budget === "10kto20k" ? "$10,000–$20,000"
       : "$20,000+";
 
-    const matches = getMatches(quiz, initialBatteries);
+    const matches = getMatches(quiz, batteries);
     const bestUnits = Math.ceil(needed / matches[0].kwh);
     const bestTotal = matches[0].price_low * bestUnits;
     const overBudget = bestTotal > budgetMax;
@@ -259,11 +266,26 @@ export default function BatteryQuiz({ initialBatteries }: { initialBatteries: Ba
 
           {/* Product cards */}
           <div>
-            <div className="flex items-start justify-between mb-4 gap-4">
+            <div className="flex flex-wrap items-center justify-between mb-4 gap-3">
               <h2 className="text-xl font-bold">Top Matches for You</h2>
-              <span className="text-xs text-muted bg-surface-light border border-black/6 rounded-full px-3 py-1 whitespace-nowrap mt-1">
-                Prices are estimates · verify with installers
-              </span>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setNoTesla(!noTesla)}
+                  className={`inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1 rounded-full border transition-all cursor-pointer ${
+                    noTesla
+                      ? "bg-red-50 text-red-600 border-red-300"
+                      : "bg-surface-light text-muted border-black/8 hover:border-black/16"
+                  }`}
+                >
+                  <span className="material-symbols-outlined" style={{ fontSize: 13 }}>
+                    {noTesla ? "block" : "electric_car"}
+                  </span>
+                  {noTesla ? "No Tesla (on)" : "No Tesla"}
+                </button>
+                <span className="text-xs text-muted bg-surface-light border border-black/6 rounded-full px-3 py-1 whitespace-nowrap">
+                  Prices are estimates
+                </span>
+              </div>
             </div>
             <div className="space-y-4">
               {matches.map((product, i) => {
