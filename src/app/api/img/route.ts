@@ -1,13 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 
-// Fallback images by category — used when the upstream image can't be fetched
+// Last-resort fallbacks if the upstream fetch fails completely.
+// Must be reliable Unsplash CDN URLs — these are served directly to the browser.
 const FALLBACKS: Record<string, string[]> = {
   ev: [
-    "https://images.unsplash.com/photo-1593941707882-a5bba14938c7?w=600&q=75&auto=format&fit=crop",
     "https://images.unsplash.com/photo-1647166545674-ce28ce93bdca?w=600&q=75&auto=format&fit=crop",
     "https://images.unsplash.com/photo-1560958089-b8a1929cea89?w=600&q=75&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1555215695-3004980ad54e?w=600&q=75&auto=format&fit=crop",
     "https://images.unsplash.com/photo-1571987502951-3cc4c4d76cc4?w=600&q=75&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=600&q=75&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=600&q=75&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1494976388531-d1058494cdd8?w=600&q=75&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1486325212027-8081e485255e?w=600&q=75&auto=format&fit=crop",
   ],
   solar: [
     "https://images.unsplash.com/photo-1509391366360-2e959784a276?w=600&q=75&auto=format&fit=crop",
@@ -15,13 +18,17 @@ const FALLBACKS: Record<string, string[]> = {
     "https://images.unsplash.com/photo-1497435334941-8c899ee9e8e9?w=600&q=75&auto=format&fit=crop",
     "https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?w=600&q=75&auto=format&fit=crop",
     "https://images.unsplash.com/photo-1548348384-a82d027b70f0?w=600&q=75&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1545208702-18d44aa7e5d9?w=600&q=75&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1521618755572-156ae0cdd74d?w=600&q=75&auto=format&fit=crop",
   ],
   battery: [
     "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=75&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1620714223084-8fcacc2dfd03?w=600&q=75&auto=format&fit=crop",
     "https://images.unsplash.com/photo-1548337138-e87d889cc369?w=600&q=75&auto=format&fit=crop",
     "https://images.unsplash.com/photo-1611273426858-450d8e3c9fce?w=600&q=75&auto=format&fit=crop",
     "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=600&q=75&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1518770660439-4636190af475?w=600&q=75&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1605810230434-7631ac76ec81?w=600&q=75&auto=format&fit=crop",
+    "https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=600&q=75&auto=format&fit=crop",
   ],
 };
 
