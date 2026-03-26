@@ -1,3 +1,5 @@
+import { cacheLife } from "next/cache";
+
 export interface RSSArticle {
   title: string;
   description: string;
@@ -181,6 +183,9 @@ async function fetchFeed(feed: { url: string; source: string }): Promise<RSSArti
 // ── Public API ────────────────────────────────────────────────────────────────
 
 export async function fetchAllNews(): Promise<RSSArticle[]> {
+  "use cache";
+  cacheLife("hours");
+
   const settled = await Promise.allSettled(FEEDS.map(fetchFeed));
   const all = settled
     .filter((r): r is PromiseFulfilledResult<RSSArticle[]> => r.status === "fulfilled")

@@ -50,7 +50,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-8 pt-8 border-t border-black/8 text-center text-sm text-muted">
-          &copy; {new Date().getFullYear()} Spark Powered. Built with clean
+          &copy; 2026 Spark Powered. Built with clean
           energy enthusiasm.
         </div>
       </div>

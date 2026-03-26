@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { promises as fs } from "fs";
@@ -94,7 +95,7 @@ function BarChart({
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 
-export default async function AdminPage() {
+async function AdminContent() {
   // Double-check auth server-side (middleware handles redirect, this is a backup)
   const cookieStore = await cookies();
   const token = cookieStore.get("admin_auth")?.value;
@@ -411,5 +412,13 @@ export default async function AdminPage() {
         </section>
       </div>
     </div>
+  );
+}
+
+export default function AdminPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-background flex items-center justify-center text-muted">Loading…</div>}>
+      <AdminContent />
+    </Suspense>
   );
 }

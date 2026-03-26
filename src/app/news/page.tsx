@@ -6,8 +6,6 @@ export const metadata: Metadata = {
   description: "The latest positive news about EVs, solar power, and home batteries.",
 };
 
-// Revalidate the page at most once per hour
-export const revalidate = 3600;
 
 const categoryConfig = {
   ev:      { label: "EV",      color: "bg-blue-50 text-blue-600 border-blue-200" },
