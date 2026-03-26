@@ -10,14 +10,21 @@ type Goal = "backup" | "savings" | "solar" | "all";
 type Coverage = "essentials" | "major" | "whole";
 type Duration = "hours4" | "hours12" | "day1" | "days3";
 type SolarStatus = "have" | "planning" | "none";
-type MonthlyBill = "under100" | "100to200" | "200to300" | "over300";
+type Budget = "under5k" | "5kto10k" | "10kto20k" | "over20k";
+
+const BUDGET_MAX: Record<Budget, number> = {
+  under5k:  5000,
+  "5kto10k":  10000,
+  "10kto20k": 20000,
+  over20k:  Infinity,
+};
 
 interface QuizState {
   goal: Goal | null;
   coverage: Coverage | null;
   duration: Duration | null;
   solar: SolarStatus | null;
-  bill: MonthlyBill | null;
+  budget: Budget | null;
 }
 
 const DAILY_KWH: Record<Coverage, number> = {
@@ -41,20 +48,34 @@ function calcNeededKwh(coverage: Coverage, duration: Duration): number {
 
 function getMatches(quiz: QuizState, batteries: BatteryProduct[]): BatteryProduct[] {
   const needed = calcNeededKwh(quiz.coverage!, quiz.duration!);
-  return batteries
-    .filter((b) => {
-      const maxCapacity = b.maxKwh ?? b.kwh;
-      if (maxCapacity < needed && !b.scalable) return false;
-      if (b.kwh < needed && !b.scalable) return false;
-      if (quiz.goal === "solar" && !b.solar_compatible) return false;
-      return true;
-    })
+  const budgetMax = BUDGET_MAX[quiz.budget!];
+
+  // Score each battery: capacity fit + budget fit
+  const scored = batteries.map((b) => {
+    const units = Math.ceil(needed / b.kwh);
+    const totalLow = b.price_low * units;
+    const maxCapacity = b.maxKwh ?? b.kwh;
+    const canScale = b.scalable || b.kwh >= needed;
+    const capacityFit = canScale && maxCapacity >= needed;
+    const budgetFit = totalLow <= budgetMax;
+    const solarOk = quiz.goal !== "solar" || b.solar_compatible;
+
+    return { battery: b, units, totalLow, capacityFit, budgetFit, solarOk };
+  });
+
+  // Prefer: solar OK + capacity fits + budget fits → then relax budget → then relax capacity
+  const ideal = scored.filter((s) => s.solarOk && s.capacityFit && s.budgetFit);
+  const withoutBudget = scored.filter((s) => s.solarOk && s.capacityFit && !s.budgetFit);
+  const pool = ideal.length >= 2 ? ideal : [...ideal, ...withoutBudget];
+
+  return pool
     .sort((a, b) => {
-      const aFits = a.kwh >= needed ? 1 : 0;
-      const bFits = b.kwh >= needed ? 1 : 0;
-      if (aFits !== bFits) return bFits - aFits;
-      return a.price_low - b.price_low;
+      // Budget fits first
+      if (a.budgetFit !== b.budgetFit) return a.budgetFit ? -1 : 1;
+      // Then cheapest total
+      return a.totalLow - b.totalLow;
     })
+    .map((s) => s.battery)
     .slice(0, 4);
 }
 
@@ -108,14 +129,14 @@ const STEPS = [
     ],
   },
   {
-    id: "bill",
-    question: "What's your average monthly electricity bill?",
-    subtitle: "Helps estimate your potential savings.",
+    id: "budget",
+    question: "What's your installation budget?",
+    subtitle: "Includes equipment and professional installation.",
     options: [
-      { value: "under100",  label: "Under $100",  icon: "eco",          desc: "Very efficient home" },
-      { value: "100to200",  label: "$100–$200",   icon: "bar_chart",    desc: "Typical single-family home" },
-      { value: "200to300",  label: "$200–$300",   icon: "trending_up",  desc: "Larger home or EV charging" },
-      { value: "over300",   label: "$300+",       icon: "local_fire_department", desc: "High usage or high-rate area" },
+      { value: "under5k",   label: "Under $5,000",    icon: "eco",          desc: "Entry-level backup for essentials" },
+      { value: "5kto10k",   label: "$5,000–$10,000",  icon: "savings",      desc: "Most popular range for a single unit" },
+      { value: "10kto20k",  label: "$10,000–$20,000", icon: "trending_up",  desc: "Room for a multi-battery system" },
+      { value: "over20k",   label: "$20,000+",        icon: "home",         desc: "Full whole-home backup & expansion" },
     ],
   },
 ] as const;
@@ -127,7 +148,7 @@ type StepId = (typeof STEPS)[number]["id"];
 export default function BatteryQuiz({ initialBatteries }: { initialBatteries: BatteryProduct[] }) {
   const [step, setStep] = useState(0);
   const [quiz, setQuiz] = useState<QuizState>({
-    goal: null, coverage: null, duration: null, solar: null, bill: null,
+    goal: null, coverage: null, duration: null, solar: null, budget: null,
   });
   const [showResults, setShowResults] = useState(false);
 
@@ -145,29 +166,35 @@ export default function BatteryQuiz({ initialBatteries }: { initialBatteries: Ba
   }
 
   function restart() {
-    setQuiz({ goal: null, coverage: null, duration: null, solar: null, bill: null });
+    setQuiz({ goal: null, coverage: null, duration: null, solar: null, budget: null });
     setStep(0);
     setShowResults(false);
   }
 
+  // Estimate annual savings based on coverage + solar status (no bill question needed)
   function annualSavings(): { low: number; high: number } {
-    const factors: Record<MonthlyBill, [number, number]> = {
-      under100:  [300, 500],
-      "100to200": [600, 900],
-      "200to300": [900, 1400],
-      over300:   [1200, 2000],
+    const base: Record<Coverage, [number, number]> = {
+      essentials: [300,  600],
+      major:      [600,  1100],
+      whole:      [900,  1800],
     };
-    return { low: factors[quiz.bill!][0], high: factors[quiz.bill!][1] };
+    const [low, high] = base[quiz.coverage ?? "major"];
+    const solarBoost = quiz.solar === "have" ? 1.4 : quiz.solar === "planning" ? 1.2 : 1;
+    return { low: Math.round(low * solarBoost), high: Math.round(high * solarBoost) };
   }
 
   // ── Results ──
 
-  if (showResults && quiz.coverage && quiz.duration) {
+  if (showResults && quiz.coverage && quiz.duration && quiz.budget) {
     const needed = calcNeededKwh(quiz.coverage, quiz.duration);
     const matches = getMatches(quiz, initialBatteries);
     const savings = annualSavings();
+    const budgetMax = BUDGET_MAX[quiz.budget];
+    const bestUnits = Math.ceil(needed / matches[0].kwh);
+    const bestTotal = matches[0].price_low * bestUnits;
+    const overBudget = bestTotal > budgetMax;
     const avgPayback = Math.round(
-      ((matches[0].price_low + matches[0].price_high) / 2 / savings.high) * 0.7
+      ((matches[0].price_low + matches[0].price_high) / 2 * bestUnits / savings.high) * 0.7
     );
 
     return (
@@ -213,6 +240,17 @@ export default function BatteryQuiz({ initialBatteries }: { initialBatteries: Ba
             effectively costs ~$7,000 after the credit.
           </div>
 
+          {/* Over-budget notice */}
+          {overBudget && (
+            <div className="bg-sky-50 border border-sky-200 rounded-2xl p-4 text-sm text-sky-800">
+              <strong>Heads up:</strong> The storage capacity you need ({needed} kWh) is typically
+              installed for ${bestTotal.toLocaleString()}–${(matches[0].price_high * bestUnits).toLocaleString()} —
+              above your ${budgetMax === Infinity ? "20K+" : `$${budgetMax.toLocaleString()}`} budget.
+              We've shown the closest options; consider a smaller coverage area, shorter backup time,
+              or getting quotes — installers sometimes have financing or bundle discounts.
+            </div>
+          )}
+
           {/* Product cards */}
           <div>
             <h2 className="text-xl font-bold mb-4">Top Matches for You</h2>
@@ -222,6 +260,7 @@ export default function BatteryQuiz({ initialBatteries }: { initialBatteries: Ba
                 const totalLow = product.price_low * units;
                 const totalHigh = product.price_high * units;
                 const afterCredit = Math.round(totalLow * 0.7);
+                const fitsUserBudget = totalLow <= budgetMax;
                 return (
                   <div
                     key={product.id}
@@ -229,11 +268,18 @@ export default function BatteryQuiz({ initialBatteries }: { initialBatteries: Ba
                       i === 0 ? "border-amber-300 ring-1 ring-amber-200" : "border-black/8"
                     }`}
                   >
-                    {i === 0 && (
-                      <div className="inline-flex items-center gap-1 bg-gradient-to-r from-spark-yellow to-spark-orange text-white text-xs font-bold px-3 py-1 rounded-full mb-3">
-                        <span className="material-symbols-outlined" style={{ fontSize: 14 }}>star</span> Best Match
-                      </div>
-                    )}
+                    <div className="flex flex-wrap gap-2 mb-3">
+                      {i === 0 && (
+                        <div className="inline-flex items-center gap-1 bg-gradient-to-r from-spark-yellow to-spark-orange text-white text-xs font-bold px-3 py-1 rounded-full">
+                          <span className="material-symbols-outlined" style={{ fontSize: 14 }}>star</span> Best Match
+                        </div>
+                      )}
+                      {fitsUserBudget && (
+                        <div className="inline-flex items-center gap-1 bg-green-100 text-green-700 border border-green-200 text-xs font-semibold px-3 py-1 rounded-full">
+                          <span className="material-symbols-outlined" style={{ fontSize: 14 }}>check_circle</span> Within Your Budget
+                        </div>
+                      )}
+                    </div>
                     <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                       <div className="flex-1">
                         <div className="text-xs font-medium text-muted uppercase tracking-wider mb-1">{product.brand}</div>
