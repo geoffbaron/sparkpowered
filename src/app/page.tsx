@@ -46,12 +46,7 @@ function NewsGrid({ news }: { news: RSSArticle[] }) {
               rel="noopener noreferrer"
               className="block overflow-hidden aspect-[16/9] bg-surface-light"
             >
-              <NewsImage
-                src={item.thumbnail}
-                alt={item.title}
-                category={item.category}
-                articleUrl={item.url}
-              />
+              <NewsImage src={item.thumbnail} alt={item.title} />
             </a>
 
             {/* Content */}

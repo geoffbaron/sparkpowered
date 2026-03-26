@@ -101,17 +101,14 @@ function extractThumbnail(xml: string): string | null {
   return null;
 }
 
-// Domains known to block hotlinking from third-party sites
-const HOTLINK_BLOCKED = [
-  "cleantechnica.com",
-  "insideevs.com",
-];
-
 function isUsableImage(url: string): boolean {
-  if (!url.startsWith("http")) return false;
-  if (url.includes(".gif") || url.includes("pixel")) return false;
-  if (HOTLINK_BLOCKED.some((d) => url.includes(d))) return false;
-  return true;
+  return !url.includes(".gif") && !url.includes("pixel") && url.startsWith("http");
+}
+
+/** Wrap a thumbnail URL in our server-side image proxy so hotlink-blocked
+ *  feeds (CleanTechnica, InsideEVs, etc.) are fetched server-to-server. */
+function proxyUrl(thumbnailUrl: string, category: RSSArticle["category"]): string {
+  return `/api/img?url=${encodeURIComponent(thumbnailUrl)}&cat=${category}`;
 }
 
 /** Strip HTML tags and decode common entities. */
@@ -178,7 +175,8 @@ async function fetchFeed(feed: { url: string; source: string }): Promise<RSSArti
       }
 
       const category = categorize(title, description);
-      const thumbnail = extractThumbnail(item) ?? pickFallback(category, url);
+      const rawThumb = extractThumbnail(item) ?? pickFallback(category, url);
+      const thumbnail = proxyUrl(rawThumb, category);
 
       articles.push({ title, description, url, publishedAt, thumbnail, source: feed.source, category });
     }
