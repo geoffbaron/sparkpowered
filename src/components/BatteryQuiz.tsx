@@ -195,63 +195,6 @@ export default function BatteryQuiz({ initialBatteries }: { initialBatteries: Ba
       : quiz.budget === "10kto20k" ? "$10,000–$20,000"
       : "$20,000+";
 
-    // No products available — LLM research not configured or failed
-    if (initialBatteries.length === 0) {
-      const searchQuery = encodeURIComponent(`${needed} kWh home battery storage`);
-      return (
-        <div className="min-h-screen bg-background">
-          <div className="bg-gradient-to-br from-sky-50 via-amber-50/40 to-orange-50 border-b border-black/6 py-12">
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
-              <h1 className="text-3xl sm:text-4xl font-bold mb-3">
-                You need about{" "}
-                <span className="bg-gradient-to-r from-spark-yellow to-spark-orange bg-clip-text text-transparent">
-                  {needed} kWh
-                </span>{" "}
-                of storage
-              </h1>
-              <p className="text-muted text-lg">Budget: {budgetLabel} · Est. savings: ${savings.low.toLocaleString()}–${savings.high.toLocaleString()}/yr</p>
-            </div>
-          </div>
-          <div className="max-w-2xl mx-auto px-4 sm:px-6 py-12 space-y-6">
-            <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6 text-center">
-              <span className="material-symbols-outlined" style={{ fontSize: 40, color: "#f59e0b" }}>search</span>
-              <h2 className="text-xl font-bold mt-3 mb-2">Find Current Options</h2>
-              <p className="text-muted text-sm mb-5">
-                Battery products, prices, and availability change frequently. Use these links
-                to search for {needed} kWh systems right now — filtered to your budget.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <a
-                  href={`https://www.energysage.com/shop/home-battery-storage/?capacity=${needed}`}
-                  target="_blank" rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold px-5 py-3 rounded-xl shadow transition-colors text-sm"
-                >
-                  <span className="material-symbols-outlined" style={{ fontSize: 18 }}>compare</span>
-                  Compare on EnergySage
-                </a>
-                <a
-                  href={`https://www.google.com/search?q=${searchQuery}+${budgetLabel.replace(/\s/g, "+")}`}
-                  target="_blank" rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 bg-surface border border-black/12 hover:border-black/20 font-bold px-5 py-3 rounded-xl text-sm transition-colors"
-                >
-                  <span className="material-symbols-outlined" style={{ fontSize: 18 }}>search</span>
-                  Search Google
-                </a>
-              </div>
-            </div>
-            <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 text-sm text-amber-800">
-              <strong>30% Federal Tax Credit (ITC):</strong> Battery installations qualify for a 30% federal tax credit through at least 2032. Factor this into your budget — a $10,000 system costs ~$7,000 after the credit.
-            </div>
-            <div className="text-center">
-              <button onClick={restart} className="px-6 py-2.5 rounded-xl border border-black/12 text-sm font-medium text-muted hover:bg-surface-light transition-colors">
-                ← Start Over
-              </button>
-            </div>
-          </div>
-        </div>
-      );
-    }
-
     const matches = getMatches(quiz, initialBatteries);
     const bestUnits = Math.ceil(needed / matches[0].kwh);
     const bestTotal = matches[0].price_low * bestUnits;
@@ -316,7 +259,12 @@ export default function BatteryQuiz({ initialBatteries }: { initialBatteries: Ba
 
           {/* Product cards */}
           <div>
-            <h2 className="text-xl font-bold mb-4">Top Matches for You</h2>
+            <div className="flex items-start justify-between mb-4 gap-4">
+              <h2 className="text-xl font-bold">Top Matches for You</h2>
+              <span className="text-xs text-muted bg-surface-light border border-black/6 rounded-full px-3 py-1 whitespace-nowrap mt-1">
+                Prices are estimates · verify with installers
+              </span>
+            </div>
             <div className="space-y-4">
               {matches.map((product, i) => {
                 const units = unitsNeeded(product, needed);

@@ -56,9 +56,66 @@ const FALLBACK_EVS: EVResult[] = [
   { name: "Toyota bZ4X", range: 252, price: "$42,000", type: "SUV", highlight: "Toyota reliability meets electric efficiency", seats: 5, cargo: "Large", url: "https://www.toyota.com/bz4x" },
 ];
 
-// No hardcoded battery fallback — product options, prices, and availability
-// change too frequently. When the API key is unavailable or research fails,
-// the quiz shows an EnergySage search CTA instead of stale product cards.
+// Fallback battery data — shown when live LLM research isn't available.
+// Prices are approximate installed costs; the UI adds a disclaimer.
+// When ANTHROPIC_API_KEY is set, getDailyBatteries() replaces this with
+// freshly researched data every day.
+const FALLBACK_BATTERIES: BatteryProduct[] = [
+  {
+    id: "ecoflow-delta-pro-3",
+    name: "DELTA Pro 3",
+    brand: "EcoFlow",
+    kwh: 4.1, scalable: true, maxKwh: 48, power_kw: 4.0, warranty_years: 5,
+    price_low: 2000, price_high: 3500, solar_compatible: true, grid_tied: false,
+    highlights: ["No professional install required", "Expandable up to 48 kWh", "120V/240V dual output"],
+    learnMoreUrl: "https://us.ecoflow.com/products/delta-pro-3-portable-power-station",
+  },
+  {
+    id: "anker-solix-f3800",
+    name: "SOLIX F3800 Plus",
+    brand: "Anker",
+    kwh: 3.84, scalable: true, maxKwh: 53.76, power_kw: 6.0, warranty_years: 5,
+    price_low: 2600, price_high: 5000, solar_compatible: true, grid_tied: false,
+    highlights: ["6 kW continuous output", "Expandable up to 53 kWh", "Often discounts to ~$2,600"],
+    learnMoreUrl: "https://www.ankersolix.com/products/f3800-plus",
+  },
+  {
+    id: "enphase-iq5p",
+    name: "IQ Battery 5P",
+    brand: "Enphase",
+    kwh: 5.0, scalable: true, maxKwh: 30, power_kw: 3.84, warranty_years: 15,
+    price_low: 7000, price_high: 10000, solar_compatible: true, grid_tied: true,
+    highlights: ["15-year warranty — best in class", "Modular, add units as needed", "Microinverter architecture"],
+    learnMoreUrl: "https://enphase.com/store/storage/gen3/iq-battery-5p",
+  },
+  {
+    id: "tesla-powerwall-3",
+    name: "Powerwall 3",
+    brand: "Tesla",
+    kwh: 13.5, scalable: true, maxKwh: 27, power_kw: 11.5, warranty_years: 10,
+    price_low: 11000, price_high: 16000, solar_compatible: true, grid_tied: true,
+    highlights: ["Built-in solar inverter", "11.5 kW continuous output", "Storm Watch auto backup"],
+    learnMoreUrl: "https://www.tesla.com/powerwall",
+  },
+  {
+    id: "sonnen-core-plus",
+    name: "sonnenCore+",
+    brand: "Sonnen",
+    kwh: 10, scalable: true, maxKwh: 20, power_kw: 4.8, warranty_years: 10,
+    price_low: 14000, price_high: 18000, solar_compatible: true, grid_tied: true,
+    highlights: ["10,000 cycle warranty", "German LFP chemistry", "Virtual power plant capable"],
+    learnMoreUrl: "https://www.sonnenusa.com/residential/sonnencoreplus",
+  },
+  {
+    id: "generac-pwrcell-2",
+    name: "PWRcell 2",
+    brand: "Generac",
+    kwh: 9, scalable: true, maxKwh: 18, power_kw: 9.0, warranty_years: 10,
+    price_low: 17000, price_high: 25000, solar_compatible: true, grid_tied: true,
+    highlights: ["9 kW continuous output", "Modular 9–18 kWh LFP", "Whole-home backup capable"],
+    learnMoreUrl: "https://www.generac.com/solar-battery-solutions/pwrcell-2/",
+  },
+];
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -138,8 +195,8 @@ export async function getDailyBatteries(): Promise<BatteryProduct[]> {
   cacheLife("days");
 
   if (!process.env.ANTHROPIC_API_KEY) {
-    console.warn("ANTHROPIC_API_KEY not set — battery research unavailable");
-    return [];
+    console.warn("ANTHROPIC_API_KEY not set — using fallback battery data");
+    return FALLBACK_BATTERIES;
   }
 
   try {
@@ -164,10 +221,10 @@ Rules: id is lowercase-hyphen-slug. All numeric fields are numbers not strings. 
     if (parsed && Array.isArray(parsed) && parsed.length >= 4) {
       return parsed;
     }
-    console.warn("getDailyBatteries: could not parse LLM response");
-    return [];
+    console.warn("getDailyBatteries: could not parse LLM response, using fallback");
+    return FALLBACK_BATTERIES;
   } catch (err) {
-    console.error("getDailyBatteries failed:", err);
-    return [];
+    console.error("getDailyBatteries failed, using fallback:", err);
+    return FALLBACK_BATTERIES;
   }
 }
