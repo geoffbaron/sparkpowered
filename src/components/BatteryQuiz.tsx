@@ -58,7 +58,8 @@ function getMatches(quiz: QuizState, batteries: BatteryProduct[]): BatteryProduc
     const canScale = b.scalable || b.kwh >= needed;
     const capacityFit = canScale && maxCapacity >= needed;
     const budgetFit = totalLow <= budgetMax;
-    const solarOk = quiz.goal !== "solar" || b.solar_compatible;
+    // solar goal requires solar_compatible; "store solar" also needs grid_tied
+    const solarOk = quiz.goal !== "solar" || (b.solar_compatible && b.grid_tied);
 
     return { battery: b, units, totalLow, capacityFit, budgetFit, solarOk };
   });
