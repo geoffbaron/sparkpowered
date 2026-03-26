@@ -2,8 +2,7 @@ import { Suspense } from "react";
 import Link from "next/link";
 import { Metadata } from "next";
 import { fetchAllNews } from "@/lib/rss";
-import type { RSSArticle } from "@/lib/rss";
-import NewsImage from "@/components/NewsImage";
+import NewsClient from "@/components/NewsClient";
 
 export const metadata: Metadata = {
   title: "Spark Powered — EV, Solar & Clean Energy News",
@@ -11,126 +10,40 @@ export const metadata: Metadata = {
     "The latest news on electric vehicles, solar power, and home batteries — refreshed every hour from Electrek, CleanTechnica, InsideEVs, and more.",
 };
 
-const categoryConfig = {
-  ev:      { label: "EV",      color: "bg-blue-50 text-blue-600 border-blue-200" },
-  solar:   { label: "Solar",   color: "bg-amber-50 text-amber-600 border-amber-200" },
-  battery: { label: "Battery", color: "bg-green-50 text-green-600 border-green-200" },
-};
-
-function NewsGrid({ news }: { news: RSSArticle[] }) {
-  if (news.length === 0) {
-    return (
-      <div className="text-center py-24 text-muted">
-        <div className="mb-4">
-          <span className="material-symbols-outlined" style={{ fontSize: 48, color: "var(--color-muted)" }}>wifi_off</span>
-        </div>
-        <p className="text-lg font-medium">Couldn&apos;t reach the news feeds right now.</p>
-        <p className="text-sm mt-2">Check back in a few minutes.</p>
-      </div>
-    );
-  }
-
-  return (
-    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {news.map((item, i) => {
-        const config = categoryConfig[item.category];
-        return (
-          <article
-            key={i}
-            className="bg-surface rounded-2xl border border-black/6 flex flex-col overflow-hidden group hover:shadow-md transition-shadow"
-          >
-            {/* Thumbnail */}
-            <a
-              href={item.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block overflow-hidden aspect-[16/9] bg-surface-light"
-            >
-              <NewsImage src={item.thumbnail} alt={item.title} />
-            </a>
-
-            {/* Content */}
-            <div className="p-6 flex flex-col flex-1">
-              <div className="flex items-center gap-3 mb-3">
-                <span className={`px-3 py-1 rounded-full text-xs font-medium border ${config.color}`}>
-                  {config.label}
-                </span>
-                <span className="text-xs text-muted">
-                  {item.publishedAt.replace(
-                    /^(\d{4})-(\d{2})-(\d{2})$/,
-                    (_, y, m, d) => `${m}/${d}/${y.slice(2)}`
-                  )}
-                </span>
-              </div>
-
-              <a
-                href={item.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group/title"
-              >
-                <h2 className="text-lg font-bold mb-2 leading-snug group-hover/title:text-spark-orange transition-colors line-clamp-3">
-                  {item.title}
-                </h2>
-              </a>
-
-              <p className="text-sm text-muted leading-relaxed mb-4 flex-1 line-clamp-3">
-                {item.description}
-              </p>
-
-              <div className="flex items-center justify-between text-xs text-muted">
-                <span className="font-medium">{item.source}</span>
-                <a
-                  href={item.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-1 text-spark-orange font-medium hover:underline"
-                >
-                  Read more
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                    <path
-                      d="M2.5 9.5L9.5 2.5M9.5 2.5H4.5M9.5 2.5V7.5"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </a>
-              </div>
-            </div>
-          </article>
-        );
-      })}
-    </div>
-  );
-}
-
 function NewsSkeleton() {
   return (
-    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {[...Array(6)].map((_, i) => (
-        <div key={i} className="bg-surface rounded-2xl border border-black/6 overflow-hidden animate-pulse">
-          <div className="aspect-[16/9] bg-surface-light" />
-          <div className="p-6 space-y-3">
-            <div className="flex gap-2">
-              <div className="h-5 w-14 bg-surface-light rounded-full" />
-              <div className="h-5 w-16 bg-surface-light rounded-full" />
+    <>
+      {/* Skeleton filter row */}
+      <div className="flex flex-wrap gap-3 justify-center mb-10">
+        {[14, 16, 18, 14].map((w, i) => (
+          <div key={i} className={`h-8 w-${w} bg-surface-light rounded-full animate-pulse`} />
+        ))}
+      </div>
+      {/* Skeleton grid */}
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {[...Array(6)].map((_, i) => (
+          <div key={i} className="bg-surface rounded-2xl border border-black/6 overflow-hidden animate-pulse">
+            <div className="aspect-[16/9] bg-surface-light" />
+            <div className="p-6 space-y-3">
+              <div className="flex gap-2">
+                <div className="h-5 w-14 bg-surface-light rounded-full" />
+                <div className="h-5 w-16 bg-surface-light rounded-full" />
+              </div>
+              <div className="h-5 bg-surface-light rounded w-full" />
+              <div className="h-5 bg-surface-light rounded w-4/5" />
+              <div className="h-4 bg-surface-light rounded w-full" />
+              <div className="h-4 bg-surface-light rounded w-3/4" />
             </div>
-            <div className="h-5 bg-surface-light rounded w-full" />
-            <div className="h-5 bg-surface-light rounded w-4/5" />
-            <div className="h-4 bg-surface-light rounded w-full" />
-            <div className="h-4 bg-surface-light rounded w-3/4" />
           </div>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div>
+    </>
   );
 }
 
 async function NewsLoader() {
   const news = await fetchAllNews();
-  return <NewsGrid news={news} />;
+  return <NewsClient news={news} />;
 }
 
 export default function HomePage() {
@@ -139,7 +52,7 @@ export default function HomePage() {
       {/* Header */}
       <div className="text-center mb-12">
         <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-amber-100 border border-amber-200 text-amber-700 text-sm font-semibold">
-          <span className="material-symbols-outlined" style={{ fontSize: 16, verticalAlign: "middle", marginRight: 4 }}>wb_sunny</span>Live from Electrek, CleanTechnica & more
+          <span className="material-symbols-outlined" style={{ fontSize: 16, verticalAlign: "middle", marginRight: 4 }}>wb_sunny</span>Live from Electrek, CleanTechnica &amp; more
         </div>
         <h1 className="text-4xl sm:text-5xl font-extrabold mb-4">
           Clean Energy{" "}
@@ -153,22 +66,7 @@ export default function HomePage() {
         </p>
       </div>
 
-      {/* Category legend */}
-      <div className="flex flex-wrap gap-3 justify-center mb-10">
-        {(["ev", "solar", "battery"] as const).map((cat) => {
-          const config = categoryConfig[cat];
-          return (
-            <span
-              key={cat}
-              className={`px-4 py-1.5 rounded-full text-sm font-medium border ${config.color}`}
-            >
-              {config.label}
-            </span>
-          );
-        })}
-      </div>
-
-      {/* News grid */}
+      {/* News grid (filters + cards) */}
       <Suspense fallback={<NewsSkeleton />}>
         <NewsLoader />
       </Suspense>
