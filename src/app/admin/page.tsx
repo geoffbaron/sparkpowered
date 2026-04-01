@@ -1,38 +1,44 @@
 import { Suspense } from "react";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { promises as fs } from "fs";
-import path from "path";
-import type { Lead } from "@/app/api/leads/route";
-import { STATE_NAMES } from "@/lib/zipToState";
-import installers from "@/data/installers";
 import LogoutButton from "./LogoutButton";
 
-// ── Data helpers ─────────────────────────────────────────────────────────────
+// ── Umami helpers ────────────────────────────────────────────────────────────
 
-async function getLeads(): Promise<Lead[]> {
+const UMAMI_API = "https://api.umami.is/v1";
+const WEBSITE_ID = "d044bc8b-0fdc-43ca-a02a-a96ab8ea0e04";
+
+async function umamiFetch<T>(endpoint: string, params?: Record<string, string>): Promise<T | null> {
+  const apiKey = process.env.UMAMI_API_KEY;
+  if (!apiKey) return null;
+
+  const url = new URL(`${UMAMI_API}/websites/${WEBSITE_ID}${endpoint}`);
+  if (params) Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
+
   try {
-    const raw = await fs.readFile(
-      path.join(process.cwd(), "data", "leads.json"),
-      "utf-8"
-    );
-    return JSON.parse(raw) as Lead[];
+    const res = await fetch(url.toString(), {
+      headers: { "x-umami-api-key": apiKey },
+      next: { revalidate: 300 },
+    });
+    if (!res.ok) return null;
+    return res.json() as Promise<T>;
   } catch {
-    return [];
+    return null;
   }
 }
 
-function startOfDay(d: Date) {
-  return new Date(d.getFullYear(), d.getMonth(), d.getDate());
-}
+type UmamiStats = {
+  pageviews: { value: number; prev: number };
+  visitors: { value: number; prev: number };
+  visits: { value: number; prev: number };
+  bounces: { value: number; prev: number };
+  totaltime: { value: number; prev: number };
+};
 
-function weeksAgo(n: number) {
-  const d = new Date();
-  d.setDate(d.getDate() - n * 7);
-  return d;
-}
+type UmamiPageview = { x: string; y: number };
+type UmamiMetric = { x: string; y: number };
 
-// ── Sub-components ────────────────────────────────────────────────────────────
+// ── Sub-components ───────────────────────────────────────────────────────────
 
 function StatCard({
   label,
@@ -73,16 +79,16 @@ function BarChart({
         {title}
       </h3>
       <div className="space-y-3">
-        {data.slice(0, 8).map(({ label, count }) => (
+        {data.slice(0, 10).map(({ label, count }) => (
           <div key={label} className="flex items-center gap-3">
-            <div className="w-24 text-sm font-medium truncate shrink-0">{label}</div>
+            <div className="w-32 text-sm font-medium truncate shrink-0" title={label}>{label}</div>
             <div className="flex-1 bg-amber-50 rounded-full h-5 overflow-hidden">
               <div
                 className="h-full bg-gradient-to-r from-spark-yellow to-spark-orange rounded-full transition-all"
                 style={{ width: `${(count / max) * 100}%` }}
               />
             </div>
-            <div className="text-sm font-bold w-8 text-right">{count}</div>
+            <div className="text-sm font-bold w-10 text-right">{count.toLocaleString()}</div>
             <div className="text-xs text-muted w-8 text-right">
               {total > 0 ? Math.round((count / total) * 100) : 0}%
             </div>
@@ -93,124 +99,108 @@ function BarChart({
   );
 }
 
-// ── Page ──────────────────────────────────────────────────────────────────────
+function delta(current: number, prev: number): string | undefined {
+  if (prev === 0) return undefined;
+  const pct = Math.round(((current - prev) / prev) * 100);
+  return `${pct >= 0 ? "+" : ""}${pct}% vs prior period`;
+}
+
+function formatDuration(totalSeconds: number): string {
+  const mins = Math.floor(totalSeconds / 60);
+  const secs = Math.round(totalSeconds % 60);
+  return mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
+}
+
+// ── Page ─────────────────────────────────────────────────────────────────────
 
 async function AdminContent() {
-  // Double-check auth server-side (middleware handles redirect, this is a backup)
   const cookieStore = await cookies();
   const token = cookieStore.get("admin_auth")?.value;
   if (token !== process.env.ADMIN_PASSWORD) redirect("/admin/login");
 
-  const leads = await getLeads();
-  const now = new Date();
-  const today = startOfDay(now);
-  const thisMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-  const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
-  const lastMonthEnd = new Date(now.getFullYear(), now.getMonth(), 0);
+  const apiKey = process.env.UMAMI_API_KEY;
 
-  const leadsToday = leads.filter((l) => new Date(l.timestamp) >= today).length;
-  const leadsThisMonth = leads.filter((l) => new Date(l.timestamp) >= thisMonth).length;
-  const leadsLastMonth = leads.filter(
-    (l) =>
-      new Date(l.timestamp) >= lastMonth &&
-      new Date(l.timestamp) <= lastMonthEnd
-  ).length;
-  const monthDelta = leadsLastMonth > 0
-    ? Math.round(((leadsThisMonth - leadsLastMonth) / leadsLastMonth) * 100)
-    : null;
+  // Time ranges
+  const now = Date.now();
+  const dayMs = 86_400_000;
+  const startOfToday = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
+  const thirtyDaysAgo = now - 30 * dayMs;
 
-  // Leads by state
-  const byState: Record<string, number> = {};
-  leads.forEach((l) => {
-    const key = l.state ? `${STATE_NAMES[l.state] ?? l.state} (${l.state})` : "Unknown";
-    byState[key] = (byState[key] ?? 0) + 1;
-  });
-  const byStateData = Object.entries(byState)
-    .map(([label, count]) => ({ label, count }))
-    .sort((a, b) => b.count - a.count);
+  // Fetch all Umami data in parallel
+  const [stats30d, statsToday, active, pageviewsDaily, topPages, topReferrers, topBrowsers, topCountries, topDevices] = await Promise.all([
+    umamiFetch<UmamiStats>("/stats", {
+      startAt: String(thirtyDaysAgo),
+      endAt: String(now),
+    }),
+    umamiFetch<UmamiStats>("/stats", {
+      startAt: String(startOfToday),
+      endAt: String(now),
+    }),
+    umamiFetch<{ x: number }>("/active"),
+    umamiFetch<{ pageviews: UmamiPageview[]; sessions: UmamiPageview[] }>("/pageviews", {
+      startAt: String(thirtyDaysAgo),
+      endAt: String(now),
+      unit: "day",
+    }),
+    umamiFetch<UmamiMetric[]>("/metrics", {
+      startAt: String(thirtyDaysAgo),
+      endAt: String(now),
+      type: "url",
+    }),
+    umamiFetch<UmamiMetric[]>("/metrics", {
+      startAt: String(thirtyDaysAgo),
+      endAt: String(now),
+      type: "referrer",
+    }),
+    umamiFetch<UmamiMetric[]>("/metrics", {
+      startAt: String(thirtyDaysAgo),
+      endAt: String(now),
+      type: "browser",
+    }),
+    umamiFetch<UmamiMetric[]>("/metrics", {
+      startAt: String(thirtyDaysAgo),
+      endAt: String(now),
+      type: "country",
+    }),
+    umamiFetch<UmamiMetric[]>("/metrics", {
+      startAt: String(thirtyDaysAgo),
+      endAt: String(now),
+      type: "device",
+    }),
+  ]);
 
-  // Leads by interest
-  const byInterest: Record<string, number> = {};
-  leads.forEach((l) =>
-    l.interest.forEach((i) => {
-      byInterest[i] = (byInterest[i] ?? 0) + 1;
-    })
-  );
-  const interestLabels: Record<string, string> = {
-    solar: "Solar Panels",
-    battery: "Home Battery",
-    "ev-charger": "EV Charger",
-    community: "Community Solar",
-  };
-  const byInterestData = Object.entries(byInterest)
-    .map(([key, count]) => ({ label: interestLabels[key] ?? key, count }))
-    .sort((a, b) => b.count - a.count);
+  const hasData = apiKey && stats30d;
 
-  // Leads by monthly bill
-  const byBill: Record<string, number> = {};
-  leads.forEach((l) => {
-    const label =
-      l.monthlyBill === "low"
-        ? "Under $100"
-        : l.monthlyBill === "mid"
-        ? "$100–$200"
-        : l.monthlyBill === "high"
-        ? "$200–$400"
-        : l.monthlyBill === "vhigh"
-        ? "$400+"
-        : "Not stated";
-    byBill[label] = (byBill[label] ?? 0) + 1;
-  });
-  const billOrder = ["Under $100", "$100–$200", "$200–$400", "$400+", "Not stated"];
-  const byBillData = billOrder
-    .filter((k) => byBill[k])
-    .map((label) => ({ label, count: byBill[label] }));
+  // Derived values
+  const pageviews30d = stats30d?.pageviews.value ?? 0;
+  const visitors30d = stats30d?.visitors.value ?? 0;
+  const visits30d = stats30d?.visits.value ?? 0;
+  const bounces30d = stats30d?.bounces.value ?? 0;
+  const bounceRate = visits30d > 0 ? Math.round((bounces30d / visits30d) * 100) : 0;
+  const avgTime = visits30d > 0 ? (stats30d?.totaltime.value ?? 0) / visits30d : 0;
 
-  // Leads by installer
-  const byInstaller: Record<string, number> = {};
-  leads.forEach((l) => {
-    if (l.installerName) {
-      byInstaller[l.installerName] = (byInstaller[l.installerName] ?? 0) + 1;
-    }
-  });
-  const byInstallerData = Object.entries(byInstaller)
-    .map(([label, count]) => ({ label, count }))
-    .sort((a, b) => b.count - a.count);
+  const pageviewsToday = statsToday?.pageviews.value ?? 0;
+  const visitorsToday = statsToday?.visitors.value ?? 0;
 
-  // Weekly trend (last 8 weeks)
-  const weeklyData = Array.from({ length: 8 }, (_, i) => {
-    const weekStart = weeksAgo(7 - i);
-    const weekEnd = weeksAgo(6 - i);
-    return {
-      label: `W${i + 1}`,
-      count: leads.filter((l) => {
-        const t = new Date(l.timestamp);
-        return t >= weekStart && t < weekEnd;
-      }).length,
-    };
-  });
-  const weekMax = Math.max(...weeklyData.map((w) => w.count), 1);
+  // Chart data
+  const dailyData = pageviewsDaily?.pageviews ?? [];
+  const dailyMax = Math.max(...dailyData.map((d) => d.y), 1);
 
-  // Homeowner breakdown
-  const homeOwners = leads.filter((l) => l.homeOwner === "Yes").length;
-  const renters = leads.filter((l) => l.homeOwner === "No").length;
-
-  // Revenue potential (rough)
-  const featuredSlots = byStateData.length;
-  const revenueEstimate = featuredSlots * 150; // $150/mo per featured state slot
-
-  const recent = [...leads].reverse().slice(0, 20);
+  const pagesData = (topPages ?? []).map((m) => ({ label: m.x || "/", count: m.y }));
+  const referrerData = (topReferrers ?? []).filter((m) => m.x).map((m) => ({ label: m.x, count: m.y }));
+  const browserData = (topBrowsers ?? []).map((m) => ({ label: m.x || "Unknown", count: m.y }));
+  const countryData = (topCountries ?? []).map((m) => ({ label: m.x || "Unknown", count: m.y }));
+  const deviceData = (topDevices ?? []).map((m) => ({ label: m.x || "Unknown", count: m.y }));
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
       <header className="bg-surface border-b border-black/6 px-6 py-4">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3">
             <span className="text-2xl">⚡</span>
             <div>
               <h1 className="font-bold text-lg leading-none">Spark Powered Admin</h1>
-              <p className="text-xs text-muted mt-0.5">Lead analytics &amp; monetization dashboard</p>
+              <p className="text-xs text-muted mt-0.5">Site analytics dashboard</p>
             </div>
           </div>
           <LogoutButton />
@@ -219,197 +209,145 @@ async function AdminContent() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
 
-        {/* Storage notice */}
-        <div className="bg-amber-50 border border-amber-200 rounded-xl px-5 py-3 flex items-start gap-3 text-sm">
-          <span className="text-amber-500 text-lg leading-tight">ℹ</span>
-          <span className="text-muted">
-            <strong className="text-foreground">Local file storage</strong> — leads are saved to{" "}
-            <code className="bg-amber-100 px-1 rounded text-xs">data/leads.json</code> on this server.
-            For production, replace with Supabase, PlanetScale, or similar.
-          </span>
-        </div>
+        {!apiKey && (
+          <div className="bg-amber-50 border border-amber-200 rounded-xl px-5 py-3 flex items-start gap-3 text-sm">
+            <span className="text-amber-500 text-lg leading-tight">⚠</span>
+            <span className="text-muted">
+              <strong className="text-foreground">Umami API key not configured</strong> — set{" "}
+              <code className="bg-amber-100 px-1 rounded text-xs">UMAMI_API_KEY</code> in your
+              environment variables to see live analytics data here.
+            </span>
+          </div>
+        )}
 
-        {/* Summary stats */}
+        {apiKey && !hasData && (
+          <div className="bg-amber-50 border border-amber-200 rounded-xl px-5 py-3 flex items-start gap-3 text-sm">
+            <span className="text-amber-500 text-lg leading-tight">⚠</span>
+            <span className="text-muted">
+              <strong className="text-foreground">Could not fetch analytics</strong> — check that
+              your API key is valid and Umami Cloud is reachable.
+            </span>
+          </div>
+        )}
+
+        {/* Overview stats */}
         <section>
-          <h2 className="text-xs font-bold uppercase tracking-widest text-muted mb-4">Overview</h2>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+          <h2 className="text-xs font-bold uppercase tracking-widest text-muted mb-4">Overview — Last 30 Days</h2>
+          <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
             <StatCard
-              label="Total Leads"
-              value={leads.length}
-              sub="All time"
+              label="Active Now"
+              value={active?.x ?? "—"}
+              sub="Real-time visitors"
+              accent="text-green-600"
+            />
+            <StatCard
+              label="Pageviews"
+              value={hasData ? pageviews30d.toLocaleString() : "—"}
+              sub={hasData ? delta(stats30d.pageviews.value, stats30d.pageviews.prev) : undefined}
               accent="text-spark-orange"
             />
             <StatCard
-              label="This Month"
-              value={leadsThisMonth}
-              sub={
-                monthDelta !== null
-                  ? `${monthDelta >= 0 ? "+" : ""}${monthDelta}% vs last month`
-                  : "First month"
-              }
+              label="Unique Visitors"
+              value={hasData ? visitors30d.toLocaleString() : "—"}
+              sub={hasData ? delta(stats30d.visitors.value, stats30d.visitors.prev) : undefined}
             />
-            <StatCard label="Today" value={leadsToday} sub={now.toLocaleDateString()} />
             <StatCard
-              label="States with Demand"
-              value={byStateData.filter((d) => !d.label.startsWith("Unknown")).length}
-              sub="Potential featured slots"
+              label="Bounce Rate"
+              value={hasData ? `${bounceRate}%` : "—"}
+              sub={hasData ? `${visits30d.toLocaleString()} total visits` : undefined}
+            />
+            <StatCard
+              label="Avg. Visit Duration"
+              value={hasData ? formatDuration(avgTime) : "—"}
+              sub={hasData ? `${pageviewsToday.toLocaleString()} pageviews today` : undefined}
             />
           </div>
         </section>
 
-        {/* Revenue potential */}
+        {/* Today highlight */}
         <section className="bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl border border-amber-100 p-6">
-          <h2 className="text-xs font-bold uppercase tracking-widest text-muted mb-4">
-            Monetization Potential
-          </h2>
+          <h2 className="text-xs font-bold uppercase tracking-widest text-muted mb-4">Today</h2>
           <div className="grid sm:grid-cols-3 gap-6">
             <div>
               <div className="text-2xl font-extrabold text-spark-orange">
-                ${revenueEstimate.toLocaleString()}/mo
+                {hasData ? pageviewsToday.toLocaleString() : "—"}
               </div>
-              <div className="text-sm text-muted mt-1">
-                If each active state had 1 featured installer @ $150/mo
-              </div>
+              <div className="text-sm text-muted mt-1">Pageviews today</div>
             </div>
             <div>
               <div className="text-2xl font-extrabold text-spark-orange">
-                ${(leads.length * 75).toLocaleString()}
+                {hasData ? visitorsToday.toLocaleString() : "—"}
               </div>
-              <div className="text-sm text-muted mt-1">
-                If all leads sold @ $75/lead to installers
-              </div>
+              <div className="text-sm text-muted mt-1">Unique visitors today</div>
             </div>
             <div>
               <div className="text-2xl font-extrabold text-spark-orange">
-                {installers.filter((i) => i.tier === "featured").length} / {installers.length}
+                {active?.x ?? "—"}
               </div>
-              <div className="text-sm text-muted mt-1">
-                Featured installers in database
-                {installers.filter((i) => i.tier === "featured").length === 0 && " — none yet"}
-              </div>
+              <div className="text-sm text-muted mt-1">On the site right now</div>
             </div>
           </div>
         </section>
 
-        {/* Weekly trend */}
+        {/* Daily pageviews trend */}
         <section className="bg-surface rounded-2xl border border-black/6 p-6 shadow-sm">
           <h3 className="font-bold mb-4 text-sm text-muted uppercase tracking-wide">
-            Weekly Lead Volume (last 8 weeks)
+            Daily Pageviews (last 30 days)
           </h3>
-          {leads.length === 0 ? (
-            <p className="text-sm text-muted">No leads yet.</p>
+          {dailyData.length === 0 ? (
+            <p className="text-sm text-muted">No data yet.</p>
           ) : (
-            <div className="flex items-end gap-2 h-24">
-              {weeklyData.map((w) => (
-                <div key={w.label} className="flex-1 flex flex-col items-center gap-1">
-                  <div
-                    className="w-full bg-gradient-to-t from-spark-orange to-spark-yellow rounded-t-md transition-all"
-                    style={{ height: `${(w.count / weekMax) * 80}px`, minHeight: w.count > 0 ? "4px" : "0" }}
-                  />
-                  <span className="text-xs text-muted">{w.label}</span>
-                  <span className="text-xs font-bold">{w.count}</span>
+            <div className="flex items-end gap-[3px] h-28">
+              {dailyData.map((d, i) => {
+                const date = new Date(d.x);
+                const showLabel = i % 7 === 0;
+                return (
+                  <div key={d.x} className="flex-1 flex flex-col items-center gap-1 group relative">
+                    <div className="absolute -top-6 bg-foreground text-background text-xs px-1.5 py-0.5 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                      {date.toLocaleDateString(undefined, { month: "short", day: "numeric" })}: {d.y}
+                    </div>
+                    <div
+                      className="w-full bg-gradient-to-t from-spark-orange to-spark-yellow rounded-t-sm transition-all"
+                      style={{ height: `${(d.y / dailyMax) * 96}px`, minHeight: d.y > 0 ? "2px" : "0" }}
+                    />
+                    {showLabel && (
+                      <span className="text-[10px] text-muted">
+                        {date.toLocaleDateString(undefined, { month: "short", day: "numeric" })}
+                      </span>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </section>
+
+        {/* Breakdown charts */}
+        <div className="grid md:grid-cols-2 gap-6">
+          <BarChart title="Top Pages" data={pagesData} total={pageviews30d} />
+          <BarChart title="Referrers" data={referrerData} total={visitors30d} />
+          <BarChart title="Browsers" data={browserData} total={visitors30d} />
+          <BarChart title="Countries" data={countryData} total={visitors30d} />
+        </div>
+
+        {/* Device breakdown */}
+        {deviceData.length > 0 && (
+          <section className="bg-surface rounded-2xl border border-black/6 p-6 shadow-sm">
+            <h3 className="font-bold mb-4 text-sm text-muted uppercase tracking-wide">
+              Devices
+            </h3>
+            <div className="flex gap-6 text-sm flex-wrap">
+              {deviceData.map((d) => (
+                <div key={d.label}>
+                  <span className="text-2xl font-extrabold text-spark-orange">{d.count.toLocaleString()}</span>
+                  <span className="text-muted ml-2">
+                    {d.label} ({visitors30d > 0 ? Math.round((d.count / visitors30d) * 100) : 0}%)
+                  </span>
                 </div>
               ))}
             </div>
-          )}
-        </section>
-
-        {/* Charts grid */}
-        <div className="grid md:grid-cols-2 gap-6">
-          <BarChart title="Leads by State" data={byStateData} total={leads.length} />
-          <BarChart title="Interests" data={byInterestData} total={leads.length} />
-          <BarChart title="Monthly Bill Size" data={byBillData} total={leads.length} />
-          {byInstallerData.length > 0 && (
-            <BarChart title="Installer Quote Requests" data={byInstallerData} total={leads.length} />
-          )}
-        </div>
-
-        {/* Homeowner split */}
-        {leads.length > 0 && (
-          <section className="bg-surface rounded-2xl border border-black/6 p-6 shadow-sm">
-            <h3 className="font-bold mb-4 text-sm text-muted uppercase tracking-wide">
-              Homeowner vs Renter
-            </h3>
-            <div className="flex gap-6 text-sm">
-              <div>
-                <span className="text-2xl font-extrabold text-spark-orange">{homeOwners}</span>
-                <span className="text-muted ml-2">homeowners ({leads.length > 0 ? Math.round((homeOwners / leads.length) * 100) : 0}%)</span>
-              </div>
-              <div>
-                <span className="text-2xl font-extrabold text-electric-blue">{renters}</span>
-                <span className="text-muted ml-2">renters — potential community solar customers</span>
-              </div>
-            </div>
           </section>
         )}
-
-        {/* Recent leads table */}
-        <section>
-          <h2 className="text-xs font-bold uppercase tracking-widest text-muted mb-4">
-            Recent Leads ({recent.length} of {leads.length})
-          </h2>
-          {leads.length === 0 ? (
-            <div className="bg-surface rounded-2xl border border-black/6 p-12 text-center shadow-sm">
-              <div className="text-4xl mb-3">📋</div>
-              <p className="text-muted">No leads yet. Submit the Solar Finder form to see data here.</p>
-            </div>
-          ) : (
-            <div className="bg-surface rounded-2xl border border-black/6 overflow-hidden shadow-sm">
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="border-b border-black/6 bg-surface-light text-left">
-                      {["Date", "Name", "Email", "Phone", "ZIP / State", "Bill", "Interests", "Installer"].map((h) => (
-                        <th key={h} className="px-4 py-3 font-semibold text-xs text-muted uppercase tracking-wide whitespace-nowrap">
-                          {h}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {recent.map((lead, i) => (
-                      <tr key={lead.id} className={`border-b border-black/4 hover:bg-amber-50/50 transition-colors ${i % 2 === 0 ? "" : "bg-surface-light/30"}`}>
-                        <td className="px-4 py-3 whitespace-nowrap text-muted text-xs">
-                          {new Date(lead.timestamp).toLocaleDateString()}
-                        </td>
-                        <td className="px-4 py-3 font-medium whitespace-nowrap">{lead.name}</td>
-                        <td className="px-4 py-3 text-muted">
-                          <a href={`mailto:${lead.email}`} className="hover:text-spark-orange transition-colors">
-                            {lead.email}
-                          </a>
-                        </td>
-                        <td className="px-4 py-3 text-muted whitespace-nowrap">{lead.phone || "—"}</td>
-                        <td className="px-4 py-3 whitespace-nowrap">
-                          <span className="font-medium">{lead.zip}</span>
-                          {lead.state && <span className="text-muted ml-1">({lead.state})</span>}
-                        </td>
-                        <td className="px-4 py-3 whitespace-nowrap text-muted">
-                          {lead.monthlyBill === "low" ? "<$100"
-                            : lead.monthlyBill === "mid" ? "$100–200"
-                            : lead.monthlyBill === "high" ? "$200–400"
-                            : lead.monthlyBill === "vhigh" ? "$400+"
-                            : "—"}
-                        </td>
-                        <td className="px-4 py-3">
-                          <div className="flex flex-wrap gap-1">
-                            {lead.interest.map((i) => (
-                              <span key={i} className="px-1.5 py-0.5 rounded text-xs bg-amber-100 text-spark-amber">
-                                {i === "solar" ? "☀️" : i === "battery" ? "🔋" : i === "ev-charger" ? "⚡" : "🏘️"}
-                              </span>
-                            ))}
-                          </div>
-                        </td>
-                        <td className="px-4 py-3 text-xs text-muted whitespace-nowrap">
-                          {lead.installerName || "—"}
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
-        </section>
       </div>
     </div>
   );

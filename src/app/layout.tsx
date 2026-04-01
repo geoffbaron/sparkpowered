@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -37,6 +38,11 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col bg-background text-foreground">
+        <Script
+          src="https://cloud.umami.is/script.js"
+          data-website-id="d044bc8b-0fdc-43ca-a02a-a96ab8ea0e04"
+          strategy="afterInteractive"
+        />
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />

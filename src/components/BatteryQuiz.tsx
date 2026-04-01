@@ -361,30 +361,6 @@ export default function BatteryQuiz({ initialBatteries }: { initialBatteries: Ba
             </div>
           </div>
 
-          {/* EnergySage CTA */}
-          <div className="bg-gradient-to-r from-sky-50 to-blue-50 border border-blue-200 rounded-2xl p-6">
-            <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-              <div className="flex-1">
-                <h3 className="font-bold text-lg mb-1">Ready to get real quotes?</h3>
-                <p className="text-muted text-sm">
-                  EnergySage lets you compare certified installers side-by-side — for free. Most
-                  homeowners save 20–30% compared to a single quote.
-                </p>
-              </div>
-              <a
-                href="https://www.energysage.com/shop/home-battery-storage/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="shrink-0 inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold px-5 py-3 rounded-xl shadow transition-colors text-sm whitespace-nowrap"
-              >
-                Compare Quotes on EnergySage
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                  <path d="M2.5 9.5L9.5 2.5M9.5 2.5H4.5M9.5 2.5V7.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-              </a>
-            </div>
-          </div>
-
           {/* Solar upsell */}
           {quiz.solar === "none" && (
             <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-2xl p-6">
