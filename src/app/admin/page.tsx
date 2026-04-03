@@ -37,6 +37,7 @@ type UmamiStats = {
 
 type UmamiPageview = { x: string; y: number };
 type UmamiMetric = { x: string; y: number };
+type UmamiActive = { visitors?: number; x?: number };
 
 // ── Sub-components ───────────────────────────────────────────────────────────
 
@@ -100,8 +101,9 @@ function BarChart({
 }
 
 function delta(current: number, prev: number): string | undefined {
-  if (prev === 0) return undefined;
+  if (!Number.isFinite(current) || !Number.isFinite(prev) || prev === 0) return undefined;
   const pct = Math.round(((current - prev) / prev) * 100);
+  if (!Number.isFinite(pct)) return undefined;
   return `${pct >= 0 ? "+" : ""}${pct}% vs prior period`;
 }
 
@@ -109,6 +111,11 @@ function formatDuration(totalSeconds: number): string {
   const mins = Math.floor(totalSeconds / 60);
   const secs = Math.round(totalSeconds % 60);
   return mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
+}
+
+function activeVisitorsCount(active: UmamiActive | null | undefined): number | undefined {
+  const count = active?.visitors ?? active?.x;
+  return Number.isFinite(count) ? count : undefined;
 }
 
 // ── Page ─────────────────────────────────────────────────────────────────────
@@ -121,9 +128,12 @@ async function AdminContent() {
   const apiKey = process.env.UMAMI_API_KEY;
 
   // Time ranges
-  const now = Date.now();
+  const nowDate = new Date();
+  const now = nowDate.getTime();
   const dayMs = 86_400_000;
-  const startOfToday = new Date(new Date().setHours(0, 0, 0, 0)).getTime();
+  const startOfTodayDate = new Date(nowDate);
+  startOfTodayDate.setHours(0, 0, 0, 0);
+  const startOfToday = startOfTodayDate.getTime();
   const thirtyDaysAgo = now - 30 * dayMs;
 
   // Fetch all Umami data in parallel
@@ -136,7 +146,7 @@ async function AdminContent() {
       startAt: String(startOfToday),
       endAt: String(now),
     }),
-    umamiFetch<{ x: number }>("/active"),
+    umamiFetch<UmamiActive>("/active"),
     umamiFetch<{ pageviews: UmamiPageview[]; sessions: UmamiPageview[] }>("/pageviews", {
       startAt: String(thirtyDaysAgo),
       endAt: String(now),
@@ -181,6 +191,7 @@ async function AdminContent() {
 
   const pageviewsToday = statsToday?.pageviews.value ?? 0;
   const visitorsToday = statsToday?.visitors.value ?? 0;
+  const activeVisitors = activeVisitorsCount(active);
 
   // Chart data
   const dailyData = pageviewsDaily?.pageviews ?? [];
@@ -236,7 +247,7 @@ async function AdminContent() {
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
             <StatCard
               label="Active Now"
-              value={active?.x ?? "—"}
+              value={activeVisitors ?? "—"}
               sub="Real-time visitors"
               accent="text-green-600"
             />
@@ -282,7 +293,7 @@ async function AdminContent() {
             </div>
             <div>
               <div className="text-2xl font-extrabold text-spark-orange">
-                {active?.x ?? "—"}
+                {activeVisitors ?? "—"}
               </div>
               <div className="text-sm text-muted mt-1">On the site right now</div>
             </div>
