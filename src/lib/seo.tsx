@@ -18,8 +18,16 @@ export const SITE_TAGLINE =
 export const SITE_DESCRIPTION =
   "Independent guidance on electric vehicles, solar panels and home batteries. Hourly clean-energy news, an EV matcher, a battery sizer, a solar installer finder, and straight answers to the 15 questions people ask before going electric.";
 
-/** Absolute URL for a site-relative path. */
+/**
+ * Absolute URL for a site-relative path.
+ *
+ * The bare root returns no trailing slash, matching what Next resolves
+ * `alternates.canonical: "/"` to. Otherwise the sitemap and og:url would say
+ * `https://sparkpowered.com/` while the canonical on the same page said
+ * `https://sparkpowered.com` — equivalent to a crawler, but needless noise.
+ */
 export function url(path = "/") {
+  if (path === "/") return SITE_URL;
   return `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
 }
 
