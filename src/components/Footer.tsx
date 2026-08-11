@@ -20,7 +20,7 @@ export default function Footer() {
             </h4>
             <ul className="space-y-2">
               {[
-                { href: "/news", label: "Latest News" },
+                { href: "/", label: "Latest News" },
                 { href: "/calculator", label: "EV Finder" },
                 { href: "/solar-finder", label: "Solar Finder" },
                 { href: "/battery-calculator", label: "Battery Sizer" },

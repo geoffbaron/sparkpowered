@@ -59,7 +59,7 @@ export default function NewsClient({ news }: { news: RSSArticle[] }) {
               : "bg-surface text-muted border-black/10 hover:border-black/20 hover:text-foreground"
             }`}
         >
-          <span className="material-symbols-outlined" style={{ fontSize: 15 }}>
+          <span aria-hidden="true" translate="no" className="material-symbols-outlined" style={{ fontSize: 15 }}>
             {noTesla ? "block" : "electric_car"}
           </span>
           {noTesla ? "No Tesla (on)" : "No Tesla"}
@@ -85,7 +85,7 @@ export default function NewsClient({ news }: { news: RSSArticle[] }) {
       {/* Grid */}
       {filtered.length === 0 ? (
         <div className="text-center py-24 text-muted">
-          <span className="material-symbols-outlined" style={{ fontSize: 48, color: "var(--color-muted)" }}>search_off</span>
+          <span aria-hidden="true" translate="no" className="material-symbols-outlined" style={{ fontSize: 48, color: "var(--color-muted)" }}>search_off</span>
           <p className="text-lg font-medium mt-4">No articles match your filters.</p>
           <button
             onClick={() => { setActiveCategory(null); setNoTesla(false); }}

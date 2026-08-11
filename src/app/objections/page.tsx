@@ -1,9 +1,17 @@
 import { Metadata } from "next";
+import Link from "next/link";
+import { JsonLd, pageMetadata, url } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Objections & FAQs - Spark Powered",
-  description: "Common objections about EVs answered with facts and data.",
-};
+const TITLE = "EV Myths & Objections, Answered With Data";
+const DESCRIPTION =
+  "Straight answers to the 15 questions people ask before buying an electric car — range anxiety, charging time, apartment charging, upfront cost, battery replacement, cobalt mining, grid capacity, cold weather and towing.";
+
+export const metadata: Metadata = pageMetadata({
+  title: TITLE,
+  description: DESCRIPTION,
+  path: "/objections",
+  type: "article",
+});
 
 interface FAQ {
   question: string;
@@ -106,13 +114,39 @@ const faqs: FAQ[] = [
 
 const categories = Array.from(new Set(faqs.map((f) => f.category)));
 
+/**
+ * FAQPage schema — this is the page most likely to be quoted by an answer
+ * engine, so every question/answer pair is published as structured data rather
+ * than left for a crawler to scrape out of <details> elements.
+ */
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": url("/objections#faq"),
+  name: TITLE,
+  description: DESCRIPTION,
+  isPartOf: { "@id": url("/#website") },
+  publisher: { "@id": url("/#organization") },
+  inLanguage: "en-US",
+  mainEntity: faqs.map((faq) => ({
+    "@type": "Question",
+    name: faq.question,
+    answerCount: 1,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: faq.answer,
+    },
+  })),
+};
+
 export default function ObjectionsPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <JsonLd data={faqSchema} />
       {/* Header */}
       <div className="text-center mb-16">
         <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-amber-100 border border-amber-200 text-spark-amber text-sm font-semibold">
-          <span className="material-symbols-outlined" style={{ fontSize: 16, verticalAlign: "middle", marginRight: 4 }}>lightbulb</span>Facts over fear
+          <span aria-hidden="true" translate="no" className="material-symbols-outlined" style={{ fontSize: 16, verticalAlign: "middle", marginRight: 4 }}>lightbulb</span>Facts over fear
         </div>
         <h1 className="text-4xl sm:text-5xl font-extrabold mb-4">
           Common{" "}
@@ -182,12 +216,12 @@ export default function ObjectionsPage() {
           one. Most dealerships offer no-pressure EV test drives — and most
           people are sold after their first ride.
         </p>
-        <a
+        <Link
           href="/calculator"
           className="spark-btn inline-flex items-center justify-center px-8 py-3 rounded-xl bg-gradient-to-r from-spark-yellow to-spark-orange text-white font-bold shadow-lg shadow-orange-200 hover:shadow-xl hover:shadow-orange-300 transition-all"
         >
           Find Your Perfect EV
-        </a>
+        </Link>
       </div>
     </div>
   );

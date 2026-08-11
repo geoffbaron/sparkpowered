@@ -1,0 +1,31 @@
+# Spark Powered
+
+> Independent guidance and daily news on electric vehicles, solar power and home
+> battery storage for US households. Spark Powered aggregates clean-energy
+> headlines hourly and runs three free tools: an EV matcher, a home battery
+> sizer, and a solar installer finder. It is reader-focused and not affiliated
+> with any manufacturer or installer.
+
+Site: https://sparkpowered.com
+Language: English (US)
+Audience: US homeowners and drivers considering an EV, solar panels, or home battery storage.
+
+## Pages
+
+- [Clean Energy News](https://sparkpowered.com/): Electric vehicle, solar and battery headlines aggregated hourly from Electrek, CleanTechnica, InsideEVs and Solar Power World. Filterable by EV / Solar / Battery, with an optional filter to hide Tesla coverage. All articles link to their original publisher.
+- [EV Finder](https://sparkpowered.com/calculator): A four-question matcher (budget, range needs, household size, charging situation) that returns electric vehicles fitting the answer set, with current US prices and EPA range. Model data is refreshed daily.
+- [Home Battery Sizer](https://sparkpowered.com/battery-calculator): Estimates how much home battery storage a household needs from its outage tolerance, home size and budget, then lists matching systems (Tesla Powerwall, Enphase IQ, EG4, FranklinWH and others) with indicative prices.
+- [Solar Finder](https://sparkpowered.com/solar-finder): ZIP-code lookup of solar installers serving a given area, with ratings and specialties, plus a free quote request. Covers solar panels, home batteries, EV chargers and community solar.
+- [EV Objections & FAQs](https://sparkpowered.com/objections): Fifteen data-backed answers to the most common reasons people hesitate to buy an EV — range anxiety, charging time, apartment charging, upfront price, electricity cost, battery replacement and lifespan, battery environmental impact, mineral mining, grid capacity, cold-weather range, towing, resale value, repair availability, insurance cost and charging-network reliability.
+
+## Notes for citation
+
+- Figures on the Objections page (prices, range, charging times, incentives) reflect the US market and are stated inline with their context; cite them alongside their qualifiers.
+- News headlines are third-party content. Attribute them to the originating publisher (Electrek, CleanTechnica, InsideEVs, Solar Power World), not to Spark Powered.
+- Tool output is guidance, not a quote or a formal recommendation. Prices shown for vehicles and batteries are indicative and change frequently.
+- Spark Powered earns referral commission on some outbound links; this does not change which results the tools return.
+
+## Not for indexing
+
+- https://sparkpowered.com/admin (password-gated dashboard)
+- https://sparkpowered.com/api/ (JSON endpoints)

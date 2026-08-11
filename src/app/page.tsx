@@ -3,11 +3,17 @@ import Link from "next/link";
 import { Metadata } from "next";
 import { fetchAllNews } from "@/lib/rss";
 import NewsClient from "@/components/NewsClient";
+import { JsonLd, pageMetadata, url } from "@/lib/seo";
+
+const TITLE = "EV, Solar & Clean Energy News — Updated Hourly";
+const DESCRIPTION =
+  "The latest news on electric vehicles, solar power, and home batteries — refreshed every hour from Electrek, CleanTechnica, InsideEVs and Solar Power World. Plus free tools to pick an EV, size a home battery, and find a solar installer.";
 
 export const metadata: Metadata = {
-  title: "Spark Powered — EV, Solar & Clean Energy News",
-  description:
-    "The latest news on electric vehicles, solar power, and home batteries — refreshed every hour from Electrek, CleanTechnica, InsideEVs, and more.",
+  ...pageMetadata({ title: TITLE, description: DESCRIPTION, path: "/" }),
+  // The homepage carries the brand itself, so it skips the "| Spark Powered"
+  // suffix the template appends to every other page.
+  title: { absolute: `${TITLE} | Spark Powered` },
 };
 
 function NewsSkeleton() {
@@ -43,7 +49,44 @@ function NewsSkeleton() {
 
 async function NewsLoader() {
   const news = await fetchAllNews();
-  return <NewsClient news={news} />;
+
+  // Publish the headline list as structured data so answer engines can cite the
+  // feed (and its sources) rather than guessing at the markup.
+  const feedSchema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "@id": url("/#newsfeed"),
+    name: "Clean Energy News",
+    description:
+      "Electric vehicle, solar and home battery headlines aggregated hourly from Electrek, CleanTechnica, InsideEVs and Solar Power World.",
+    isPartOf: { "@id": url("/#website") },
+    publisher: { "@id": url("/#organization") },
+    mainEntity: {
+      "@type": "ItemList",
+      numberOfItems: news.length,
+      itemListElement: news.slice(0, 30).map((article, i) => ({
+        "@type": "ListItem",
+        position: i + 1,
+        url: article.url,
+        item: {
+          "@type": "NewsArticle",
+          headline: article.title,
+          description: article.description,
+          url: article.url,
+          datePublished: article.publishedAt,
+          ...(article.thumbnail ? { image: article.thumbnail } : {}),
+          publisher: { "@type": "Organization", name: article.source },
+        },
+      })),
+    },
+  };
+
+  return (
+    <>
+      <JsonLd data={feedSchema} />
+      <NewsClient news={news} />
+    </>
+  );
 }
 
 export default function HomePage() {
@@ -52,7 +95,7 @@ export default function HomePage() {
       {/* Header */}
       <div className="text-center mb-12">
         <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-amber-100 border border-amber-200 text-amber-700 text-sm font-semibold">
-          <span className="material-symbols-outlined" style={{ fontSize: 16, verticalAlign: "middle", marginRight: 4 }}>wb_sunny</span>Live from Electrek, CleanTechnica &amp; more
+          <span aria-hidden="true" translate="no" className="material-symbols-outlined" style={{ fontSize: 16, verticalAlign: "middle", marginRight: 4 }}>wb_sunny</span>Live from Electrek, CleanTechnica &amp; more
         </div>
         <h1 className="text-4xl sm:text-5xl font-extrabold mb-4">
           Clean Energy{" "}
@@ -83,14 +126,14 @@ export default function HomePage() {
             href={tool.href}
             className="group flex items-center gap-4 bg-surface border border-black/6 rounded-2xl p-5 hover:border-amber-300 hover:shadow-sm transition-all"
           >
-            <span className="material-symbols-outlined text-muted group-hover:text-spark-orange transition-colors" style={{ fontSize: 32 }}>
+            <span aria-hidden="true" translate="no" className="material-symbols-outlined text-muted group-hover:text-spark-orange transition-colors" style={{ fontSize: 32 }}>
               {tool.icon}
             </span>
             <div>
               <div className="font-bold group-hover:text-spark-orange transition-colors">{tool.label}</div>
               <div className="text-xs text-muted">{tool.desc}</div>
             </div>
-            <span className="material-symbols-outlined text-muted group-hover:text-spark-orange transition-colors ml-auto" style={{ fontSize: 20 }}>arrow_forward</span>
+            <span aria-hidden="true" translate="no" className="material-symbols-outlined text-muted group-hover:text-spark-orange transition-colors ml-auto" style={{ fontSize: 20 }}>arrow_forward</span>
           </Link>
         ))}
       </div>

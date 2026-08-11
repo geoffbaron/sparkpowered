@@ -215,7 +215,7 @@ export default function BatteryQuiz({ initialBatteries }: { initialBatteries: Ba
         <div className="bg-gradient-to-br from-sky-50 via-amber-50/40 to-orange-50 border-b border-black/6 py-12">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
             <div className="inline-flex items-center gap-2 bg-white/80 border border-black/8 rounded-full px-4 py-1.5 text-sm font-medium text-muted mb-4">
-              <span className="material-symbols-outlined" style={{ fontSize: 16, verticalAlign: "middle", marginRight: 4 }}>battery_charging_full</span>Your Battery Recommendation
+              <span aria-hidden="true" translate="no" className="material-symbols-outlined" style={{ fontSize: 16, verticalAlign: "middle", marginRight: 4 }}>battery_charging_full</span>Your Battery Recommendation
             </div>
             <h1 className="text-3xl sm:text-4xl font-bold mb-3">
               You need about{" "}
@@ -239,7 +239,7 @@ export default function BatteryQuiz({ initialBatteries }: { initialBatteries: Ba
               { label: "Approx. payback (w/ 30% ITC)", value: `${avgPayback} years`, icon: "calendar_today" },
             ].map((stat) => (
               <div key={stat.label} className="bg-surface border border-black/8 rounded-2xl p-5 text-center shadow-sm">
-                <div className="mb-1"><span className="material-symbols-outlined" style={{ fontSize: 28, color: "#f59e0b" }}>{stat.icon}</span></div>
+                <div className="mb-1"><span aria-hidden="true" translate="no" className="material-symbols-outlined" style={{ fontSize: 28, color: "#f59e0b" }}>{stat.icon}</span></div>
                 <div className="text-2xl font-bold">{stat.value}</div>
                 <div className="text-sm text-muted mt-1">{stat.label}</div>
               </div>
@@ -277,7 +277,7 @@ export default function BatteryQuiz({ initialBatteries }: { initialBatteries: Ba
                       : "bg-surface-light text-muted border-black/8 hover:border-black/16"
                   }`}
                 >
-                  <span className="material-symbols-outlined" style={{ fontSize: 13 }}>
+                  <span aria-hidden="true" translate="no" className="material-symbols-outlined" style={{ fontSize: 13 }}>
                     {noTesla ? "block" : "electric_car"}
                   </span>
                   {noTesla ? "No Tesla (on)" : "No Tesla"}
@@ -304,12 +304,12 @@ export default function BatteryQuiz({ initialBatteries }: { initialBatteries: Ba
                     <div className="flex flex-wrap gap-2 mb-3">
                       {i === 0 && (
                         <div className="inline-flex items-center gap-1 bg-gradient-to-r from-spark-yellow to-spark-orange text-white text-xs font-bold px-3 py-1 rounded-full">
-                          <span className="material-symbols-outlined" style={{ fontSize: 14 }}>star</span> Best Match
+                          <span aria-hidden="true" translate="no" className="material-symbols-outlined" style={{ fontSize: 14 }}>star</span> Best Match
                         </div>
                       )}
                       {fitsUserBudget && (
                         <div className="inline-flex items-center gap-1 bg-green-100 text-green-700 border border-green-200 text-xs font-semibold px-3 py-1 rounded-full">
-                          <span className="material-symbols-outlined" style={{ fontSize: 14 }}>check_circle</span> Within Your Budget
+                          <span aria-hidden="true" translate="no" className="material-symbols-outlined" style={{ fontSize: 14 }}>check_circle</span> Within Your Budget
                         </div>
                       )}
                     </div>
@@ -318,13 +318,13 @@ export default function BatteryQuiz({ initialBatteries }: { initialBatteries: Ba
                         <div className="text-xs font-medium text-muted uppercase tracking-wider mb-1">{product.brand}</div>
                         <h3 className="text-lg font-bold">{product.name}</h3>
                         <div className="flex flex-wrap gap-3 mt-2 text-sm text-muted">
-                          <span className="inline-flex items-center gap-1"><span className="material-symbols-outlined" style={{ fontSize: 16 }}>battery_charging_full</span>{product.kwh} kWh{product.scalable && product.maxKwh ? ` (up to ${product.maxKwh} kWh)` : ""}</span>
-                          <span className="inline-flex items-center gap-1"><span className="material-symbols-outlined" style={{ fontSize: 16 }}>bolt</span>{product.power_kw} kW output</span>
-                          <span className="inline-flex items-center gap-1"><span className="material-symbols-outlined" style={{ fontSize: 16 }}>verified_user</span>{product.warranty_years}-yr warranty</span>
+                          <span className="inline-flex items-center gap-1"><span aria-hidden="true" translate="no" className="material-symbols-outlined" style={{ fontSize: 16 }}>battery_charging_full</span>{product.kwh} kWh{product.scalable && product.maxKwh ? ` (up to ${product.maxKwh} kWh)` : ""}</span>
+                          <span className="inline-flex items-center gap-1"><span aria-hidden="true" translate="no" className="material-symbols-outlined" style={{ fontSize: 16 }}>bolt</span>{product.power_kw} kW output</span>
+                          <span className="inline-flex items-center gap-1"><span aria-hidden="true" translate="no" className="material-symbols-outlined" style={{ fontSize: 16 }}>verified_user</span>{product.warranty_years}-yr warranty</span>
                         </div>
                         {units > 1 && (
                           <div className="mt-2 text-sm font-medium text-amber-700 bg-amber-50 inline-flex items-center gap-1 px-2 py-0.5 rounded-lg">
-                            <span className="material-symbols-outlined" style={{ fontSize: 16 }}>info</span>{units} units recommended for {needed} kWh
+                            <span aria-hidden="true" translate="no" className="material-symbols-outlined" style={{ fontSize: 16 }}>info</span>{units} units recommended for {needed} kWh
                           </div>
                         )}
                         <ul className="mt-3 space-y-1">
@@ -364,7 +364,7 @@ export default function BatteryQuiz({ initialBatteries }: { initialBatteries: Ba
           {/* Solar upsell */}
           {quiz.solar === "none" && (
             <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-2xl p-6">
-              <div className="mb-2"><span className="material-symbols-outlined" style={{ fontSize: 32, color: "#f59e0b" }}>wb_sunny</span></div>
+              <div className="mb-2"><span aria-hidden="true" translate="no" className="material-symbols-outlined" style={{ fontSize: 32, color: "#f59e0b" }}>wb_sunny</span></div>
               <h3 className="font-bold text-lg mb-1">Add solar and maximize your savings</h3>
               <p className="text-muted text-sm mb-4">
                 A battery alone can shift energy use and provide backup. But pairing with solar lets
@@ -405,7 +405,7 @@ export default function BatteryQuiz({ initialBatteries }: { initialBatteries: Ba
       <div className="bg-gradient-to-br from-sky-50 via-amber-50/40 to-orange-50 border-b border-black/6 py-16">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 text-center">
           <div className="inline-flex items-center gap-2 bg-white/80 border border-black/8 rounded-full px-4 py-1.5 text-sm font-medium text-muted mb-4">
-            <span className="material-symbols-outlined" style={{ fontSize: 16, verticalAlign: "middle", marginRight: 4 }}>battery_charging_full</span>Home Battery Calculator
+            <span aria-hidden="true" translate="no" className="material-symbols-outlined" style={{ fontSize: 16, verticalAlign: "middle", marginRight: 4 }}>battery_charging_full</span>Home Battery Calculator
           </div>
           <h1 className="text-3xl sm:text-4xl font-bold mb-3">
             Right-size your{" "}
@@ -453,7 +453,7 @@ export default function BatteryQuiz({ initialBatteries }: { initialBatteries: Ba
                 }`}
               >
                 <div className="flex items-center gap-4">
-                  <span className="material-symbols-outlined text-muted group-hover:text-spark-orange transition-colors" style={{ fontSize: 28 }}>{option.icon}</span>
+                  <span aria-hidden="true" translate="no" className="material-symbols-outlined text-muted group-hover:text-spark-orange transition-colors" style={{ fontSize: 28 }}>{option.icon}</span>
                   <div>
                     <div className="font-semibold">{option.label}</div>
                     <div className="text-sm text-muted">{option.desc}</div>

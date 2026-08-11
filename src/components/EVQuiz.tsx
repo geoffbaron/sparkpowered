@@ -297,6 +297,8 @@ export default function EVQuiz({ initialEVs }: { initialEVs: EVResult[] }) {
             className="bg-surface rounded-2xl p-6 border border-black/8 text-left hover:border-amber-400 hover:bg-amber-50/40 hover:shadow-sm transition-all group"
           >
             <span
+              aria-hidden="true"
+              translate="no"
               className="material-symbols-outlined text-muted group-hover:text-spark-orange transition-colors mb-4 block"
               style={{ fontSize: 36 }}
             >
