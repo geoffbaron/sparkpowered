@@ -24,7 +24,7 @@ const faqs: FAQ[] = [
     category: "Range & Charging",
     question: "What if I run out of charge on a road trip?",
     answer:
-      "The US now has over 200,000 public charging stations, with fast chargers along every major highway. Modern EVs have 250-350+ miles of range, and apps like PlugShare and A Better Route Planner make it easy to plan stops. Most road trips just need 1-2 quick charging breaks — perfect for stretching your legs and grabbing coffee. For daily driving, 95% of Americans drive less than 100 miles per day, well within any modern EV's range.",
+      "The US passed 250,000 public charging ports in mid-2026 — roughly 80,000 station locations, including more than 73,000 DC fast chargers — with fast charging along every major highway. Modern EVs have 250-350+ miles of range, and apps like PlugShare and A Better Route Planner make it easy to plan stops. Most road trips just need 1-2 quick charging breaks — perfect for stretching your legs and grabbing coffee. For daily driving, 95% of Americans drive less than 100 miles per day, well within any modern EV's range.",
   },
   {
     category: "Range & Charging",
@@ -42,7 +42,7 @@ const faqs: FAQ[] = [
     category: "Cost",
     question: "EVs are too expensive.",
     answer:
-      "The average new EV price has fallen below $35,000, with models like the Chevrolet Bolt EUV starting around $27,800. Factor in the federal tax credit (up to $7,500), state incentives, and dramatically lower fuel and maintenance costs, and many EVs are cheaper to own than comparable gas cars over 5 years. No oil changes, no transmission repairs, no exhaust system issues, and brake pads last 2-3x longer thanks to regenerative braking.",
+      "Some are, but the entry point is lower than most people think. The average new EV sold for about $56,000 in mid-2026 (Cox Automotive), which is skewed upward by luxury models — the cheapest new EVs start around $29,000-$31,500, with the 2026 Nissan Leaf S+ at $29,990 before destination and the Chevrolet Bolt at $28,995. Be aware the $7,500 federal purchase credit ended on September 30, 2025 and no longer applies. What remains is an above-the-line deduction of up to $10,000 a year on interest for loans on US-assembled vehicles through 2028, plus state rebates and utility programs in states like California, New York, Colorado, Massachusetts, Oregon and Washington. The bigger saving is in running costs: no oil changes, no transmission or exhaust repairs, and brake pads that last 2-3x longer thanks to regenerative braking.",
   },
   {
     category: "Cost",
@@ -115,6 +115,14 @@ const faqs: FAQ[] = [
 const categories = Array.from(new Set(faqs.map((f) => f.category)));
 
 /**
+ * Several answers cite prices and incentives that move. Stamping the review
+ * date gives both readers and answer engines something to age the figures
+ * against — bump this whenever the numbers are checked.
+ */
+const LAST_REVIEWED = "2026-08-11";
+const LAST_REVIEWED_LABEL = "11 August 2026";
+
+/**
  * FAQPage schema — this is the page most likely to be quoted by an answer
  * engine, so every question/answer pair is published as structured data rather
  * than left for a crawler to scrape out of <details> elements.
@@ -128,6 +136,7 @@ const faqSchema = {
   isPartOf: { "@id": url("/#website") },
   publisher: { "@id": url("/#organization") },
   inLanguage: "en-US",
+  dateModified: LAST_REVIEWED,
   mainEntity: faqs.map((faq) => ({
     "@type": "Question",
     name: faq.question,
@@ -158,6 +167,10 @@ export default function ObjectionsPage() {
         <p className="text-muted max-w-2xl mx-auto text-lg">
           Heard something that made you hesitate about going electric? Let&apos;s
           look at what the data actually says.
+        </p>
+        <p className="text-sm text-muted/80 mt-5">
+          Prices and incentives last reviewed{" "}
+          <time dateTime={LAST_REVIEWED}>{LAST_REVIEWED_LABEL}</time>
         </p>
       </div>
 

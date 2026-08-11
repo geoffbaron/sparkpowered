@@ -248,9 +248,12 @@ export default function BatteryQuiz({ initialBatteries }: { initialBatteries: Ba
 
           {/* ITC note */}
           <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 text-sm text-amber-800">
-            <strong>30% Federal Tax Credit (ITC):</strong> The Inflation Reduction Act gives you a
-            30% tax credit on battery installations through at least 2032. A $10,000 system
-            effectively costs ~$7,000 after the credit.
+            <strong>The 30% federal credit has ended:</strong> the Residential Clean Energy Credit
+            (25D) covered 30% of a home battery, but it was terminated for systems placed in
+            service after 31 December 2025 — so prices shown here are what you actually pay. Leased
+            or third-party-owned systems may still carry a federal credit claimed by the provider
+            through 2027, and many states and utilities run their own storage rebates. Check both
+            before you assume the sticker price is final.
           </div>
 
           {/* Over-budget notice */}

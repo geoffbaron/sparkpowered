@@ -6,7 +6,7 @@ import { JsonLd, pageMetadata, url } from "@/lib/seo";
 
 const TITLE = "Home Battery Sizer — What kWh Battery Do You Need?";
 const DESCRIPTION =
-  "Work out how much home battery storage you actually need. Answer a few questions about your home, outage tolerance and budget, and see matching systems with current prices — Tesla Powerwall, Enphase, EG4, FranklinWH and more.";
+  "Work out how much home battery storage you actually need. Answer a few questions about your home, outage tolerance and budget, and see matching systems with indicative prices — Tesla Powerwall, Enphase IQ, EcoFlow, Anker SOLIX, sonnen and Generac.";
 
 export const metadata: Metadata = pageMetadata({
   title: TITLE,

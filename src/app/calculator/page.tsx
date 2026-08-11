@@ -6,7 +6,7 @@ import { JsonLd, pageMetadata, url } from "@/lib/seo";
 
 const TITLE = "EV Finder — Which Electric Car Is Right for You?";
 const DESCRIPTION =
-  "Answer four questions about your budget, driving range, household and charging setup, and get matched to the electric vehicles that actually fit. Model list refreshed daily with current US prices and range figures.";
+  "Answer four questions about your budget, driving range, household and charging setup, and get matched to the electric vehicles that actually fit — from the $28,995 Chevrolet Bolt to three-row SUVs and electric trucks.";
 
 export const metadata: Metadata = pageMetadata({
   title: TITLE,

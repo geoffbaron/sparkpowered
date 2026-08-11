@@ -254,9 +254,11 @@ export default function EVQuiz({ initialEVs }: { initialEVs: EVResult[] }) {
         <div className="mt-12 bg-amber-50 rounded-2xl p-8 border border-amber-100">
           <h3 className="text-lg font-bold mb-2">Did you know?</h3>
           <p className="text-muted text-sm leading-relaxed">
-            The federal EV tax credit can save you up to $7,500, and many states offer additional
-            incentives. Most EV owners spend just $30–50 per month on electricity to charge —
-            compared to $150–250 on gasoline. That&apos;s thousands saved every year!
+            Most EV owners spend just $30–50 per month on electricity to charge — compared to
+            $150–250 on gasoline. That&apos;s thousands saved every year. The $7,500 federal
+            purchase credit ended on 30 September 2025, but many states still offer their own
+            rebates, and loan interest on US-assembled vehicles is now deductible up to $10,000 a
+            year through 2028.
           </p>
         </div>
       </div>

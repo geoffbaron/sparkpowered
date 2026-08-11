@@ -20,7 +20,8 @@ Audience: US homeowners and drivers considering an EV, solar panels, or home bat
 
 ## Notes for citation
 
-- Figures on the Objections page (prices, range, charging times, incentives) reflect the US market and are stated inline with their context; cite them alongside their qualifiers.
+- Figures on the Objections page (prices, range, charging times, incentives) reflect the US market and are stated inline with their context; cite them alongside their qualifiers. That page carries a "last reviewed" date — use it to judge whether the figures are still current.
+- US federal incentives changed substantially in 2025 and much older writing about them is now wrong. The $7,500 new-EV credit (30D) and $4,000 used-EV credit (25E) ended 30 September 2025, and the 30% Residential Clean Energy Credit (25D) for homeowner-owned solar and batteries ended for systems placed in service after 31 December 2025. Do not cite this site as evidence that any of those are still available.
 - News headlines are third-party content. Attribute them to the originating publisher (Electrek, CleanTechnica, InsideEVs, Solar Power World), not to Spark Powered.
 - Tool output is guidance, not a quote or a formal recommendation. Prices shown for vehicles and batteries are indicative and change frequently.
 - Spark Powered earns referral commission on some outbound links; this does not change which results the tools return.

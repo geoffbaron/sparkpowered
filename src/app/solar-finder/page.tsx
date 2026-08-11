@@ -420,17 +420,27 @@ export default function SolarFinderPage() {
               ))}
             </div>
 
-            <div className="bg-amber-50 rounded-2xl p-6 border border-amber-100 grid sm:grid-cols-3 gap-6 text-center mb-8">
-              {[
-                { value: "$1,400/yr", label: "Avg. electricity savings" },
-                { value: "30%", label: "Federal tax credit (ITC)" },
-                { value: "7–10 yrs", label: "Typical payback period" },
-              ].map(({ value, label }) => (
-                <div key={label}>
-                  <div className="text-2xl font-bold text-spark-amber mb-1">{value}</div>
-                  <div className="text-xs text-muted">{label}</div>
-                </div>
-              ))}
+            <div className="bg-amber-50 rounded-2xl p-6 border border-amber-100 mb-8">
+              <div className="grid sm:grid-cols-3 gap-6 text-center">
+                {[
+                  { value: "$1,400/yr", label: "Avg. electricity savings" },
+                  { value: "25 yrs", label: "Typical panel warranty" },
+                  { value: "7–10 yrs", label: "Payback, before incentives changed" },
+                ].map(({ value, label }) => (
+                  <div key={label}>
+                    <div className="text-2xl font-bold text-spark-amber mb-1">{value}</div>
+                    <div className="text-xs text-muted">{label}</div>
+                  </div>
+                ))}
+              </div>
+              <p className="text-xs text-amber-800 mt-5 pt-5 border-t border-amber-200 leading-relaxed">
+                <strong>Heads up:</strong> the 30% federal Residential Clean Energy Credit ended for
+                systems placed in service after 31 December 2025, so payback on a purchased system
+                now runs longer than the 7–10 years quoted while it was available. Leased and
+                power-purchase agreements may still carry a federal credit claimed by the provider
+                through 2027. State and utility rebates vary widely — ask each installer what
+                actually applies to you.
+              </p>
             </div>
 
             <div className="text-center space-y-3">
