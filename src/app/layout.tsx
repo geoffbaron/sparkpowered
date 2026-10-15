@@ -132,13 +132,7 @@ export default function RootLayout({
       className={`${geistSans.variable} h-full antialiased`}
     >
       <head>
-        {/*
-          Icon font: a self-hosted subset of Material Symbols Outlined (Apache
-          2.0) containing only the glyphs this site uses, so no third-party
-          stylesheet blocks rendering. To add an icon, re-download the subset
-          with the new name in icon_names (see globals.css).
-        */}
-        <link rel="preload" href="/fonts/material-symbols-subset.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        {/* The icon font (globals.css) is only used by the two quizzes, so it is not preloaded site-wide. */}
         <script
           defer
           src="https://mylastlap.com/ll.js"
