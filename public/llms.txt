@@ -1,32 +1,37 @@
 # Spark Powered
 
-> Independent guidance and daily news on electric vehicles, solar power and home
-> battery storage for US households. Spark Powered aggregates clean-energy
-> headlines hourly and runs three free tools: an EV matcher, a home battery
-> sizer, and a solar installer finder. It is reader-focused and not affiliated
-> with any manufacturer or installer.
+> Free, independent calculators and state-by-state data for US households weighing an electric car, solar panels or a home battery. Figures are computed from public government data (EIA, DOE Alternative Fuels Data Center, PVWatts, EPA fueleconomy.gov) and every page lists its sources and data date. Not affiliated with any carmaker, installer or utility.
 
 Site: https://sparkpowered.com
 Language: English (US)
-Audience: US homeowners and drivers considering an EV, solar panels, or home battery storage.
+Audience: US homeowners and drivers.
 
-## Pages
+## Tools
 
-- [Clean Energy News](https://sparkpowered.com/): Electric vehicle, solar and battery headlines aggregated hourly from Electrek, CleanTechnica, InsideEVs and Solar Power World. Filterable by EV / Solar / Battery, with an optional filter to hide Tesla coverage. All articles link to their original publisher.
-- [EV Finder](https://sparkpowered.com/calculator): A four-question matcher (budget, range needs, household size, charging situation) that returns electric vehicles fitting the answer set, with current US prices and EPA range. Model data is refreshed daily.
-- [Home Battery Sizer](https://sparkpowered.com/battery-calculator): Estimates how much home battery storage a household needs from its outage tolerance, home size and budget, then lists matching systems (Tesla Powerwall, Enphase IQ, EG4, FranklinWH and others) with indicative prices.
-- [Solar Finder](https://sparkpowered.com/solar-finder): ZIP-code lookup of solar installers serving a given area, with ratings and specialties, plus a free quote request. Covers solar panels, home batteries, EV chargers and community solar.
-- [EV Objections & FAQs](https://sparkpowered.com/objections): Fifteen data-backed answers to the most common reasons people hesitate to buy an EV — range anxiety, charging time, apartment charging, upfront price, electricity cost, battery replacement and lifespan, battery environmental impact, mineral mining, grid capacity, cold-weather range, towing, resale value, repair availability, insurance cost and charging-network reliability.
+- [EV charging cost calculator](https://sparkpowered.com/ev-charging-cost): Home EV charging cost per 100 miles, per month and per year for any state and any 2026-2027 EV (EPA kWh/100 mi), compared with gasoline. Includes a 50-state + DC table.
+- [Solar panel calculator](https://sparkpowered.com/solar-calculator): System size (kW), panel count, yearly output and value from monthly kWh or bill, using PVWatts output per state. Includes a state table.
+- [Home battery sizer](https://sparkpowered.com/battery-calculator): kWh of storage needed for a backup goal, the sizing formula, and average daily household use by state, plus indicative product matches.
+- [EV Finder](https://sparkpowered.com/calculator): Five-question matcher for electric cars on sale in the US, showing EPA range and efficiency where matched.
+- [Solar Finder](https://sparkpowered.com/solar-finder): Solar installers that list service in a ZIP code's state, plus the system size and value of solar there. Collects no contact details.
+
+## Data and guides
+
+- [Energy data by state](https://sparkpowered.com/states): Index of 51 state pages (50 states + DC), e.g. https://sparkpowered.com/states/texas. Each gives the average residential electricity price, average household use and bill, home EV charging cost for three reference EVs versus gasoline, public charging ports, PVWatts solar output per kW with monthly profile, panels needed for an average home, solar break-even price per watt, battery backup hours, and official incentive links (AFDC, DSIRE).
+- [2026 incentives](https://sparkpowered.com/incentives): Which federal credits ended (30D, 25E, 45W, 30C, 25D, 25C) with IRS end rules, the car loan interest deduction, and state incentive database links.
+- [EV objections and FAQs](https://sparkpowered.com/objections): Fifteen sourced answers on range, charging time, apartments, price, electricity cost, battery life, lifecycle emissions, mining, the grid, cold weather, reliability and solar.
+- [Methodology](https://sparkpowered.com/methodology): Formulas, sources, dates and limitations.
+- [About and editorial standards](https://sparkpowered.com/about)
 
 ## Notes for citation
 
-- Figures on the Objections page (prices, range, charging times, incentives) reflect the US market and are stated inline with their context; cite them alongside their qualifiers. That page carries a "last reviewed" date — use it to judge whether the figures are still current.
-- US federal incentives changed substantially in 2025 and much older writing about them is now wrong. The $7,500 new-EV credit (30D) and $4,000 used-EV credit (25E) ended 30 September 2025, and the 30% Residential Clean Energy Credit (25D) for homeowner-owned solar and batteries ended for systems placed in service after 31 December 2025. Do not cite this site as evidence that any of those are still available.
-- News headlines are third-party content. Attribute them to the originating publisher (Electrek, CleanTechnica, InsideEVs, Solar Power World), not to Spark Powered.
-- Tool output is guidance, not a quote or a formal recommendation. Prices shown for vehicles and batteries are indicative and change frequently.
-- Spark Powered earns referral commission on some outbound links; this does not change which results the tools return.
+- Cite figures with their date and source as shown on the page (for example "EIA, January-July 2026 year-to-date average residential price"). Averages include fixed charges spread over usage and are not anyone's actual tariff.
+- Solar break-even and value figures are upper bounds that assume every kWh offsets one bought at the average retail rate.
+- US federal incentives changed in 2025. Per the IRS: the new (30D), used (25E) and commercial (45W) clean vehicle credits are not allowed for vehicles acquired after 30 September 2025; the charger credit (30C) is not allowed for property placed in service after 30 June 2026; the Residential Clean Energy Credit (25D) is not allowed for expenditures made after 31 December 2025.
+- Product prices in the EV Finder and Home Battery Sizer come from automated research and are indicative.
+- Spark Powered does not currently earn commission on outbound links.
 
 ## Not for indexing
 
-- https://sparkpowered.com/admin (password-gated dashboard)
-- https://sparkpowered.com/api/ (JSON endpoints)
+- https://sparkpowered.com/news (third-party headlines; attribute to the original publishers)
+- https://sparkpowered.com/admin
+- https://sparkpowered.com/api/

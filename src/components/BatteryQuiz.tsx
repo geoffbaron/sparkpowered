@@ -179,36 +179,16 @@ export default function BatteryQuiz({ initialBatteries }: { initialBatteries: Ba
     setShowResults(false);
   }
 
-  // Estimate annual savings based on coverage + solar status (no bill question needed)
-  function annualSavings(): { low: number; high: number } {
-    const base: Record<Coverage, [number, number]> = {
-      essentials: [300,  600],
-      major:      [600,  1100],
-      whole:      [900,  1800],
-    };
-    const [low, high] = base[quiz.coverage ?? "major"];
-    const solarBoost = quiz.solar === "have" ? 1.4 : quiz.solar === "planning" ? 1.2 : 1;
-    return { low: Math.round(low * solarBoost), high: Math.round(high * solarBoost) };
-  }
-
   // ── Results ──
 
   if (showResults && quiz.coverage && quiz.duration && quiz.budget) {
     const needed = calcNeededKwh(quiz.coverage, quiz.duration);
-    const savings = annualSavings();
     const budgetMax = BUDGET_MAX[quiz.budget];
-    const budgetLabel = quiz.budget === "under5k" ? "under $5,000"
-      : quiz.budget === "5kto10k" ? "$5,000–$10,000"
-      : quiz.budget === "10kto20k" ? "$10,000–$20,000"
-      : "$20,000+";
-
     const matches = getMatches(quiz, batteries);
     const bestUnits = Math.ceil(needed / matches[0].kwh);
     const bestTotal = matches[0].price_low * bestUnits;
     const overBudget = bestTotal > budgetMax;
-    const avgPayback = Math.round(
-      ((matches[0].price_low + matches[0].price_high) / 2 * bestUnits / savings.high) * 0.7
-    );
+
 
     return (
       <div className="min-h-screen bg-background">
@@ -235,8 +215,8 @@ export default function BatteryQuiz({ initialBatteries }: { initialBatteries: Ba
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {[
               { label: "Storage needed", value: `${needed} kWh`, icon: "bolt" },
-              { label: "Est. annual savings", value: `$${savings.low.toLocaleString()}–$${savings.high.toLocaleString()}`, icon: "savings" },
-              { label: "Approx. payback (w/ 30% ITC)", value: `${avgPayback} years`, icon: "calendar_today" },
+              { label: `Suggested system (${matches[0].brand} ${matches[0].name})`, value: `${bestUnits} unit${bestUnits === 1 ? "" : "s"}`, icon: "battery_charging_full" },
+              { label: "Indicative installed cost", value: `$${bestTotal.toLocaleString()}–$${(matches[0].price_high * bestUnits).toLocaleString()}`, icon: "savings" },
             ].map((stat) => (
               <div key={stat.label} className="bg-surface border border-black/8 rounded-2xl p-5 text-center shadow-sm">
                 <div className="mb-1"><span aria-hidden="true" translate="no" className="material-symbols-outlined" style={{ fontSize: 28, color: "#f59e0b" }}>{stat.icon}</span></div>
@@ -248,12 +228,13 @@ export default function BatteryQuiz({ initialBatteries }: { initialBatteries: Ba
 
           {/* ITC note */}
           <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 text-sm text-amber-800">
-            <strong>The 30% federal credit has ended:</strong> the Residential Clean Energy Credit
-            (25D) covered 30% of a home battery, but it was terminated for systems placed in
-            service after 31 December 2025 — so prices shown here are what you actually pay. Leased
-            or third-party-owned systems may still carry a federal credit claimed by the provider
-            through 2027, and many states and utilities run their own storage rebates. Check both
-            before you assume the sticker price is final.
+            <strong>The 30% federal credit has ended for homeowners:</strong> the Residential Clean
+            Energy Credit (25D) covered 30% of a home battery, but the IRS says it is not allowed for
+            expenditures made after 31 December 2025 — so prices shown here are before any rebate
+            and are what a cash buyer pays. Leased or third-party-owned systems can still carry a
+            business credit claimed by the provider, and some states and utilities run their own
+            storage rebates.{" "}
+            <Link href="/incentives" className="underline font-semibold">See what is still available</Link>.
           </div>
 
           {/* Over-budget notice */}
@@ -262,7 +243,7 @@ export default function BatteryQuiz({ initialBatteries }: { initialBatteries: Ba
               <strong>Heads up:</strong> The storage capacity you need ({needed} kWh) is typically
               installed for ${bestTotal.toLocaleString()}–${(matches[0].price_high * bestUnits).toLocaleString()} —
               above your ${budgetMax === Infinity ? "20K+" : `$${budgetMax.toLocaleString()}`} budget.
-              We've shown the closest options; consider a smaller coverage area, shorter backup time,
+              We&apos;ve shown the closest options; consider a smaller coverage area, shorter backup time,
               or getting quotes — installers sometimes have financing or bundle discounts.
             </div>
           )}
@@ -295,7 +276,6 @@ export default function BatteryQuiz({ initialBatteries }: { initialBatteries: Ba
                 const units = unitsNeeded(product, needed);
                 const totalLow = product.price_low * units;
                 const totalHigh = product.price_high * units;
-                const afterCredit = Math.round(totalLow * 0.7);
                 const fitsUserBudget = totalLow <= budgetMax;
                 return (
                   <div
@@ -343,7 +323,6 @@ export default function BatteryQuiz({ initialBatteries }: { initialBatteries: Ba
                         <div>
                           <div className="text-sm text-muted">Installed cost est.</div>
                           <div className="text-xl font-bold">${totalLow.toLocaleString()}–${totalHigh.toLocaleString()}</div>
-                          <div className="text-sm text-green-600 font-medium">~${afterCredit.toLocaleString()} after 30% ITC</div>
                         </div>
                         <a
                           href={product.learnMoreUrl}
@@ -384,8 +363,9 @@ export default function BatteryQuiz({ initialBatteries }: { initialBatteries: Ba
 
           <p className="text-xs text-muted text-center pb-2">
             Prices are estimates based on national averages and vary by installer, location, and
-            home configuration. Savings estimates assume time-of-use rates. Always get multiple
-            quotes. Tax credit eligibility depends on your tax situation.
+            home configuration. Product prices and specs are gathered by automated research and can be
+            out of date — confirm them with the manufacturer and get several installer quotes.
+            Storage needed assumes about 85% of a battery&apos;s rated capacity is usable in practice.
           </p>
 
           <div className="text-center">

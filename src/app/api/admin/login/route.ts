@@ -1,21 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
+import { ADMIN_COOKIE, adminToken, safeEqual, safeNext } from "@/lib/admin-auth";
 
 export async function POST(req: NextRequest) {
-  const { password } = await req.json();
+  const { password } = await req.json().catch(() => ({ password: "" }));
   const adminPassword = process.env.ADMIN_PASSWORD;
 
   if (!adminPassword) {
-    return NextResponse.json({ error: "ADMIN_PASSWORD env var not set" }, { status: 500 });
+    return NextResponse.json({ error: "Admin login is not configured" }, { status: 500 });
   }
 
-  if (password !== adminPassword) {
+  if (typeof password !== "string" || !safeEqual(password, adminPassword)) {
     return NextResponse.json({ error: "Incorrect password" }, { status: 401 });
   }
 
-  const next = req.nextUrl.searchParams.get("next") ?? "/admin";
-  const res = NextResponse.json({ ok: true, redirect: next });
+  const res = NextResponse.json({ ok: true, redirect: safeNext(req.nextUrl.searchParams.get("next")) });
 
-  res.cookies.set("admin_auth", adminPassword, {
+  res.cookies.set(ADMIN_COOKIE, await adminToken(adminPassword), {
     httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
@@ -28,6 +28,6 @@ export async function POST(req: NextRequest) {
 
 export async function DELETE() {
   const res = NextResponse.json({ ok: true });
-  res.cookies.delete("admin_auth");
+  res.cookies.delete(ADMIN_COOKIE);
   return res;
 }

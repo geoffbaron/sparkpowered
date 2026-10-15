@@ -1,14 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
+import { ADMIN_COOKIE, isAdminToken } from "@/lib/admin-auth";
 
-export function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  // Only protect /admin routes (not /admin/login itself)
+  // Protect /admin routes (not /admin/login itself)
   if (pathname.startsWith("/admin") && pathname !== "/admin/login") {
-    const token = req.cookies.get("admin_auth")?.value;
-    const password = process.env.ADMIN_PASSWORD;
-
-    if (!password || token !== password) {
+    if (!(await isAdminToken(req.cookies.get(ADMIN_COOKIE)?.value))) {
       const loginUrl = new URL("/admin/login", req.url);
       loginUrl.searchParams.set("next", pathname);
       return NextResponse.redirect(loginUrl);

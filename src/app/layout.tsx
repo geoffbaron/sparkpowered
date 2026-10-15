@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import Header from "@/components/Header";
@@ -18,15 +18,11 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Spark Powered — EVs, Solar & Home Batteries, Explained",
+    default: "Spark Powered — EV, Solar & Home Battery Calculators",
     template: "%s | Spark Powered",
   },
   description: SITE_DESCRIPTION,
@@ -35,19 +31,6 @@ export const metadata: Metadata = {
   creator: SITE_NAME,
   publisher: SITE_NAME,
   category: "Clean Energy",
-  keywords: [
-    "electric vehicles",
-    "EV news",
-    "which EV should I buy",
-    "home battery",
-    "home battery sizing",
-    "solar panels",
-    "solar installers",
-    "EV charging",
-    "clean energy news",
-    "EV myths",
-    "federal EV tax credit",
-  ],
   alternates: {
     canonical: "/",
   },
@@ -56,13 +39,13 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     locale: "en_US",
     url: SITE_URL,
-    title: "Spark Powered — EVs, Solar & Home Batteries, Explained",
+    title: "Spark Powered — EV, Solar & Home Battery Calculators",
     description: SITE_DESCRIPTION,
     images: [OG_IMAGE],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Spark Powered — EVs, Solar & Home Batteries, Explained",
+    title: "Spark Powered — EV, Solar & Home Battery Calculators",
     description: SITE_DESCRIPTION,
     images: [OG_IMAGE.url],
   },
@@ -101,12 +84,14 @@ const organizationSchema = {
       url: SITE_URL,
       logo: {
         "@type": "ImageObject",
-        url: url("/icon"),
-        width: 32,
-        height: 32,
+        url: url("/apple-icon"),
+        width: 180,
+        height: 180,
       },
       description:
-        "Spark Powered publishes independent guidance and daily news on electric vehicles, solar power and home battery storage.",
+        "Spark Powered publishes free, independent calculators and state-by-state data on electric vehicles, solar power and home battery storage for US households.",
+      founder: { "@id": url("/about#editor") },
+      areaServed: { "@type": "Country", name: "United States" },
       knowsAbout: [
         "Electric vehicles",
         "Solar power",
@@ -114,6 +99,14 @@ const organizationSchema = {
         "EV charging infrastructure",
         "Clean energy incentives",
       ],
+    },
+    {
+      "@type": "Person",
+      "@id": url("/about#editor"),
+      name: "Geoff Baron",
+      jobTitle: "Owner and editor",
+      url: url("/about"),
+      worksFor: { "@id": url("/#organization") },
     },
     {
       "@type": "WebSite",
@@ -135,19 +128,16 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} h-full antialiased`}
     >
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=block"
-        />
+        {/*
+          Icon font: a self-hosted subset of Material Symbols Outlined (Apache
+          2.0) containing only the glyphs this site uses, so no third-party
+          stylesheet blocks rendering. To add an icon, re-download the subset
+          with the new name in icon_names (see globals.css).
+        */}
+        <link rel="preload" href="/fonts/material-symbols-subset.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
         <script
           defer
           src="https://mylastlap.com/ll.js"

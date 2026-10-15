@@ -11,6 +11,7 @@ function SparkIcon() {
       viewBox="0 0 32 32"
       fill="none"
       className="inline-block"
+      aria-hidden="true"
     >
       <path
         d="M18 2L6 18h8l-2 12 12-16h-8l2-12z"
@@ -29,11 +30,12 @@ function SparkIcon() {
 }
 
 const navLinks = [
-  { href: "/", label: "News" },
-  { href: "/calculator", label: "EV Finder" },
-  { href: "/solar-finder", label: "Solar Finder" },
+  { href: "/ev-charging-cost", label: "EV Charging Cost" },
+  { href: "/solar-calculator", label: "Solar Calculator" },
   { href: "/battery-calculator", label: "Battery Sizer" },
-  { href: "/objections", label: "Objections" },
+  { href: "/calculator", label: "EV Finder" },
+  { href: "/states", label: "States" },
+  { href: "/news", label: "Headlines" },
 ];
 
 export default function Header() {
@@ -43,7 +45,7 @@ export default function Header() {
     <header className="sticky top-0 z-50 bg-background/90 backdrop-blur-lg border-b border-black/8 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <Link href="/" className="flex items-center gap-2 group">
+          <Link href="/" className="flex items-center gap-2 group" aria-label="Spark Powered home">
             <SparkIcon />
             <span className="text-xl font-bold bg-gradient-to-r from-spark-yellow to-spark-orange bg-clip-text text-transparent">
               Spark Powered
@@ -51,12 +53,12 @@ export default function Header() {
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav aria-label="Main" className="hidden lg:flex items-center gap-6">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-sm font-medium text-muted hover:text-spark-orange transition-colors"
+                className="text-sm font-medium text-stone-700 hover:text-spark-orange transition-colors"
               >
                 {link.label}
               </Link>
@@ -65,11 +67,14 @@ export default function Header() {
 
           {/* Mobile toggle */}
           <button
-            className="md:hidden p-2 text-muted hover:text-spark-orange"
+            type="button"
+            className="lg:hidden p-2 text-stone-700 hover:text-spark-orange"
             onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Toggle menu"
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-nav"
           >
-            <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2">
+            <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
               {mobileOpen ? (
                 <path d="M6 6l12 12M6 18L18 6" />
               ) : (
@@ -82,12 +87,12 @@ export default function Header() {
 
       {/* Mobile nav */}
       {mobileOpen && (
-        <nav className="md:hidden border-t border-black/8 bg-background/98 backdrop-blur-lg">
+        <nav id="mobile-nav" aria-label="Main" className="lg:hidden border-t border-black/8 bg-background/98 backdrop-blur-lg">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="block px-6 py-3 text-sm font-medium text-muted hover:text-spark-orange hover:bg-surface-light transition-colors"
+              className="block px-6 py-3 text-sm font-medium text-stone-700 hover:text-spark-orange hover:bg-surface-light transition-colors"
               onClick={() => setMobileOpen(false)}
             >
               {link.label}

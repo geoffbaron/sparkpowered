@@ -2,14 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
-
-  async redirects() {
-    return [
-      // News lives on the homepage. A 308 tells search engines to fold any
-      // existing /news equity into "/" instead of re-crawling a hop forever.
-      { source: "/news", destination: "/", permanent: true },
-    ];
-  },
+  poweredByHeader: false,
 
   async headers() {
     return [
@@ -19,6 +12,11 @@ const nextConfig: NextConfig = {
           { key: "X-Content-Type-Options", value: "nosniff" },
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
         ],
+      },
+      {
+        // JSON endpoints should never appear in search results.
+        source: "/api/:path*",
+        headers: [{ key: "X-Robots-Tag", value: "noindex" }],
       },
     ];
   },

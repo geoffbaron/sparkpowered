@@ -1,0 +1,2493 @@
+{
+ "generated": "2026-10-15",
+ "national": {
+  "residentialCentsPerKwhYtd": 18.19,
+  "residentialCentsPerKwhYtdPrevYear": 17.01,
+  "residentialCentsPerKwhLatestMonth": 18.31,
+  "avgMonthlyKwh": 863.3,
+  "avgMonthlyBillUsd": 142.26,
+  "gasolineUsdPerGallon": 4.331,
+  "gasMpg": 25.5
+ },
+ "referenceEvs": [
+  {
+   "key": "efficient",
+   "label": "Efficient sedan",
+   "id": 50251,
+   "year": 2026,
+   "make": "Tesla",
+   "model": "Model 3 Standard RWD",
+   "rangeMiles": 321,
+   "kwhPer100mi": 24.3
+  },
+  {
+   "key": "typical",
+   "label": "Compact SUV",
+   "id": 49953,
+   "year": 2026,
+   "make": "Chevrolet",
+   "model": "Equinox EV FWD",
+   "rangeMiles": 319,
+   "kwhPer100mi": 31.1
+  },
+  {
+   "key": "large",
+   "label": "Full-size pickup",
+   "id": 49638,
+   "year": 2026,
+   "make": "Chevrolet",
+   "model": "Silverado EV Ext Range WT",
+   "rangeMiles": 424,
+   "kwhPer100mi": 47.8
+  }
+ ],
+ "sources": {
+  "electricityPrice": {
+   "name": "U.S. Energy Information Administration, Electric Power Monthly, Tables 5.6.A and 5.6.B",
+   "url": "https://www.eia.gov/electricity/monthly/",
+   "period": "July 2026 YTD (year to date); latest month July 2026",
+   "ytdLabel": "July 2026 YTD",
+   "ytdPrevLabel": "July 2025 YTD",
+   "monthLabel": "July 2026",
+   "note": "Average revenue per kWh across all residential customers, including fixed charges spread over usage. Preliminary estimates.",
+   "retrieved": "2026-10-15"
+  },
+  "usage": {
+   "name": "U.S. Energy Information Administration, 2024 Average Monthly Bill- Residential",
+   "url": "https://www.eia.gov/electricity/sales_revenue_price/",
+   "period": "2024 (annual)",
+   "retrieved": "2026-10-15"
+  },
+  "gasoline": {
+   "name": "U.S. Energy Information Administration, Weekly Retail Gasoline and Diesel Prices (regular, all formulations)",
+   "url": "https://www.eia.gov/petroleum/gasdiesel/",
+   "period": "week of 2026-10-12",
+   "retrieved": "2026-10-15"
+  },
+  "charging": {
+   "name": "U.S. Department of Energy, Alternative Fuels Data Center, Alternative Fueling Station Counts by State",
+   "url": "https://afdc.energy.gov/stations/states",
+   "period": "snapshot 2026-10-15 (public stations, currently available)",
+   "retrieved": "2026-10-15"
+  },
+  "solar": {
+   "name": "PVWatts v8 solar model (National Laboratory of the Rockies, formerly NREL, run via its PySAM package) on NASA POWER hourly weather",
+   "url": "https://pvwatts.nlr.gov/",
+   "period": "average of 2015-2024 hourly weather",
+   "assumptions": "1 kW DC fixed roof mount, 20 degree tilt, facing south (180 degrees), standard module, 14% system losses, 96% inverter efficiency, DC/AC ratio 1.2 (PVWatts defaults except tilt). Checked against the PVWatts web API for eight states: within 8%, 3% on average.",
+   "weatherUrl": "https://power.larc.nasa.gov/",
+   "retrieved": "2026-10-15"
+  },
+  "vehicles": {
+   "name": "U.S. EPA and DOE, fueleconomy.gov vehicle data (combined kWh/100 mi, includes charging losses)",
+   "url": "https://www.fueleconomy.gov/feg/download.shtml",
+   "period": "model years 2026-2027",
+   "retrieved": "2026-10-15"
+  },
+  "gasMpg": {
+   "name": "U.S. EPA, 2025 Automotive Trends Report (model year 2024 data)",
+   "url": "https://www.epa.gov/automotive-trends/highlights-automotive-trends-report",
+   "note": "Average new-vehicle real-world fuel economy was 27.2 mpg, and 1.7 mpg lower without battery-electric and plug-in hybrid vehicles; we use 25.5 mpg for a typical new gasoline vehicle.",
+   "retrieved": "2026-10-15"
+  }
+ },
+ "states": [
+  {
+   "abbr": "AL",
+   "name": "Alabama",
+   "slug": "alabama",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 16.54,
+    "residentialCentsPerKwhYtdPrevYear": 15.97,
+    "residentialCentsPerKwhLatestMonth": 16.4
+   },
+   "usage": {
+    "avgMonthlyKwh": 1143.2,
+    "avgMonthlyBillUsd": 173.5,
+    "avgPriceCentsPerKwh": 15.18,
+    "customers": 2398172
+   },
+   "gasoline": {
+    "usdPerGallon": 3.851,
+    "area": "Gulf Coast",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 567,
+    "ports": 1758,
+    "level1": 2,
+    "level2": 843,
+    "dcFast": 913
+   },
+   "solar": {
+    "city": "Birmingham",
+    "kwhPerKwYear": 1369.0,
+    "monthlyKwhPerKw": [
+     92.4,
+     87.2,
+     115.4,
+     134.0,
+     138.5,
+     128.1,
+     129.4,
+     125.7,
+     120.5,
+     120.2,
+     98.4,
+     79.2
+    ],
+    "solarRadiationKwhM2Day": 5.0
+   }
+  },
+  {
+   "abbr": "AK",
+   "name": "Alaska",
+   "slug": "alaska",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 27.09,
+    "residentialCentsPerKwhYtdPrevYear": 25.81,
+    "residentialCentsPerKwhLatestMonth": 28.83
+   },
+   "usage": {
+    "avgMonthlyKwh": 578.3,
+    "avgMonthlyBillUsd": 143.54,
+    "avgPriceCentsPerKwh": 24.82,
+    "customers": 298397
+   },
+   "gasoline": {
+    "usdPerGallon": 5.071,
+    "area": "West Coast (PADD 5) Except California",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 71,
+    "ports": 206,
+    "level1": 0,
+    "level2": 106,
+    "dcFast": 100
+   },
+   "solar": {
+    "city": "Anchorage",
+    "kwhPerKwYear": 872.7,
+    "monthlyKwhPerKw": [
+     15.8,
+     35.5,
+     85.7,
+     119.2,
+     125.5,
+     129.6,
+     119.7,
+     98.8,
+     71.7,
+     44.6,
+     19.6,
+     7.1
+    ],
+    "solarRadiationKwhM2Day": 2.97
+   }
+  },
+  {
+   "abbr": "AZ",
+   "name": "Arizona",
+   "slug": "arizona",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 15.44,
+    "residentialCentsPerKwhYtdPrevYear": 15.3,
+    "residentialCentsPerKwhLatestMonth": 15.38
+   },
+   "usage": {
+    "avgMonthlyKwh": 1074.9,
+    "avgMonthlyBillUsd": 160.24,
+    "avgPriceCentsPerKwh": 14.91,
+    "customers": 3134733
+   },
+   "gasoline": {
+    "usdPerGallon": 5.071,
+    "area": "West Coast (PADD 5) Except California",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 1541,
+    "ports": 4761,
+    "level1": 2,
+    "level2": 3221,
+    "dcFast": 1538
+   },
+   "solar": {
+    "city": "Phoenix",
+    "kwhPerKwYear": 1793.6,
+    "monthlyKwhPerKw": [
+     118.8,
+     129.8,
+     160.2,
+     175.5,
+     185.1,
+     171.0,
+     161.1,
+     157.5,
+     148.8,
+     149.0,
+     126.1,
+     110.6
+    ],
+    "solarRadiationKwhM2Day": 6.64
+   }
+  },
+  {
+   "abbr": "AR",
+   "name": "Arkansas",
+   "slug": "arkansas",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 13.61,
+    "residentialCentsPerKwhYtdPrevYear": 12.6,
+    "residentialCentsPerKwhLatestMonth": 14.33
+   },
+   "usage": {
+    "avgMonthlyKwh": 1048.4,
+    "avgMonthlyBillUsd": 129.13,
+    "avgPriceCentsPerKwh": 12.32,
+    "customers": 1476944
+   },
+   "gasoline": {
+    "usdPerGallon": 3.851,
+    "area": "Gulf Coast",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 384,
+    "ports": 1115,
+    "level1": 0,
+    "level2": 818,
+    "dcFast": 297
+   },
+   "solar": {
+    "city": "Little Rock",
+    "kwhPerKwYear": 1363.4,
+    "monthlyKwhPerKw": [
+     90.3,
+     85.0,
+     114.2,
+     121.5,
+     130.1,
+     136.8,
+     138.7,
+     129.9,
+     122.7,
+     118.3,
+     95.2,
+     80.8
+    ],
+    "solarRadiationKwhM2Day": 4.89
+   }
+  },
+  {
+   "abbr": "CA",
+   "name": "California",
+   "slug": "california",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 33.25,
+    "residentialCentsPerKwhYtdPrevYear": 32.45,
+    "residentialCentsPerKwhLatestMonth": 33.61
+   },
+   "usage": {
+    "avgMonthlyKwh": 503.2,
+    "avgMonthlyBillUsd": 160.86,
+    "avgPriceCentsPerKwh": 31.97,
+    "customers": 14217180
+   },
+   "gasoline": {
+    "usdPerGallon": 6.104,
+    "area": "California",
+    "level": "state"
+   },
+   "charging": {
+    "locations": 20175,
+    "ports": 69279,
+    "level1": 284,
+    "level2": 49352,
+    "dcFast": 19631
+   },
+   "solar": {
+    "city": "Los Angeles",
+    "kwhPerKwYear": 1797.5,
+    "monthlyKwhPerKw": [
+     110.4,
+     124.8,
+     151.3,
+     167.9,
+     174.4,
+     174.8,
+     180.5,
+     175.6,
+     158.2,
+     148.0,
+     125.5,
+     106.1
+    ],
+    "solarRadiationKwhM2Day": 6.47
+   }
+  },
+  {
+   "abbr": "CO",
+   "name": "Colorado",
+   "slug": "colorado",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 16.72,
+    "residentialCentsPerKwhYtdPrevYear": 15.48,
+    "residentialCentsPerKwhLatestMonth": 17
+   },
+   "usage": {
+    "avgMonthlyKwh": 674.2,
+    "avgMonthlyBillUsd": 100.57,
+    "avgPriceCentsPerKwh": 14.92,
+    "customers": 2557732
+   },
+   "gasoline": {
+    "usdPerGallon": 4.175,
+    "area": "Colorado",
+    "level": "state"
+   },
+   "charging": {
+    "locations": 2909,
+    "ports": 7924,
+    "level1": 55,
+    "level2": 6161,
+    "dcFast": 1708
+   },
+   "solar": {
+    "city": "Denver",
+    "kwhPerKwYear": 1616.3,
+    "monthlyKwhPerKw": [
+     100.1,
+     116.2,
+     142.5,
+     150.4,
+     150.7,
+     155.5,
+     161.5,
+     155.8,
+     147.0,
+     133.1,
+     108.2,
+     95.4
+    ],
+    "solarRadiationKwhM2Day": 5.69
+   }
+  },
+  {
+   "abbr": "CT",
+   "name": "Connecticut",
+   "slug": "connecticut",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 27.97,
+    "residentialCentsPerKwhYtdPrevYear": 30.29,
+    "residentialCentsPerKwhLatestMonth": 24.16
+   },
+   "usage": {
+    "avgMonthlyKwh": 694.6,
+    "avgMonthlyBillUsd": 199.66,
+    "avgPriceCentsPerKwh": 28.75,
+    "customers": 1552746
+   },
+   "gasoline": {
+    "usdPerGallon": 4.291,
+    "area": "New England (PADD 1A)",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 1652,
+    "ports": 4986,
+    "level1": 9,
+    "level2": 4220,
+    "dcFast": 757
+   },
+   "solar": {
+    "city": "Bridgeport",
+    "kwhPerKwYear": 1277.6,
+    "monthlyKwhPerKw": [
+     67.0,
+     81.8,
+     116.8,
+     120.0,
+     137.5,
+     137.9,
+     138.4,
+     131.5,
+     113.2,
+     95.8,
+     78.9,
+     58.8
+    ],
+    "solarRadiationKwhM2Day": 4.45
+   }
+  },
+  {
+   "abbr": "DE",
+   "name": "Delaware",
+   "slug": "delaware",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 17.86,
+    "residentialCentsPerKwhYtdPrevYear": 16.76,
+    "residentialCentsPerKwhLatestMonth": 18.48
+   },
+   "usage": {
+    "avgMonthlyKwh": 910.7,
+    "avgMonthlyBillUsd": 150.87,
+    "avgPriceCentsPerKwh": 16.57,
+    "customers": 473508
+   },
+   "gasoline": {
+    "usdPerGallon": 4.347,
+    "area": "Central Atlantic (PADD 1B)",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 227,
+    "ports": 723,
+    "level1": 2,
+    "level2": 412,
+    "dcFast": 309
+   },
+   "solar": {
+    "city": "Wilmington",
+    "kwhPerKwYear": 1330.3,
+    "monthlyKwhPerKw": [
+     73.9,
+     85.4,
+     118.6,
+     127.7,
+     131.4,
+     142.6,
+     141.0,
+     134.5,
+     112.7,
+     105.7,
+     89.0,
+     67.7
+    ],
+    "solarRadiationKwhM2Day": 4.66
+   }
+  },
+  {
+   "abbr": "DC",
+   "name": "District of Columbia",
+   "slug": "district-of-columbia",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 24.66,
+    "residentialCentsPerKwhYtdPrevYear": 20.93,
+    "residentialCentsPerKwhLatestMonth": 25.21
+   },
+   "usage": {
+    "avgMonthlyKwh": 639.4,
+    "avgMonthlyBillUsd": 113.23,
+    "avgPriceCentsPerKwh": 17.71,
+    "customers": 318780
+   },
+   "gasoline": {
+    "usdPerGallon": 4.347,
+    "area": "Central Atlantic (PADD 1B)",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 311,
+    "ports": 1092,
+    "level1": 2,
+    "level2": 1030,
+    "dcFast": 60
+   },
+   "solar": {
+    "city": "Washington",
+    "kwhPerKwYear": 1337.0,
+    "monthlyKwhPerKw": [
+     78.3,
+     85.9,
+     120.6,
+     128.7,
+     129.6,
+     138.1,
+     137.4,
+     132.0,
+     110.6,
+     109.9,
+     92.2,
+     73.5
+    ],
+    "solarRadiationKwhM2Day": 4.69
+   }
+  },
+  {
+   "abbr": "FL",
+   "name": "Florida",
+   "slug": "florida",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 15.3,
+    "residentialCentsPerKwhYtdPrevYear": 15.03,
+    "residentialCentsPerKwhLatestMonth": 15.03
+   },
+   "usage": {
+    "avgMonthlyKwh": 1104.1,
+    "avgMonthlyBillUsd": 156.09,
+    "avgPriceCentsPerKwh": 14.14,
+    "customers": 10443373
+   },
+   "gasoline": {
+    "usdPerGallon": 3.982,
+    "area": "Florida",
+    "level": "state"
+   },
+   "charging": {
+    "locations": 4404,
+    "ports": 15336,
+    "level1": 33,
+    "level2": 9904,
+    "dcFast": 5399
+   },
+   "solar": {
+    "city": "Jacksonville",
+    "kwhPerKwYear": 1440.6,
+    "monthlyKwhPerKw": [
+     102.6,
+     104.5,
+     133.3,
+     139.4,
+     144.9,
+     126.1,
+     132.1,
+     128.4,
+     115.8,
+     121.3,
+     99.2,
+     93.0
+    ],
+    "solarRadiationKwhM2Day": 5.28
+   }
+  },
+  {
+   "abbr": "GA",
+   "name": "Georgia",
+   "slug": "georgia",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 15.4,
+    "residentialCentsPerKwhYtdPrevYear": 14.74,
+    "residentialCentsPerKwhLatestMonth": 16.27
+   },
+   "usage": {
+    "avgMonthlyKwh": 1074.0,
+    "avgMonthlyBillUsd": 151.25,
+    "avgPriceCentsPerKwh": 14.08,
+    "customers": 4815501
+   },
+   "gasoline": {
+    "usdPerGallon": 3.929,
+    "area": "Lower Atlantic (PADD 1C)",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 2378,
+    "ports": 7645,
+    "level1": 77,
+    "level2": 5204,
+    "dcFast": 2364
+   },
+   "solar": {
+    "city": "Atlanta",
+    "kwhPerKwYear": 1358.0,
+    "monthlyKwhPerKw": [
+     92.6,
+     86.9,
+     116.8,
+     133.1,
+     138.6,
+     125.5,
+     128.3,
+     125.1,
+     117.1,
+     117.8,
+     96.9,
+     79.3
+    ],
+    "solarRadiationKwhM2Day": 4.9
+   }
+  },
+  {
+   "abbr": "HI",
+   "name": "Hawaii",
+   "slug": "hawaii",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 46.28,
+    "residentialCentsPerKwhYtdPrevYear": 41.08,
+    "residentialCentsPerKwhLatestMonth": 48
+   },
+   "usage": {
+    "avgMonthlyKwh": 494.9,
+    "avgMonthlyBillUsd": 212.12,
+    "avgPriceCentsPerKwh": 42.86,
+    "customers": 446512
+   },
+   "gasoline": {
+    "usdPerGallon": 5.071,
+    "area": "West Coast (PADD 5) Except California",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 397,
+    "ports": 1040,
+    "level1": 0,
+    "level2": 857,
+    "dcFast": 183
+   },
+   "solar": {
+    "city": "Honolulu",
+    "kwhPerKwYear": 1744.5,
+    "monthlyKwhPerKw": [
+     136.0,
+     128.9,
+     148.2,
+     147.6,
+     152.9,
+     154.2,
+     154.9,
+     159.1,
+     156.5,
+     149.7,
+     130.8,
+     125.7
+    ],
+    "solarRadiationKwhM2Day": 6.25
+   }
+  },
+  {
+   "abbr": "ID",
+   "name": "Idaho",
+   "slug": "idaho",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 12.96,
+    "residentialCentsPerKwhYtdPrevYear": 11.57,
+    "residentialCentsPerKwhLatestMonth": 13.73
+   },
+   "usage": {
+    "avgMonthlyKwh": 943.8,
+    "avgMonthlyBillUsd": 108.73,
+    "avgPriceCentsPerKwh": 11.52,
+    "customers": 868141
+   },
+   "gasoline": {
+    "usdPerGallon": 4.439,
+    "area": "Rocky Mountain",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 258,
+    "ports": 748,
+    "level1": 0,
+    "level2": 431,
+    "dcFast": 317
+   },
+   "solar": {
+    "city": "Boise",
+    "kwhPerKwYear": 1447.4,
+    "monthlyKwhPerKw": [
+     64.0,
+     81.9,
+     120.5,
+     147.2,
+     160.2,
+     168.4,
+     175.3,
+     155.5,
+     134.9,
+     112.2,
+     75.5,
+     51.9
+    ],
+    "solarRadiationKwhM2Day": 5.12
+   }
+  },
+  {
+   "abbr": "IL",
+   "name": "Illinois",
+   "slug": "illinois",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 19.22,
+    "residentialCentsPerKwhYtdPrevYear": 17.36,
+    "residentialCentsPerKwhLatestMonth": 19.22
+   },
+   "usage": {
+    "avgMonthlyKwh": 693.1,
+    "avgMonthlyBillUsd": 109.99,
+    "avgPriceCentsPerKwh": 15.87,
+    "customers": 5392477
+   },
+   "gasoline": {
+    "usdPerGallon": 4.145,
+    "area": "Midwest",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 1873,
+    "ports": 6211,
+    "level1": 3,
+    "level2": 3252,
+    "dcFast": 2956
+   },
+   "solar": {
+    "city": "Chicago",
+    "kwhPerKwYear": 1278.0,
+    "monthlyKwhPerKw": [
+     59.1,
+     84.3,
+     112.4,
+     123.2,
+     135.8,
+     141.2,
+     142.2,
+     136.4,
+     118.5,
+     95.3,
+     72.8,
+     56.8
+    ],
+    "solarRadiationKwhM2Day": 4.38
+   }
+  },
+  {
+   "abbr": "IN",
+   "name": "Indiana",
+   "slug": "indiana",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 17.04,
+    "residentialCentsPerKwhYtdPrevYear": 15.86,
+    "residentialCentsPerKwhLatestMonth": 16.73
+   },
+   "usage": {
+    "avgMonthlyKwh": 901.1,
+    "avgMonthlyBillUsd": 133.06,
+    "avgPriceCentsPerKwh": 14.77,
+    "customers": 3056216
+   },
+   "gasoline": {
+    "usdPerGallon": 4.145,
+    "area": "Midwest",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 733,
+    "ports": 2242,
+    "level1": 0,
+    "level2": 1183,
+    "dcFast": 1059
+   },
+   "solar": {
+    "city": "Indianapolis",
+    "kwhPerKwYear": 1260.9,
+    "monthlyKwhPerKw": [
+     63.4,
+     80.2,
+     105.7,
+     120.0,
+     130.7,
+     136.6,
+     135.4,
+     131.0,
+     118.7,
+     102.3,
+     79.4,
+     57.5
+    ],
+    "solarRadiationKwhM2Day": 4.41
+   }
+  },
+  {
+   "abbr": "IA",
+   "name": "Iowa",
+   "slug": "iowa",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 14.2,
+    "residentialCentsPerKwhYtdPrevYear": 13.52,
+    "residentialCentsPerKwhLatestMonth": 15.99
+   },
+   "usage": {
+    "avgMonthlyKwh": 832.2,
+    "avgMonthlyBillUsd": 111.54,
+    "avgPriceCentsPerKwh": 13.4,
+    "customers": 1448818
+   },
+   "gasoline": {
+    "usdPerGallon": 4.145,
+    "area": "Midwest",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 488,
+    "ports": 1310,
+    "level1": 0,
+    "level2": 718,
+    "dcFast": 592
+   },
+   "solar": {
+    "city": "Des Moines",
+    "kwhPerKwYear": 1363.8,
+    "monthlyKwhPerKw": [
+     73.8,
+     100.2,
+     117.9,
+     129.2,
+     133.6,
+     147.2,
+     146.4,
+     136.6,
+     122.5,
+     105.7,
+     82.1,
+     68.4
+    ],
+    "solarRadiationKwhM2Day": 4.73
+   }
+  },
+  {
+   "abbr": "KS",
+   "name": "Kansas",
+   "slug": "kansas",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 15.21,
+    "residentialCentsPerKwhYtdPrevYear": 14.32,
+    "residentialCentsPerKwhLatestMonth": 15.27
+   },
+   "usage": {
+    "avgMonthlyKwh": 875.7,
+    "avgMonthlyBillUsd": 123.9,
+    "avgPriceCentsPerKwh": 14.15,
+    "customers": 1317095
+   },
+   "gasoline": {
+    "usdPerGallon": 4.145,
+    "area": "Midwest",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 578,
+    "ports": 1424,
+    "level1": 0,
+    "level2": 1035,
+    "dcFast": 389
+   },
+   "solar": {
+    "city": "Wichita",
+    "kwhPerKwYear": 1514.1,
+    "monthlyKwhPerKw": [
+     95.4,
+     106.6,
+     132.9,
+     141.1,
+     136.9,
+     154.3,
+     153.5,
+     145.2,
+     132.4,
+     123.7,
+     101.3,
+     90.7
+    ],
+    "solarRadiationKwhM2Day": 5.32
+   }
+  },
+  {
+   "abbr": "KY",
+   "name": "Kentucky",
+   "slug": "kentucky",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 14.27,
+    "residentialCentsPerKwhYtdPrevYear": 13.12,
+    "residentialCentsPerKwhLatestMonth": 13.81
+   },
+   "usage": {
+    "avgMonthlyKwh": 1046.5,
+    "avgMonthlyBillUsd": 133.81,
+    "avgPriceCentsPerKwh": 12.79,
+    "customers": 2077215
+   },
+   "gasoline": {
+    "usdPerGallon": 4.145,
+    "area": "Midwest",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 413,
+    "ports": 1204,
+    "level1": 4,
+    "level2": 733,
+    "dcFast": 467
+   },
+   "solar": {
+    "city": "Louisville",
+    "kwhPerKwYear": 1257.2,
+    "monthlyKwhPerKw": [
+     67.3,
+     79.7,
+     106.8,
+     120.4,
+     127.2,
+     133.5,
+     132.0,
+     127.7,
+     116.3,
+     103.9,
+     80.5,
+     62.0
+    ],
+    "solarRadiationKwhM2Day": 4.45
+   }
+  },
+  {
+   "abbr": "LA",
+   "name": "Louisiana",
+   "slug": "louisiana",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 13.35,
+    "residentialCentsPerKwhYtdPrevYear": 12.61,
+    "residentialCentsPerKwhLatestMonth": 12.72
+   },
+   "usage": {
+    "avgMonthlyKwh": 1201.8,
+    "avgMonthlyBillUsd": 140.96,
+    "avgPriceCentsPerKwh": 11.73,
+    "customers": 2147745
+   },
+   "gasoline": {
+    "usdPerGallon": 3.851,
+    "area": "Gulf Coast",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 258,
+    "ports": 851,
+    "level1": 0,
+    "level2": 426,
+    "dcFast": 425
+   },
+   "solar": {
+    "city": "New Orleans",
+    "kwhPerKwYear": 1405.3,
+    "monthlyKwhPerKw": [
+     99.9,
+     100.0,
+     126.5,
+     131.5,
+     137.0,
+     122.7,
+     118.9,
+     120.9,
+     122.5,
+     129.3,
+     104.2,
+     91.8
+    ],
+    "solarRadiationKwhM2Day": 5.05
+   }
+  },
+  {
+   "abbr": "ME",
+   "name": "Maine",
+   "slug": "maine",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 29.99,
+    "residentialCentsPerKwhYtdPrevYear": 27.46,
+    "residentialCentsPerKwhLatestMonth": 32.41
+   },
+   "usage": {
+    "avgMonthlyKwh": 550.1,
+    "avgMonthlyBillUsd": 133.6,
+    "avgPriceCentsPerKwh": 24.29,
+    "customers": 742549
+   },
+   "gasoline": {
+    "usdPerGallon": 4.291,
+    "area": "New England (PADD 1A)",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 654,
+    "ports": 1629,
+    "level1": 3,
+    "level2": 1192,
+    "dcFast": 434
+   },
+   "solar": {
+    "city": "Portland",
+    "kwhPerKwYear": 1293.8,
+    "monthlyKwhPerKw": [
+     68.8,
+     81.1,
+     121.4,
+     120.9,
+     143.4,
+     137.0,
+     142.5,
+     133.4,
+     116.8,
+     92.1,
+     76.0,
+     60.3
+    ],
+    "solarRadiationKwhM2Day": 4.41
+   }
+  },
+  {
+   "abbr": "MD",
+   "name": "Maryland",
+   "slug": "maryland",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 21.3,
+    "residentialCentsPerKwhYtdPrevYear": 18.75,
+    "residentialCentsPerKwhLatestMonth": 21.41
+   },
+   "usage": {
+    "avgMonthlyKwh": 928.8,
+    "avgMonthlyBillUsd": 165.87,
+    "avgPriceCentsPerKwh": 17.86,
+    "customers": 2451753
+   },
+   "gasoline": {
+    "usdPerGallon": 4.347,
+    "area": "Central Atlantic (PADD 1B)",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 1684,
+    "ports": 5631,
+    "level1": 12,
+    "level2": 4032,
+    "dcFast": 1587
+   },
+   "solar": {
+    "city": "Baltimore",
+    "kwhPerKwYear": 1322.5,
+    "monthlyKwhPerKw": [
+     73.5,
+     85.0,
+     118.8,
+     126.6,
+     129.6,
+     140.3,
+     139.7,
+     134.8,
+     111.6,
+     105.5,
+     88.9,
+     68.2
+    ],
+    "solarRadiationKwhM2Day": 4.63
+   }
+  },
+  {
+   "abbr": "MA",
+   "name": "Massachusetts",
+   "slug": "massachusetts",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 30.14,
+    "residentialCentsPerKwhYtdPrevYear": 30.22,
+    "residentialCentsPerKwhLatestMonth": 30.49
+   },
+   "usage": {
+    "avgMonthlyKwh": 569.7,
+    "avgMonthlyBillUsd": 167.2,
+    "avgPriceCentsPerKwh": 29.35,
+    "customers": 2924535
+   },
+   "gasoline": {
+    "usdPerGallon": 4.258,
+    "area": "Massachusetts",
+    "level": "state"
+   },
+   "charging": {
+    "locations": 4635,
+    "ports": 11888,
+    "level1": 6,
+    "level2": 9917,
+    "dcFast": 1965
+   },
+   "solar": {
+    "city": "Boston",
+    "kwhPerKwYear": 1270.0,
+    "monthlyKwhPerKw": [
+     72.6,
+     82.0,
+     119.3,
+     117.2,
+     136.5,
+     134.5,
+     134.9,
+     127.7,
+     110.3,
+     91.3,
+     79.1,
+     64.4
+    ],
+    "solarRadiationKwhM2Day": 4.45
+   }
+  },
+  {
+   "abbr": "MI",
+   "name": "Michigan",
+   "slug": "michigan",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 21.53,
+    "residentialCentsPerKwhYtdPrevYear": 19.78,
+    "residentialCentsPerKwhLatestMonth": 23.05
+   },
+   "usage": {
+    "avgMonthlyKwh": 618.2,
+    "avgMonthlyBillUsd": 119.31,
+    "avgPriceCentsPerKwh": 19.3,
+    "customers": 4516367
+   },
+   "gasoline": {
+    "usdPerGallon": 4.145,
+    "area": "Midwest",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 2067,
+    "ports": 5713,
+    "level1": 4,
+    "level2": 3916,
+    "dcFast": 1793
+   },
+   "solar": {
+    "city": "Detroit",
+    "kwhPerKwYear": 1204.8,
+    "monthlyKwhPerKw": [
+     56.8,
+     78.8,
+     107.6,
+     114.6,
+     132.3,
+     138.1,
+     140.4,
+     129.9,
+     108.7,
+     87.4,
+     65.0,
+     45.2
+    ],
+    "solarRadiationKwhM2Day": 4.17
+   }
+  },
+  {
+   "abbr": "MN",
+   "name": "Minnesota",
+   "slug": "minnesota",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 16.25,
+    "residentialCentsPerKwhYtdPrevYear": 15.59,
+    "residentialCentsPerKwhLatestMonth": 17.45
+   },
+   "usage": {
+    "avgMonthlyKwh": 712.3,
+    "avgMonthlyBillUsd": 110.06,
+    "avgPriceCentsPerKwh": 15.45,
+    "customers": 2581180
+   },
+   "gasoline": {
+    "usdPerGallon": 4.184,
+    "area": "Minnesota",
+    "level": "state"
+   },
+   "charging": {
+    "locations": 1158,
+    "ports": 3261,
+    "level1": 13,
+    "level2": 2177,
+    "dcFast": 1071
+   },
+   "solar": {
+    "city": "Minneapolis",
+    "kwhPerKwYear": 1299.6,
+    "monthlyKwhPerKw": [
+     68.9,
+     103.2,
+     119.5,
+     119.2,
+     138.6,
+     144.2,
+     148.3,
+     131.5,
+     113.9,
+     94.2,
+     65.9,
+     52.3
+    ],
+    "solarRadiationKwhM2Day": 4.47
+   }
+  },
+  {
+   "abbr": "MS",
+   "name": "Mississippi",
+   "slug": "mississippi",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 15.19,
+    "residentialCentsPerKwhYtdPrevYear": 13.92,
+    "residentialCentsPerKwhLatestMonth": 14.54
+   },
+   "usage": {
+    "avgMonthlyKwh": 1155.9,
+    "avgMonthlyBillUsd": 154.83,
+    "avgPriceCentsPerKwh": 13.39,
+    "customers": 1340459
+   },
+   "gasoline": {
+    "usdPerGallon": 3.851,
+    "area": "Gulf Coast",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 224,
+    "ports": 707,
+    "level1": 0,
+    "level2": 358,
+    "dcFast": 349
+   },
+   "solar": {
+    "city": "Jackson",
+    "kwhPerKwYear": 1399.0,
+    "monthlyKwhPerKw": [
+     93.6,
+     89.6,
+     115.8,
+     125.8,
+     137.4,
+     134.2,
+     135.4,
+     131.6,
+     126.8,
+     124.0,
+     100.6,
+     84.2
+    ],
+    "solarRadiationKwhM2Day": 5.09
+   }
+  },
+  {
+   "abbr": "MO",
+   "name": "Missouri",
+   "slug": "missouri",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 13.96,
+    "residentialCentsPerKwhYtdPrevYear": 13.18,
+    "residentialCentsPerKwhLatestMonth": 16.09
+   },
+   "usage": {
+    "avgMonthlyKwh": 1000.6,
+    "avgMonthlyBillUsd": 129.18,
+    "avgPriceCentsPerKwh": 12.91,
+    "customers": 2933914
+   },
+   "gasoline": {
+    "usdPerGallon": 4.145,
+    "area": "Midwest",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 1323,
+    "ports": 3314,
+    "level1": 0,
+    "level2": 2409,
+    "dcFast": 905
+   },
+   "solar": {
+    "city": "Kansas City",
+    "kwhPerKwYear": 1391.8,
+    "monthlyKwhPerKw": [
+     78.1,
+     98.0,
+     115.5,
+     133.1,
+     130.9,
+     148.9,
+     143.5,
+     137.5,
+     128.8,
+     112.0,
+     87.9,
+     77.7
+    ],
+    "solarRadiationKwhM2Day": 4.88
+   }
+  },
+  {
+   "abbr": "MT",
+   "name": "Montana",
+   "slug": "montana",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 13.95,
+    "residentialCentsPerKwhYtdPrevYear": 12.53,
+    "residentialCentsPerKwhLatestMonth": 14.99
+   },
+   "usage": {
+    "avgMonthlyKwh": 852.2,
+    "avgMonthlyBillUsd": 107.91,
+    "avgPriceCentsPerKwh": 12.66,
+    "customers": 557432
+   },
+   "gasoline": {
+    "usdPerGallon": 4.439,
+    "area": "Rocky Mountain",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 158,
+    "ports": 481,
+    "level1": 0,
+    "level2": 219,
+    "dcFast": 262
+   },
+   "solar": {
+    "city": "Billings",
+    "kwhPerKwYear": 1389.2,
+    "monthlyKwhPerKw": [
+     75.0,
+     92.4,
+     123.1,
+     128.0,
+     138.6,
+     157.8,
+     165.3,
+     147.3,
+     126.3,
+     103.3,
+     71.3,
+     60.8
+    ],
+    "solarRadiationKwhM2Day": 4.84
+   }
+  },
+  {
+   "abbr": "NE",
+   "name": "Nebraska",
+   "slug": "nebraska",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 12.9,
+    "residentialCentsPerKwhYtdPrevYear": 12.03,
+    "residentialCentsPerKwhLatestMonth": 13.78
+   },
+   "usage": {
+    "avgMonthlyKwh": 956.4,
+    "avgMonthlyBillUsd": 110.28,
+    "avgPriceCentsPerKwh": 11.53,
+    "customers": 905415
+   },
+   "gasoline": {
+    "usdPerGallon": 4.145,
+    "area": "Midwest",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 334,
+    "ports": 791,
+    "level1": 0,
+    "level2": 486,
+    "dcFast": 305
+   },
+   "solar": {
+    "city": "Omaha",
+    "kwhPerKwYear": 1392.2,
+    "monthlyKwhPerKw": [
+     75.8,
+     102.5,
+     117.3,
+     132.8,
+     134.9,
+     150.0,
+     151.3,
+     138.3,
+     123.1,
+     109.9,
+     84.2,
+     72.2
+    ],
+    "solarRadiationKwhM2Day": 4.83
+   }
+  },
+  {
+   "abbr": "NV",
+   "name": "Nevada",
+   "slug": "nevada",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 13.53,
+    "residentialCentsPerKwhYtdPrevYear": 13.19,
+    "residentialCentsPerKwhLatestMonth": 12.77
+   },
+   "usage": {
+    "avgMonthlyKwh": 929.5,
+    "avgMonthlyBillUsd": 139.39,
+    "avgPriceCentsPerKwh": 15.0,
+    "customers": 1311755
+   },
+   "gasoline": {
+    "usdPerGallon": 5.071,
+    "area": "West Coast (PADD 5) Except California",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 632,
+    "ports": 2836,
+    "level1": 3,
+    "level2": 1556,
+    "dcFast": 1277
+   },
+   "solar": {
+    "city": "Las Vegas",
+    "kwhPerKwYear": 1770.6,
+    "monthlyKwhPerKw": [
+     109.7,
+     124.7,
+     153.3,
+     170.3,
+     177.1,
+     173.1,
+     166.0,
+     161.6,
+     155.6,
+     147.8,
+     125.0,
+     106.1
+    ],
+    "solarRadiationKwhM2Day": 6.46
+   }
+  },
+  {
+   "abbr": "NH",
+   "name": "New Hampshire",
+   "slug": "new-hampshire",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 26.79,
+    "residentialCentsPerKwhYtdPrevYear": 23.26,
+    "residentialCentsPerKwhLatestMonth": 26.6
+   },
+   "usage": {
+    "avgMonthlyKwh": 619.0,
+    "avgMonthlyBillUsd": 144.87,
+    "avgPriceCentsPerKwh": 23.4,
+    "customers": 652608
+   },
+   "gasoline": {
+    "usdPerGallon": 4.291,
+    "area": "New England (PADD 1A)",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 304,
+    "ports": 828,
+    "level1": 2,
+    "level2": 477,
+    "dcFast": 349
+   },
+   "solar": {
+    "city": "Manchester",
+    "kwhPerKwYear": 1268.2,
+    "monthlyKwhPerKw": [
+     72.3,
+     81.9,
+     119.2,
+     117.2,
+     136.4,
+     134.6,
+     135.3,
+     127.9,
+     110.0,
+     90.9,
+     78.6,
+     64.0
+    ],
+    "solarRadiationKwhM2Day": 4.44
+   }
+  },
+  {
+   "abbr": "NJ",
+   "name": "New Jersey",
+   "slug": "new-jersey",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 23.98,
+    "residentialCentsPerKwhYtdPrevYear": 22.07,
+    "residentialCentsPerKwhLatestMonth": 25.19
+   },
+   "usage": {
+    "avgMonthlyKwh": 662.4,
+    "avgMonthlyBillUsd": 128.13,
+    "avgPriceCentsPerKwh": 19.34,
+    "customers": 3735638
+   },
+   "gasoline": {
+    "usdPerGallon": 4.347,
+    "area": "Central Atlantic (PADD 1B)",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 2107,
+    "ports": 7090,
+    "level1": 11,
+    "level2": 4917,
+    "dcFast": 2162
+   },
+   "solar": {
+    "city": "Newark",
+    "kwhPerKwYear": 1279.9,
+    "monthlyKwhPerKw": [
+     71.4,
+     83.2,
+     115.6,
+     122.0,
+     130.4,
+     136.5,
+     135.6,
+     129.4,
+     110.6,
+     98.6,
+     83.6,
+     63.2
+    ],
+    "solarRadiationKwhM2Day": 4.49
+   }
+  },
+  {
+   "abbr": "NM",
+   "name": "New Mexico",
+   "slug": "new-mexico",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 15.08,
+    "residentialCentsPerKwhYtdPrevYear": 14.67,
+    "residentialCentsPerKwhLatestMonth": 16.09
+   },
+   "usage": {
+    "avgMonthlyKwh": 654.1,
+    "avgMonthlyBillUsd": 92.88,
+    "avgPriceCentsPerKwh": 14.2,
+    "customers": 936098
+   },
+   "gasoline": {
+    "usdPerGallon": 3.851,
+    "area": "Gulf Coast",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 490,
+    "ports": 1250,
+    "level1": 2,
+    "level2": 637,
+    "dcFast": 611
+   },
+   "solar": {
+    "city": "Albuquerque",
+    "kwhPerKwYear": 1769.2,
+    "monthlyKwhPerKw": [
+     118.2,
+     125.7,
+     157.6,
+     172.8,
+     178.1,
+     163.7,
+     160.2,
+     155.7,
+     150.2,
+     146.1,
+     126.1,
+     114.8
+    ],
+    "solarRadiationKwhM2Day": 6.37
+   }
+  },
+  {
+   "abbr": "NY",
+   "name": "New York",
+   "slug": "new-york",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 29.38,
+    "residentialCentsPerKwhYtdPrevYear": 26.01,
+    "residentialCentsPerKwhLatestMonth": 29.9
+   },
+   "usage": {
+    "avgMonthlyKwh": 571.2,
+    "avgMonthlyBillUsd": 139.53,
+    "avgPriceCentsPerKwh": 24.43,
+    "customers": 7420214
+   },
+   "gasoline": {
+    "usdPerGallon": 4.353,
+    "area": "New York",
+    "level": "state"
+   },
+   "charging": {
+    "locations": 5428,
+    "ports": 20029,
+    "level1": 9,
+    "level2": 16717,
+    "dcFast": 3303
+   },
+   "solar": {
+    "city": "New York City",
+    "kwhPerKwYear": 1301.8,
+    "monthlyKwhPerKw": [
+     71.7,
+     83.9,
+     117.1,
+     124.2,
+     133.4,
+     139.6,
+     138.8,
+     132.2,
+     112.8,
+     100.1,
+     84.4,
+     63.5
+    ],
+    "solarRadiationKwhM2Day": 4.5
+   }
+  },
+  {
+   "abbr": "NC",
+   "name": "North Carolina",
+   "slug": "north-carolina",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 14.94,
+    "residentialCentsPerKwhYtdPrevYear": 13.71,
+    "residentialCentsPerKwhLatestMonth": 15.16
+   },
+   "usage": {
+    "avgMonthlyKwh": 1015.3,
+    "avgMonthlyBillUsd": 143.5,
+    "avgPriceCentsPerKwh": 14.13,
+    "customers": 5067762
+   },
+   "gasoline": {
+    "usdPerGallon": 3.929,
+    "area": "Lower Atlantic (PADD 1C)",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 1893,
+    "ports": 5867,
+    "level1": 9,
+    "level2": 3949,
+    "dcFast": 1909
+   },
+   "solar": {
+    "city": "Charlotte",
+    "kwhPerKwYear": 1396.3,
+    "monthlyKwhPerKw": [
+     94.6,
+     88.8,
+     122.1,
+     136.2,
+     136.7,
+     136.2,
+     137.1,
+     130.0,
+     115.8,
+     118.6,
+     98.4,
+     81.7
+    ],
+    "solarRadiationKwhM2Day": 5.06
+   }
+  },
+  {
+   "abbr": "ND",
+   "name": "North Dakota",
+   "slug": "north-dakota",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 12.36,
+    "residentialCentsPerKwhYtdPrevYear": 11.51,
+    "residentialCentsPerKwhLatestMonth": 13.41
+   },
+   "usage": {
+    "avgMonthlyKwh": 1028.6,
+    "avgMonthlyBillUsd": 118.38,
+    "avgPriceCentsPerKwh": 11.51,
+    "customers": 397839
+   },
+   "gasoline": {
+    "usdPerGallon": 4.145,
+    "area": "Midwest",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 108,
+    "ports": 283,
+    "level1": 1,
+    "level2": 137,
+    "dcFast": 145
+   },
+   "solar": {
+    "city": "Fargo",
+    "kwhPerKwYear": 1350.5,
+    "monthlyKwhPerKw": [
+     73.7,
+     102.4,
+     131.8,
+     130.0,
+     145.4,
+     153.6,
+     154.6,
+     134.4,
+     114.0,
+     93.6,
+     63.7,
+     53.3
+    ],
+    "solarRadiationKwhM2Day": 4.61
+   }
+  },
+  {
+   "abbr": "OH",
+   "name": "Ohio",
+   "slug": "ohio",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 18.7,
+    "residentialCentsPerKwhYtdPrevYear": 16.55,
+    "residentialCentsPerKwhLatestMonth": 19.45
+   },
+   "usage": {
+    "avgMonthlyKwh": 845.5,
+    "avgMonthlyBillUsd": 135.16,
+    "avgPriceCentsPerKwh": 15.99,
+    "customers": 5142108
+   },
+   "gasoline": {
+    "usdPerGallon": 3.87,
+    "area": "Ohio",
+    "level": "state"
+   },
+   "charging": {
+    "locations": 1934,
+    "ports": 5398,
+    "level1": 4,
+    "level2": 3832,
+    "dcFast": 1562
+   },
+   "solar": {
+    "city": "Columbus",
+    "kwhPerKwYear": 1261.3,
+    "monthlyKwhPerKw": [
+     62.1,
+     79.2,
+     110.1,
+     119.0,
+     132.6,
+     133.2,
+     134.6,
+     132.7,
+     117.5,
+     103.0,
+     80.5,
+     56.9
+    ],
+    "solarRadiationKwhM2Day": 4.42
+   }
+  },
+  {
+   "abbr": "OK",
+   "name": "Oklahoma",
+   "slug": "oklahoma",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 13.58,
+    "residentialCentsPerKwhYtdPrevYear": 12.6,
+    "residentialCentsPerKwhLatestMonth": 14.35
+   },
+   "usage": {
+    "avgMonthlyKwh": 1079.1,
+    "avgMonthlyBillUsd": 132.05,
+    "avgPriceCentsPerKwh": 12.24,
+    "customers": 1878818
+   },
+   "gasoline": {
+    "usdPerGallon": 4.145,
+    "area": "Midwest",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 400,
+    "ports": 1668,
+    "level1": 1,
+    "level2": 648,
+    "dcFast": 1019
+   },
+   "solar": {
+    "city": "Oklahoma City",
+    "kwhPerKwYear": 1523.2,
+    "monthlyKwhPerKw": [
+     103.2,
+     105.8,
+     132.0,
+     137.0,
+     134.8,
+     150.4,
+     154.4,
+     145.2,
+     134.0,
+     127.2,
+     105.1,
+     94.1
+    ],
+    "solarRadiationKwhM2Day": 5.39
+   }
+  },
+  {
+   "abbr": "OR",
+   "name": "Oregon",
+   "slug": "oregon",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 15.4,
+    "residentialCentsPerKwhYtdPrevYear": 15.19,
+    "residentialCentsPerKwhLatestMonth": 15.97
+   },
+   "usage": {
+    "avgMonthlyKwh": 881.9,
+    "avgMonthlyBillUsd": 129.62,
+    "avgPriceCentsPerKwh": 14.7,
+    "customers": 1868012
+   },
+   "gasoline": {
+    "usdPerGallon": 5.071,
+    "area": "West Coast (PADD 5) Except California",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 1669,
+    "ports": 4342,
+    "level1": 35,
+    "level2": 2956,
+    "dcFast": 1351
+   },
+   "solar": {
+    "city": "Portland",
+    "kwhPerKwYear": 1225.9,
+    "monthlyKwhPerKw": [
+     45.7,
+     61.5,
+     97.0,
+     117.4,
+     140.0,
+     149.9,
+     167.4,
+     147.9,
+     116.5,
+     89.0,
+     54.5,
+     39.2
+    ],
+    "solarRadiationKwhM2Day": 4.34
+   }
+  },
+  {
+   "abbr": "PA",
+   "name": "Pennsylvania",
+   "slug": "pennsylvania",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 21.04,
+    "residentialCentsPerKwhYtdPrevYear": 18.7,
+    "residentialCentsPerKwhLatestMonth": 21.72
+   },
+   "usage": {
+    "avgMonthlyKwh": 817.2,
+    "avgMonthlyBillUsd": 145.17,
+    "avgPriceCentsPerKwh": 17.77,
+    "customers": 5534580
+   },
+   "gasoline": {
+    "usdPerGallon": 4.347,
+    "area": "Central Atlantic (PADD 1B)",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 2079,
+    "ports": 5889,
+    "level1": 12,
+    "level2": 3818,
+    "dcFast": 2059
+   },
+   "solar": {
+    "city": "Philadelphia",
+    "kwhPerKwYear": 1329.0,
+    "monthlyKwhPerKw": [
+     73.7,
+     85.4,
+     118.6,
+     127.6,
+     131.3,
+     142.7,
+     141.1,
+     134.5,
+     112.6,
+     105.3,
+     88.8,
+     67.6
+    ],
+    "solarRadiationKwhM2Day": 4.66
+   }
+  },
+  {
+   "abbr": "RI",
+   "name": "Rhode Island",
+   "slug": "rhode-island",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 29.22,
+    "residentialCentsPerKwhYtdPrevYear": 29.55,
+    "residentialCentsPerKwhLatestMonth": 28.29
+   },
+   "usage": {
+    "avgMonthlyKwh": 566.9,
+    "avgMonthlyBillUsd": 162.4,
+    "avgPriceCentsPerKwh": 28.65,
+    "customers": 457383
+   },
+   "gasoline": {
+    "usdPerGallon": 4.291,
+    "area": "New England (PADD 1A)",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 356,
+    "ports": 887,
+    "level1": 20,
+    "level2": 716,
+    "dcFast": 151
+   },
+   "solar": {
+    "city": "Providence",
+    "kwhPerKwYear": 1313.2,
+    "monthlyKwhPerKw": [
+     70.3,
+     81.8,
+     122.9,
+     125.9,
+     141.8,
+     141.8,
+     140.0,
+     135.3,
+     113.9,
+     98.3,
+     79.1,
+     62.1
+    ],
+    "solarRadiationKwhM2Day": 4.61
+   }
+  },
+  {
+   "abbr": "SC",
+   "name": "South Carolina",
+   "slug": "south-carolina",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 15.93,
+    "residentialCentsPerKwhYtdPrevYear": 14.8,
+    "residentialCentsPerKwhLatestMonth": 15.47
+   },
+   "usage": {
+    "avgMonthlyKwh": 1050.4,
+    "avgMonthlyBillUsd": 149.51,
+    "avgPriceCentsPerKwh": 14.23,
+    "customers": 2581882
+   },
+   "gasoline": {
+    "usdPerGallon": 3.929,
+    "area": "Lower Atlantic (PADD 1C)",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 702,
+    "ports": 2235,
+    "level1": 3,
+    "level2": 1268,
+    "dcFast": 964
+   },
+   "solar": {
+    "city": "Charleston",
+    "kwhPerKwYear": 1454.0,
+    "monthlyKwhPerKw": [
+     96.6,
+     97.5,
+     129.5,
+     146.8,
+     150.5,
+     137.7,
+     142.0,
+     131.1,
+     119.0,
+     121.0,
+     97.2,
+     85.1
+    ],
+    "solarRadiationKwhM2Day": 5.26
+   }
+  },
+  {
+   "abbr": "SD",
+   "name": "South Dakota",
+   "slug": "south-dakota",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 14.5,
+    "residentialCentsPerKwhYtdPrevYear": 13.15,
+    "residentialCentsPerKwhLatestMonth": 15.37
+   },
+   "usage": {
+    "avgMonthlyKwh": 993.8,
+    "avgMonthlyBillUsd": 127.81,
+    "avgPriceCentsPerKwh": 12.86,
+    "customers": 433548
+   },
+   "gasoline": {
+    "usdPerGallon": 4.145,
+    "area": "Midwest",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 114,
+    "ports": 331,
+    "level1": 0,
+    "level2": 175,
+    "dcFast": 156
+   },
+   "solar": {
+    "city": "Sioux Falls",
+    "kwhPerKwYear": 1389.1,
+    "monthlyKwhPerKw": [
+     79.9,
+     105.0,
+     124.5,
+     130.3,
+     138.8,
+     149.8,
+     155.5,
+     138.0,
+     119.3,
+     103.9,
+     78.2,
+     66.0
+    ],
+    "solarRadiationKwhM2Day": 4.79
+   }
+  },
+  {
+   "abbr": "TN",
+   "name": "Tennessee",
+   "slug": "tennessee",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 13.87,
+    "residentialCentsPerKwhYtdPrevYear": 13.22,
+    "residentialCentsPerKwhLatestMonth": 13.71
+   },
+   "usage": {
+    "avgMonthlyKwh": 1153.6,
+    "avgMonthlyBillUsd": 143.32,
+    "avgPriceCentsPerKwh": 12.42,
+    "customers": 3166103
+   },
+   "gasoline": {
+    "usdPerGallon": 4.145,
+    "area": "Midwest",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 1128,
+    "ports": 3137,
+    "level1": 1,
+    "level2": 2061,
+    "dcFast": 1075
+   },
+   "solar": {
+    "city": "Nashville",
+    "kwhPerKwYear": 1327.5,
+    "monthlyKwhPerKw": [
+     77.8,
+     82.7,
+     111.3,
+     127.0,
+     132.9,
+     137.0,
+     133.2,
+     129.7,
+     120.0,
+     113.1,
+     90.9,
+     71.9
+    ],
+    "solarRadiationKwhM2Day": 4.74
+   }
+  },
+  {
+   "abbr": "TX",
+   "name": "Texas",
+   "slug": "texas",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 16.06,
+    "residentialCentsPerKwhYtdPrevYear": 15.2,
+    "residentialCentsPerKwhLatestMonth": 15.88
+   },
+   "usage": {
+    "avgMonthlyKwh": 1096.1,
+    "avgMonthlyBillUsd": 163.72,
+    "avgPriceCentsPerKwh": 14.94,
+    "customers": 12547863
+   },
+   "gasoline": {
+    "usdPerGallon": 3.779,
+    "area": "Texas",
+    "level": "state"
+   },
+   "charging": {
+    "locations": 3787,
+    "ports": 12954,
+    "level1": 0,
+    "level2": 7298,
+    "dcFast": 5656
+   },
+   "solar": {
+    "city": "Houston",
+    "kwhPerKwYear": 1372.9,
+    "monthlyKwhPerKw": [
+     99.6,
+     90.0,
+     114.2,
+     116.0,
+     124.1,
+     128.7,
+     133.7,
+     129.4,
+     121.1,
+     127.1,
+     99.1,
+     89.8
+    ],
+    "solarRadiationKwhM2Day": 4.99
+   }
+  },
+  {
+   "abbr": "UT",
+   "name": "Utah",
+   "slug": "utah",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 13.16,
+    "residentialCentsPerKwhYtdPrevYear": 12.73,
+    "residentialCentsPerKwhLatestMonth": 13.12
+   },
+   "usage": {
+    "avgMonthlyKwh": 774.2,
+    "avgMonthlyBillUsd": 94.57,
+    "avgPriceCentsPerKwh": 12.22,
+    "customers": 1272861
+   },
+   "gasoline": {
+    "usdPerGallon": 4.439,
+    "area": "Rocky Mountain",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 1010,
+    "ports": 3207,
+    "level1": 4,
+    "level2": 2164,
+    "dcFast": 1039
+   },
+   "solar": {
+    "city": "Salt Lake City",
+    "kwhPerKwYear": 1583.1,
+    "monthlyKwhPerKw": [
+     84.4,
+     100.2,
+     135.2,
+     150.2,
+     158.4,
+     174.3,
+     173.4,
+     160.8,
+     147.0,
+     127.5,
+     94.2,
+     77.4
+    ],
+    "solarRadiationKwhM2Day": 5.6
+   }
+  },
+  {
+   "abbr": "VT",
+   "name": "Vermont",
+   "slug": "vermont",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 23.95,
+    "residentialCentsPerKwhYtdPrevYear": 22.46,
+    "residentialCentsPerKwhLatestMonth": 23.75
+   },
+   "usage": {
+    "avgMonthlyKwh": 573.7,
+    "avgMonthlyBillUsd": 125.66,
+    "avgPriceCentsPerKwh": 21.9,
+    "customers": 323960
+   },
+   "gasoline": {
+    "usdPerGallon": 4.291,
+    "area": "New England (PADD 1A)",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 546,
+    "ports": 1353,
+    "level1": 16,
+    "level2": 1004,
+    "dcFast": 333
+   },
+   "solar": {
+    "city": "Burlington",
+    "kwhPerKwYear": 1172.8,
+    "monthlyKwhPerKw": [
+     55.9,
+     71.8,
+     108.6,
+     116.4,
+     135.3,
+     129.1,
+     134.5,
+     123.9,
+     111.7,
+     81.8,
+     58.6,
+     45.0
+    ],
+    "solarRadiationKwhM2Day": 4.07
+   }
+  },
+  {
+   "abbr": "VA",
+   "name": "Virginia",
+   "slug": "virginia",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 16.83,
+    "residentialCentsPerKwhYtdPrevYear": 14.88,
+    "residentialCentsPerKwhLatestMonth": 17.55
+   },
+   "usage": {
+    "avgMonthlyKwh": 1032.4,
+    "avgMonthlyBillUsd": 148.77,
+    "avgPriceCentsPerKwh": 14.41,
+    "customers": 3654481
+   },
+   "gasoline": {
+    "usdPerGallon": 3.929,
+    "area": "Lower Atlantic (PADD 1C)",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 1832,
+    "ports": 5528,
+    "level1": 22,
+    "level2": 3647,
+    "dcFast": 1859
+   },
+   "solar": {
+    "city": "Virginia Beach",
+    "kwhPerKwYear": 1398.3,
+    "monthlyKwhPerKw": [
+     81.1,
+     86.2,
+     123.4,
+     142.4,
+     140.5,
+     144.3,
+     145.5,
+     136.7,
+     117.9,
+     112.4,
+     90.7,
+     77.3
+    ],
+    "solarRadiationKwhM2Day": 4.93
+   }
+  },
+  {
+   "abbr": "WA",
+   "name": "Washington",
+   "slug": "washington",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 14.4,
+    "residentialCentsPerKwhYtdPrevYear": 12.74,
+    "residentialCentsPerKwhLatestMonth": 14.71
+   },
+   "usage": {
+    "avgMonthlyKwh": 955.5,
+    "avgMonthlyBillUsd": 113.68,
+    "avgPriceCentsPerKwh": 11.9,
+    "customers": 3368978
+   },
+   "gasoline": {
+    "usdPerGallon": 5.377,
+    "area": "Washington",
+    "level": "state"
+   },
+   "charging": {
+    "locations": 3175,
+    "ports": 9108,
+    "level1": 15,
+    "level2": 6666,
+    "dcFast": 2427
+   },
+   "solar": {
+    "city": "Seattle",
+    "kwhPerKwYear": 1158.4,
+    "monthlyKwhPerKw": [
+     41.2,
+     57.9,
+     93.6,
+     114.0,
+     136.9,
+     142.1,
+     158.7,
+     142.3,
+     109.0,
+     80.6,
+     47.0,
+     35.1
+    ],
+    "solarRadiationKwhM2Day": 4.1
+   }
+  },
+  {
+   "abbr": "WV",
+   "name": "West Virginia",
+   "slug": "west-virginia",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 15.47,
+    "residentialCentsPerKwhYtdPrevYear": 15.35,
+    "residentialCentsPerKwhLatestMonth": 15.78
+   },
+   "usage": {
+    "avgMonthlyKwh": 1026.6,
+    "avgMonthlyBillUsd": 154.76,
+    "avgPriceCentsPerKwh": 15.07,
+    "customers": 866456
+   },
+   "gasoline": {
+    "usdPerGallon": 3.929,
+    "area": "Lower Atlantic (PADD 1C)",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 181,
+    "ports": 543,
+    "level1": 2,
+    "level2": 326,
+    "dcFast": 215
+   },
+   "solar": {
+    "city": "Charleston",
+    "kwhPerKwYear": 1238.7,
+    "monthlyKwhPerKw": [
+     60.1,
+     74.9,
+     109.0,
+     116.2,
+     129.3,
+     132.3,
+     129.5,
+     127.5,
+     114.2,
+     103.6,
+     82.0,
+     60.1
+    ],
+    "solarRadiationKwhM2Day": 4.47
+   }
+  },
+  {
+   "abbr": "WI",
+   "name": "Wisconsin",
+   "slug": "wisconsin",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 19,
+    "residentialCentsPerKwhYtdPrevYear": 18.03,
+    "residentialCentsPerKwhLatestMonth": 19.06
+   },
+   "usage": {
+    "avgMonthlyKwh": 645.1,
+    "avgMonthlyBillUsd": 110.87,
+    "avgPriceCentsPerKwh": 17.18,
+    "customers": 2843874
+   },
+   "gasoline": {
+    "usdPerGallon": 4.145,
+    "area": "Midwest",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 901,
+    "ports": 2435,
+    "level1": 9,
+    "level2": 1464,
+    "dcFast": 962
+   },
+   "solar": {
+    "city": "Milwaukee",
+    "kwhPerKwYear": 1232.0,
+    "monthlyKwhPerKw": [
+     53.9,
+     79.2,
+     111.4,
+     120.3,
+     136.9,
+     138.6,
+     148.1,
+     130.2,
+     112.3,
+     86.5,
+     66.5,
+     48.2
+    ],
+    "solarRadiationKwhM2Day": 4.24
+   }
+  },
+  {
+   "abbr": "WY",
+   "name": "Wyoming",
+   "slug": "wyoming",
+   "electricity": {
+    "residentialCentsPerKwhYtd": 13.95,
+    "residentialCentsPerKwhYtdPrevYear": 12.94,
+    "residentialCentsPerKwhLatestMonth": 14.36
+   },
+   "usage": {
+    "avgMonthlyKwh": 863.4,
+    "avgMonthlyBillUsd": 107.65,
+    "avgPriceCentsPerKwh": 12.47,
+    "customers": 286475
+   },
+   "gasoline": {
+    "usdPerGallon": 4.439,
+    "area": "Rocky Mountain",
+    "level": "region"
+   },
+   "charging": {
+    "locations": 125,
+    "ports": 357,
+    "level1": 1,
+    "level2": 163,
+    "dcFast": 193
+   },
+   "solar": {
+    "city": "Cheyenne",
+    "kwhPerKwYear": 1549.0,
+    "monthlyKwhPerKw": [
+     93.0,
+     107.4,
+     139.3,
+     142.6,
+     144.2,
+     159.8,
+     160.5,
+     153.4,
+     140.8,
+     123.6,
+     98.7,
+     85.8
+    ],
+    "solarRadiationKwhM2Day": 5.39
+   }
+  }
+ ]
+}

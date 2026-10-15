@@ -1,0 +1,53 @@
+// End-to-end checks of the interactive tools. Needs Google Chrome installed and
+// a running build: npm run build && npm start, then npm run test:e2e.
+import { chromium } from "playwright-core";
+const base = process.argv[2] ?? "http://localhost:3000";
+const browser = await chromium.launch({ channel: "chrome", headless: true });
+const page = await browser.newPage({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true });
+const errors = [];
+page.on("pageerror", (e) => errors.push(e.message));
+page.on("console", (m) => m.type() === "error" && errors.push(m.text()));
+const ok = (c, msg) => { if (!c) { console.log("FAIL", msg); process.exitCode = 1; } else console.log("ok  ", msg); };
+
+// EV Finder
+await page.goto(base + "/calculator", { waitUntil: "networkidle" });
+for (const t of ["Under $35,000", "SUV / Crossover", "30–60 miles", "Best Value", "3–4 people"]) {
+  await page.getByRole("button", { name: new RegExp(t.replace(/[$]/g, "\\$")) }).first().tap();
+  await page.waitForTimeout(250);
+}
+await page.waitForSelector("text=Your");
+const ev = await page.locator("main").innerText();
+ok(/EPA range/.test(ev), "EV Finder results show EPA range");
+ok(!/30% ITC|\$7,500 back/.test(ev), "EV Finder has no expired-credit claims");
+
+// Battery sizer
+await page.goto(base + "/battery-calculator", { waitUntil: "networkidle" });
+for (const t of ["Power outage backup", "Essentials only", "12 hours", "No solar", "Under $5,000"]) {
+  await page.getByRole("button", { name: new RegExp(t.replace(/[$]/g, "\\$")) }).first().tap();
+  await page.waitForTimeout(400);
+}
+await page.waitForSelector("text=of storage");
+const bat = await page.locator("main").innerText();
+ok(/Indicative installed cost/.test(bat), "Battery results show indicative cost");
+ok(!/ITC/.test(bat) && !/payback/i.test(bat), "Battery results have no ITC/payback claims");
+
+// Solar calculator
+await page.goto(base + "/solar-calculator?state=AZ", { waitUntil: "networkidle" });
+const solar = await page.locator("main [aria-live=polite]").innerText();
+ok(/kW/.test(solar) && /panels/.test(solar), "Solar calculator renders results for AZ: " + solar.replace(/\s+/g, " ").slice(0, 80));
+
+// News filters
+await page.goto(base + "/news", { waitUntil: "networkidle" });
+const before = await page.locator("main li").count();
+await page.getByRole("button", { name: /Hide Tesla/ }).tap();
+await page.waitForTimeout(300);
+const after = await page.locator("main li").count();
+ok(before > 5 && after <= before, `News list ${before} items, ${after} with Tesla hidden`);
+ok((await page.locator("main img").count()) === 0, "News page republishes no images");
+
+// State page link from calculator
+await page.goto(base + "/states/ohio", { waitUntil: "networkidle" });
+ok(await page.locator("h1").innerText() === "Electricity, EV charging and solar in Ohio", "State page H1");
+
+ok(errors.length === 0, "No console/page errors " + errors.join(" | "));
+await browser.close();

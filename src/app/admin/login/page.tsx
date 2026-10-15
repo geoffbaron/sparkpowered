@@ -1,5 +1,6 @@
 "use client";
 
+import { safeNext } from "@/lib/admin-auth";
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
@@ -7,7 +8,7 @@ import { Suspense } from "react";
 function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const next = searchParams.get("next") ?? "/admin";
+  const next = safeNext(searchParams.get("next"));
 
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");

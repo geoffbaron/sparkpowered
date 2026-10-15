@@ -5,6 +5,7 @@ import { cacheLife } from "next/cache";
 
 export interface EVResult {
   name: string;
+  /** Range from automated research; superseded by `epa` when a match exists. */
   range: number;
   price: string;
   type: string;
@@ -12,6 +13,14 @@ export interface EVResult {
   seats: number;
   cargo: string;
   url: string;
+  /** Official EPA figures from fueleconomy.gov, attached server-side by the EV Finder page. */
+  epa?: {
+    label: string;
+    rangeMin: number;
+    rangeMax: number;
+    kwhMin: number;
+    kwhMax: number;
+  } | null;
 }
 
 export interface BatteryProduct {
@@ -32,6 +41,11 @@ export interface BatteryProduct {
 }
 
 // ── Fallback data (used when API is unavailable) ───────────────────────────
+// Prices here are indicative starting MSRPs and are not refreshed
+// automatically; the UI labels them as approximate and shows EPA range from
+// fueleconomy.gov wherever a model can be matched. Reviewed 15 Oct 2026:
+// removed the F-150 Lightning (Ford ended production Dec 2025) and the
+// electric MINI Cooper (not sold in the US); Bolt price per GM's 2027 launch.
 
 const FALLBACK_EVS: EVResult[] = [
   { name: "Chevrolet Equinox EV", range: 319, price: "$33,900", type: "SUV", highlight: "Best value family SUV with incredible range", seats: 5, cargo: "Large", url: "https://www.chevrolet.com/electric/equinox-ev" },
@@ -43,17 +57,15 @@ const FALLBACK_EVS: EVResult[] = [
   { name: "Kia EV6", range: 310, price: "$42,600", type: "SUV", highlight: "Fun to drive with V2L power sharing", seats: 5, cargo: "Large", url: "https://www.kia.com/us/en/ev6" },
   { name: "Kia EV9", range: 304, price: "$54,900", type: "SUV", highlight: "Three-row electric SUV for large families", seats: 7, cargo: "Extra Large", url: "https://www.kia.com/us/en/ev9" },
   { name: "Rivian R1S", range: 321, price: "$75,900", type: "SUV", highlight: "Adventure-ready with incredible off-road capability", seats: 7, cargo: "Extra Large", url: "https://rivian.com/r1s" },
-  { name: "Ford F-150 Lightning", range: 320, price: "$49,995", type: "Truck", highlight: "Work-ready electric truck with Pro Power Onboard", seats: 5, cargo: "Truck Bed", url: "https://www.ford.com/electric-vehicles/f-150-lightning/" },
   { name: "Rivian R1T", range: 328, price: "$69,900", type: "Truck", highlight: "Adventure truck with built-in camp kitchen", seats: 5, cargo: "Truck Bed", url: "https://rivian.com/r1t" },
   { name: "Chevrolet Silverado EV", range: 450, price: "$57,095", type: "Truck", highlight: "Massive range and available Midgate", seats: 5, cargo: "Truck Bed", url: "https://www.chevrolet.com/electric/silverado-ev" },
   { name: "Nissan Leaf", range: 303, price: "$29,990", type: "SUV", highlight: "Redesigned as a crossover with 300+ miles and a NACS port", seats: 5, cargo: "Medium", url: "https://www.nissanusa.com/vehicles/electric-cars/leaf.html" },
-  { name: "Chevrolet Bolt", range: 262, price: "$28,995", type: "Hatchback", highlight: "Cheapest new EV in the US, with Super Cruise available", seats: 5, cargo: "Medium", url: "https://www.chevrolet.com/electric/bolt-ev" },
-  { name: "Mini Cooper SE", range: 114, price: "$30,900", type: "Hatchback", highlight: "Fun city car with iconic style", seats: 4, cargo: "Small", url: "https://www.miniusa.com/model/electric-vehicles.html" },
+  { name: "Chevrolet Bolt", range: 262, price: "$29,990", type: "Hatchback", highlight: "One of the least expensive new EVs in the US", seats: 5, cargo: "Medium", url: "https://www.chevrolet.com/electric/bolt-ev" },
   { name: "BMW iX", range: 324, price: "$87,100", type: "SUV", highlight: "Luxury electric SUV with cutting-edge tech", seats: 5, cargo: "Large", url: "https://www.bmwusa.com/vehicles/bmw-i-series/ix/bmw-ix.html" },
   { name: "Mercedes EQS Sedan", range: 350, price: "$104,400", type: "Sedan", highlight: "Ultra-luxury electric flagship with Hyperscreen", seats: 5, cargo: "Medium", url: "https://www.mbusa.com/en/vehicles/class/eqs/sedan" },
   { name: "Porsche Taycan", range: 246, price: "$92,250", type: "Sedan", highlight: "Performance EV with legendary Porsche handling", seats: 5, cargo: "Medium", url: "https://www.porsche.com/usa/models/taycan/" },
   { name: "Volkswagen ID.4", range: 275, price: "$39,735", type: "SUV", highlight: "Spacious and practical with solid value", seats: 5, cargo: "Large", url: "https://www.vw.com/en/models/id-4.html" },
-  { name: "Toyota bZ4X", range: 252, price: "$42,000", type: "SUV", highlight: "Toyota reliability meets electric efficiency", seats: 5, cargo: "Large", url: "https://www.toyota.com/bz4x" },
+  { name: "Toyota bZ", range: 314, price: "$34,900", type: "SUV", highlight: "Toyota's updated electric crossover", seats: 5, cargo: "Large", url: "https://www.toyota.com/bz/" },
 ];
 
 // Fallback battery data — shown when live LLM research isn't available.

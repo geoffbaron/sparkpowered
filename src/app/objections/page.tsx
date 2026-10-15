@@ -1,10 +1,26 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { JsonLd, pageMetadata, url } from "@/lib/seo";
+import { Breadcrumbs, Sources } from "@/components/content";
+import {
+  DATA_UPDATED,
+  MONTHLY_MILES,
+  NATIONAL,
+  STATES,
+  cents,
+  evCostPer100,
+  formatDate,
+  gasCostPer100,
+  nationalRateUsd,
+  num,
+  referenceEv,
+  usd,
+  ytdWindow,
+} from "@/lib/energy";
 
 const TITLE = "EV Myths & Objections, Answered With Data";
 const DESCRIPTION =
-  "Straight answers to the 15 questions people ask before buying an electric car — range anxiety, charging time, apartment charging, upfront cost, battery replacement, cobalt mining, grid capacity, cold weather and towing.";
+  "Straight, sourced answers to the 15 questions people ask before going electric — range, charging time, apartment charging, price, electricity cost, battery life, mining, the grid, cold weather, reliability and solar.";
 
 export const metadata: Metadata = pageMetadata({
   title: TITLE,
@@ -19,98 +35,91 @@ interface FAQ {
   category: string;
 }
 
+const ports = STATES.reduce((n, s) => n + s.charging.ports, 0);
+const dcFast = STATES.reduce((n, s) => n + s.charging.dcFast, 0);
+const locations = STATES.reduce((n, s) => n + s.charging.locations, 0);
+const typical = referenceEv("typical");
+const evMonthly = (evCostPer100(nationalRateUsd(), typical.kwhPer100mi) * MONTHLY_MILES) / 100;
+const gasMonthly = (gasCostPer100(NATIONAL.gasolineUsdPerGallon) * MONTHLY_MILES) / 100;
+
 const faqs: FAQ[] = [
   {
     category: "Range & Charging",
     question: "What if I run out of charge on a road trip?",
-    answer:
-      "The US passed 250,000 public charging ports in mid-2026 — roughly 80,000 station locations, including more than 73,000 DC fast chargers — with fast charging along every major highway. Modern EVs have 250-350+ miles of range, and apps like PlugShare and A Better Route Planner make it easy to plan stops. Most road trips just need 1-2 quick charging breaks — perfect for stretching your legs and grabbing coffee. For daily driving, 95% of Americans drive less than 100 miles per day, well within any modern EV's range.",
+    answer: `The Department of Energy lists ${num(ports)} public charging ports at ${num(locations)} US locations, including ${num(dcFast)} DC fast-charging ports (Alternative Fuels Data Center, ${formatDate(DATA_UPDATED)}). Most new EVs are rated for well over 250 miles — the median EPA range across 2026 model-year configurations is 295 miles — and route planners such as PlugShare and A Better Route Planner show chargers along the way. Plan charging stops on long trips the way you would plan fuel stops, especially in rural areas where fast chargers are farther apart.`,
   },
   {
     category: "Range & Charging",
     question: "How long does it take to charge?",
-    answer:
-      "Most EV owners charge at home overnight — just plug in when you get home, wake up to a full battery. It's like charging your phone. For road trips, DC fast chargers can add 200+ miles in 20-30 minutes. The average American spends 5-10 minutes at a gas station per fill-up, and you'll never need to do even that for your daily driving since you start every morning 'full'.",
+    answer: "Most charging happens at home while you sleep — the Department of Energy says about 80% of EV charging happens at home — so you start most days with the range you need. On a road trip, a DC fast charger can add a large share of the battery in well under an hour; how fast depends on the car, the charger and the temperature. Charging speed slows as the battery gets close to full, so short stops at 10–80% are usually quickest.",
   },
   {
     category: "Range & Charging",
     question: "What about apartment dwellers who can't charge at home?",
-    answer:
-      "Workplace charging, public chargers at shopping centers, and dedicated EV charging hubs are expanding rapidly. Many apartment complexes are adding chargers — it's becoming a selling point for landlords. Some cities offer curbside charging programs too. You can also use fast chargers once a week like a gas station visit, though it's more expensive than home charging.",
+    answer: "It is harder, and worth planning before you buy. Options include workplace charging, Level 2 chargers at shopping centers and libraries, curbside programs in some cities, and fast chargers used like a weekly gas station visit, which costs more per mile than home charging. Some states have 'right to charge' laws for renters and condo owners; check your state's page on the AFDC incentives database.",
   },
   {
     category: "Cost",
     question: "EVs are too expensive.",
-    answer:
-      "Some are, but the entry point is lower than most people think. The average new EV sold for about $56,000 in mid-2026 (Cox Automotive), which is skewed upward by luxury models — the cheapest new EVs start around $29,000-$31,500, with the 2026 Nissan Leaf S+ at $29,990 before destination and the Chevrolet Bolt at $28,995. Be aware the $7,500 federal purchase credit ended on September 30, 2025 and no longer applies. What remains is an above-the-line deduction of up to $10,000 a year on interest for loans on US-assembled vehicles through 2028, plus state rebates and utility programs in states like California, New York, Colorado, Massachusetts, Oregon and Washington. The bigger saving is in running costs: no oil changes, no transmission or exhaust repairs, and brake pads that last 2-3x longer thanks to regenerative braking.",
+    answer: "Prices have come down at the low end, but EVs still cost more on average. Kelley Blue Book reports the average new EV sold for $55,879 in September 2026, versus $50,562 for the average new vehicle. Lower-priced models include the 2026 Nissan Leaf S+ from $29,990 MSRP before destination and the 2027 Chevrolet Bolt, which launched at $29,990 including destination. The $7,500 federal purchase credit ended for vehicles acquired after 30 September 2025; interest on a loan for a new US-assembled vehicle can be deductible up to $10,000 a year through 2028, and some states and utilities still offer rebates.",
   },
   {
     category: "Cost",
     question: "What about the cost of electricity?",
-    answer:
-      "Charging an EV costs about $30-50 per month for the average driver — compared to $150-250 per month in gasoline. That's $1,200-2,400 saved per year on fuel alone. If you have solar panels, your driving fuel is essentially free. Many utilities offer special EV charging rates for off-peak hours, making it even cheaper to charge overnight.",
+    answer: `At the US average residential price of ${cents(NATIONAL.residentialCentsPerKwhYtd)} per kWh (${ytdWindow()}, EIA), a ${typical.year} ${typical.make} ${typical.model} costs about ${usd(evMonthly)} to charge at home for ${num(MONTHLY_MILES)} miles, compared with about ${usd(gasMonthly)} of regular gasoline at ${usd(NATIONAL.gasolineUsdPerGallon, 2)} a gallon in a 25.5 mpg car. Prices vary widely by state, and public fast charging costs more than home charging.`,
   },
   {
     category: "Cost",
     question: "What about battery replacement costs?",
-    answer:
-      "Modern EV batteries are designed to last 200,000-300,000+ miles. Most manufacturers warranty them for 8 years/100,000 miles. Data from high-mileage EVs shows most batteries retain 85-90% capacity after 200,000 miles. Battery replacement costs are also dropping rapidly — and when it does eventually need replacing, you've saved tens of thousands on fuel and maintenance by then.",
+    answer: "Most EV batteries are covered by a manufacturer warranty, commonly 8 years or 100,000 miles, according to the Department of Energy. Batteries lose capacity gradually rather than failing outright, and replacements outside warranty are uncommon but expensive, so check the warranty terms and, for a used EV, the battery's health report before you buy.",
   },
   {
     category: "Environment",
     question: "Aren't EV batteries bad for the environment?",
-    answer:
-      "Over its lifetime, an EV produces 50-70% less CO2 than a gas car, even accounting for battery manufacturing and electricity generation. As the grid gets cleaner (more solar and wind), this advantage grows every year. EV batteries are also recyclable — companies like Redwood Materials recover 95%+ of critical minerals. Used EV batteries get a second life as stationary energy storage before recycling.",
+    answer: "Building the battery does add emissions up front, but over a car's life an EV comes out well ahead. The International Council on Clean Transportation found that a medium-size EV registered in the US in 2021 produces 60–68% less lifecycle greenhouse gas than a comparable gasoline car. Batteries are also recyclable: Redwood Materials says it recovers more than 95% of critical materials such as lithium, nickel, cobalt and copper.",
   },
   {
     category: "Environment",
     question: "What about mining for battery materials?",
-    answer:
-      "Mining for battery minerals has real impacts, but context matters: oil extraction causes massive environmental damage through drilling, spills, refining, and transportation — continuously, forever. Battery minerals are mined once per vehicle and are recyclable. The industry is also rapidly shifting to more sustainable sources, and new battery chemistries (like sodium-ion and iron-air) reduce reliance on scarce minerals.",
+    answer: "Mining lithium, nickel and cobalt has real environmental and human-rights impacts, and supply chains still need scrutiny. Two differences from oil: battery materials are mined once and can be recycled at the end of the battery's life, while gasoline is burned and has to be extracted again for every mile. Newer chemistries such as lithium iron phosphate avoid cobalt and nickel altogether.",
   },
   {
     category: "Environment",
     question: "The grid isn't clean enough for EVs to matter.",
-    answer:
-      "Even on today's grid, EVs are cleaner than gas cars in every US state. The grid is getting cleaner every year as solar, wind, and storage grow exponentially. An EV bought today will get cleaner every year it's driven. A gas car's emissions are locked in forever. Plus, you can pair an EV with rooftop solar for nearly zero-emission driving from day one.",
+    answer: "Even on today's grid, the Union of Concerned Scientists finds that wherever you plug in across the US, the average EV produces fewer global-warming emissions than the average new gasoline car. The advantage grows as more of the grid's power comes from low-carbon sources. You can check the estimate for your ZIP code with the Beyond Tailpipe calculator on fueleconomy.gov.",
   },
   {
     category: "Performance & Reliability",
     question: "EVs aren't as fun to drive.",
-    answer:
-      "Instant torque from electric motors means EVs are incredibly quick off the line — many beat sports cars in 0-60 times. The low center of gravity (battery is in the floor) gives EVs go-kart-like handling. EV owners consistently rate driving enjoyment higher than their previous gas cars. Test drive one and you'll see why 90% of EV owners say they'd never go back.",
+    answer: "Electric motors deliver full torque from a standstill, so most EVs accelerate briskly, and the heavy battery sits low in the floor, which helps handling. Whether that is 'fun' is personal — the best test is a test drive.",
   },
   {
     category: "Performance & Reliability",
     question: "What about cold weather performance?",
-    answer:
-      "Cold weather does reduce EV range by 10-30%, similar to how gas cars get worse MPG in winter. However, EVs have advantages too: instant cabin heat, pre-conditioning while plugged in (warm car, full range), no cold starts, and no frozen fuel lines. Norway — one of the coldest countries — leads the world in EV adoption at over 90% of new car sales. They seem to manage just fine!",
+    answer: "Cold weather does cut range. fueleconomy.gov, citing AAA testing, reports that at 20°F EV range can drop by about 41% with the cabin heater on and about 12% with it off, compared with 75°F. Preheating the car while it is still plugged in, using seat heaters, and choosing a model with a heat pump all help. Cold-climate countries still adopt EVs: 95.9% of new cars registered in Norway in 2025 were fully electric.",
   },
   {
     category: "Performance & Reliability",
     question: "Are EVs reliable?",
-    answer:
-      "EVs have far fewer moving parts than gas cars — no engine, transmission, exhaust system, or fuel system to fail. Electric motors are incredibly reliable with virtually no maintenance. Consumer Reports data shows EVs generally have fewer problems than gas cars, and maintenance costs are 30-50% lower. The main maintenance items are tires, windshield wipers, and cabin air filters.",
+    answer: "Mixed. EVs have far fewer moving parts and lower scheduled maintenance — Argonne National Laboratory estimates 6.1 cents per mile for a battery-electric car versus 10.1 cents for a gasoline car. But Consumer Reports' 2025 reliability survey found EVs and plug-in hybrids had about 80% more problems on average than gas-only cars, often with software, electronics and charging hardware. Reliability varies a lot by brand and model, so check model-specific ratings.",
   },
   {
     category: "Solar & Batteries",
     question: "Is solar worth it if my roof doesn't get much sun?",
-    answer:
-      "Solar panels work even on cloudy days — they just produce less. Modern panels are much more efficient than even 5 years ago. If your roof isn't ideal, community solar programs (now available in 40 states) let you subscribe to a local solar farm and save 10-20% on your bill without any installation. Your utility bill drops either way.",
+    answer: "Panels still work in cloudy climates; they just produce less. The PVWatts solar model shows that 1 kW of panels makes far more power in the Southwest than in the Pacific Northwest, so payback depends on your state, your electricity price and how your utility credits exported power — our state pages show all three. If your roof isn't suitable, community solar lets you subscribe to a shared array; 24 states and DC had policies enabling it as of February 2025 (National Laboratory of the Rockies).",
   },
   {
     category: "Solar & Batteries",
     question: "Do I need a home battery with solar?",
-    answer:
-      "Not necessarily, but they're increasingly valuable. Without a battery, excess solar goes to the grid (usually for credits on your bill). With a battery, you store that energy for evening use and have backup power during outages. As time-of-use electricity pricing spreads, batteries let you avoid expensive peak rates. They're especially valuable if your area has frequent power outages.",
+    answer: "Not necessarily. Without a battery, extra solar power goes to the grid, usually for a bill credit. A battery stores it for the evening and keeps power on during outages, which matters more if your utility credits exports at a low rate, uses time-of-use pricing, or has frequent outages. Our battery sizer shows how much storage you would need.",
   },
   {
     category: "Solar & Batteries",
     question: "How long do solar panels last?",
-    answer:
-      "Solar panels are warrantied for 25-30 years and often produce power for 35-40+ years. They have no moving parts, require almost no maintenance, and degradation is minimal — typically less than 0.5% per year. A system installed today will still be producing 87%+ of its original output in 25 years. It's one of the most durable investments you can make for your home.",
+    answer: "Research from the National Renewable Energy Laboratory (now the National Laboratory of the Rockies) found panels lose a median of about 0.5% of output per year. Panels are typically warranted for 20 to 25 years, and the Department of Energy says most systems keep at least 80% of their original output for at least 25 years. Inverters usually need replacing sooner than panels.",
   },
 ];
+
 
 const categories = Array.from(new Set(faqs.map((f) => f.category)));
 
@@ -119,8 +128,8 @@ const categories = Array.from(new Set(faqs.map((f) => f.category)));
  * date gives both readers and answer engines something to age the figures
  * against — bump this whenever the numbers are checked.
  */
-const LAST_REVIEWED = "2026-08-11";
-const LAST_REVIEWED_LABEL = "11 August 2026";
+const LAST_REVIEWED = "2026-10-15";
+const LAST_REVIEWED_LABEL = "15 October 2026";
 
 /**
  * FAQPage schema — this is the page most likely to be quoted by an answer
@@ -150,8 +159,9 @@ const faqSchema = {
 
 export default function ObjectionsPage() {
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <JsonLd data={faqSchema} />
+      <Breadcrumbs items={[{ name: "EV objections", path: "/objections" }]} />
       {/* Header */}
       <div className="text-center mb-16">
         <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-amber-100 border border-amber-200 text-spark-amber text-sm font-semibold">
@@ -168,7 +178,7 @@ export default function ObjectionsPage() {
           Heard something that made you hesitate about going electric? Let&apos;s
           look at what the data actually says.
         </p>
-        <p className="text-sm text-muted/80 mt-5">
+        <p className="text-sm text-stone-600 mt-5">
           Prices and incentives last reviewed{" "}
           <time dateTime={LAST_REVIEWED}>{LAST_REVIEWED_LABEL}</time>
         </p>
@@ -225,9 +235,8 @@ export default function ObjectionsPage() {
       <div className="mt-16 bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl p-8 border border-amber-100 text-center">
         <h3 className="text-2xl font-bold mb-3">Still have questions?</h3>
         <p className="text-muted mb-6 max-w-lg mx-auto">
-          The best way to experience the electric difference is to test drive
-          one. Most dealerships offer no-pressure EV test drives — and most
-          people are sold after their first ride.
+          Run your own numbers: see what an EV would cost to charge where you
+          live, or find models that fit your budget and driving.
         </p>
         <Link
           href="/calculator"
@@ -235,7 +244,36 @@ export default function ObjectionsPage() {
         >
           Find Your Perfect EV
         </Link>
+        <Link
+          href="/ev-charging-cost"
+          className="ml-0 sm:ml-3 mt-3 sm:mt-0 inline-flex items-center justify-center px-8 py-3 rounded-xl border-2 border-amber-300 bg-white font-bold hover:bg-amber-50"
+        >
+          Charging cost calculator
+        </Link>
       </div>
+      <Sources
+        items={[
+          { name: "U.S. DOE Alternative Fuels Data Center: station counts by state", url: "https://afdc.energy.gov/stations/states", detail: `retrieved ${DATA_UPDATED}` },
+          { name: "fueleconomy.gov vehicle data", url: "https://www.fueleconomy.gov/feg/download.shtml", detail: "EPA range and efficiency, model years 2026–2027" },
+          { name: "U.S. DOE: National EV Charging Network", url: "https://www.energy.gov/topics/national-ev-charging-network", detail: "about 80% of charging happens at home" },
+          { name: "Cox Automotive / Kelley Blue Book: September 2026 ATP report", url: "https://www.coxautoinc.com/insights/sept-2026-atp-report/", detail: "13 October 2026" },
+          { name: "Nissan: 2026 Nissan Leaf pricing", url: "https://usa.nissannews.com/en-US/releases/more-features-more-range-still-under-30k-all-new-2026-nissan-leaf-priced-from-29990-msrp", detail: "19 August 2025" },
+          { name: "GM: 2027 Chevrolet Bolt", url: "https://news.gm.com/home.detail.html/Pages/news/us/en/2025/oct/1009-2027-Chevrolet-Bolt.html", detail: "9 October 2025" },
+          { name: "IRS fact sheet FS-2025-05", url: "https://www.irs.gov/newsroom/faqs-for-modification-of-sections-25c-25d-25e-30c-30d-45l-45w-and-179d-under-public-law-119-21-139-stat-72-july-4-2025-commonly-known-as-the-one-big-beautiful-bill-act-obbb", detail: "credit end dates" },
+          { name: "EIA Electric Power Monthly and weekly gasoline prices", url: "https://www.eia.gov/electricity/monthly/", detail: ytdWindow() },
+          { name: "U.S. DOE AFDC: Maintenance and Safety of Electric Vehicles", url: "https://afdc.energy.gov/vehicles/electric-maintenance", detail: "battery warranties" },
+          { name: "ICCT: Global comparison of life-cycle GHG emissions of combustion engine and electric cars", url: "https://theicct.org/publication/a-global-comparison-of-the-life-cycle-greenhouse-gas-emissions-of-combustion-engine-and-electric-passenger-cars/", detail: "July 2021" },
+          { name: "Redwood Materials", url: "https://www.redwoodmaterials.com/materials/", detail: "recovery rate claim" },
+          { name: "Union of Concerned Scientists blog, 3 August 2026", url: "https://blog.ucs.org/dave-reichmuth/epa-stopped-updating-the-data-behind-electric-vehicle-emissions-the-numbers-still-show-evs-are-winners/", detail: "EV vs gasoline emissions by grid region" },
+          { name: "fueleconomy.gov: Fuel Economy in Cold Weather", url: "https://fueleconomy.gov/feg/coldweather.shtml", detail: "cites AAA testing" },
+          { name: "OFV (Norwegian Road Federation) 2025 registrations", url: "https://ofv.no/", detail: "95.9% fully electric in 2025" },
+          { name: "U.S. DOE Fact of the Week #1190", url: "https://www.energy.gov/eere/vehicles/articles/fotw-1190-june-14-2021-battery-electric-vehicles-have-lower-scheduled", detail: "Argonne maintenance cost per mile" },
+          { name: "Consumer Reports: car reliability survey", url: "https://www.consumerreports.org/cars/car-reliability-owner-satisfaction/electric-vehicles-are-less-reliable-than-conventional-cars-a1047214174/", detail: "updated 4 December 2025" },
+          { name: "National Laboratory of the Rockies: community solar", url: "https://www.nlr.gov/state-local-tribal/community-solar", detail: "data as of February 2025" },
+          { name: "Jordan & Kurtz, Photovoltaic Degradation Rates — An Analytical Review (2013)", url: "https://www.osti.gov/biblio/1045052", detail: "median 0.5% per year" },
+          { name: "U.S. DOE: Should I replace my rooftop solar system?", url: "https://www.energy.gov/cmei/systems/articles/should-i-replace-my-rooftop-solar-system", detail: "25 June 2024" },
+        ]}
+      />
     </div>
   );
 }

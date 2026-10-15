@@ -1,150 +1,214 @@
 import { Suspense } from "react";
 import Link from "next/link";
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { fetchAllNews } from "@/lib/rss";
 import NewsClient from "@/components/NewsClient";
 import { JsonLd, pageMetadata, url } from "@/lib/seo";
+import {
+  DATA_UPDATED,
+  NATIONAL,
+  STATES,
+  cents,
+  chargingFigures,
+  evCostPer100,
+  formatDate,
+  gasCostPer100,
+  nationalRateUsd,
+  num,
+  referenceEv,
+  usd,
+  ytdWindow,
+} from "@/lib/energy";
 
-const TITLE = "EV, Solar & Clean Energy News — Updated Hourly";
+const TITLE = "EV Charging Cost, Solar & Battery Calculators by State";
 const DESCRIPTION =
-  "The latest news on electric vehicles, solar power, and home batteries — refreshed every hour from Electrek, CleanTechnica, InsideEVs and Solar Power World. Plus free tools to pick an EV, size a home battery, and find a solar installer.";
+  "Free calculators built on government data: what it costs to charge an EV in your state, how many solar panels you need, and how big a home battery to buy.";
 
 export const metadata: Metadata = {
   ...pageMetadata({ title: TITLE, description: DESCRIPTION, path: "/" }),
-  // The homepage carries the brand itself, so it skips the "| Spark Powered"
-  // suffix the template appends to every other page.
   title: { absolute: `${TITLE} | Spark Powered` },
 };
 
-function NewsSkeleton() {
-  return (
-    <>
-      {/* Skeleton filter row */}
-      <div className="flex flex-wrap gap-3 justify-center mb-10">
-        {[14, 16, 18, 14].map((w, i) => (
-          <div key={i} className={`h-8 w-${w} bg-surface-light rounded-full animate-pulse`} />
-        ))}
-      </div>
-      {/* Skeleton grid */}
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {[...Array(6)].map((_, i) => (
-          <div key={i} className="bg-surface rounded-2xl border border-black/6 overflow-hidden animate-pulse">
-            <div className="aspect-[16/9] bg-surface-light" />
-            <div className="p-6 space-y-3">
-              <div className="flex gap-2">
-                <div className="h-5 w-14 bg-surface-light rounded-full" />
-                <div className="h-5 w-16 bg-surface-light rounded-full" />
-              </div>
-              <div className="h-5 bg-surface-light rounded w-full" />
-              <div className="h-5 bg-surface-light rounded w-4/5" />
-              <div className="h-4 bg-surface-light rounded w-full" />
-              <div className="h-4 bg-surface-light rounded w-3/4" />
-            </div>
-          </div>
-        ))}
-      </div>
-    </>
-  );
-}
+const TOOLS = [
+  { href: "/ev-charging-cost", icon: "ev_station", label: "EV charging cost calculator", desc: "Your state, your car, your miles — versus gasoline." },
+  { href: "/solar-calculator", icon: "wb_sunny", label: "Solar panel calculator", desc: "How many panels your home needs and what they're worth." },
+  { href: "/battery-calculator", icon: "battery_charging_full", label: "Home battery sizer", desc: "How many kWh of backup you need, with matching systems." },
+  { href: "/calculator", icon: "electric_car", label: "EV Finder", desc: "Match an electric car to your budget, range and family." },
+  { href: "/solar-finder", icon: "location_on", label: "Solar Finder", desc: "Installers serving your ZIP code, and how to judge a quote." },
+  { href: "/incentives", icon: "receipt_long", label: "2026 incentives", desc: "Which federal credits ended, and where state rebates live." },
+];
 
-async function NewsLoader() {
-  const news = await fetchAllNews();
-
-  // Publish the headline list as structured data so answer engines can cite the
-  // feed (and its sources) rather than guessing at the markup.
-  const feedSchema = {
-    "@context": "https://schema.org",
-    "@type": "CollectionPage",
-    "@id": url("/#newsfeed"),
-    name: "Clean Energy News",
-    description:
-      "Electric vehicle, solar and home battery headlines aggregated hourly from Electrek, CleanTechnica, InsideEVs and Solar Power World.",
-    isPartOf: { "@id": url("/#website") },
-    publisher: { "@id": url("/#organization") },
-    mainEntity: {
-      "@type": "ItemList",
-      numberOfItems: news.length,
-      itemListElement: news.slice(0, 30).map((article, i) => ({
-        "@type": "ListItem",
-        position: i + 1,
-        url: article.url,
-        item: {
-          "@type": "NewsArticle",
-          headline: article.title,
-          description: article.description,
-          url: article.url,
-          datePublished: article.publishedAt,
-          ...(article.thumbnail ? { image: article.thumbnail } : {}),
-          publisher: { "@type": "Organization", name: article.source },
-        },
-      })),
-    },
-  };
-
-  return (
-    <>
-      <JsonLd data={feedSchema} />
-      <NewsClient news={news} />
-    </>
-  );
+async function LatestHeadlines() {
+  const news = await fetchAllNews(6);
+  if (news.length === 0) return <p className="text-sm text-stone-600">Headlines are unavailable right now.</p>;
+  return <NewsClient news={news} compact />;
 }
 
 export default function HomePage() {
+  const typical = referenceEv("typical");
+  const rows = STATES.map((s) => ({ s, c: chargingFigures(s) })).sort((a, b) => a.c.evPer100 - b.c.evPer100);
+  const cheapest = rows.slice(0, 3);
+  const priciest = rows.slice(-3).reverse();
+  const sunniest = [...STATES].sort((a, b) => b.solar.kwhPerKwYear - a.solar.kwhPerKwYear).slice(0, 3);
+  const usEv = evCostPer100(nationalRateUsd(), typical.kwhPer100mi);
+  const usGas = gasCostPer100(NATIONAL.gasolineUsdPerGallon);
+  const states = [...STATES].sort((a, b) => a.name.localeCompare(b.name));
+
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      {/* Header */}
-      <div className="text-center mb-12">
-        <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-amber-100 border border-amber-200 text-amber-700 text-sm font-semibold">
-          <span aria-hidden="true" translate="no" className="material-symbols-outlined" style={{ fontSize: 16, verticalAlign: "middle", marginRight: 4 }}>wb_sunny</span>Live from Electrek, CleanTechnica &amp; more
-        </div>
-        <h1 className="text-4xl sm:text-5xl font-extrabold mb-4">
-          Clean Energy{" "}
-          <span className="bg-gradient-to-r from-spark-yellow to-spark-orange bg-clip-text text-transparent">
-            News
-          </span>
+    <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14">
+      <JsonLd
+        data={{
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "@id": `${url("/")}#webpage`,
+          url: url("/"),
+          name: TITLE,
+          description: DESCRIPTION,
+          isPartOf: { "@id": url("/#website") },
+          about: { "@id": url("/#organization") },
+          dateModified: DATA_UPDATED,
+        }}
+      />
+      <section className="max-w-3xl">
+        <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight mb-5">
+          Going electric? Run the numbers for{" "}
+          <span className="bg-gradient-to-r from-spark-amber to-spark-orange bg-clip-text text-transparent">your state</span>.
         </h1>
-        <p className="text-muted max-w-2xl mx-auto text-lg">
-          The latest on electric vehicles, solar power, and battery technology —
-          pulled fresh from the web every hour.
+        <p className="text-lg text-stone-700 leading-relaxed">
+          Free calculators for EVs, solar panels and home batteries, built on government data rather than sales
+          pitches. Right now, charging an electric SUV at home costs about <strong>{usd(usEv, 2)} per 100 miles</strong>{" "}
+          at the US average electricity price, versus <strong>{usd(usGas, 2)}</strong> for gasoline.
         </p>
-      </div>
+      </section>
 
-      {/* News grid (filters + cards) */}
-      <Suspense fallback={<NewsSkeleton />}>
-        <NewsLoader />
-      </Suspense>
+      <section aria-labelledby="tools-heading" className="mt-10">
+        <h2 id="tools-heading" className="sr-only">
+          Tools
+        </h2>
+        <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {TOOLS.map((t) => (
+            <li key={t.href}>
+              <Link
+                href={t.href}
+                className="group flex h-full gap-4 bg-surface border border-black/8 rounded-2xl p-5 hover:border-amber-300 hover:shadow-sm transition"
+              >
+                <span aria-hidden="true" translate="no" className="material-symbols-outlined text-spark-orange" style={{ fontSize: 30 }}>
+                  {t.icon}
+                </span>
+                <span>
+                  <span className="block font-bold group-hover:text-spark-orange">{t.label}</span>
+                  <span className="block text-sm text-stone-600 mt-1">{t.desc}</span>
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
 
-      {/* Tools strip */}
-      <div className="mt-16 grid sm:grid-cols-3 gap-4">
-        {[
-          { href: "/calculator",         icon: "electric_car",          label: "EV Finder",      desc: "Find the right EV for your budget" },
-          { href: "/solar-finder",        icon: "wb_sunny",              label: "Solar Finder",   desc: "Get free quotes from local installers" },
-          { href: "/battery-calculator",  icon: "battery_charging_full", label: "Battery Sizer",  desc: "Right-size a home battery system" },
-        ].map((tool) => (
-          <Link
-            key={tool.href}
-            href={tool.href}
-            className="group flex items-center gap-4 bg-surface border border-black/6 rounded-2xl p-5 hover:border-amber-300 hover:shadow-sm transition-all"
-          >
-            <span aria-hidden="true" translate="no" className="material-symbols-outlined text-muted group-hover:text-spark-orange transition-colors" style={{ fontSize: 32 }}>
-              {tool.icon}
-            </span>
-            <div>
-              <div className="font-bold group-hover:text-spark-orange transition-colors">{tool.label}</div>
-              <div className="text-xs text-muted">{tool.desc}</div>
-            </div>
-            <span aria-hidden="true" translate="no" className="material-symbols-outlined text-muted group-hover:text-spark-orange transition-colors ml-auto" style={{ fontSize: 20 }}>arrow_forward</span>
-          </Link>
-        ))}
-      </div>
-
-      {/* Footer note */}
-      <div className="mt-12 bg-surface rounded-2xl p-8 border border-black/6 text-center shadow-sm">
-        <h3 className="text-xl font-bold mb-2">About Our News Feed</h3>
-        <p className="text-muted max-w-2xl mx-auto text-sm leading-relaxed">
-          Spark Powered pulls live RSS feeds from Electrek, CleanTechnica, InsideEVs, and Solar
-          Power World — refreshed every hour. Articles link directly to their original source.
+      <section aria-labelledby="data-heading" className="mt-14">
+        <h2 id="data-heading" className="text-2xl font-bold mb-2">
+          This month&apos;s numbers
+        </h2>
+        <p className="text-sm text-stone-600 mb-5">
+          Average residential electricity prices for {ytdWindow()} (EIA), EPA vehicle ratings and PVWatts solar
+          output. Updated {formatDate(DATA_UPDATED)}.
         </p>
+        <div className="grid md:grid-cols-3 gap-4">
+          <div className="bg-surface rounded-2xl border border-black/8 p-5">
+            <h3 className="font-bold mb-3">Cheapest states to charge an EV</h3>
+            <ol className="space-y-2 text-sm">
+              {cheapest.map(({ s, c }) => (
+                <li key={s.abbr} className="flex justify-between gap-2">
+                  <Link href={`/states/${s.slug}`} className="hover:text-spark-orange underline-offset-2 hover:underline">{s.name}</Link>
+                  <span className="tabular-nums">{usd(c.evPer100, 2)}/100 mi</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+          <div className="bg-surface rounded-2xl border border-black/8 p-5">
+            <h3 className="font-bold mb-3">Most expensive states to charge</h3>
+            <ol className="space-y-2 text-sm">
+              {priciest.map(({ s, c }) => (
+                <li key={s.abbr} className="flex justify-between gap-2">
+                  <Link href={`/states/${s.slug}`} className="hover:text-spark-orange underline-offset-2 hover:underline">{s.name}</Link>
+                  <span className="tabular-nums">{usd(c.evPer100, 2)}/100 mi</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+          <div className="bg-surface rounded-2xl border border-black/8 p-5">
+            <h3 className="font-bold mb-3">Most solar output per panel</h3>
+            <ol className="space-y-2 text-sm">
+              {sunniest.map((s) => (
+                <li key={s.abbr} className="flex justify-between gap-2">
+                  <Link href={`/states/${s.slug}#solar`} className="hover:text-spark-orange underline-offset-2 hover:underline">{s.name}</Link>
+                  <span className="tabular-nums">{num(s.solar.kwhPerKwYear)} kWh/kW</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </div>
+        <p className="text-xs text-stone-600 mt-3">
+          EV cost is for a {typical.year} {typical.make} {typical.model} ({typical.kwhPer100mi} kWh/100 mi) charged at
+          home. US average electricity price: {cents(NATIONAL.residentialCentsPerKwhYtd)}/kWh.
+        </p>
+      </section>
+
+      <section aria-labelledby="states-heading" className="mt-14">
+        <h2 id="states-heading" className="text-2xl font-bold mb-4">
+          Electricity, EV charging and solar by state
+        </h2>
+        <ul className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-x-4 gap-y-1.5 text-sm">
+          {states.map((s) => (
+            <li key={s.abbr}>
+              <Link href={`/states/${s.slug}`} className="hover:text-spark-orange hover:underline underline-offset-2">
+                {s.name}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <div className="mt-14 grid lg:grid-cols-[2fr_1fr] gap-10">
+        <section aria-labelledby="news-heading">
+          <div className="flex items-baseline justify-between gap-4 mb-2">
+            <h2 id="news-heading" className="text-2xl font-bold">
+              Latest headlines
+            </h2>
+            <Link href="/news" className="text-sm text-spark-orange underline underline-offset-2">
+              More headlines
+            </Link>
+          </div>
+          <p className="text-xs text-stone-600 mb-2">
+            From Electrek, CleanTechnica, InsideEVs and Solar Power World. Links open the original article.
+          </p>
+          <Suspense fallback={<p className="text-sm text-stone-600">Loading headlines…</p>}>
+            <LatestHeadlines />
+          </Suspense>
+        </section>
+        <aside aria-labelledby="guides-heading">
+          <h2 id="guides-heading" className="text-2xl font-bold mb-3">
+            Straight answers
+          </h2>
+          <ul className="space-y-3 text-sm">
+            <li>
+              <Link href="/objections" className="font-semibold hover:text-spark-orange">EV myths and objections, answered with data</Link>
+              <span className="block text-stone-600">Range, battery life, cold weather, cost and more.</span>
+            </li>
+            <li>
+              <Link href="/incentives" className="font-semibold hover:text-spark-orange">What happened to the EV and solar tax credits?</Link>
+              <span className="block text-stone-600">Exact end dates from the IRS, and what is left.</span>
+            </li>
+            <li>
+              <Link href="/methodology" className="font-semibold hover:text-spark-orange">How we calculate our numbers</Link>
+              <span className="block text-stone-600">Sources, formulas and what they leave out.</span>
+            </li>
+            <li>
+              <Link href="/about" className="font-semibold hover:text-spark-orange">About Spark Powered</Link>
+              <span className="block text-stone-600">Independent, not paid by carmakers or installers.</span>
+            </li>
+          </ul>
+        </aside>
       </div>
     </div>
   );

@@ -1,57 +1,63 @@
 import Link from "next/link";
+import { DATA_UPDATED } from "@/lib/energy";
+
+const TOOLS = [
+  { href: "/ev-charging-cost", label: "EV charging cost calculator" },
+  { href: "/solar-calculator", label: "Solar panel calculator" },
+  { href: "/battery-calculator", label: "Home battery sizer" },
+  { href: "/calculator", label: "EV Finder" },
+  { href: "/solar-finder", label: "Solar Finder" },
+];
+
+const GUIDES = [
+  { href: "/states", label: "Energy data by state" },
+  { href: "/incentives", label: "2026 incentives" },
+  { href: "/objections", label: "EV myths & objections" },
+  { href: "/news", label: "Latest headlines" },
+];
+
+const ABOUT = [
+  { href: "/about", label: "About & editorial standards" },
+  { href: "/methodology", label: "Methodology" },
+  { href: "/disclaimer", label: "Disclaimer" },
+  { href: "/privacy", label: "Privacy" },
+];
+
+function Column({ title, links }: { title: string; links: { href: string; label: string }[] }) {
+  return (
+    <div>
+      <h2 className="text-sm font-semibold text-foreground mb-3">{title}</h2>
+      <ul className="space-y-2">
+        {links.map((l) => (
+          <li key={l.href}>
+            <Link href={l.href} className="text-sm text-stone-700 hover:text-spark-orange transition-colors">
+              {l.label}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
 
 export default function Footer() {
   return (
     <footer className="border-t border-black/8 bg-surface-light">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
           <div>
-            <h3 className="text-lg font-bold bg-gradient-to-r from-spark-yellow to-spark-orange bg-clip-text text-transparent mb-3">
-              Spark Powered
-            </h3>
-            <p className="text-sm text-muted leading-relaxed">
-              Igniting the transition to clean energy. Your guide to EVs, solar
-              power, and home battery solutions.
+            <p className="text-lg font-bold text-spark-orange mb-3">Spark Powered</p>
+            <p className="text-sm text-stone-700 leading-relaxed">
+              Independent calculators and data for US households weighing an EV, solar panels or a home
+              battery. Not affiliated with any carmaker, installer or utility.
             </p>
           </div>
-          <div>
-            <h4 className="text-sm font-semibold text-foreground mb-3">
-              Explore
-            </h4>
-            <ul className="space-y-2">
-              {[
-                { href: "/", label: "Latest News" },
-                { href: "/calculator", label: "EV Finder" },
-                { href: "/solar-finder", label: "Solar Finder" },
-                { href: "/battery-calculator", label: "Battery Sizer" },
-                { href: "/objections", label: "Objections & FAQs" },
-              ].map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-muted hover:text-spark-orange transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h4 className="text-sm font-semibold text-foreground mb-3">
-              Topics
-            </h4>
-            <ul className="space-y-2 text-sm text-muted">
-              <li>Electric Vehicles</li>
-              <li>Solar Power</li>
-              <li>Home Batteries</li>
-              <li>Clean Energy Policy</li>
-            </ul>
-          </div>
+          <Column title="Tools" links={TOOLS} />
+          <Column title="Guides & data" links={GUIDES} />
+          <Column title="About" links={ABOUT} />
         </div>
-        <div className="mt-8 pt-8 border-t border-black/8 text-center text-sm text-muted">
-          &copy; 2026 Spark Powered. Built with clean
-          energy enthusiasm.
+        <div className="mt-8 pt-8 border-t border-black/8 text-sm text-stone-600">
+          &copy; {DATA_UPDATED.slice(0, 4)} Spark Powered. Estimates only — not financial or tax advice.
         </div>
       </div>
     </footer>

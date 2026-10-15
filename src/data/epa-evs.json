@@ -1,0 +1,4931 @@
+{
+"generated": "2026-10-15",
+"source": {
+"name": "U.S. EPA and DOE, fueleconomy.gov vehicle data (combined kWh/100 mi, includes charging losses)",
+"url": "https://www.fueleconomy.gov/feg/download.shtml",
+"period": "model years 2026-2027",
+"retrieved": "2026-10-15"
+},
+"vehicles": [
+{
+"id": 50024,
+"year": 2026,
+"make": "Acura",
+"model": "ZDX AWD",
+"baseModel": "ZDX",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 323,
+"kwhPer100mi": 37.7
+},
+{
+"id": 50025,
+"year": 2026,
+"make": "Acura",
+"model": "ZDX AWD Type S",
+"baseModel": "ZDX",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 296,
+"kwhPer100mi": 40.6
+},
+{
+"id": 50023,
+"year": 2026,
+"make": "Acura",
+"model": "ZDX RWD",
+"baseModel": "ZDX",
+"class": "Standard Sport Utility Vehicle 2WD",
+"rangeMiles": 327,
+"kwhPer100mi": 36.9
+},
+{
+"id": 50366,
+"year": 2027,
+"make": "Audi",
+"model": "A6 e-tron",
+"baseModel": "A6 e-tron",
+"class": "Large Cars",
+"rangeMiles": 348,
+"kwhPer100mi": 30.3
+},
+{
+"id": 50367,
+"year": 2027,
+"make": "Audi",
+"model": "A6 e-tron quattro",
+"baseModel": "A6 e-tron",
+"class": "Large Cars",
+"rangeMiles": 327,
+"kwhPer100mi": 32.0
+},
+{
+"id": 50368,
+"year": 2027,
+"make": "Audi",
+"model": "A6 e-tron quattro ultra",
+"baseModel": "A6 e-tron",
+"class": "Large Cars",
+"rangeMiles": 360,
+"kwhPer100mi": 28.7
+},
+{
+"id": 50369,
+"year": 2027,
+"make": "Audi",
+"model": "A6 e-tron ultra",
+"baseModel": "A6 e-tron",
+"class": "Large Cars",
+"rangeMiles": 395,
+"kwhPer100mi": 26.5
+},
+{
+"id": 49612,
+"year": 2026,
+"make": "Audi",
+"model": "Q4 45 e-tron",
+"baseModel": "Q4 e-tron",
+"class": "Standard Sport Utility Vehicle 2WD",
+"rangeMiles": 288,
+"kwhPer100mi": 29.4
+},
+{
+"id": 50182,
+"year": 2026,
+"make": "Audi",
+"model": "Q4 55 e-tron quattro",
+"baseModel": "Q4 e-tron",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 251,
+"kwhPer100mi": 34.6
+},
+{
+"id": 50183,
+"year": 2026,
+"make": "Audi",
+"model": "Q4 Sportback 55 e-tron quattro",
+"baseModel": "Q4 e-tron",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 251,
+"kwhPer100mi": 34.6
+},
+{
+"id": 50379,
+"year": 2027,
+"make": "Audi",
+"model": "Q6 Sportback e-tron quattro",
+"baseModel": "Q6 e-tron",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 325,
+"kwhPer100mi": 32.5
+},
+{
+"id": 50378,
+"year": 2027,
+"make": "Audi",
+"model": "Q6 e-tron SB quattro (20 inch Tires)",
+"baseModel": "Q6 e-tron",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 301,
+"kwhPer100mi": 35.1
+},
+{
+"id": 50376,
+"year": 2027,
+"make": "Audi",
+"model": "Q6 e-tron quattro (19 inch Tires)",
+"baseModel": "Q6 e-tron",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 325,
+"kwhPer100mi": 32.5
+},
+{
+"id": 50377,
+"year": 2027,
+"make": "Audi",
+"model": "Q6 e-tron quattro (20 inch Tires)",
+"baseModel": "Q6 e-tron",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 301,
+"kwhPer100mi": 35.1
+},
+{
+"id": 50184,
+"year": 2026,
+"make": "Audi",
+"model": "RS e-tron GT Performance",
+"baseModel": "RS e-tron",
+"class": "Compact Cars",
+"rangeMiles": 278,
+"kwhPer100mi": 40.2
+},
+{
+"id": 50600,
+"year": 2027,
+"make": "Audi",
+"model": "RS e-tron GT Performance",
+"baseModel": "RS e-tron",
+"class": "Compact Cars",
+"rangeMiles": 278,
+"kwhPer100mi": 40.2
+},
+{
+"id": 50185,
+"year": 2026,
+"make": "Audi",
+"model": "S e-tron GT (20 inch wheels)",
+"baseModel": "S e-tron",
+"class": "Compact Cars",
+"rangeMiles": 300,
+"kwhPer100mi": 37.6
+},
+{
+"id": 50186,
+"year": 2026,
+"make": "Audi",
+"model": "S e-tron GT (21 inch wheels)",
+"baseModel": "S e-tron",
+"class": "Compact Cars",
+"rangeMiles": 294,
+"kwhPer100mi": 38.5
+},
+{
+"id": 50601,
+"year": 2027,
+"make": "Audi",
+"model": "S e-tron GT (20 inch wheels)",
+"baseModel": "S e-tron",
+"class": "Compact Cars",
+"rangeMiles": 300,
+"kwhPer100mi": 37.6
+},
+{
+"id": 50602,
+"year": 2027,
+"make": "Audi",
+"model": "S e-tron GT (21 inch wheels)",
+"baseModel": "S e-tron",
+"class": "Compact Cars",
+"rangeMiles": 294,
+"kwhPer100mi": 38.5
+},
+{
+"id": 50370,
+"year": 2027,
+"make": "Audi",
+"model": "S6 e-tron (20 inch wheels)",
+"baseModel": "S6 e-tron",
+"class": "Large Cars",
+"rangeMiles": 326,
+"kwhPer100mi": 32.7
+},
+{
+"id": 50371,
+"year": 2027,
+"make": "Audi",
+"model": "S6 e-tron (21 inch wheels)",
+"baseModel": "S6 e-tron",
+"class": "Large Cars",
+"rangeMiles": 311,
+"kwhPer100mi": 33.8
+},
+{
+"id": 50382,
+"year": 2027,
+"make": "Audi",
+"model": "SQ6 Sportback e-tron (20 inch Tires)",
+"baseModel": "SQ6 e-tron",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 285,
+"kwhPer100mi": 36.6
+},
+{
+"id": 50383,
+"year": 2027,
+"make": "Audi",
+"model": "SQ6 Sportback e-tron (21 inch Tires)",
+"baseModel": "SQ6 e-tron",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 264,
+"kwhPer100mi": 39.7
+},
+{
+"id": 50380,
+"year": 2027,
+"make": "Audi",
+"model": "SQ6 e-tron (20 inch Tires)",
+"baseModel": "SQ6 e-tron",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 285,
+"kwhPer100mi": 36.6
+},
+{
+"id": 50381,
+"year": 2027,
+"make": "Audi",
+"model": "SQ6 e-tron (21 inch Tires)",
+"baseModel": "SQ6 e-tron",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 264,
+"kwhPer100mi": 39.7
+},
+{
+"id": 50190,
+"year": 2026,
+"make": "BMW",
+"model": "i4 M60 xDrive Gran Coupe (19 inch Wheels)",
+"baseModel": "i4",
+"class": "Compact Cars",
+"rangeMiles": 278,
+"kwhPer100mi": 34.4
+},
+{
+"id": 50191,
+"year": 2026,
+"make": "BMW",
+"model": "i4 M60 xDrive Gran Coupe (20 inch Wheels)",
+"baseModel": "i4",
+"class": "Compact Cars",
+"rangeMiles": 232,
+"kwhPer100mi": 41.4
+},
+{
+"id": 50187,
+"year": 2026,
+"make": "BMW",
+"model": "i4 eDrive35 Gran Coupe (19 inch Wheels)",
+"baseModel": "i4",
+"class": "Compact Cars",
+"rangeMiles": 251,
+"kwhPer100mi": 30.8
+},
+{
+"id": 50188,
+"year": 2026,
+"make": "BMW",
+"model": "i4 eDrive40 Gran Coupe (18 inch wheels)",
+"baseModel": "i4",
+"class": "Compact Cars",
+"rangeMiles": 333,
+"kwhPer100mi": 28.5
+},
+{
+"id": 50189,
+"year": 2026,
+"make": "BMW",
+"model": "i4 eDrive40 Gran Coupe (19 inch Wheels)",
+"baseModel": "i4",
+"class": "Compact Cars",
+"rangeMiles": 307,
+"kwhPer100mi": 31.1
+},
+{
+"id": 50192,
+"year": 2026,
+"make": "BMW",
+"model": "i4 xDrive40 Gran Coupe (18 inch Wheels)",
+"baseModel": "i4",
+"class": "Compact Cars",
+"rangeMiles": 287,
+"kwhPer100mi": 33.4
+},
+{
+"id": 50193,
+"year": 2026,
+"make": "BMW",
+"model": "i4 xDrive40 Gran Coupe (19 inch Wheels)",
+"baseModel": "i4",
+"class": "Compact Cars",
+"rangeMiles": 268,
+"kwhPer100mi": 36.0
+},
+{
+"id": 50194,
+"year": 2026,
+"make": "BMW",
+"model": "i5 M60 xDrive Sedan (19 inch Wheels)",
+"baseModel": "i5",
+"class": "Compact Cars",
+"rangeMiles": 277,
+"kwhPer100mi": 34.1
+},
+{
+"id": 50195,
+"year": 2026,
+"make": "BMW",
+"model": "i5 M60 xDrive Sedan (20 inch Wheels)",
+"baseModel": "i5",
+"class": "Compact Cars",
+"rangeMiles": 266,
+"kwhPer100mi": 35.8
+},
+{
+"id": 50196,
+"year": 2026,
+"make": "BMW",
+"model": "i5 M60 xDrive Sedan (21 inch Wheels)",
+"baseModel": "i5",
+"class": "Compact Cars",
+"rangeMiles": 259,
+"kwhPer100mi": 37.1
+},
+{
+"id": 49613,
+"year": 2026,
+"make": "BMW",
+"model": "i5 eDrive40 Sedan (19 inch Wheels)",
+"baseModel": "i5",
+"class": "Compact Cars",
+"rangeMiles": 310,
+"kwhPer100mi": 30.6
+},
+{
+"id": 49614,
+"year": 2026,
+"make": "BMW",
+"model": "i5 eDrive40 Sedan (20 inch Wheels)",
+"baseModel": "i5",
+"class": "Compact Cars",
+"rangeMiles": 300,
+"kwhPer100mi": 31.7
+},
+{
+"id": 49615,
+"year": 2026,
+"make": "BMW",
+"model": "i5 eDrive40 Sedan (21 inch Wheels)",
+"baseModel": "i5",
+"class": "Compact Cars",
+"rangeMiles": 278,
+"kwhPer100mi": 34.5
+},
+{
+"id": 49616,
+"year": 2026,
+"make": "BMW",
+"model": "i5 xDrive40 Sedan (19 inch Wheels)",
+"baseModel": "i5",
+"class": "Compact Cars",
+"rangeMiles": 278,
+"kwhPer100mi": 34.4
+},
+{
+"id": 49617,
+"year": 2026,
+"make": "BMW",
+"model": "i5 xDrive40 Sedan (20 inch Wheels)",
+"baseModel": "i5",
+"class": "Compact Cars",
+"rangeMiles": 272,
+"kwhPer100mi": 35.2
+},
+{
+"id": 49618,
+"year": 2026,
+"make": "BMW",
+"model": "i5 xDrive40 Sedan (21 inch Wheels)",
+"baseModel": "i5",
+"class": "Compact Cars",
+"rangeMiles": 259,
+"kwhPer100mi": 37.2
+},
+{
+"id": 50837,
+"year": 2027,
+"make": "BMW",
+"model": "i5 M60 xDrive Sedan (19 inch Wheels)",
+"baseModel": "i5",
+"class": "Compact Cars",
+"rangeMiles": 277,
+"kwhPer100mi": 34.1
+},
+{
+"id": 50838,
+"year": 2027,
+"make": "BMW",
+"model": "i5 M60 xDrive Sedan (20 inch Wheels)",
+"baseModel": "i5",
+"class": "Compact Cars",
+"rangeMiles": 266,
+"kwhPer100mi": 35.8
+},
+{
+"id": 50839,
+"year": 2027,
+"make": "BMW",
+"model": "i5 M60 xDrive Sedan (21 inch Wheels)",
+"baseModel": "i5",
+"class": "Compact Cars",
+"rangeMiles": 259,
+"kwhPer100mi": 37.1
+},
+{
+"id": 50360,
+"year": 2027,
+"make": "BMW",
+"model": "i5 eDrive40 Sedan (19 inch Wheels)",
+"baseModel": "i5",
+"class": "Compact Cars",
+"rangeMiles": 328,
+"kwhPer100mi": 28.9
+},
+{
+"id": 50361,
+"year": 2027,
+"make": "BMW",
+"model": "i5 eDrive40 Sedan (20 inch Wheels)",
+"baseModel": "i5",
+"class": "Compact Cars",
+"rangeMiles": 299,
+"kwhPer100mi": 31.9
+},
+{
+"id": 50362,
+"year": 2027,
+"make": "BMW",
+"model": "i5 eDrive40 Sedan (21 inch Wheels)",
+"baseModel": "i5",
+"class": "Compact Cars",
+"rangeMiles": 280,
+"kwhPer100mi": 33.9
+},
+{
+"id": 50603,
+"year": 2027,
+"make": "BMW",
+"model": "i5 xDrive40 Sedan (19 inch Wheels)",
+"baseModel": "i5",
+"class": "Compact Cars",
+"rangeMiles": 283,
+"kwhPer100mi": 33.8
+},
+{
+"id": 50363,
+"year": 2027,
+"make": "BMW",
+"model": "i5 xDrive40 Sedan (20 inch Wheels)",
+"baseModel": "i5",
+"class": "Compact Cars",
+"rangeMiles": 273,
+"kwhPer100mi": 35.0
+},
+{
+"id": 50364,
+"year": 2027,
+"make": "BMW",
+"model": "i5 xDrive40 Sedan (21 inch Wheels)",
+"baseModel": "i5",
+"class": "Compact Cars",
+"rangeMiles": 262,
+"kwhPer100mi": 36.5
+},
+{
+"id": 49943,
+"year": 2026,
+"make": "BMW",
+"model": "i7 M70 xDrive Sedan (20 inch Wheels)",
+"baseModel": "i7",
+"class": "Large Cars",
+"rangeMiles": 267,
+"kwhPer100mi": 45.1
+},
+{
+"id": 49944,
+"year": 2026,
+"make": "BMW",
+"model": "i7 M70 xDrive Sedan (21 inch Wheels)",
+"baseModel": "i7",
+"class": "Large Cars",
+"rangeMiles": 285,
+"kwhPer100mi": 42.5
+},
+{
+"id": 49940,
+"year": 2026,
+"make": "BMW",
+"model": "i7 eDrive50 Sedan (19 inch Wheels)",
+"baseModel": "i7",
+"class": "Large Cars",
+"rangeMiles": 314,
+"kwhPer100mi": 38.2
+},
+{
+"id": 49941,
+"year": 2026,
+"make": "BMW",
+"model": "i7 eDrive50 Sedan (20 inch Wheels)",
+"baseModel": "i7",
+"class": "Large Cars",
+"rangeMiles": 301,
+"kwhPer100mi": 39.9
+},
+{
+"id": 49942,
+"year": 2026,
+"make": "BMW",
+"model": "i7 eDrive50 Sedan (21 inch Wheels)",
+"baseModel": "i7",
+"class": "Large Cars",
+"rangeMiles": 307,
+"kwhPer100mi": 38.9
+},
+{
+"id": 49945,
+"year": 2026,
+"make": "BMW",
+"model": "i7 xDrive60 Sedan (19 inch Wheels)",
+"baseModel": "i7",
+"class": "Large Cars",
+"rangeMiles": 311,
+"kwhPer100mi": 38.4
+},
+{
+"id": 49946,
+"year": 2026,
+"make": "BMW",
+"model": "i7 xDrive60 Sedan (20 inch Wheels)",
+"baseModel": "i7",
+"class": "Large Cars",
+"rangeMiles": 296,
+"kwhPer100mi": 40.8
+},
+{
+"id": 49947,
+"year": 2026,
+"make": "BMW",
+"model": "i7 xDrive60 Sedan (21 inch Wheels)",
+"baseModel": "i7",
+"class": "Large Cars",
+"rangeMiles": 308,
+"kwhPer100mi": 38.8
+},
+{
+"id": 50604,
+"year": 2027,
+"make": "BMW",
+"model": "i7 xDrive50 Sedan (20 inch All-Season Tires)",
+"baseModel": "i7",
+"class": "Large Cars",
+"rangeMiles": 354,
+"kwhPer100mi": 37.4
+},
+{
+"id": 50840,
+"year": 2027,
+"make": "BMW",
+"model": "i7 xDrive50 Sedan (20 inch Summer Tires)",
+"baseModel": "i7",
+"class": "Large Cars",
+"rangeMiles": 373,
+"kwhPer100mi": 35.5
+},
+{
+"id": 50605,
+"year": 2027,
+"make": "BMW",
+"model": "i7 xDrive50 Sedan (21 inch All-Season Tires)",
+"baseModel": "i7",
+"class": "Large Cars",
+"rangeMiles": 354,
+"kwhPer100mi": 37.4
+},
+{
+"id": 50606,
+"year": 2027,
+"make": "BMW",
+"model": "i7 xDrive50 Sedan (21 inch Summer Tires)",
+"baseModel": "i7",
+"class": "Large Cars",
+"rangeMiles": 364,
+"kwhPer100mi": 36.8
+},
+{
+"id": 50607,
+"year": 2027,
+"make": "BMW",
+"model": "i7 xDrive60 Sedan (20 inch All-Season Tires)",
+"baseModel": "i7",
+"class": "Large Cars",
+"rangeMiles": 344,
+"kwhPer100mi": 38.4
+},
+{
+"id": 50608,
+"year": 2027,
+"make": "BMW",
+"model": "i7 xDrive60 Sedan (20 inch Summer Tires)",
+"baseModel": "i7",
+"class": "Large Cars",
+"rangeMiles": 362,
+"kwhPer100mi": 36.5
+},
+{
+"id": 50609,
+"year": 2027,
+"make": "BMW",
+"model": "i7 xDrive60 Sedan (21 inch All-Season Tires)",
+"baseModel": "i7",
+"class": "Large Cars",
+"rangeMiles": 344,
+"kwhPer100mi": 38.4
+},
+{
+"id": 50610,
+"year": 2027,
+"make": "BMW",
+"model": "i7 xDrive60 Sedan (21 inch Summer Tires)",
+"baseModel": "i7",
+"class": "Large Cars",
+"rangeMiles": 348,
+"kwhPer100mi": 38.3
+},
+{
+"id": 49627,
+"year": 2026,
+"make": "BMW",
+"model": "iX M70 (21 inch Wheels)",
+"baseModel": "iX",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 303,
+"kwhPer100mi": 42.0
+},
+{
+"id": 49628,
+"year": 2026,
+"make": "BMW",
+"model": "iX M70 (22 inch Wheels)",
+"baseModel": "iX",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 284,
+"kwhPer100mi": 44.5
+},
+{
+"id": 49629,
+"year": 2026,
+"make": "BMW",
+"model": "iX M70 (23 inch Wheels)",
+"baseModel": "iX",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 283,
+"kwhPer100mi": 44.8
+},
+{
+"id": 49619,
+"year": 2026,
+"make": "BMW",
+"model": "iX xDrive45 (20 inch Wheels)",
+"baseModel": "iX",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 312,
+"kwhPer100mi": 36.0
+},
+{
+"id": 49620,
+"year": 2026,
+"make": "BMW",
+"model": "iX xDrive45 (21 inch Wheels)",
+"baseModel": "iX",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 297,
+"kwhPer100mi": 37.7
+},
+{
+"id": 49621,
+"year": 2026,
+"make": "BMW",
+"model": "iX xDrive45 (22 inch Wheels)",
+"baseModel": "iX",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 279,
+"kwhPer100mi": 40.3
+},
+{
+"id": 49622,
+"year": 2026,
+"make": "BMW",
+"model": "iX xDrive45 (23 inch Wheels)",
+"baseModel": "iX",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 290,
+"kwhPer100mi": 38.6
+},
+{
+"id": 49623,
+"year": 2026,
+"make": "BMW",
+"model": "iX xDrive60 (20 inch Wheels)",
+"baseModel": "iX",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 364,
+"kwhPer100mi": 34.7
+},
+{
+"id": 49624,
+"year": 2026,
+"make": "BMW",
+"model": "iX xDrive60 (21 inch Wheels)",
+"baseModel": "iX",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 341,
+"kwhPer100mi": 37.2
+},
+{
+"id": 49625,
+"year": 2026,
+"make": "BMW",
+"model": "iX xDrive60 (22 inch Wheels)",
+"baseModel": "iX",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 327,
+"kwhPer100mi": 38.5
+},
+{
+"id": 49626,
+"year": 2026,
+"make": "BMW",
+"model": "iX xDrive60 (23 inch Wheels)",
+"baseModel": "iX",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 318,
+"kwhPer100mi": 39.6
+},
+{
+"id": 50384,
+"year": 2027,
+"make": "BMW",
+"model": "iX3 50 xDrive (20 inch All-Season Tires)",
+"baseModel": "iX3",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 383,
+"kwhPer100mi": 33.1
+},
+{
+"id": 50385,
+"year": 2027,
+"make": "BMW",
+"model": "iX3 50 xDrive (20 inch Summer Tires)",
+"baseModel": "iX3",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 434,
+"kwhPer100mi": 28.6
+},
+{
+"id": 50386,
+"year": 2027,
+"make": "BMW",
+"model": "iX3 50 xDrive (21 inch All-Season Tires)",
+"baseModel": "iX3",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 399,
+"kwhPer100mi": 32.2
+},
+{
+"id": 50611,
+"year": 2027,
+"make": "BMW",
+"model": "iX3 50 xDrive (21 inch Summer Tires)",
+"baseModel": "iX3",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 398,
+"kwhPer100mi": 32.0
+},
+{
+"id": 50387,
+"year": 2027,
+"make": "BMW",
+"model": "iX3 50 xDrive (22 inch Summer Tires)",
+"baseModel": "iX3",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 392,
+"kwhPer100mi": 32.5
+},
+{
+"id": 49630,
+"year": 2026,
+"make": "Bugatti Rimac",
+"model": "Nevera R",
+"baseModel": "Nevera",
+"class": "Two Seaters",
+"rangeMiles": 174,
+"kwhPer100mi": 66.5
+},
+{
+"id": 50197,
+"year": 2026,
+"make": "Cadillac",
+"model": "CELESTIQ",
+"baseModel": "CELESTIQ",
+"class": "Small Station Wagons",
+"rangeMiles": 303,
+"kwhPer100mi": 41.7
+},
+{
+"id": 49631,
+"year": 2026,
+"make": "Cadillac",
+"model": "LYRIQ (11 kW Charger)",
+"baseModel": "LYRIQ",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 326,
+"kwhPer100mi": 36.8
+},
+{
+"id": 49632,
+"year": 2026,
+"make": "Cadillac",
+"model": "LYRIQ (19 kW Charger)",
+"baseModel": "LYRIQ",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 326,
+"kwhPer100mi": 36.8
+},
+{
+"id": 49948,
+"year": 2026,
+"make": "Cadillac",
+"model": "LYRIQ AWD",
+"baseModel": "LYRIQ",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 303,
+"kwhPer100mi": 39.7
+},
+{
+"id": 49635,
+"year": 2026,
+"make": "Cadillac",
+"model": "LYRIQ PAWD",
+"baseModel": "LYRIQ",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 319,
+"kwhPer100mi": 38.0
+},
+{
+"id": 49633,
+"year": 2026,
+"make": "Cadillac",
+"model": "LYRIQ PAWD V SERIES (11 kW Charger)",
+"baseModel": "LYRIQ",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 285,
+"kwhPer100mi": 42.4
+},
+{
+"id": 49634,
+"year": 2026,
+"make": "Cadillac",
+"model": "LYRIQ PAWD V SERIES (19 kW Charger)",
+"baseModel": "LYRIQ",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 285,
+"kwhPer100mi": 42.4
+},
+{
+"id": 50612,
+"year": 2027,
+"make": "Cadillac",
+"model": "LYRIQ 11kW Charger",
+"baseModel": "LYRIQ",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 326,
+"kwhPer100mi": 36.8
+},
+{
+"id": 50613,
+"year": 2027,
+"make": "Cadillac",
+"model": "LYRIQ 19kW Charger",
+"baseModel": "LYRIQ",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 326,
+"kwhPer100mi": 36.8
+},
+{
+"id": 50614,
+"year": 2027,
+"make": "Cadillac",
+"model": "LYRIQ AWD 11kW Charger",
+"baseModel": "LYRIQ",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 319,
+"kwhPer100mi": 38.0
+},
+{
+"id": 50615,
+"year": 2027,
+"make": "Cadillac",
+"model": "LYRIQ AWD 19kW Charger",
+"baseModel": "LYRIQ",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 303,
+"kwhPer100mi": 39.7
+},
+{
+"id": 50616,
+"year": 2027,
+"make": "Cadillac",
+"model": "LYRIQ AWD V SERIES 11kW Charger",
+"baseModel": "LYRIQ",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 285,
+"kwhPer100mi": 42.4
+},
+{
+"id": 50617,
+"year": 2027,
+"make": "Cadillac",
+"model": "LYRIQ AWD V SERIES 19kW Charger",
+"baseModel": "LYRIQ",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 285,
+"kwhPer100mi": 42.4
+},
+{
+"id": 49951,
+"year": 2026,
+"make": "Cadillac",
+"model": "OPTIQ AWD (11 kW Charger)",
+"baseModel": "OPTIQ",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 303,
+"kwhPer100mi": 34.0
+},
+{
+"id": 49952,
+"year": 2026,
+"make": "Cadillac",
+"model": "OPTIQ AWD (19 kW Charger)",
+"baseModel": "OPTIQ",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 303,
+"kwhPer100mi": 34.0
+},
+{
+"id": 50026,
+"year": 2026,
+"make": "Cadillac",
+"model": "OPTIQ AWD V SERIES 11 kW Charger",
+"baseModel": "OPTIQ",
+"class": "Standard Sport Utility Vehicle 2WD",
+"rangeMiles": 278,
+"kwhPer100mi": 36.7
+},
+{
+"id": 50027,
+"year": 2026,
+"make": "Cadillac",
+"model": "OPTIQ AWD V SERIES 19 kW charger",
+"baseModel": "OPTIQ",
+"class": "Standard Sport Utility Vehicle 2WD",
+"rangeMiles": 250,
+"kwhPer100mi": 41.0
+},
+{
+"id": 49949,
+"year": 2026,
+"make": "Cadillac",
+"model": "OPTIQ RWD (11 kW Charger)",
+"baseModel": "OPTIQ",
+"class": "Standard Sport Utility Vehicle 2WD",
+"rangeMiles": 317,
+"kwhPer100mi": 32.1
+},
+{
+"id": 49950,
+"year": 2026,
+"make": "Cadillac",
+"model": "OPTIQ RWD (19 kW Charger)",
+"baseModel": "OPTIQ",
+"class": "Standard Sport Utility Vehicle 2WD",
+"rangeMiles": 317,
+"kwhPer100mi": 32.1
+},
+{
+"id": 50618,
+"year": 2027,
+"make": "Cadillac",
+"model": "OPTIQ AWD 11kW Charger",
+"baseModel": "OPTIQ",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 303,
+"kwhPer100mi": 34.0
+},
+{
+"id": 50619,
+"year": 2027,
+"make": "Cadillac",
+"model": "OPTIQ AWD 19kW Charger",
+"baseModel": "OPTIQ",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 303,
+"kwhPer100mi": 34.0
+},
+{
+"id": 50620,
+"year": 2027,
+"make": "Cadillac",
+"model": "OPTIQ AWD V SERIES 11kW Charger",
+"baseModel": "OPTIQ",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 278,
+"kwhPer100mi": 36.7
+},
+{
+"id": 50621,
+"year": 2027,
+"make": "Cadillac",
+"model": "OPTIQ AWD V SERIES 19kW Charger",
+"baseModel": "OPTIQ",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 250,
+"kwhPer100mi": 41.0
+},
+{
+"id": 50622,
+"year": 2027,
+"make": "Cadillac",
+"model": "OPTIQ RWD 11kW Charger",
+"baseModel": "OPTIQ",
+"class": "Standard Sport Utility Vehicle 2WD",
+"rangeMiles": 317,
+"kwhPer100mi": 32.1
+},
+{
+"id": 50623,
+"year": 2027,
+"make": "Cadillac",
+"model": "OPTIQ RWD 19kW Charger",
+"baseModel": "OPTIQ",
+"class": "Standard Sport Utility Vehicle 2WD",
+"rangeMiles": 317,
+"kwhPer100mi": 32.1
+},
+{
+"id": 49636,
+"year": 2026,
+"make": "Cadillac",
+"model": "VISTIQ (11 kW Charger)",
+"baseModel": "VISTIQ",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 305,
+"kwhPer100mi": 39.3
+},
+{
+"id": 49637,
+"year": 2026,
+"make": "Cadillac",
+"model": "VISTIQ (19 kW Charger)",
+"baseModel": "VISTIQ",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 300,
+"kwhPer100mi": 39.3
+},
+{
+"id": 50624,
+"year": 2027,
+"make": "Cadillac",
+"model": "VISTIQ 11kW Charger",
+"baseModel": "VISTIQ",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 305,
+"kwhPer100mi": 39.3
+},
+{
+"id": 50625,
+"year": 2027,
+"make": "Cadillac",
+"model": "VISTIQ 19kW Charger",
+"baseModel": "VISTIQ",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 300,
+"kwhPer100mi": 39.3
+},
+{
+"id": 50372,
+"year": 2027,
+"make": "Chevrolet",
+"model": "BOLT",
+"baseModel": "BOLT",
+"class": "Small Station Wagons",
+"rangeMiles": 262,
+"kwhPer100mi": 28.2
+},
+{
+"id": 49646,
+"year": 2026,
+"make": "Chevrolet",
+"model": "Blazer EV AWD",
+"baseModel": "Blazer",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 283,
+"kwhPer100mi": 35.7
+},
+{
+"id": 49954,
+"year": 2026,
+"make": "Chevrolet",
+"model": "Blazer EV AWD SS",
+"baseModel": "Blazer",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 302,
+"kwhPer100mi": 39.7
+},
+{
+"id": 49644,
+"year": 2026,
+"make": "Chevrolet",
+"model": "Blazer EV FWD",
+"baseModel": "Blazer",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 312,
+"kwhPer100mi": 32.3
+},
+{
+"id": 49645,
+"year": 2026,
+"make": "Chevrolet",
+"model": "Blazer EV FWD 22 inch tire",
+"baseModel": "Blazer",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 283,
+"kwhPer100mi": 35.6
+},
+{
+"id": 50626,
+"year": 2027,
+"make": "Chevrolet",
+"model": "Blazer EV AWD",
+"baseModel": "Blazer",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 283,
+"kwhPer100mi": 35.7
+},
+{
+"id": 50627,
+"year": 2027,
+"make": "Chevrolet",
+"model": "Blazer EV AWD SS",
+"baseModel": "Blazer",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 302,
+"kwhPer100mi": 39.7
+},
+{
+"id": 50628,
+"year": 2027,
+"make": "Chevrolet",
+"model": "Blazer EV FWD",
+"baseModel": "Blazer",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 312,
+"kwhPer100mi": 32.3
+},
+{
+"id": 50629,
+"year": 2027,
+"make": "Chevrolet",
+"model": "Blazer EV FWD 22 inch tire",
+"baseModel": "Blazer",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 283,
+"kwhPer100mi": 35.6
+},
+{
+"id": 49955,
+"year": 2026,
+"make": "Chevrolet",
+"model": "Equinox EV AWD (11 kW Charger)",
+"baseModel": "Equinox",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 307,
+"kwhPer100mi": 32.6
+},
+{
+"id": 49956,
+"year": 2026,
+"make": "Chevrolet",
+"model": "Equinox EV AWD (19 kW Charger)",
+"baseModel": "Equinox",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 288,
+"kwhPer100mi": 35.1
+},
+{
+"id": 49953,
+"year": 2026,
+"make": "Chevrolet",
+"model": "Equinox EV FWD",
+"baseModel": "Equinox",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 319,
+"kwhPer100mi": 31.1
+},
+{
+"id": 50630,
+"year": 2027,
+"make": "Chevrolet",
+"model": "Equinox EV AWD",
+"baseModel": "Equinox",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 307,
+"kwhPer100mi": 32.6
+},
+{
+"id": 50841,
+"year": 2027,
+"make": "Chevrolet",
+"model": "Equinox EV FWD",
+"baseModel": "Equinox",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 319,
+"kwhPer100mi": 31.1
+},
+{
+"id": 49640,
+"year": 2026,
+"make": "Chevrolet",
+"model": "Silverado EV Ext Range (11kW Charger)",
+"baseModel": "Silverado",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 410,
+"kwhPer100mi": 49.5
+},
+{
+"id": 49641,
+"year": 2026,
+"make": "Chevrolet",
+"model": "Silverado EV Ext Range (19kW Charger)",
+"baseModel": "Silverado",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 385,
+"kwhPer100mi": 52.4
+},
+{
+"id": 49638,
+"year": 2026,
+"make": "Chevrolet",
+"model": "Silverado EV Ext Range WT",
+"baseModel": "Silverado",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 424,
+"kwhPer100mi": 47.8
+},
+{
+"id": 49639,
+"year": 2026,
+"make": "Chevrolet",
+"model": "Silverado EV Max Range WT (19kW Charger)",
+"baseModel": "Silverado",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 493,
+"kwhPer100mi": 49.5
+},
+{
+"id": 49643,
+"year": 2026,
+"make": "Chevrolet",
+"model": "Silverado EV Std Range (11kW Charger)",
+"baseModel": "Silverado",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 283,
+"kwhPer100mi": 50.3
+},
+{
+"id": 49642,
+"year": 2026,
+"make": "Chevrolet",
+"model": "Silverado EV Std Range WT (11kW Charger)",
+"baseModel": "Silverado",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 286,
+"kwhPer100mi": 49.6
+},
+{
+"id": 49957,
+"year": 2026,
+"make": "Dodge",
+"model": "Charger Daytona R/T AWD 245/55ZR18",
+"baseModel": "Charger",
+"class": "Large Cars",
+"rangeMiles": 263,
+"kwhPer100mi": 40.0
+},
+{
+"id": 49958,
+"year": 2026,
+"make": "Dodge",
+"model": "Charger Daytona R/T AWD 255/45R20",
+"baseModel": "Charger",
+"class": "Large Cars",
+"rangeMiles": 295,
+"kwhPer100mi": 35.6
+},
+{
+"id": 49959,
+"year": 2026,
+"make": "Dodge",
+"model": "Charger Daytona R/T AWD 275/40R20",
+"baseModel": "Charger",
+"class": "Large Cars",
+"rangeMiles": 258,
+"kwhPer100mi": 41.0
+},
+{
+"id": 49647,
+"year": 2026,
+"make": "Dodge",
+"model": "Charger Daytona R/T AWD 305/35ZR20",
+"baseModel": "Charger",
+"class": "Large Cars",
+"rangeMiles": 267,
+"kwhPer100mi": 39.1
+},
+{
+"id": 49648,
+"year": 2026,
+"make": "Dodge",
+"model": "Charger Daytona Scat Pack AWD 305/35ZR20",
+"baseModel": "Charger",
+"class": "Large Cars",
+"rangeMiles": 267,
+"kwhPer100mi": 39.1
+},
+{
+"id": 49649,
+"year": 2026,
+"make": "Dodge",
+"model": "Charger Daytona Scat Pack AWD 325/35ZR20 Rear",
+"baseModel": "Charger",
+"class": "Large Cars",
+"rangeMiles": 223,
+"kwhPer100mi": 46.6
+},
+{
+"id": 49650,
+"year": 2026,
+"make": "Dodge",
+"model": "Charger Daytona Scat Pack AWD 325/35ZR20 Rear A/S",
+"baseModel": "Charger",
+"class": "Large Cars",
+"rangeMiles": 241,
+"kwhPer100mi": 43.4
+},
+{
+"id": 50631,
+"year": 2027,
+"make": "Dodge",
+"model": "Charger Daytona Scat Pack AWD 305/35ZR20",
+"baseModel": "Charger",
+"class": "Large Cars",
+"rangeMiles": 267,
+"kwhPer100mi": 39.1
+},
+{
+"id": 50632,
+"year": 2027,
+"make": "Dodge",
+"model": "Charger Daytona Scat Pack AWD 325/35ZR20 Rear",
+"baseModel": "Charger",
+"class": "Large Cars",
+"rangeMiles": 231,
+"kwhPer100mi": 44.8
+},
+{
+"id": 50633,
+"year": 2027,
+"make": "Dodge",
+"model": "Charger Daytona Scat Pack AWD 325/35ZR20 Rear A/S",
+"baseModel": "Charger",
+"class": "Large Cars",
+"rangeMiles": 241,
+"kwhPer100mi": 43.4
+},
+{
+"id": 50198,
+"year": 2026,
+"make": "Fiat",
+"model": "500e",
+"baseModel": "500e",
+"class": "Minicompact Cars",
+"rangeMiles": 149,
+"kwhPer100mi": 29.2
+},
+{
+"id": 50199,
+"year": 2026,
+"make": "Fiat",
+"model": "500e All Season",
+"baseModel": "500e",
+"class": "Minicompact Cars",
+"rangeMiles": 141,
+"kwhPer100mi": 30.5
+},
+{
+"id": 50200,
+"year": 2026,
+"make": "Ford",
+"model": "Mustang Mach-E AWD",
+"baseModel": "Mustang Mach-E",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 240,
+"kwhPer100mi": 33.6
+},
+{
+"id": 50201,
+"year": 2026,
+"make": "Ford",
+"model": "Mustang Mach-E AWD Extended",
+"baseModel": "Mustang Mach-E",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 300,
+"kwhPer100mi": 32.3
+},
+{
+"id": 50202,
+"year": 2026,
+"make": "Ford",
+"model": "Mustang Mach-E GT",
+"baseModel": "Mustang Mach-E",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 280,
+"kwhPer100mi": 37.4
+},
+{
+"id": 50204,
+"year": 2026,
+"make": "Ford",
+"model": "Mustang Mach-E RWD",
+"baseModel": "Mustang Mach-E",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 260,
+"kwhPer100mi": 31.4
+},
+{
+"id": 50205,
+"year": 2026,
+"make": "Ford",
+"model": "Mustang Mach-E RWD Extended",
+"baseModel": "Mustang Mach-E",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 320,
+"kwhPer100mi": 30.7
+},
+{
+"id": 50203,
+"year": 2026,
+"make": "Ford",
+"model": "Mustang Mach-E Rally",
+"baseModel": "Mustang Mach-E",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 255,
+"kwhPer100mi": 40.2
+},
+{
+"id": 49658,
+"year": 2026,
+"make": "GMC",
+"model": "SIERRA EV Ext Range (11kW Charger)",
+"baseModel": "Sierra",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 410,
+"kwhPer100mi": 49.5
+},
+{
+"id": 49659,
+"year": 2026,
+"make": "GMC",
+"model": "SIERRA EV Ext Range (19kW Charger)",
+"baseModel": "Sierra",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 385,
+"kwhPer100mi": 52.4
+},
+{
+"id": 49660,
+"year": 2026,
+"make": "GMC",
+"model": "SIERRA EV Std Range (11kW Charger)",
+"baseModel": "Sierra",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 283,
+"kwhPer100mi": 50.3
+},
+{
+"id": 49651,
+"year": 2026,
+"make": "Genesis",
+"model": "Electrified G80",
+"baseModel": "G80",
+"class": "Midsize Cars",
+"rangeMiles": 300,
+"kwhPer100mi": 35.0
+},
+{
+"id": 49653,
+"year": 2026,
+"make": "Genesis",
+"model": "GV60 AWD (19 inch Wheels)",
+"baseModel": "GV60",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 282,
+"kwhPer100mi": 33.6
+},
+{
+"id": 49654,
+"year": 2026,
+"make": "Genesis",
+"model": "GV60 AWD Advanced (20 inch Wheels)",
+"baseModel": "GV60",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 267,
+"kwhPer100mi": 35.2
+},
+{
+"id": 49655,
+"year": 2026,
+"make": "Genesis",
+"model": "GV60 AWD Performance",
+"baseModel": "GV60",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 252,
+"kwhPer100mi": 37.0
+},
+{
+"id": 49652,
+"year": 2026,
+"make": "Genesis",
+"model": "GV60 RWD",
+"baseModel": "GV60",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 306,
+"kwhPer100mi": 30.6
+},
+{
+"id": 50636,
+"year": 2027,
+"make": "Genesis",
+"model": "GV60 AWD (19 inch Wheels)",
+"baseModel": "GV60",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 282,
+"kwhPer100mi": 33.6
+},
+{
+"id": 50635,
+"year": 2027,
+"make": "Genesis",
+"model": "GV60 AWD Prestige (20 inch Wheels)",
+"baseModel": "GV60",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 267,
+"kwhPer100mi": 35.2
+},
+{
+"id": 50637,
+"year": 2027,
+"make": "Genesis",
+"model": "GV60 Magma",
+"baseModel": "GV60",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 222,
+"kwhPer100mi": 43.0
+},
+{
+"id": 50638,
+"year": 2027,
+"make": "Genesis",
+"model": "GV60 RWD",
+"baseModel": "GV60",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 306,
+"kwhPer100mi": 30.6
+},
+{
+"id": 49656,
+"year": 2026,
+"make": "Genesis",
+"model": "Electrified GV70 AWD (19 inch Wheels)",
+"baseModel": "GV70",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 263,
+"kwhPer100mi": 35.0
+},
+{
+"id": 49657,
+"year": 2026,
+"make": "Genesis",
+"model": "Electrified GV70 AWD (20 inch Wheels)",
+"baseModel": "GV70",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 243,
+"kwhPer100mi": 38.0
+},
+{
+"id": 50634,
+"year": 2027,
+"make": "Genesis",
+"model": "Electrified GV70 AWD",
+"baseModel": "GV70",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 250,
+"kwhPer100mi": 37.3
+},
+{
+"id": 50207,
+"year": 2026,
+"make": "Honda",
+"model": "Prologue AWD Elite",
+"baseModel": "Prologue",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 283,
+"kwhPer100mi": 35.3
+},
+{
+"id": 50206,
+"year": 2026,
+"make": "Honda",
+"model": "Prologue AWD Touring",
+"baseModel": "Prologue",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 294,
+"kwhPer100mi": 34.1
+},
+{
+"id": 50208,
+"year": 2026,
+"make": "Honda",
+"model": "Prologue FWD",
+"baseModel": "Prologue",
+"class": "Standard Sport Utility Vehicle 2WD",
+"rangeMiles": 308,
+"kwhPer100mi": 32.5
+},
+{
+"id": 49962,
+"year": 2026,
+"make": "Hyundai",
+"model": "Ioniq 5 AWD (19inch Wheels)",
+"baseModel": "Ioniq 5",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 290,
+"kwhPer100mi": 31.7
+},
+{
+"id": 49963,
+"year": 2026,
+"make": "Hyundai",
+"model": "Ioniq 5 AWD (20inch Wheels)",
+"baseModel": "Ioniq 5",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 269,
+"kwhPer100mi": 34.5
+},
+{
+"id": 49964,
+"year": 2026,
+"make": "Hyundai",
+"model": "Ioniq 5 AWD XRT",
+"baseModel": "Ioniq 5",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 259,
+"kwhPer100mi": 35.8
+},
+{
+"id": 49965,
+"year": 2026,
+"make": "Hyundai",
+"model": "Ioniq 5 N",
+"baseModel": "Ioniq 5",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 221,
+"kwhPer100mi": 43.0
+},
+{
+"id": 49960,
+"year": 2026,
+"make": "Hyundai",
+"model": "Ioniq 5 RWD",
+"baseModel": "Ioniq 5",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 318,
+"kwhPer100mi": 30.0
+},
+{
+"id": 50028,
+"year": 2026,
+"make": "Hyundai",
+"model": "Ioniq 5 Robo taxi",
+"baseModel": "Ioniq 5",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 168,
+"kwhPer100mi": 47.5
+},
+{
+"id": 49961,
+"year": 2026,
+"make": "Hyundai",
+"model": "Ioniq 5 Standard range",
+"baseModel": "Ioniq 5",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 245,
+"kwhPer100mi": 29.0
+},
+{
+"id": 50642,
+"year": 2027,
+"make": "Hyundai",
+"model": "Ioniq 5 AWD (19inch Wheels)",
+"baseModel": "Ioniq 5",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 290,
+"kwhPer100mi": 31.7
+},
+{
+"id": 50643,
+"year": 2027,
+"make": "Hyundai",
+"model": "Ioniq 5 AWD (20inch Wheels)",
+"baseModel": "Ioniq 5",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 269,
+"kwhPer100mi": 34.5
+},
+{
+"id": 50644,
+"year": 2027,
+"make": "Hyundai",
+"model": "Ioniq 5 AWD XRT",
+"baseModel": "Ioniq 5",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 259,
+"kwhPer100mi": 35.8
+},
+{
+"id": 50645,
+"year": 2027,
+"make": "Hyundai",
+"model": "Ioniq 5 RWD",
+"baseModel": "Ioniq 5",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 318,
+"kwhPer100mi": 30.0
+},
+{
+"id": 50646,
+"year": 2027,
+"make": "Hyundai",
+"model": "Ioniq 5 Standard range",
+"baseModel": "Ioniq 5",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 245,
+"kwhPer100mi": 29.0
+},
+{
+"id": 50647,
+"year": 2027,
+"make": "Hyundai",
+"model": "Ioniq 6 N",
+"baseModel": "Ioniq 6",
+"class": "Midsize Cars",
+"rangeMiles": 245,
+"kwhPer100mi": 37.9
+},
+{
+"id": 49662,
+"year": 2026,
+"make": "Hyundai",
+"model": "Ioniq 9 AWD",
+"baseModel": "Ioniq 9",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 320,
+"kwhPer100mi": 38.0
+},
+{
+"id": 49663,
+"year": 2026,
+"make": "Hyundai",
+"model": "Ioniq 9 AWD Performance",
+"baseModel": "Ioniq 9",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 311,
+"kwhPer100mi": 40.0
+},
+{
+"id": 49661,
+"year": 2026,
+"make": "Hyundai",
+"model": "Ioniq 9 RWD",
+"baseModel": "Ioniq 9",
+"class": "Standard Sport Utility Vehicle 2WD",
+"rangeMiles": 335,
+"kwhPer100mi": 37.0
+},
+{
+"id": 50388,
+"year": 2027,
+"make": "Hyundai",
+"model": "Ioniq 9 AWD",
+"baseModel": "Ioniq 9",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 320,
+"kwhPer100mi": 38.0
+},
+{
+"id": 50389,
+"year": 2027,
+"make": "Hyundai",
+"model": "Ioniq 9 AWD Performance",
+"baseModel": "Ioniq 9",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 311,
+"kwhPer100mi": 40.0
+},
+{
+"id": 50375,
+"year": 2027,
+"make": "Hyundai",
+"model": "Ioniq 9 RWD",
+"baseModel": "Ioniq 9",
+"class": "Standard Sport Utility Vehicle 2WD",
+"rangeMiles": 335,
+"kwhPer100mi": 37.0
+},
+{
+"id": 50449,
+"year": 2026,
+"make": "Jeep",
+"model": "Recon MOAB 4WD",
+"baseModel": "Recon",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 222,
+"kwhPer100mi": 47.6
+},
+{
+"id": 50209,
+"year": 2026,
+"make": "Jeep",
+"model": "Wagoneer S AWD (Falken tire)",
+"baseModel": "Wagoneer",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 294,
+"kwhPer100mi": 36.2
+},
+{
+"id": 50210,
+"year": 2026,
+"make": "Jeep",
+"model": "Wagoneer S AWD (Pirelli tire)",
+"baseModel": "Wagoneer",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 268,
+"kwhPer100mi": 39.1
+},
+{
+"id": 50648,
+"year": 2027,
+"make": "Kia",
+"model": "EV3 Long Range AWD",
+"baseModel": "EV3",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 280,
+"kwhPer100mi": 33.0
+},
+{
+"id": 50649,
+"year": 2027,
+"make": "Kia",
+"model": "EV3 Long Range FWD",
+"baseModel": "EV3",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 321,
+"kwhPer100mi": 29.0
+},
+{
+"id": 50650,
+"year": 2027,
+"make": "Kia",
+"model": "EV3 Long Range GT AWD",
+"baseModel": "EV3",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 280,
+"kwhPer100mi": 33.0
+},
+{
+"id": 50651,
+"year": 2027,
+"make": "Kia",
+"model": "EV3 Standard Range FWD",
+"baseModel": "EV3",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 221,
+"kwhPer100mi": 28.8
+},
+{
+"id": 50211,
+"year": 2026,
+"make": "Kia",
+"model": "EV6 AWD GT",
+"baseModel": "EV6",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 231,
+"kwhPer100mi": 41.0
+},
+{
+"id": 50212,
+"year": 2026,
+"make": "Kia",
+"model": "EV6 Long Range AWD (19 inch Wheels)",
+"baseModel": "EV6",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 295,
+"kwhPer100mi": 31.6
+},
+{
+"id": 50213,
+"year": 2026,
+"make": "Kia",
+"model": "EV6 Long Range AWD (20 inch Wheels)",
+"baseModel": "EV6",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 270,
+"kwhPer100mi": 34.6
+},
+{
+"id": 50214,
+"year": 2026,
+"make": "Kia",
+"model": "EV6 Long Range RWD",
+"baseModel": "EV6",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 319,
+"kwhPer100mi": 29.6
+},
+{
+"id": 50215,
+"year": 2026,
+"make": "Kia",
+"model": "EV6 Standard Range RWD",
+"baseModel": "EV6",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 237,
+"kwhPer100mi": 29.2
+},
+{
+"id": 49669,
+"year": 2026,
+"make": "Kia",
+"model": "EV9 GT",
+"baseModel": "EV9",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 260,
+"kwhPer100mi": 43.0
+},
+{
+"id": 49667,
+"year": 2026,
+"make": "Kia",
+"model": "EV9 Long Range AWD",
+"baseModel": "EV9",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 283,
+"kwhPer100mi": 40.0
+},
+{
+"id": 49668,
+"year": 2026,
+"make": "Kia",
+"model": "EV9 Long Range AWD GT-Line",
+"baseModel": "EV9",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 280,
+"kwhPer100mi": 41.0
+},
+{
+"id": 49666,
+"year": 2026,
+"make": "Kia",
+"model": "EV9 Long Range RWD",
+"baseModel": "EV9",
+"class": "Standard Sport Utility Vehicle 2WD",
+"rangeMiles": 305,
+"kwhPer100mi": 38.0
+},
+{
+"id": 49665,
+"year": 2026,
+"make": "Kia",
+"model": "EV9 Standard Range RWD",
+"baseModel": "EV9",
+"class": "Standard Sport Utility Vehicle 2WD",
+"rangeMiles": 230,
+"kwhPer100mi": 38.0
+},
+{
+"id": 49664,
+"year": 2026,
+"make": "Kia",
+"model": "Niro Electric",
+"baseModel": "Niro",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 253,
+"kwhPer100mi": 30.0
+},
+{
+"id": 50450,
+"year": 2026,
+"make": "Lexus",
+"model": "ES 350e (19 inch Wheels)",
+"baseModel": "ES",
+"class": "Midsize Cars",
+"rangeMiles": 307,
+"kwhPer100mi": 27.0
+},
+{
+"id": 50451,
+"year": 2026,
+"make": "Lexus",
+"model": "ES 350e (21 inch Wheels)",
+"baseModel": "ES",
+"class": "Midsize Cars",
+"rangeMiles": 292,
+"kwhPer100mi": 27.5
+},
+{
+"id": 50452,
+"year": 2026,
+"make": "Lexus",
+"model": "ES 500e AWD (19 inch Wheels)",
+"baseModel": "ES",
+"class": "Midsize Cars",
+"rangeMiles": 276,
+"kwhPer100mi": 30.0
+},
+{
+"id": 50453,
+"year": 2026,
+"make": "Lexus",
+"model": "ES 500e AWD (21 inch Wheels)",
+"baseModel": "ES",
+"class": "Midsize Cars",
+"rangeMiles": 272,
+"kwhPer100mi": 30.0
+},
+{
+"id": 50291,
+"year": 2026,
+"make": "Lexus",
+"model": "RZ 350e FWD (18 inch wheels)",
+"baseModel": "RZ",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 301,
+"kwhPer100mi": 26.6
+},
+{
+"id": 50216,
+"year": 2026,
+"make": "Lexus",
+"model": "RZ 350e FWD (20 inch wheels)",
+"baseModel": "RZ",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 284,
+"kwhPer100mi": 28.1
+},
+{
+"id": 50217,
+"year": 2026,
+"make": "Lexus",
+"model": "RZ 450e AWD (18 inch wheels)",
+"baseModel": "RZ",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 264,
+"kwhPer100mi": 30.5
+},
+{
+"id": 50218,
+"year": 2026,
+"make": "Lexus",
+"model": "RZ 450e AWD (20 inch wheels - 235/50R20)",
+"baseModel": "RZ",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 257,
+"kwhPer100mi": 31.2
+},
+{
+"id": 50219,
+"year": 2026,
+"make": "Lexus",
+"model": "RZ 450e AWD (20 inch wheels - 235/50R20,255/45R20)",
+"baseModel": "RZ",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 228,
+"kwhPer100mi": 35.2
+},
+{
+"id": 50220,
+"year": 2026,
+"make": "Lexus",
+"model": "RZ 550e AWD",
+"baseModel": "RZ",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 229,
+"kwhPer100mi": 35.3
+},
+{
+"id": 49967,
+"year": 2026,
+"make": "Lucid",
+"model": "Air G Touring XR AWD with 20 inch wheels",
+"baseModel": "Air",
+"class": "Large Cars",
+"rangeMiles": 480,
+"kwhPer100mi": 28.2
+},
+{
+"id": 49968,
+"year": 2026,
+"make": "Lucid",
+"model": "Air G Touring XR AWD with 21 inch wheels",
+"baseModel": "Air",
+"class": "Large Cars",
+"rangeMiles": 446,
+"kwhPer100mi": 30.1
+},
+{
+"id": 49966,
+"year": 2026,
+"make": "Lucid",
+"model": "Air G Touring XR AWD with19 inch wheels",
+"baseModel": "Air",
+"class": "Large Cars",
+"rangeMiles": 512,
+"kwhPer100mi": 26.4
+},
+{
+"id": 49969,
+"year": 2026,
+"make": "Lucid",
+"model": "Air Pure RWD with 19 inch wheels",
+"baseModel": "Air",
+"class": "Large Cars",
+"rangeMiles": 420,
+"kwhPer100mi": 23.1
+},
+{
+"id": 49970,
+"year": 2026,
+"make": "Lucid",
+"model": "Air Pure RWD with 20 inch wheels",
+"baseModel": "Air",
+"class": "Large Cars",
+"rangeMiles": 372,
+"kwhPer100mi": 26.1
+},
+{
+"id": 49971,
+"year": 2026,
+"make": "Lucid",
+"model": "Air Sapphire AWD",
+"baseModel": "Air",
+"class": "Large Cars",
+"rangeMiles": 427,
+"kwhPer100mi": 32.1
+},
+{
+"id": 49972,
+"year": 2026,
+"make": "Lucid",
+"model": "Air Touring AWD with 19 inch wheels",
+"baseModel": "Air",
+"class": "Large Cars",
+"rangeMiles": 431,
+"kwhPer100mi": 25.2
+},
+{
+"id": 49973,
+"year": 2026,
+"make": "Lucid",
+"model": "Air Touring AWD with 20 inch wheels",
+"baseModel": "Air",
+"class": "Large Cars",
+"rangeMiles": 396,
+"kwhPer100mi": 27.3
+},
+{
+"id": 50844,
+"year": 2027,
+"make": "Lucid",
+"model": "Air G Touring XR AWD with 20 inch wheels",
+"baseModel": "Air",
+"class": "Large Cars",
+"rangeMiles": 480,
+"kwhPer100mi": 28.2
+},
+{
+"id": 50845,
+"year": 2027,
+"make": "Lucid",
+"model": "Air G Touring XR AWD with 21 inch wheels",
+"baseModel": "Air",
+"class": "Large Cars",
+"rangeMiles": 446,
+"kwhPer100mi": 30.1
+},
+{
+"id": 50843,
+"year": 2027,
+"make": "Lucid",
+"model": "Air G Touring XR AWD with19 inch wheels",
+"baseModel": "Air",
+"class": "Large Cars",
+"rangeMiles": 512,
+"kwhPer100mi": 26.4
+},
+{
+"id": 50846,
+"year": 2027,
+"make": "Lucid",
+"model": "Air Pure RWD with 19 inch wheels",
+"baseModel": "Air",
+"class": "Large Cars",
+"rangeMiles": 420,
+"kwhPer100mi": 23.1
+},
+{
+"id": 50847,
+"year": 2027,
+"make": "Lucid",
+"model": "Air Pure RWD with 20 inch wheels",
+"baseModel": "Air",
+"class": "Large Cars",
+"rangeMiles": 372,
+"kwhPer100mi": 26.1
+},
+{
+"id": 50848,
+"year": 2027,
+"make": "Lucid",
+"model": "Air Sapphire AWD",
+"baseModel": "Air",
+"class": "Large Cars",
+"rangeMiles": 427,
+"kwhPer100mi": 32.1
+},
+{
+"id": 50849,
+"year": 2027,
+"make": "Lucid",
+"model": "Air Touring AWD with 19 inch wheels",
+"baseModel": "Air",
+"class": "Large Cars",
+"rangeMiles": 431,
+"kwhPer100mi": 25.2
+},
+{
+"id": 50850,
+"year": 2027,
+"make": "Lucid",
+"model": "Air Touring AWD with 20 inch wheels",
+"baseModel": "Air",
+"class": "Large Cars",
+"rangeMiles": 396,
+"kwhPer100mi": 27.3
+},
+{
+"id": 49675,
+"year": 2026,
+"make": "Lucid",
+"model": "Gravity Dream w/20F21R wheels (3R)",
+"baseModel": "Gravity",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 420,
+"kwhPer100mi": 33.9
+},
+{
+"id": 49676,
+"year": 2026,
+"make": "Lucid",
+"model": "Gravity Dream w/21F22R wheels (3R)",
+"baseModel": "Gravity",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 378,
+"kwhPer100mi": 37.6
+},
+{
+"id": 49677,
+"year": 2026,
+"make": "Lucid",
+"model": "Gravity Dream w/22F23R wheels (3R)",
+"baseModel": "Gravity",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 378,
+"kwhPer100mi": 37.6
+},
+{
+"id": 49670,
+"year": 2026,
+"make": "Lucid",
+"model": "Gravity GT w/20F21R wheels (2R)",
+"baseModel": "Gravity",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 450,
+"kwhPer100mi": 31.1
+},
+{
+"id": 50029,
+"year": 2026,
+"make": "Lucid",
+"model": "Gravity GT w/20F21R wheels (3R)",
+"baseModel": "Gravity",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 437,
+"kwhPer100mi": 32.4
+},
+{
+"id": 49671,
+"year": 2026,
+"make": "Lucid",
+"model": "Gravity GT w/21F22R wheels (2R)",
+"baseModel": "Gravity",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 407,
+"kwhPer100mi": 34.3
+},
+{
+"id": 49673,
+"year": 2026,
+"make": "Lucid",
+"model": "Gravity GT w/21F22R wheels (3R)",
+"baseModel": "Gravity",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 386,
+"kwhPer100mi": 36.5
+},
+{
+"id": 49672,
+"year": 2026,
+"make": "Lucid",
+"model": "Gravity GT w/22F23R wheels (2R)",
+"baseModel": "Gravity",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 407,
+"kwhPer100mi": 34.3
+},
+{
+"id": 49674,
+"year": 2026,
+"make": "Lucid",
+"model": "Gravity GT w/22F23R wheels (3R)",
+"baseModel": "Gravity",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 386,
+"kwhPer100mi": 36.5
+},
+{
+"id": 50221,
+"year": 2026,
+"make": "Lucid",
+"model": "Gravity Touring w/20F21R wheels",
+"baseModel": "Gravity",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 337,
+"kwhPer100mi": 30.3
+},
+{
+"id": 50652,
+"year": 2027,
+"make": "Lucid",
+"model": "Gravity GT w/20F21R wheels (2R)",
+"baseModel": "Gravity",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 450,
+"kwhPer100mi": 31.1
+},
+{
+"id": 50653,
+"year": 2027,
+"make": "Lucid",
+"model": "Gravity GT w/20F21R wheels (3R)",
+"baseModel": "Gravity",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 437,
+"kwhPer100mi": 32.4
+},
+{
+"id": 50654,
+"year": 2027,
+"make": "Lucid",
+"model": "Gravity GT w/21F22R wheels (2R)",
+"baseModel": "Gravity",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 407,
+"kwhPer100mi": 34.3
+},
+{
+"id": 50655,
+"year": 2027,
+"make": "Lucid",
+"model": "Gravity GT w/21F22R wheels (3R)",
+"baseModel": "Gravity",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 386,
+"kwhPer100mi": 36.5
+},
+{
+"id": 50656,
+"year": 2027,
+"make": "Lucid",
+"model": "Gravity GT w/22F23R wheels (2R)",
+"baseModel": "Gravity",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 407,
+"kwhPer100mi": 34.3
+},
+{
+"id": 50657,
+"year": 2027,
+"make": "Lucid",
+"model": "Gravity GT w/22F23R wheels (3R)",
+"baseModel": "Gravity",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 386,
+"kwhPer100mi": 36.5
+},
+{
+"id": 50658,
+"year": 2027,
+"make": "Lucid",
+"model": "Gravity Touring w/20F21R wheels",
+"baseModel": "Gravity",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 337,
+"kwhPer100mi": 30.3
+},
+{
+"id": 50222,
+"year": 2026,
+"make": "MINI",
+"model": "Countryman SE ALL4 (18 inch Wheels)",
+"baseModel": "Countryman",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 212,
+"kwhPer100mi": 35.0
+},
+{
+"id": 50223,
+"year": 2026,
+"make": "MINI",
+"model": "Countryman SE ALL4 (19 inch Wheels)",
+"baseModel": "Countryman",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 204,
+"kwhPer100mi": 36.9
+},
+{
+"id": 50374,
+"year": 2027,
+"make": "MINI",
+"model": "Countryman SE ALL4 (18 inch Wheels)",
+"baseModel": "Countryman",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 216,
+"kwhPer100mi": 34.6
+},
+{
+"id": 50664,
+"year": 2027,
+"make": "MINI",
+"model": "Countryman SE ALL4 (19 inch Wheels)",
+"baseModel": "Countryman",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 214,
+"kwhPer100mi": 34.9
+},
+{
+"id": 50454,
+"year": 2026,
+"make": "Maserati",
+"model": "Grancabrio Folgore",
+"baseModel": "Grancabrio",
+"class": "Subcompact Cars",
+"rangeMiles": 231,
+"kwhPer100mi": 40.7
+},
+{
+"id": 50292,
+"year": 2026,
+"make": "Maserati",
+"model": "Grecale Folgore (19 inch wheels)",
+"baseModel": "Grecale",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 268,
+"kwhPer100mi": 41.7
+},
+{
+"id": 50455,
+"year": 2026,
+"make": "Maserati",
+"model": "Grecale Folgore (20 inch Wheels)",
+"baseModel": "Grecale",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 268,
+"kwhPer100mi": 41.7
+},
+{
+"id": 50293,
+"year": 2026,
+"make": "Maserati",
+"model": "Grecale Folgore (21 inch wheels)",
+"baseModel": "Grecale",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 239,
+"kwhPer100mi": 46.7
+},
+{
+"id": 50030,
+"year": 2026,
+"make": "Mercedes-Benz",
+"model": "CLA250 Plus with EQ Tech",
+"baseModel": "CLA-Class",
+"class": "Compact Cars",
+"rangeMiles": 317,
+"kwhPer100mi": 31.0
+},
+{
+"id": 50031,
+"year": 2026,
+"make": "Mercedes-Benz",
+"model": "CLA250 Plus with EQ Tech (R22)",
+"baseModel": "CLA-Class",
+"class": "Compact Cars",
+"rangeMiles": 374,
+"kwhPer100mi": 27.0
+},
+{
+"id": 50032,
+"year": 2026,
+"make": "Mercedes-Benz",
+"model": "CLA350 4matic with EQ Tech",
+"baseModel": "CLA-Class",
+"class": "Compact Cars",
+"rangeMiles": 312,
+"kwhPer100mi": 29.0
+},
+{
+"id": 50659,
+"year": 2027,
+"make": "Mercedes-Benz",
+"model": "CLA250 Plus with EQ Tech",
+"baseModel": "CLA-Class",
+"class": "Compact Cars",
+"rangeMiles": 317,
+"kwhPer100mi": 31.0
+},
+{
+"id": 50365,
+"year": 2027,
+"make": "Mercedes-Benz",
+"model": "CLA250 Plus with EQ Tech (R22)",
+"baseModel": "CLA-Class",
+"class": "Compact Cars",
+"rangeMiles": 374,
+"kwhPer100mi": 27.0
+},
+{
+"id": 50660,
+"year": 2027,
+"make": "Mercedes-Benz",
+"model": "CLA350 4matic with EQ Tech",
+"baseModel": "CLA-Class",
+"class": "Compact Cars",
+"rangeMiles": 312,
+"kwhPer100mi": 29.0
+},
+{
+"id": 49678,
+"year": 2026,
+"make": "Mercedes-Benz",
+"model": "AMG EQE 4matic Plus",
+"baseModel": "EQE",
+"class": "Midsize Cars",
+"rangeMiles": 220,
+"kwhPer100mi": 48.0
+},
+{
+"id": 49686,
+"year": 2026,
+"make": "Mercedes-Benz",
+"model": "AMG EQE 4matic Plus (SUV)",
+"baseModel": "EQE",
+"class": "Midsize Station Wagons",
+"rangeMiles": 230,
+"kwhPer100mi": 45.5
+},
+{
+"id": 49680,
+"year": 2026,
+"make": "Mercedes-Benz",
+"model": "EQE 320 4matic",
+"baseModel": "EQE",
+"class": "Midsize Cars",
+"rangeMiles": 267,
+"kwhPer100mi": 39.0
+},
+{
+"id": 49685,
+"year": 2026,
+"make": "Mercedes-Benz",
+"model": "EQE 320 4matic (SUV)",
+"baseModel": "EQE",
+"class": "Midsize Station Wagons",
+"rangeMiles": 253,
+"kwhPer100mi": 42.0
+},
+{
+"id": 49679,
+"year": 2026,
+"make": "Mercedes-Benz",
+"model": "EQE 320 Plus",
+"baseModel": "EQE",
+"class": "Midsize Cars",
+"rangeMiles": 308,
+"kwhPer100mi": 35.6
+},
+{
+"id": 49684,
+"year": 2026,
+"make": "Mercedes-Benz",
+"model": "EQE 320 Plus (SUV)",
+"baseModel": "EQE",
+"class": "Midsize Station Wagons",
+"rangeMiles": 302,
+"kwhPer100mi": 36.1
+},
+{
+"id": 50851,
+"year": 2027,
+"make": "Mercedes-Benz",
+"model": "EQE 320 4matic (SUV)",
+"baseModel": "EQE",
+"class": "Midsize Station Wagons",
+"rangeMiles": 253,
+"kwhPer100mi": 42.0
+},
+{
+"id": 50661,
+"year": 2027,
+"make": "Mercedes-Benz",
+"model": "EQE 320 Plus (SUV)",
+"baseModel": "EQE",
+"class": "Midsize Station Wagons",
+"rangeMiles": 302,
+"kwhPer100mi": 36.1
+},
+{
+"id": 49688,
+"year": 2026,
+"make": "Mercedes-Benz",
+"model": "EQS 400 4matic (SUV)",
+"baseModel": "EQS",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 312,
+"kwhPer100mi": 43.0
+},
+{
+"id": 49683,
+"year": 2026,
+"make": "Mercedes-Benz",
+"model": "EQS 450 4matic",
+"baseModel": "EQS",
+"class": "Large Cars",
+"rangeMiles": 367,
+"kwhPer100mi": 37.0
+},
+{
+"id": 49681,
+"year": 2026,
+"make": "Mercedes-Benz",
+"model": "EQS 450 Plus",
+"baseModel": "EQS",
+"class": "Large Cars",
+"rangeMiles": 390,
+"kwhPer100mi": 34.0
+},
+{
+"id": 49689,
+"year": 2026,
+"make": "Mercedes-Benz",
+"model": "EQS 550 4matic (SUV)",
+"baseModel": "EQS",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 317,
+"kwhPer100mi": 42.0
+},
+{
+"id": 49682,
+"year": 2026,
+"make": "Mercedes-Benz",
+"model": "EQS 580 4matic",
+"baseModel": "EQS",
+"class": "Large Cars",
+"rangeMiles": 371,
+"kwhPer100mi": 35.6
+},
+{
+"id": 49690,
+"year": 2026,
+"make": "Mercedes-Benz",
+"model": "EQS 680 4matic Maybach (SUV)",
+"baseModel": "EQS",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 300,
+"kwhPer100mi": 39.8
+},
+{
+"id": 50662,
+"year": 2027,
+"make": "Mercedes-Benz",
+"model": "EQS 400 4matic (SUV)",
+"baseModel": "EQS",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 312,
+"kwhPer100mi": 43.0
+},
+{
+"id": 50852,
+"year": 2027,
+"make": "Mercedes-Benz",
+"model": "EQS 500 4matic",
+"baseModel": "EQS",
+"class": "Large Cars",
+"rangeMiles": 443,
+"kwhPer100mi": 29.6
+},
+{
+"id": 50663,
+"year": 2027,
+"make": "Mercedes-Benz",
+"model": "EQS 550 4matic (SUV)",
+"baseModel": "EQS",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 317,
+"kwhPer100mi": 42.0
+},
+{
+"id": 50853,
+"year": 2027,
+"make": "Mercedes-Benz",
+"model": "EQS 580 4matic",
+"baseModel": "EQS",
+"class": "Large Cars",
+"rangeMiles": 434,
+"kwhPer100mi": 30.0
+},
+{
+"id": 49687,
+"year": 2026,
+"make": "Mercedes-Benz",
+"model": "G 580 with EQ Technology",
+"baseModel": "G-Class",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 239,
+"kwhPer100mi": 54.0
+},
+{
+"id": 50854,
+"year": 2027,
+"make": "Mercedes-Benz",
+"model": "G 580 with EQ Technology",
+"baseModel": "G-Class",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 249,
+"kwhPer100mi": 47.8
+},
+{
+"id": 50855,
+"year": 2027,
+"make": "Mercedes-Benz",
+"model": "GLC400 4matic electric",
+"baseModel": "GLC-Class",
+"class": "Midsize Station Wagons",
+"rangeMiles": 331,
+"kwhPer100mi": 33.0
+},
+{
+"id": 50856,
+"year": 2027,
+"make": "Mercedes-Benz",
+"model": "GLC400 4matic electric (ST)",
+"baseModel": "GLC-Class",
+"class": "Midsize Station Wagons",
+"rangeMiles": 350,
+"kwhPer100mi": 28.2
+},
+{
+"id": 50226,
+"year": 2026,
+"make": "Nissan",
+"model": "ARIYA FWD 63kWh",
+"baseModel": "ARIYA",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 216,
+"kwhPer100mi": 33.3
+},
+{
+"id": 50227,
+"year": 2026,
+"make": "Nissan",
+"model": "ARIYA FWD 87kWh",
+"baseModel": "ARIYA",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 289,
+"kwhPer100mi": 34.4
+},
+{
+"id": 50228,
+"year": 2026,
+"make": "Nissan",
+"model": "ARIYA PLATINUM+ e-4ORCE 87kWh 19in. Wheels",
+"baseModel": "ARIYA",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 267,
+"kwhPer100mi": 37.4
+},
+{
+"id": 50224,
+"year": 2026,
+"make": "Nissan",
+"model": "ARIYA e-4ORCE 63kWh",
+"baseModel": "ARIYA",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 205,
+"kwhPer100mi": 35.3
+},
+{
+"id": 50225,
+"year": 2026,
+"make": "Nissan",
+"model": "ARIYA e-4ORCE 87kWh",
+"baseModel": "ARIYA",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 272,
+"kwhPer100mi": 36.6
+},
+{
+"id": 49974,
+"year": 2026,
+"make": "Nissan",
+"model": "LEAF 75kWh (18 inch alloy Wheels)",
+"baseModel": "LEAF",
+"class": "Small Station Wagons",
+"rangeMiles": 288,
+"kwhPer100mi": 30.0
+},
+{
+"id": 49975,
+"year": 2026,
+"make": "Nissan",
+"model": "LEAF 75kWh (18 inch steel Wheels)",
+"baseModel": "LEAF",
+"class": "Small Station Wagons",
+"rangeMiles": 303,
+"kwhPer100mi": 27.8
+},
+{
+"id": 49976,
+"year": 2026,
+"make": "Nissan",
+"model": "LEAF 75kWh (19 inch Wheels)",
+"baseModel": "LEAF",
+"class": "Small Station Wagons",
+"rangeMiles": 259,
+"kwhPer100mi": 32.7
+},
+{
+"id": 50229,
+"year": 2026,
+"make": "Polestar",
+"model": "3 Long Range Dual Motor (21 Inch Wheels)",
+"baseModel": "3",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 312,
+"kwhPer100mi": 37.5
+},
+{
+"id": 50230,
+"year": 2026,
+"make": "Polestar",
+"model": "3 Long Range Dual Motor (22 Inch Wheels)",
+"baseModel": "3",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 281,
+"kwhPer100mi": 41.5
+},
+{
+"id": 50231,
+"year": 2026,
+"make": "Polestar",
+"model": "3 Long Range Dual Motor Performance Pack",
+"baseModel": "3",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 281,
+"kwhPer100mi": 41.5
+},
+{
+"id": 50232,
+"year": 2026,
+"make": "Polestar",
+"model": "3 Long Range Single Motor (20 Inch Wheels)",
+"baseModel": "3",
+"class": "Standard Sport Utility Vehicle 2WD",
+"rangeMiles": 286,
+"kwhPer100mi": 35.5
+},
+{
+"id": 50233,
+"year": 2026,
+"make": "Polestar",
+"model": "3 Long Range Single Motor (21 Inch Wheels)",
+"baseModel": "3",
+"class": "Standard Sport Utility Vehicle 2WD",
+"rangeMiles": 291,
+"kwhPer100mi": 34.7
+},
+{
+"id": 50034,
+"year": 2026,
+"make": "Polestar",
+"model": "4 Long Range Dual Motor",
+"baseModel": "4",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 280,
+"kwhPer100mi": 40.0
+},
+{
+"id": 50035,
+"year": 2026,
+"make": "Polestar",
+"model": "4 Long Range Dual Motor Performance",
+"baseModel": "4",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 255,
+"kwhPer100mi": 44.0
+},
+{
+"id": 50033,
+"year": 2026,
+"make": "Polestar",
+"model": "4 Long Range Single Motor",
+"baseModel": "4",
+"class": "Standard Sport Utility Vehicle 2WD",
+"rangeMiles": 310,
+"kwhPer100mi": 35.0
+},
+{
+"id": 50294,
+"year": 2026,
+"make": "Porsche",
+"model": "Macan 4 Electric",
+"baseModel": "Macan",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 304,
+"kwhPer100mi": 35.3
+},
+{
+"id": 50459,
+"year": 2026,
+"make": "Porsche",
+"model": "Macan 4 Electric 20in Wheels",
+"baseModel": "Macan",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 324,
+"kwhPer100mi": 33.1
+},
+{
+"id": 50295,
+"year": 2026,
+"make": "Porsche",
+"model": "Macan 4S Electric",
+"baseModel": "Macan",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 290,
+"kwhPer100mi": 36.8
+},
+{
+"id": 50296,
+"year": 2026,
+"make": "Porsche",
+"model": "Macan Electric",
+"baseModel": "Macan",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 309,
+"kwhPer100mi": 34.6
+},
+{
+"id": 50458,
+"year": 2026,
+"make": "Porsche",
+"model": "Macan Electric 20in Wheels",
+"baseModel": "Macan",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 332,
+"kwhPer100mi": 32.1
+},
+{
+"id": 50297,
+"year": 2026,
+"make": "Porsche",
+"model": "Macan GTS Electric",
+"baseModel": "Macan",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 294,
+"kwhPer100mi": 36.7
+},
+{
+"id": 50298,
+"year": 2026,
+"make": "Porsche",
+"model": "Macan Turbo Electric",
+"baseModel": "Macan",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 293,
+"kwhPer100mi": 36.9
+},
+{
+"id": 50234,
+"year": 2026,
+"make": "Porsche",
+"model": "Taycan 4 Cross Turismo",
+"baseModel": "Taycan",
+"class": "Midsize Cars",
+"rangeMiles": 277,
+"kwhPer100mi": 41.5
+},
+{
+"id": 50235,
+"year": 2026,
+"make": "Porsche",
+"model": "Taycan 4 Perf Battery Plus",
+"baseModel": "Taycan",
+"class": "Compact Cars",
+"rangeMiles": 294,
+"kwhPer100mi": 38.7
+},
+{
+"id": 50456,
+"year": 2026,
+"make": "Porsche",
+"model": "Taycan 4 Perf Battery Plus 19in All-Season (M+S)",
+"baseModel": "Taycan",
+"class": "Compact Cars",
+"rangeMiles": 315,
+"kwhPer100mi": 36.2
+},
+{
+"id": 50457,
+"year": 2026,
+"make": "Porsche",
+"model": "Taycan 4 Performance Battery",
+"baseModel": "Taycan",
+"class": "Compact Cars",
+"rangeMiles": 251,
+"kwhPer100mi": 38.6
+},
+{
+"id": 50236,
+"year": 2026,
+"make": "Porsche",
+"model": "Taycan 4S Cross Turismo",
+"baseModel": "Taycan",
+"class": "Midsize Cars",
+"rangeMiles": 272,
+"kwhPer100mi": 42.2
+},
+{
+"id": 50237,
+"year": 2026,
+"make": "Porsche",
+"model": "Taycan 4S Perf Battery Plus",
+"baseModel": "Taycan",
+"class": "Compact Cars",
+"rangeMiles": 295,
+"kwhPer100mi": 38.5
+},
+{
+"id": 50238,
+"year": 2026,
+"make": "Porsche",
+"model": "Taycan 4S Perf Battery Plus 19in All-Season (M+S)",
+"baseModel": "Taycan",
+"class": "Compact Cars",
+"rangeMiles": 315,
+"kwhPer100mi": 36.2
+},
+{
+"id": 50239,
+"year": 2026,
+"make": "Porsche",
+"model": "Taycan 4S Performance Battery",
+"baseModel": "Taycan",
+"class": "Compact Cars",
+"rangeMiles": 252,
+"kwhPer100mi": 38.4
+},
+{
+"id": 50240,
+"year": 2026,
+"make": "Porsche",
+"model": "Taycan GTS",
+"baseModel": "Taycan",
+"class": "Compact Cars",
+"rangeMiles": 293,
+"kwhPer100mi": 39.0
+},
+{
+"id": 50241,
+"year": 2026,
+"make": "Porsche",
+"model": "Taycan GTS Sport Turismo",
+"baseModel": "Taycan",
+"class": "Midsize Cars",
+"rangeMiles": 279,
+"kwhPer100mi": 41.0
+},
+{
+"id": 50242,
+"year": 2026,
+"make": "Porsche",
+"model": "Taycan Performance Battery",
+"baseModel": "Taycan",
+"class": "Compact Cars",
+"rangeMiles": 274,
+"kwhPer100mi": 37.1
+},
+{
+"id": 50243,
+"year": 2026,
+"make": "Porsche",
+"model": "Taycan Turbo",
+"baseModel": "Taycan",
+"class": "Compact Cars",
+"rangeMiles": 292,
+"kwhPer100mi": 39.3
+},
+{
+"id": 50244,
+"year": 2026,
+"make": "Porsche",
+"model": "Taycan Turbo Cross Turismo",
+"baseModel": "Taycan",
+"class": "Midsize Cars",
+"rangeMiles": 265,
+"kwhPer100mi": 42.9
+},
+{
+"id": 50245,
+"year": 2026,
+"make": "Porsche",
+"model": "Taycan Turbo GT",
+"baseModel": "Taycan",
+"class": "Compact Cars",
+"rangeMiles": 276,
+"kwhPer100mi": 40.9
+},
+{
+"id": 50246,
+"year": 2026,
+"make": "Porsche",
+"model": "Taycan Turbo GT with Weissach Package",
+"baseModel": "Taycan",
+"class": "Compact Cars",
+"rangeMiles": 269,
+"kwhPer100mi": 41.7
+},
+{
+"id": 50247,
+"year": 2026,
+"make": "Porsche",
+"model": "Taycan Turbo S",
+"baseModel": "Taycan",
+"class": "Compact Cars",
+"rangeMiles": 266,
+"kwhPer100mi": 42.8
+},
+{
+"id": 50248,
+"year": 2026,
+"make": "Porsche",
+"model": "Taycan Turbo S Cross Turismo",
+"baseModel": "Taycan",
+"class": "Midsize Cars",
+"rangeMiles": 261,
+"kwhPer100mi": 43.6
+},
+{
+"id": 49734,
+"year": 2026,
+"make": "Rivian",
+"model": "R1S All-Terrain Dual Large (20in)",
+"baseModel": "R1S",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 289,
+"kwhPer100mi": 44.4
+},
+{
+"id": 49725,
+"year": 2026,
+"make": "Rivian",
+"model": "R1S All-Terrain Dual Large Plus (20in)",
+"baseModel": "R1S",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 292,
+"kwhPer100mi": 46.9
+},
+{
+"id": 49720,
+"year": 2026,
+"make": "Rivian",
+"model": "R1S All-Terrain Dual Max (20in)",
+"baseModel": "R1S",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 370,
+"kwhPer100mi": 43.2
+},
+{
+"id": 49723,
+"year": 2026,
+"make": "Rivian",
+"model": "R1S All-Terrain Performance  Dual Max (20in)",
+"baseModel": "R1S",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 370,
+"kwhPer100mi": 43.2
+},
+{
+"id": 49737,
+"year": 2026,
+"make": "Rivian",
+"model": "R1S All-Terrain Performance Dual Large (20in)",
+"baseModel": "R1S",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 289,
+"kwhPer100mi": 44.4
+},
+{
+"id": 49727,
+"year": 2026,
+"make": "Rivian",
+"model": "R1S All-Terrain Performance Dual Large Plus (20in)",
+"baseModel": "R1S",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 292,
+"kwhPer100mi": 46.9
+},
+{
+"id": 49731,
+"year": 2026,
+"make": "Rivian",
+"model": "R1S All-Terrain Tri Max (20in)",
+"baseModel": "R1S",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 329,
+"kwhPer100mi": 49.8
+},
+{
+"id": 49733,
+"year": 2026,
+"make": "Rivian",
+"model": "R1S Dual Large (20in)",
+"baseModel": "R1S",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 300,
+"kwhPer100mi": 42.9
+},
+{
+"id": 49732,
+"year": 2026,
+"make": "Rivian",
+"model": "R1S Dual Large (22in)",
+"baseModel": "R1S",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 329,
+"kwhPer100mi": 39.5
+},
+{
+"id": 49728,
+"year": 2026,
+"make": "Rivian",
+"model": "R1S Dual Large Plus (20in)",
+"baseModel": "R1S",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 317,
+"kwhPer100mi": 43.1
+},
+{
+"id": 49724,
+"year": 2026,
+"make": "Rivian",
+"model": "R1S Dual Large Plus (22in)",
+"baseModel": "R1S",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 330,
+"kwhPer100mi": 40.9
+},
+{
+"id": 49718,
+"year": 2026,
+"make": "Rivian",
+"model": "R1S Dual Max (20in)",
+"baseModel": "R1S",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 380,
+"kwhPer100mi": 42.0
+},
+{
+"id": 49719,
+"year": 2026,
+"make": "Rivian",
+"model": "R1S Dual Max (22in)",
+"baseModel": "R1S",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 410,
+"kwhPer100mi": 39.9
+},
+{
+"id": 49717,
+"year": 2026,
+"make": "Rivian",
+"model": "R1S Dual Standard (20in)",
+"baseModel": "R1S",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 258,
+"kwhPer100mi": 42.9
+},
+{
+"id": 49716,
+"year": 2026,
+"make": "Rivian",
+"model": "R1S Dual Standard (22in)",
+"baseModel": "R1S",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 270,
+"kwhPer100mi": 39.9
+},
+{
+"id": 49736,
+"year": 2026,
+"make": "Rivian",
+"model": "R1S Performance Dual Large (20in)",
+"baseModel": "R1S",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 300,
+"kwhPer100mi": 42.9
+},
+{
+"id": 49735,
+"year": 2026,
+"make": "Rivian",
+"model": "R1S Performance Dual Large (22in)",
+"baseModel": "R1S",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 329,
+"kwhPer100mi": 39.5
+},
+{
+"id": 49729,
+"year": 2026,
+"make": "Rivian",
+"model": "R1S Performance Dual Large Plus (20in)",
+"baseModel": "R1S",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 317,
+"kwhPer100mi": 43.1
+},
+{
+"id": 49726,
+"year": 2026,
+"make": "Rivian",
+"model": "R1S Performance Dual Large Plus (22in)",
+"baseModel": "R1S",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 330,
+"kwhPer100mi": 40.9
+},
+{
+"id": 49721,
+"year": 2026,
+"make": "Rivian",
+"model": "R1S Performance Dual Max (20in)",
+"baseModel": "R1S",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 380,
+"kwhPer100mi": 42.0
+},
+{
+"id": 49722,
+"year": 2026,
+"make": "Rivian",
+"model": "R1S Performance Dual Max (22in)",
+"baseModel": "R1S",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 410,
+"kwhPer100mi": 39.9
+},
+{
+"id": 49739,
+"year": 2026,
+"make": "Rivian",
+"model": "R1S Quad Max (20in AT)",
+"baseModel": "R1S",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 325,
+"kwhPer100mi": 50.1
+},
+{
+"id": 49738,
+"year": 2026,
+"make": "Rivian",
+"model": "R1S Quad Max (22in UHP)",
+"baseModel": "R1S",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 338,
+"kwhPer100mi": 47.3
+},
+{
+"id": 49740,
+"year": 2026,
+"make": "Rivian",
+"model": "R1S Quad Max (22in)",
+"baseModel": "R1S",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 374,
+"kwhPer100mi": 44.4
+},
+{
+"id": 49730,
+"year": 2026,
+"make": "Rivian",
+"model": "R1S Tri Max (22in)",
+"baseModel": "R1S",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 371,
+"kwhPer100mi": 44.6
+},
+{
+"id": 50665,
+"year": 2027,
+"make": "Rivian",
+"model": "R1S Performance (20in AT)",
+"baseModel": "R1S",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 329,
+"kwhPer100mi": 49.8
+},
+{
+"id": 50666,
+"year": 2027,
+"make": "Rivian",
+"model": "R1S Performance (20in)",
+"baseModel": "R1S",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 348,
+"kwhPer100mi": 47.0
+},
+{
+"id": 50667,
+"year": 2027,
+"make": "Rivian",
+"model": "R1S Performance (22in)",
+"baseModel": "R1S",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 371,
+"kwhPer100mi": 44.6
+},
+{
+"id": 50668,
+"year": 2027,
+"make": "Rivian",
+"model": "R1S Premium (20in AT)",
+"baseModel": "R1S",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 289,
+"kwhPer100mi": 44.4
+},
+{
+"id": 50669,
+"year": 2027,
+"make": "Rivian",
+"model": "R1S Premium (20in)",
+"baseModel": "R1S",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 300,
+"kwhPer100mi": 42.9
+},
+{
+"id": 50670,
+"year": 2027,
+"make": "Rivian",
+"model": "R1S Premium (22in)",
+"baseModel": "R1S",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 329,
+"kwhPer100mi": 39.5
+},
+{
+"id": 50671,
+"year": 2027,
+"make": "Rivian",
+"model": "R1S Premium Long Range (20in AT)",
+"baseModel": "R1S",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 370,
+"kwhPer100mi": 43.2
+},
+{
+"id": 50672,
+"year": 2027,
+"make": "Rivian",
+"model": "R1S Premium Long Range (20in)",
+"baseModel": "R1S",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 380,
+"kwhPer100mi": 42.0
+},
+{
+"id": 50673,
+"year": 2027,
+"make": "Rivian",
+"model": "R1S Premium Long Range (22in)",
+"baseModel": "R1S",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 410,
+"kwhPer100mi": 39.9
+},
+{
+"id": 50674,
+"year": 2027,
+"make": "Rivian",
+"model": "R1S Quad (20in AT)",
+"baseModel": "R1S",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 325,
+"kwhPer100mi": 50.1
+},
+{
+"id": 50675,
+"year": 2027,
+"make": "Rivian",
+"model": "R1S Quad (22in UHP)",
+"baseModel": "R1S",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 338,
+"kwhPer100mi": 47.3
+},
+{
+"id": 50676,
+"year": 2027,
+"make": "Rivian",
+"model": "R1S Quad (22in)",
+"baseModel": "R1S",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 374,
+"kwhPer100mi": 44.4
+},
+{
+"id": 49709,
+"year": 2026,
+"make": "Rivian",
+"model": "R1T All-Terrain Dual Large (20in)",
+"baseModel": "R1T",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 289,
+"kwhPer100mi": 44.4
+},
+{
+"id": 49700,
+"year": 2026,
+"make": "Rivian",
+"model": "R1T All-Terrain Dual Large Plus (20in)",
+"baseModel": "R1T",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 292,
+"kwhPer100mi": 46.9
+},
+{
+"id": 49695,
+"year": 2026,
+"make": "Rivian",
+"model": "R1T All-Terrain Dual Max (20in)",
+"baseModel": "R1T",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 370,
+"kwhPer100mi": 43.2
+},
+{
+"id": 49712,
+"year": 2026,
+"make": "Rivian",
+"model": "R1T All-Terrain Performance Dual Large (20in)",
+"baseModel": "R1T",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 289,
+"kwhPer100mi": 44.4
+},
+{
+"id": 49702,
+"year": 2026,
+"make": "Rivian",
+"model": "R1T All-Terrain Performance Dual Large Plus (20in)",
+"baseModel": "R1T",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 292,
+"kwhPer100mi": 46.9
+},
+{
+"id": 49698,
+"year": 2026,
+"make": "Rivian",
+"model": "R1T All-Terrain Performance Dual Max (20in)",
+"baseModel": "R1T",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 370,
+"kwhPer100mi": 43.2
+},
+{
+"id": 49706,
+"year": 2026,
+"make": "Rivian",
+"model": "R1T All-Terrain Tri Max (20in)",
+"baseModel": "R1T",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 329,
+"kwhPer100mi": 49.8
+},
+{
+"id": 49708,
+"year": 2026,
+"make": "Rivian",
+"model": "R1T Dual Large (20in)",
+"baseModel": "R1T",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 300,
+"kwhPer100mi": 42.9
+},
+{
+"id": 49707,
+"year": 2026,
+"make": "Rivian",
+"model": "R1T Dual Large (22in)",
+"baseModel": "R1T",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 329,
+"kwhPer100mi": 39.5
+},
+{
+"id": 49703,
+"year": 2026,
+"make": "Rivian",
+"model": "R1T Dual Large Plus (20in)",
+"baseModel": "R1T",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 317,
+"kwhPer100mi": 43.1
+},
+{
+"id": 49699,
+"year": 2026,
+"make": "Rivian",
+"model": "R1T Dual Large Plus (22in)",
+"baseModel": "R1T",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 330,
+"kwhPer100mi": 40.9
+},
+{
+"id": 49693,
+"year": 2026,
+"make": "Rivian",
+"model": "R1T Dual Max (20in)",
+"baseModel": "R1T",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 380,
+"kwhPer100mi": 42.0
+},
+{
+"id": 49694,
+"year": 2026,
+"make": "Rivian",
+"model": "R1T Dual Max (22in)",
+"baseModel": "R1T",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 420,
+"kwhPer100mi": 38.8
+},
+{
+"id": 49692,
+"year": 2026,
+"make": "Rivian",
+"model": "R1T Dual Standard (20in)",
+"baseModel": "R1T",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 258,
+"kwhPer100mi": 42.9
+},
+{
+"id": 49691,
+"year": 2026,
+"make": "Rivian",
+"model": "R1T Dual Standard (22in)",
+"baseModel": "R1T",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 270,
+"kwhPer100mi": 39.9
+},
+{
+"id": 49711,
+"year": 2026,
+"make": "Rivian",
+"model": "R1T Performance Dual Large (20in)",
+"baseModel": "R1T",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 300,
+"kwhPer100mi": 42.9
+},
+{
+"id": 49710,
+"year": 2026,
+"make": "Rivian",
+"model": "R1T Performance Dual Large (22in)",
+"baseModel": "R1T",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 329,
+"kwhPer100mi": 39.5
+},
+{
+"id": 49704,
+"year": 2026,
+"make": "Rivian",
+"model": "R1T Performance Dual Large Plus (20in)",
+"baseModel": "R1T",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 317,
+"kwhPer100mi": 43.1
+},
+{
+"id": 49701,
+"year": 2026,
+"make": "Rivian",
+"model": "R1T Performance Dual Large Plus (22in)",
+"baseModel": "R1T",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 330,
+"kwhPer100mi": 40.9
+},
+{
+"id": 49696,
+"year": 2026,
+"make": "Rivian",
+"model": "R1T Performance Dual Max (20in)",
+"baseModel": "R1T",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 380,
+"kwhPer100mi": 42.0
+},
+{
+"id": 49697,
+"year": 2026,
+"make": "Rivian",
+"model": "R1T Performance Dual Max (22in)",
+"baseModel": "R1T",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 420,
+"kwhPer100mi": 38.8
+},
+{
+"id": 49714,
+"year": 2026,
+"make": "Rivian",
+"model": "R1T Quad Max (20in AT)",
+"baseModel": "R1T",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 325,
+"kwhPer100mi": 50.1
+},
+{
+"id": 49713,
+"year": 2026,
+"make": "Rivian",
+"model": "R1T Quad Max (22in UHP)",
+"baseModel": "R1T",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 338,
+"kwhPer100mi": 47.3
+},
+{
+"id": 49715,
+"year": 2026,
+"make": "Rivian",
+"model": "R1T Quad Max (22in)",
+"baseModel": "R1T",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 374,
+"kwhPer100mi": 44.4
+},
+{
+"id": 49705,
+"year": 2026,
+"make": "Rivian",
+"model": "R1T Tri Max (22in)",
+"baseModel": "R1T",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 371,
+"kwhPer100mi": 44.6
+},
+{
+"id": 50677,
+"year": 2027,
+"make": "Rivian",
+"model": "R1T Performance (20in AT)",
+"baseModel": "R1T",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 329,
+"kwhPer100mi": 49.8
+},
+{
+"id": 50678,
+"year": 2027,
+"make": "Rivian",
+"model": "R1T Performance (20in)",
+"baseModel": "R1T",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 348,
+"kwhPer100mi": 47.0
+},
+{
+"id": 50679,
+"year": 2027,
+"make": "Rivian",
+"model": "R1T Performance (22in)",
+"baseModel": "R1T",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 371,
+"kwhPer100mi": 44.6
+},
+{
+"id": 50680,
+"year": 2027,
+"make": "Rivian",
+"model": "R1T Premium (20in AT)",
+"baseModel": "R1T",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 289,
+"kwhPer100mi": 44.4
+},
+{
+"id": 50681,
+"year": 2027,
+"make": "Rivian",
+"model": "R1T Premium (20in)",
+"baseModel": "R1T",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 300,
+"kwhPer100mi": 42.9
+},
+{
+"id": 50682,
+"year": 2027,
+"make": "Rivian",
+"model": "R1T Premium (22in)",
+"baseModel": "R1T",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 329,
+"kwhPer100mi": 39.5
+},
+{
+"id": 50683,
+"year": 2027,
+"make": "Rivian",
+"model": "R1T Premium Long Range (20in AT)",
+"baseModel": "R1T",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 370,
+"kwhPer100mi": 43.2
+},
+{
+"id": 50684,
+"year": 2027,
+"make": "Rivian",
+"model": "R1T Premium Long Range (20in)",
+"baseModel": "R1T",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 380,
+"kwhPer100mi": 42.0
+},
+{
+"id": 50685,
+"year": 2027,
+"make": "Rivian",
+"model": "R1T Premium Long Range (22in)",
+"baseModel": "R1T",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 420,
+"kwhPer100mi": 38.8
+},
+{
+"id": 50686,
+"year": 2027,
+"make": "Rivian",
+"model": "R1T Quad (20in AT)",
+"baseModel": "R1T",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 325,
+"kwhPer100mi": 50.1
+},
+{
+"id": 50687,
+"year": 2027,
+"make": "Rivian",
+"model": "R1T Quad (22in UHP)",
+"baseModel": "R1T",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 338,
+"kwhPer100mi": 47.3
+},
+{
+"id": 50688,
+"year": 2027,
+"make": "Rivian",
+"model": "R1T Quad (22in)",
+"baseModel": "R1T",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 374,
+"kwhPer100mi": 44.4
+},
+{
+"id": 50390,
+"year": 2027,
+"make": "Rivian",
+"model": "R2 Performance AWD (20in AT)",
+"baseModel": "R2",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 307,
+"kwhPer100mi": 34.1
+},
+{
+"id": 50391,
+"year": 2027,
+"make": "Rivian",
+"model": "R2 Performance AWD (21in)",
+"baseModel": "R2",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 330,
+"kwhPer100mi": 32.2
+},
+{
+"id": 49979,
+"year": 2026,
+"make": "Rolls-Royce",
+"model": "Spectre (22 inch Wheels)",
+"baseModel": "Spectre",
+"class": "Compact Cars",
+"rangeMiles": 277,
+"kwhPer100mi": 43.6
+},
+{
+"id": 49980,
+"year": 2026,
+"make": "Rolls-Royce",
+"model": "Spectre (23 inch Wheels)",
+"baseModel": "Spectre",
+"class": "Compact Cars",
+"rangeMiles": 253,
+"kwhPer100mi": 47.8
+},
+{
+"id": 49977,
+"year": 2026,
+"make": "Rolls-Royce",
+"model": "Spectre Black Badge (22 inch Wheels)",
+"baseModel": "Spectre",
+"class": "Compact Cars",
+"rangeMiles": 266,
+"kwhPer100mi": 45.4
+},
+{
+"id": 49978,
+"year": 2026,
+"make": "Rolls-Royce",
+"model": "Spectre Black Badge (23 inch Wheels)",
+"baseModel": "Spectre",
+"class": "Compact Cars",
+"rangeMiles": 251,
+"kwhPer100mi": 48.3
+},
+{
+"id": 50859,
+"year": 2027,
+"make": "Rolls-Royce",
+"model": "Spectre (22 inch wheels)",
+"baseModel": "Spectre",
+"class": "Compact Cars",
+"rangeMiles": 324,
+"kwhPer100mi": 41.1
+},
+{
+"id": 50860,
+"year": 2027,
+"make": "Rolls-Royce",
+"model": "Spectre (23 inch Wheels)",
+"baseModel": "Spectre",
+"class": "Compact Cars",
+"rangeMiles": 308,
+"kwhPer100mi": 43.2
+},
+{
+"id": 50857,
+"year": 2027,
+"make": "Rolls-Royce",
+"model": "Spectre Black Badge (22 inch wheels)",
+"baseModel": "Spectre",
+"class": "Compact Cars",
+"rangeMiles": 324,
+"kwhPer100mi": 41.1
+},
+{
+"id": 50858,
+"year": 2027,
+"make": "Rolls-Royce",
+"model": "Spectre Black Badge (23 inch wheels)",
+"baseModel": "Spectre",
+"class": "Compact Cars",
+"rangeMiles": 308,
+"kwhPer100mi": 43.2
+},
+{
+"id": 49981,
+"year": 2026,
+"make": "Subaru",
+"model": "Solterra 20 AWD",
+"baseModel": "Solterra",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 278,
+"kwhPer100mi": 28.9
+},
+{
+"id": 49982,
+"year": 2026,
+"make": "Subaru",
+"model": "Solterra AWD",
+"baseModel": "Solterra",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 288,
+"kwhPer100mi": 28.0
+},
+{
+"id": 50689,
+"year": 2027,
+"make": "Subaru",
+"model": "Solterra 20 AWD",
+"baseModel": "Solterra",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 278,
+"kwhPer100mi": 28.9
+},
+{
+"id": 50690,
+"year": 2027,
+"make": "Subaru",
+"model": "Solterra AWD",
+"baseModel": "Solterra",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 288,
+"kwhPer100mi": 28.0
+},
+{
+"id": 50299,
+"year": 2026,
+"make": "Subaru",
+"model": "Trailseeker 20 inch AWD",
+"baseModel": "Trailseeker",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 274,
+"kwhPer100mi": 30.0
+},
+{
+"id": 50300,
+"year": 2026,
+"make": "Subaru",
+"model": "Trailseeker AWD",
+"baseModel": "Trailseeker",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 281,
+"kwhPer100mi": 29.0
+},
+{
+"id": 50691,
+"year": 2027,
+"make": "Subaru",
+"model": "Trailseeker 20 inch AWD",
+"baseModel": "Trailseeker",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 274,
+"kwhPer100mi": 30.0
+},
+{
+"id": 50692,
+"year": 2027,
+"make": "Subaru",
+"model": "Trailseeker AWD",
+"baseModel": "Trailseeker",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 281,
+"kwhPer100mi": 29.0
+},
+{
+"id": 50301,
+"year": 2026,
+"make": "Subaru",
+"model": "Uncharted",
+"baseModel": "Uncharted",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 308,
+"kwhPer100mi": 25.7
+},
+{
+"id": 50302,
+"year": 2026,
+"make": "Subaru",
+"model": "Uncharted 20 inch AWD",
+"baseModel": "Uncharted",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 273,
+"kwhPer100mi": 29.5
+},
+{
+"id": 50303,
+"year": 2026,
+"make": "Subaru",
+"model": "Uncharted AWD",
+"baseModel": "Uncharted",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 287,
+"kwhPer100mi": 29.0
+},
+{
+"id": 50693,
+"year": 2027,
+"make": "Subaru",
+"model": "Uncharted",
+"baseModel": "Uncharted",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 308,
+"kwhPer100mi": 25.7
+},
+{
+"id": 50694,
+"year": 2027,
+"make": "Subaru",
+"model": "Uncharted 20 inch AWD",
+"baseModel": "Uncharted",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 273,
+"kwhPer100mi": 29.5
+},
+{
+"id": 50695,
+"year": 2027,
+"make": "Subaru",
+"model": "Uncharted AWD",
+"baseModel": "Uncharted",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 287,
+"kwhPer100mi": 29.0
+},
+{
+"id": 50039,
+"year": 2026,
+"make": "Tesla",
+"model": "Cybertruck AWD",
+"baseModel": "Cybertruck",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 325,
+"kwhPer100mi": 42.9
+},
+{
+"id": 50460,
+"year": 2026,
+"make": "Tesla",
+"model": "Cybertruck Dual Motor AWD",
+"baseModel": "Cybertruck",
+"class": "Standard Pickup Trucks 4WD",
+"rangeMiles": 325,
+"kwhPer100mi": 42.9
+},
+{
+"id": 50249,
+"year": 2026,
+"make": "Tesla",
+"model": "Cybertruck Long Range (20in Cyber wheels)",
+"baseModel": "Cybertruck",
+"class": "Standard Pickup Trucks 2WD",
+"rangeMiles": 335,
+"kwhPer100mi": 43.4
+},
+{
+"id": 50036,
+"year": 2026,
+"make": "Tesla",
+"model": "Model 3 Performance",
+"baseModel": "Model 3",
+"class": "Midsize Cars",
+"rangeMiles": 309,
+"kwhPer100mi": 29.6
+},
+{
+"id": 50250,
+"year": 2026,
+"make": "Tesla",
+"model": "Model 3 Performance AWD",
+"baseModel": "Model 3",
+"class": "Midsize Cars",
+"rangeMiles": 314,
+"kwhPer100mi": 30.2
+},
+{
+"id": 50037,
+"year": 2026,
+"make": "Tesla",
+"model": "Model 3 Premium AWD",
+"baseModel": "Model 3",
+"class": "Midsize Cars",
+"rangeMiles": 346,
+"kwhPer100mi": 26.4
+},
+{
+"id": 50038,
+"year": 2026,
+"make": "Tesla",
+"model": "Model 3 Premium RWD",
+"baseModel": "Model 3",
+"class": "Midsize Cars",
+"rangeMiles": 363,
+"kwhPer100mi": 24.6
+},
+{
+"id": 50251,
+"year": 2026,
+"make": "Tesla",
+"model": "Model 3 Standard RWD",
+"baseModel": "Model 3",
+"class": "Midsize Cars",
+"rangeMiles": 321,
+"kwhPer100mi": 24.3
+},
+{
+"id": 50861,
+"year": 2027,
+"make": "Tesla",
+"model": "Model 3 Performance AWD",
+"baseModel": "Model 3",
+"class": "Midsize Cars",
+"rangeMiles": 316,
+"kwhPer100mi": 30.2
+},
+{
+"id": 49741,
+"year": 2026,
+"make": "Tesla",
+"model": "Model S",
+"baseModel": "Model S",
+"class": "Large Cars",
+"rangeMiles": 410,
+"kwhPer100mi": 27.1
+},
+{
+"id": 49742,
+"year": 2026,
+"make": "Tesla",
+"model": "Model S Plaid",
+"baseModel": "Model S",
+"class": "Large Cars",
+"rangeMiles": 368,
+"kwhPer100mi": 30.6
+},
+{
+"id": 50252,
+"year": 2026,
+"make": "Tesla",
+"model": "Model S Plaid (21in wheels)",
+"baseModel": "Model S",
+"class": "Large Cars",
+"rangeMiles": 309,
+"kwhPer100mi": 36.2
+},
+{
+"id": 49745,
+"year": 2026,
+"make": "Tesla",
+"model": "Model X",
+"baseModel": "Model X",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 352,
+"kwhPer100mi": 32.2
+},
+{
+"id": 49746,
+"year": 2026,
+"make": "Tesla",
+"model": "Model X Plaid",
+"baseModel": "Model X",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 335,
+"kwhPer100mi": 33.7
+},
+{
+"id": 49744,
+"year": 2026,
+"make": "Tesla",
+"model": "Model Y Long Range AWD",
+"baseModel": "Model Y",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 327,
+"kwhPer100mi": 27.5
+},
+{
+"id": 49743,
+"year": 2026,
+"make": "Tesla",
+"model": "Model Y Long Range RWD",
+"baseModel": "Model Y",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 357,
+"kwhPer100mi": 25.2
+},
+{
+"id": 50253,
+"year": 2026,
+"make": "Tesla",
+"model": "Model Y Performance AWD",
+"baseModel": "Model Y",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 306,
+"kwhPer100mi": 32.0
+},
+{
+"id": 50304,
+"year": 2026,
+"make": "Tesla",
+"model": "Model Y Standard AWD",
+"baseModel": "Model Y",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 294,
+"kwhPer100mi": 26.5
+},
+{
+"id": 50040,
+"year": 2026,
+"make": "Tesla",
+"model": "Model Y Standard RWD (18in Wheels)",
+"baseModel": "Model Y",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 321,
+"kwhPer100mi": 24.3
+},
+{
+"id": 50041,
+"year": 2026,
+"make": "Tesla",
+"model": "Model Y Standard RWD (19in Wheels)",
+"baseModel": "Model Y",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 303,
+"kwhPer100mi": 25.7
+},
+{
+"id": 50862,
+"year": 2027,
+"make": "Tesla",
+"model": "Model Y L (20in Wheels)",
+"baseModel": "Model Y",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 328,
+"kwhPer100mi": 30.0
+},
+{
+"id": 50307,
+"year": 2026,
+"make": "Toyota",
+"model": "C-HR AWD 18inch",
+"baseModel": "C-HR",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 287,
+"kwhPer100mi": 29.0
+},
+{
+"id": 50308,
+"year": 2026,
+"make": "Toyota",
+"model": "C-HR AWD 20inch",
+"baseModel": "C-HR",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 273,
+"kwhPer100mi": 29.6
+},
+{
+"id": 50870,
+"year": 2027,
+"make": "Toyota",
+"model": "C-HR AWD 18inch",
+"baseModel": "C-HR",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 287,
+"kwhPer100mi": 29.0
+},
+{
+"id": 50042,
+"year": 2026,
+"make": "Toyota",
+"model": "bZ (energy capacity 191 Ah)",
+"baseModel": "bZ",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 314,
+"kwhPer100mi": 25.5
+},
+{
+"id": 49983,
+"year": 2026,
+"make": "Toyota",
+"model": "bZ (energy capacity 200 Ah)",
+"baseModel": "bZ",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 236,
+"kwhPer100mi": 25.8
+},
+{
+"id": 49985,
+"year": 2026,
+"make": "Toyota",
+"model": "bZ AWD",
+"baseModel": "bZ",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 288,
+"kwhPer100mi": 28.0
+},
+{
+"id": 49986,
+"year": 2026,
+"make": "Toyota",
+"model": "bZ AWD LIMITED",
+"baseModel": "bZ",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 278,
+"kwhPer100mi": 28.9
+},
+{
+"id": 50043,
+"year": 2026,
+"make": "Toyota",
+"model": "bZ LIMITED (energy capacity 191 Ah)",
+"baseModel": "bZ",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 299,
+"kwhPer100mi": 26.9
+},
+{
+"id": 49984,
+"year": 2026,
+"make": "Toyota",
+"model": "bZ LIMITED (energy capacity 200 Ah)",
+"baseModel": "bZ",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 296,
+"kwhPer100mi": 27.5
+},
+{
+"id": 50305,
+"year": 2026,
+"make": "Toyota",
+"model": "bZ Woodland AWD 235/60R18",
+"baseModel": "bZ",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 281,
+"kwhPer100mi": 29.0
+},
+{
+"id": 50306,
+"year": 2026,
+"make": "Toyota",
+"model": "bZ Woodland AWD 235/65R18",
+"baseModel": "bZ",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 260,
+"kwhPer100mi": 30.6
+},
+{
+"id": 50864,
+"year": 2027,
+"make": "Toyota",
+"model": "bZ (energy capacity 191 Ah)",
+"baseModel": "bZ",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 314,
+"kwhPer100mi": 25.5
+},
+{
+"id": 50863,
+"year": 2027,
+"make": "Toyota",
+"model": "bZ (energy capacity 200 Ah)",
+"baseModel": "bZ",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 236,
+"kwhPer100mi": 25.8
+},
+{
+"id": 50865,
+"year": 2027,
+"make": "Toyota",
+"model": "bZ AWD",
+"baseModel": "bZ",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 288,
+"kwhPer100mi": 28.0
+},
+{
+"id": 50866,
+"year": 2027,
+"make": "Toyota",
+"model": "bZ AWD LIMITED",
+"baseModel": "bZ",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 278,
+"kwhPer100mi": 28.9
+},
+{
+"id": 50867,
+"year": 2027,
+"make": "Toyota",
+"model": "bZ LIMITED",
+"baseModel": "bZ",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 299,
+"kwhPer100mi": 26.9
+},
+{
+"id": 50868,
+"year": 2027,
+"make": "Toyota",
+"model": "bZ Woodland AWD 235/60R18",
+"baseModel": "bZ",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 281,
+"kwhPer100mi": 29.0
+},
+{
+"id": 50869,
+"year": 2027,
+"make": "Toyota",
+"model": "bZ Woodland AWD 235/65R18",
+"baseModel": "bZ",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 260,
+"kwhPer100mi": 30.6
+},
+{
+"id": 50373,
+"year": 2027,
+"make": "Vinfast",
+"model": "VF 7 Plus",
+"baseModel": "VF 7",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 209,
+"kwhPer100mi": 44.4
+},
+{
+"id": 50639,
+"year": 2027,
+"make": "Vinfast",
+"model": "VF 8 Eco",
+"baseModel": "VF 8",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 256,
+"kwhPer100mi": 46.2
+},
+{
+"id": 50842,
+"year": 2027,
+"make": "Vinfast",
+"model": "VF 8 Plus",
+"baseModel": "VF 8",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 224,
+"kwhPer100mi": 46.0
+},
+{
+"id": 50641,
+"year": 2027,
+"make": "Vinfast",
+"model": "VF 9 Plus",
+"baseModel": "VF 9",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 287,
+"kwhPer100mi": 49.8
+},
+{
+"id": 49987,
+"year": 2026,
+"make": "Volkswagen",
+"model": "ID.4",
+"baseModel": "ID.4",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 291,
+"kwhPer100mi": 29.8
+},
+{
+"id": 49988,
+"year": 2026,
+"make": "Volkswagen",
+"model": "ID.4 AWD",
+"baseModel": "ID.4",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 263,
+"kwhPer100mi": 33.0
+},
+{
+"id": 49748,
+"year": 2026,
+"make": "Volvo",
+"model": "EC40",
+"baseModel": "EC40",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 298,
+"kwhPer100mi": 31.7
+},
+{
+"id": 49750,
+"year": 2026,
+"make": "Volvo",
+"model": "EC40 Twin",
+"baseModel": "EC40",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 268,
+"kwhPer100mi": 34.8
+},
+{
+"id": 49990,
+"year": 2026,
+"make": "Volvo",
+"model": "EX30 Cross Country (18 Inch Wheels)",
+"baseModel": "EX30",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 203,
+"kwhPer100mi": 37.8
+},
+{
+"id": 49991,
+"year": 2026,
+"make": "Volvo",
+"model": "EX30 Cross Country (19 Inch Wheels)",
+"baseModel": "EX30",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 227,
+"kwhPer100mi": 34.1
+},
+{
+"id": 49989,
+"year": 2026,
+"make": "Volvo",
+"model": "EX30 Single motor extended range",
+"baseModel": "EX30",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 261,
+"kwhPer100mi": 29.2
+},
+{
+"id": 49992,
+"year": 2026,
+"make": "Volvo",
+"model": "EX30 Twin Performance",
+"baseModel": "EX30",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 253,
+"kwhPer100mi": 31.1
+},
+{
+"id": 49747,
+"year": 2026,
+"make": "Volvo",
+"model": "EX40",
+"baseModel": "EX40",
+"class": "Small Sport Utility Vehicle 2WD",
+"rangeMiles": 296,
+"kwhPer100mi": 31.7
+},
+{
+"id": 49749,
+"year": 2026,
+"make": "Volvo",
+"model": "EX40 Twin",
+"baseModel": "EX40",
+"class": "Small Sport Utility Vehicle 4WD",
+"rangeMiles": 260,
+"kwhPer100mi": 36.0
+},
+{
+"id": 50696,
+"year": 2027,
+"make": "Volvo",
+"model": "EX60 P10 AWD electric",
+"baseModel": "EX60",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 330,
+"kwhPer100mi": 30.0
+},
+{
+"id": 50873,
+"year": 2027,
+"make": "Volvo",
+"model": "EX60 P10 AWD electric (22 Inch Wheels)",
+"baseModel": "EX60",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 312,
+"kwhPer100mi": 32.4
+},
+{
+"id": 50874,
+"year": 2027,
+"make": "Volvo",
+"model": "EX60 P6 electric",
+"baseModel": "EX60",
+"class": "Standard Sport Utility Vehicle 2WD",
+"rangeMiles": 307,
+"kwhPer100mi": 28.6
+},
+{
+"id": 50697,
+"year": 2027,
+"make": "Volvo",
+"model": "EX60 P6 electric (22 Inch Wheels)",
+"baseModel": "EX60",
+"class": "Standard Sport Utility Vehicle 2WD",
+"rangeMiles": 295,
+"kwhPer100mi": 29.8
+},
+{
+"id": 50254,
+"year": 2026,
+"make": "Volvo",
+"model": "EX90",
+"baseModel": "EX90",
+"class": "Standard Sport Utility Vehicle 2WD",
+"rangeMiles": 276,
+"kwhPer100mi": 36.8
+},
+{
+"id": 50255,
+"year": 2026,
+"make": "Volvo",
+"model": "EX90 (21 Inch Wheels)",
+"baseModel": "EX90",
+"class": "Standard Sport Utility Vehicle 2WD",
+"rangeMiles": 291,
+"kwhPer100mi": 34.5
+},
+{
+"id": 50256,
+"year": 2026,
+"make": "Volvo",
+"model": "EX90 Twin Motor",
+"baseModel": "EX90",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 298,
+"kwhPer100mi": 39.2
+},
+{
+"id": 50257,
+"year": 2026,
+"make": "Volvo",
+"model": "EX90 Twin Motor (21 Inch Wheels)",
+"baseModel": "EX90",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 305,
+"kwhPer100mi": 38.3
+},
+{
+"id": 50258,
+"year": 2026,
+"make": "Volvo",
+"model": "EX90 Twin Motor Performance",
+"baseModel": "EX90",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 298,
+"kwhPer100mi": 39.2
+},
+{
+"id": 50259,
+"year": 2026,
+"make": "Volvo",
+"model": "EX90 Twin Motor Performance (21 Inch Wheels)",
+"baseModel": "EX90",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 305,
+"kwhPer100mi": 38.3
+},
+{
+"id": 50698,
+"year": 2027,
+"make": "Volvo",
+"model": "EX90",
+"baseModel": "EX90",
+"class": "Standard Sport Utility Vehicle 2WD",
+"rangeMiles": 276,
+"kwhPer100mi": 36.8
+},
+{
+"id": 50875,
+"year": 2027,
+"make": "Volvo",
+"model": "EX90 (21 Inch Wheels)",
+"baseModel": "EX90",
+"class": "Standard Sport Utility Vehicle 2WD",
+"rangeMiles": 291,
+"kwhPer100mi": 34.5
+},
+{
+"id": 50699,
+"year": 2027,
+"make": "Volvo",
+"model": "EX90 Twin Motor",
+"baseModel": "EX90",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 300,
+"kwhPer100mi": 39.0
+},
+{
+"id": 50700,
+"year": 2027,
+"make": "Volvo",
+"model": "EX90 Twin Motor (21 Inch Wheels)",
+"baseModel": "EX90",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 310,
+"kwhPer100mi": 37.0
+},
+{
+"id": 50701,
+"year": 2027,
+"make": "Volvo",
+"model": "EX90 Twin Motor Performance",
+"baseModel": "EX90",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 300,
+"kwhPer100mi": 39.0
+},
+{
+"id": 50702,
+"year": 2027,
+"make": "Volvo",
+"model": "EX90 Twin Motor Performance (21 Inch Wheels)",
+"baseModel": "EX90",
+"class": "Standard Sport Utility Vehicle 4WD",
+"rangeMiles": 310,
+"kwhPer100mi": 37.0
+}
+]
+}

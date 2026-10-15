@@ -1,3 +1,4 @@
+import { ADMIN_COOKIE, isAdminToken } from "@/lib/admin-auth";
 import { Suspense } from "react";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -122,8 +123,7 @@ function activeVisitorsCount(active: UmamiActive | null | undefined): number | u
 
 async function AdminContent() {
   const cookieStore = await cookies();
-  const token = cookieStore.get("admin_auth")?.value;
-  if (token !== process.env.ADMIN_PASSWORD) redirect("/admin/login");
+  if (!(await isAdminToken(cookieStore.get(ADMIN_COOKIE)?.value))) redirect("/admin/login");
 
   const apiKey = process.env.UMAMI_API_KEY;
 

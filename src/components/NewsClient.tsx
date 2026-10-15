@@ -1,7 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
-import NewsImage from "@/components/NewsImage";
+import { useMemo, useState } from "react";
 import type { RSSArticle } from "@/lib/rss";
 import { useNoTesla } from "@/hooks/useNoTesla";
 
@@ -12,14 +11,23 @@ function isTesla(article: RSSArticle) {
 }
 
 const categoryConfig = {
-  ev:      { label: "EV",      color: "bg-blue-50 text-blue-600 border-blue-200",   active: "bg-blue-600 text-white border-blue-600" },
-  solar:   { label: "Solar",   color: "bg-amber-50 text-amber-600 border-amber-200", active: "bg-amber-500 text-white border-amber-500" },
-  battery: { label: "Battery", color: "bg-green-50 text-green-600 border-green-200", active: "bg-green-600 text-white border-green-600" },
+  ev:      { label: "EV",      color: "bg-blue-50 text-blue-800 border-blue-200",    active: "bg-blue-700 text-white border-blue-700" },
+  solar:   { label: "Solar",   color: "bg-amber-50 text-amber-900 border-amber-300", active: "bg-amber-700 text-white border-amber-700" },
+  battery: { label: "Battery", color: "bg-green-50 text-green-800 border-green-200", active: "bg-green-700 text-white border-green-700" },
 };
 
 type Category = keyof typeof categoryConfig;
 
-export default function NewsClient({ news }: { news: RSSArticle[] }) {
+function shortDate(iso: string) {
+  const [y, m, d] = iso.split("-").map(Number);
+  return new Date(Date.UTC(y, m - 1, d)).toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "UTC" });
+}
+
+/**
+ * Headline list linking out to the original publisher. Headline, source and
+ * date only — no article text or images are republished.
+ */
+export default function NewsClient({ news, compact = false }: { news: RSSArticle[]; compact?: boolean }) {
   const [noTesla, setNoTesla] = useNoTesla();
   const [activeCategory, setActiveCategory] = useState<Category | null>(null);
 
@@ -32,128 +40,75 @@ export default function NewsClient({ news }: { news: RSSArticle[] }) {
 
   return (
     <>
-      {/* Filters row */}
-      <div className="flex flex-wrap gap-3 justify-center mb-10 items-center">
-        {/* Category filters */}
-        {(Object.entries(categoryConfig) as [Category, typeof categoryConfig[Category]][]).map(([cat, config]) => (
+      {!compact && (
+        <div className="flex flex-wrap gap-2 mb-6 items-center" role="group" aria-label="Filter headlines">
+          {(Object.entries(categoryConfig) as [Category, (typeof categoryConfig)[Category]][]).map(([cat, config]) => (
+            <button
+              key={cat}
+              type="button"
+              aria-pressed={activeCategory === cat}
+              onClick={() => setActiveCategory(activeCategory === cat ? null : cat)}
+              className={`px-4 py-1.5 rounded-full text-sm font-medium border transition-colors ${
+                activeCategory === cat ? config.active : config.color
+              }`}
+            >
+              {config.label}
+            </button>
+          ))}
+          <span className="w-px h-5 bg-black/10" aria-hidden="true" />
           <button
-            key={cat}
-            onClick={() => setActiveCategory(activeCategory === cat ? null : cat)}
-            className={`px-4 py-1.5 rounded-full text-sm font-medium border transition-all cursor-pointer
-              ${activeCategory === cat ? config.active : config.color + " hover:opacity-80"}`}
-          >
-            {config.label}
-          </button>
-        ))}
-
-        {/* Divider */}
-        <span className="w-px h-5 bg-black/10" aria-hidden="true" />
-
-        {/* No Tesla toggle */}
-        <button
-          onClick={() => setNoTesla(!noTesla)}
-          title={noTesla ? "Show Tesla articles" : "Hide all Tesla / Elon / Musk articles"}
-          className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-sm font-medium border transition-all cursor-pointer
-            ${noTesla
-              ? "bg-red-50 text-red-600 border-red-400 hover:bg-red-100"
-              : "bg-surface text-muted border-black/10 hover:border-black/20 hover:text-foreground"
+            type="button"
+            aria-pressed={noTesla}
+            onClick={() => setNoTesla(!noTesla)}
+            className={`px-4 py-1.5 rounded-full text-sm font-medium border transition-colors ${
+              noTesla ? "bg-red-50 text-red-800 border-red-400" : "bg-surface text-stone-700 border-black/15"
             }`}
-        >
-          <span aria-hidden="true" translate="no" className="material-symbols-outlined" style={{ fontSize: 15 }}>
-            {noTesla ? "block" : "electric_car"}
-          </span>
-          {noTesla ? "No Tesla (on)" : "No Tesla"}
-        </button>
-      </div>
-
-      {/* Result count */}
-      {(activeCategory || noTesla) && (
-        <p className="text-center text-sm text-muted mb-6">
-          Showing {filtered.length} of {news.length} articles
-          {activeCategory && <> in <strong>{categoryConfig[activeCategory].label}</strong></>}
-          {noTesla && <> · Tesla articles hidden</>}
-          {" "}—{" "}
-          <button
-            onClick={() => { setActiveCategory(null); setNoTesla(false); }}
-            className="text-spark-orange hover:underline font-medium"
           >
-            Clear filters
+            {noTesla ? "No Tesla (on)" : "Hide Tesla stories"}
           </button>
-        </p>
+          {(activeCategory || noTesla) && (
+            <span className="text-sm text-stone-600 ml-1">
+              {filtered.length} of {news.length} ·{" "}
+              <button
+                type="button"
+                onClick={() => {
+                  setActiveCategory(null);
+                  setNoTesla(false);
+                }}
+                className="text-spark-orange underline"
+              >
+                Clear
+              </button>
+            </span>
+          )}
+        </div>
       )}
 
-      {/* Grid */}
       {filtered.length === 0 ? (
-        <div className="text-center py-24 text-muted">
-          <span aria-hidden="true" translate="no" className="material-symbols-outlined" style={{ fontSize: 48, color: "var(--color-muted)" }}>search_off</span>
-          <p className="text-lg font-medium mt-4">No articles match your filters.</p>
-          <button
-            onClick={() => { setActiveCategory(null); setNoTesla(false); }}
-            className="mt-3 text-spark-orange hover:underline text-sm font-medium"
-          >
-            Clear filters
-          </button>
-        </div>
+        <p className="py-10 text-stone-600">No headlines match your filters.</p>
       ) : (
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filtered.map((item, i) => {
-            const config = categoryConfig[item.category];
-            return (
-              <article
-                key={i}
-                className="bg-surface rounded-2xl border border-black/6 flex flex-col overflow-hidden group hover:shadow-md transition-shadow"
+        <ul className={compact ? "divide-y divide-black/8" : "grid md:grid-cols-2 gap-x-8 divide-y md:divide-y-0 divide-black/8"}>
+          {filtered.map((item) => (
+            <li key={item.url} className={compact ? "py-3" : "py-4 md:border-b md:border-black/8"}>
+              <a
+                href={item.url}
+                target="_blank"
+                rel="noopener"
+                className="font-semibold leading-snug hover:text-spark-orange hover:underline underline-offset-2"
               >
-                <a
-                  href={item.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block overflow-hidden aspect-[16/9] bg-surface-light"
-                >
-                  <NewsImage src={item.thumbnail} alt={item.title} />
-                </a>
-                <div className="p-6 flex flex-col flex-1">
-                  <div className="flex items-center gap-3 mb-3">
-                    <button
-                      onClick={() => setActiveCategory(activeCategory === item.category ? null : item.category)}
-                      className={`px-3 py-1 rounded-full text-xs font-medium border transition-all cursor-pointer
-                        ${activeCategory === item.category ? config.active : config.color + " hover:opacity-80"}`}
-                    >
-                      {config.label}
-                    </button>
-                    <span className="text-xs text-muted">
-                      {item.publishedAt.replace(
-                        /^(\d{4})-(\d{2})-(\d{2})$/,
-                        (_, y, m, d) => `${m}/${d}/${y.slice(2)}`
-                      )}
-                    </span>
-                  </div>
-                  <a href={item.url} target="_blank" rel="noopener noreferrer" className="group/title">
-                    <h2 className="text-lg font-bold mb-2 leading-snug group-hover/title:text-spark-orange transition-colors line-clamp-3">
-                      {item.title}
-                    </h2>
-                  </a>
-                  <p className="text-sm text-muted leading-relaxed mb-4 flex-1 line-clamp-3">
-                    {item.description}
-                  </p>
-                  <div className="flex items-center justify-between text-xs text-muted">
-                    <span className="font-medium">{item.source}</span>
-                    <a
-                      href={item.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1 text-spark-orange font-medium hover:underline"
-                    >
-                      Read more
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                        <path d="M2.5 9.5L9.5 2.5M9.5 2.5H4.5M9.5 2.5V7.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </a>
-                  </div>
-                </div>
-              </article>
-            );
-          })}
-        </div>
+                {item.title}
+                <span className="sr-only"> (opens {item.source} in a new tab)</span>
+              </a>
+              <div className="text-xs text-stone-600 mt-1 flex gap-2">
+                <span className="font-medium">{item.source}</span>
+                <span aria-hidden="true">·</span>
+                <time dateTime={item.publishedAt}>{shortDate(item.publishedAt)}</time>
+                <span aria-hidden="true">·</span>
+                <span>{categoryConfig[item.category].label}</span>
+              </div>
+            </li>
+          ))}
+        </ul>
       )}
     </>
   );

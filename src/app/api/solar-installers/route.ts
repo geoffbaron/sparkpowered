@@ -1,9 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { zipToState, STATE_NAMES } from "@/lib/zipToState";
 import { searchInstallers } from "@/data/installers";
-import type { Installer } from "@/data/installers";
-
-export type { Installer };
 
 export async function GET(req: NextRequest) {
   const zip = req.nextUrl.searchParams.get("zip");
@@ -13,13 +10,13 @@ export async function GET(req: NextRequest) {
   }
 
   const state = zipToState(zip);
-  const stateName = state ? STATE_NAMES[state] : null;
-  const results = searchInstallers(state);
-
-  return NextResponse.json({
-    installers: results,
-    zip,
-    state,
-    stateName,
-  });
+  return NextResponse.json(
+    {
+      installers: searchInstallers(state),
+      zip,
+      state,
+      stateName: state ? STATE_NAMES[state] : null,
+    },
+    { headers: { "X-Robots-Tag": "noindex" } },
+  );
 }

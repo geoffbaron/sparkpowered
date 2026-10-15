@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import type { EVResult } from "@/lib/llm-content";
 
 // ── Scoring ───────────────────────────────────────────────────────────────────
@@ -22,6 +23,11 @@ const cargoOrder: Record<string, number> = {
 
 function priceNum(ev: EVResult) {
   return parseInt(ev.price.replace(/[$,]/g, ""));
+}
+
+/** Prefer the EPA rating over researched range wherever we could match one. */
+function rangeOf(ev: EVResult) {
+  return ev.epa?.rangeMax ?? ev.range;
 }
 
 interface QuizState {
@@ -49,9 +55,9 @@ function scoreEV(ev: EVResult, quiz: QuizState): number {
 
   if (quiz.dailyMiles) {
     const minRange = { under30: 100, "30to60": 150, "60to100": 200, over100: 300 }[quiz.dailyMiles] ?? 0;
-    if (ev.range >= minRange * 2) score += 20;
-    else if (ev.range >= minRange * 1.5) score += 15;
-    else if (ev.range >= minRange) score += 10;
+    if (rangeOf(ev) >= minRange * 2) score += 20;
+    else if (rangeOf(ev) >= minRange * 1.5) score += 15;
+    else if (rangeOf(ev) >= minRange) score += 10;
     else score -= 10;
   }
 
@@ -61,7 +67,7 @@ function scoreEV(ev: EVResult, quiz: QuizState): number {
     else score += 15;
   }
 
-  if (quiz.priority === "range") score += Math.min(10, Math.floor(ev.range / 40));
+  if (quiz.priority === "range") score += Math.min(10, Math.floor(rangeOf(ev) / 40));
   else if (quiz.priority === "value") score += Math.min(10, Math.floor((80000 - priceNum(ev)) / 7000));
   else if (quiz.priority === "performance") score += Math.min(10, Math.floor(priceNum(ev) / 12000));
   else if (quiz.priority === "space") score += (cargoOrder[ev.cargo] || 0) * 2;
@@ -176,7 +182,11 @@ export default function EVQuiz({ initialEVs }: { initialEVs: EVResult[] }) {
               Perfect EVs
             </span>
           </h1>
-          <p className="text-muted text-lg">Based on your preferences, here are our top recommendations.</p>
+          <p className="text-muted text-lg">Based on your answers, these models fit best.</p>
+          <p className="text-sm text-stone-600 mt-2">
+            Prices are approximate starting MSRPs from automated research and change often — confirm with the
+            dealer. Range and efficiency come from EPA ratings where we can match the model.
+          </p>
         </div>
 
         <div className="space-y-6">
@@ -194,12 +204,27 @@ export default function EVQuiz({ initialEVs }: { initialEVs: EVResult[] }) {
                 <h3 className="text-xl font-bold mb-1">{ev.name}</h3>
                 <p className="text-spark-orange text-sm font-medium mb-3">{ev.highlight}</p>
                 <div className="flex flex-wrap gap-4 text-sm text-muted">
-                  <span><span className="text-green-600 font-semibold">{ev.range} mi</span> range</span>
-                  <span><span className="text-blue-600 font-semibold">{ev.price}</span> MSRP</span>
+                  {ev.epa ? (
+                    <span>
+                      <span className="text-green-800 font-semibold">
+                        {ev.epa.rangeMin === ev.epa.rangeMax ? ev.epa.rangeMax : `${ev.epa.rangeMin}–${ev.epa.rangeMax}`} mi
+                      </span>{" "}
+                      EPA range
+                    </span>
+                  ) : (
+                    <span><span className="text-green-800 font-semibold">{ev.range} mi</span> range (maker&apos;s figure)</span>
+                  )}
+                  <span><span className="text-blue-800 font-semibold">{ev.price}</span> approx. starting MSRP</span>
                   <span>{ev.type}</span>
                   <span>{ev.seats} seats</span>
                   <span>{ev.cargo} cargo</span>
                 </div>
+                {ev.epa && (
+                  <p className="text-xs text-stone-600 mt-2">
+                    EPA ({ev.epa.label}): {ev.epa.kwhMin === ev.epa.kwhMax ? ev.epa.kwhMin : `${ev.epa.kwhMin}–${ev.epa.kwhMax}`} kWh per 100 mi.{" "}
+                    <Link href="/ev-charging-cost" className="underline">What it costs to charge</Link>
+                  </p>
+                )}
               </div>
               <div className="shrink-0 flex items-center">
                 <a
@@ -252,13 +277,14 @@ export default function EVQuiz({ initialEVs }: { initialEVs: EVResult[] }) {
         </div>
 
         <div className="mt-12 bg-amber-50 rounded-2xl p-8 border border-amber-100">
-          <h3 className="text-lg font-bold mb-2">Did you know?</h3>
-          <p className="text-muted text-sm leading-relaxed">
-            Most EV owners spend just $30–50 per month on electricity to charge — compared to
-            $150–250 on gasoline. That&apos;s thousands saved every year. The $7,500 federal
-            purchase credit ended on 30 September 2025, but many states still offer their own
-            rebates, and loan interest on US-assembled vehicles is now deductible up to $10,000 a
-            year through 2028.
+          <h3 className="text-lg font-bold mb-2">Before you buy</h3>
+          <p className="text-stone-700 text-sm leading-relaxed">
+            See what charging would cost where you live with the{" "}
+            <Link href="/ev-charging-cost" className="underline font-medium">EV charging cost calculator</Link>. The
+            $7,500 federal purchase credit ended for vehicles acquired after 30 September 2025; some states
+            still offer rebates, and interest on a loan for a new US-assembled vehicle can be deductible up to
+            $10,000 a year through 2028.{" "}
+            <Link href="/incentives" className="underline font-medium">Incentive details</Link>.
           </p>
         </div>
       </div>

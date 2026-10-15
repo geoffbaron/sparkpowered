@@ -4,13 +4,13 @@
   --background: #fffef7;
   --foreground: #1c1917;
   --spark-yellow: #f59e0b;
-  --spark-orange: #ea580c;
-  --spark-amber: #d97706;
+  --spark-orange: #c2410c; /* orange-700: 5:1 contrast on the page background */
+  --spark-amber: #b45309; /* amber-700 */
   --electric-blue: #2563eb;
   --green-energy: #16a34a;
   --surface: #ffffff;
   --surface-light: #fef9ee;
-  --muted: #78716c;
+  --muted: #6b645f; /* 5:1 contrast on the page background */
 }
 
 @theme inline {
@@ -25,7 +25,41 @@
   --color-surface-light: var(--surface-light);
   --color-muted: var(--muted);
   --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+}
+
+/*
+ * Material Symbols Outlined, subset to the icons in use (generated from
+ * fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0
+ * &icon_names=airport_shuttle,battery_charging_full,bedtime,block,bolt,calendar_today,check_circle,
+ * commute,cottage,credit_card,diamond,directions_car,eco,electric_car,ev_station,flashlight_on,group,
+ * groups,handyman,home,info,lightbulb,local_offer,local_shipping,location_city,location_on,map,person,
+ * power,receipt_long,savings,search_off,speed,star,thunderstorm,timer,trending_up,verified_user,
+ * wb_sunny,workspace_premium). "block" stops the ligature names flashing as text.
+ */
+@font-face {
+  font-family: "Material Symbols Outlined";
+  font-style: normal;
+  font-weight: 400;
+  font-display: block;
+  src: url("/fonts/material-symbols-subset.woff2") format("woff2");
+}
+
+.material-symbols-outlined {
+  font-family: "Material Symbols Outlined";
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: "liga";
+  font-feature-settings: "liga";
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
 }
 
 body {

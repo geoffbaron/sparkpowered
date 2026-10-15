@@ -16,7 +16,7 @@ export const SITE_TAGLINE =
   "EV, solar and home battery guidance for people going electric";
 
 export const SITE_DESCRIPTION =
-  "Independent guidance on electric vehicles, solar panels and home batteries. Hourly clean-energy news, an EV matcher, a battery sizer, a solar installer finder, and straight answers to the 15 questions people ask before going electric.";
+  "Free, independent calculators for EVs, solar panels and home batteries, built on government data: EV charging cost by state, solar panel sizing, home battery sizing, an EV matcher and a solar installer finder.";
 
 /**
  * Absolute URL for a site-relative path.
@@ -80,33 +80,28 @@ export const OG_IMAGE = {
   alt: "Spark Powered — independent guidance on EVs, solar and home batteries",
 };
 
-/** Every indexable route, in priority order. Drives sitemap.ts. */
-export const ROUTES = [
-  {
-    path: "/",
-    changeFrequency: "hourly" as const,
-    priority: 1,
-  },
-  {
-    path: "/calculator",
-    changeFrequency: "daily" as const,
-    priority: 0.9,
-  },
-  {
-    path: "/battery-calculator",
-    changeFrequency: "daily" as const,
-    priority: 0.9,
-  },
-  {
-    path: "/solar-finder",
-    changeFrequency: "weekly" as const,
-    priority: 0.9,
-  },
-  {
-    path: "/objections",
-    changeFrequency: "monthly" as const,
-    priority: 0.8,
-  },
+/**
+ * Every indexable route with the date its content last really changed. Drives
+ * sitemap.ts. Google uses lastmod only when it is consistently accurate, so
+ * these are content dates, never the build or request time. /news is left out
+ * on purpose (it is noindex). State pages are added in sitemap.ts.
+ */
+export const CONTENT_UPDATED = "2026-10-15";
+
+export const ROUTES: { path: string; lastModified: string }[] = [
+  { path: "/", lastModified: CONTENT_UPDATED },
+  { path: "/ev-charging-cost", lastModified: CONTENT_UPDATED },
+  { path: "/solar-calculator", lastModified: CONTENT_UPDATED },
+  { path: "/battery-calculator", lastModified: CONTENT_UPDATED },
+  { path: "/calculator", lastModified: CONTENT_UPDATED },
+  { path: "/solar-finder", lastModified: CONTENT_UPDATED },
+  { path: "/states", lastModified: CONTENT_UPDATED },
+  { path: "/incentives", lastModified: CONTENT_UPDATED },
+  { path: "/objections", lastModified: CONTENT_UPDATED },
+  { path: "/about", lastModified: CONTENT_UPDATED },
+  { path: "/methodology", lastModified: CONTENT_UPDATED },
+  { path: "/disclaimer", lastModified: CONTENT_UPDATED },
+  { path: "/privacy", lastModified: CONTENT_UPDATED },
 ];
 
 /**
