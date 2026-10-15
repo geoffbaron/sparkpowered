@@ -36,6 +36,9 @@ const TOOLS = [
   { href: "/calculator", icon: "electric_car", label: "EV Finder", desc: "Match an electric car to your budget, range and family." },
   { href: "/solar-finder", icon: "location_on", label: "Solar Finder", desc: "Installers serving your ZIP code, and how to judge a quote." },
   { href: "/incentives", icon: "receipt_long", label: "2026 incentives", desc: "Which federal credits ended, and where state rebates live." },
+  { href: "/plug-in-solar", icon: "wb_sunny", label: "Plug-in solar", desc: "Balcony solar laws by state, real kits and what they make." },
+  { href: "/best-portable-power-stations", icon: "bolt", label: "Best power stations", desc: "Picks for camping, CPAP, fridge backup and RVs." },
+  { href: "/home-battery-backup", icon: "battery_charging_full", label: "Home battery backup", desc: "Whole-home vs portable, with real 2026 costs." },
 ];
 
 async function LatestHeadlines() {
@@ -192,6 +195,14 @@ export default function HomePage() {
           </h2>
           <ul className="space-y-3 text-sm">
             <li>
+              <Link href="/plug-in-solar" className="font-semibold hover:text-spark-orange">Is plug-in balcony solar legal in your state?</Link>
+              <span className="block text-stone-600">The 2025-2026 state laws, with links to each one.</span>
+            </li>
+            <li>
+              <Link href="/compare" className="font-semibold hover:text-spark-orange">EcoFlow vs Anker vs Jackery vs Bluetti</Link>
+              <span className="block text-stone-600">Power stations compared size for size.</span>
+            </li>
+            <li>
               <Link href="/objections" className="font-semibold hover:text-spark-orange">EV myths and objections, answered with data</Link>
               <span className="block text-stone-600">Range, battery life, cold weather, cost and more.</span>
             </li>
@@ -205,7 +216,7 @@ export default function HomePage() {
             </li>
             <li>
               <Link href="/about" className="font-semibold hover:text-spark-orange">About Spark Powered</Link>
-              <span className="block text-stone-600">Independent, not paid by carmakers or installers.</span>
+              <span className="block text-stone-600">Independent; how we earn money is disclosed.</span>
             </li>
           </ul>
         </aside>

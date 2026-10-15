@@ -13,6 +13,8 @@ import {
   StatGrid,
 } from "@/components/content";
 import MonthlyBars from "@/components/MonthlyBars";
+import PluginSolarBox from "@/components/PluginSolarBox";
+import { SolarQuotesCta } from "@/components/affiliate";
 import {
   DATA_UPDATED,
   NATIONAL,
@@ -314,6 +316,10 @@ export default async function StatePage({ params }: Props) {
             values={s.solar.monthlyKwhPerKw}
           />
         </div>
+        <div className="grid lg:grid-cols-2 gap-5 mt-8">
+          <PluginSolarBox s={s} />
+          <SolarQuotesCta context={`in ${s.name}`} />
+        </div>
       </Section>
 
       <Section title={`Home battery backup in ${s.name}`} id="battery">
@@ -325,6 +331,14 @@ export default async function StatePage({ params }: Props) {
           would take about {bat.powerwallsForFullDay.toFixed(1)} batteries of that size.{" "}
           <Link href="/battery-calculator" className="underline underline-offset-2 text-spark-orange">
             Size a battery for your home
+          </Link>
+          , compare{" "}
+          <Link href="/home-battery-backup" className="underline underline-offset-2 text-spark-orange">
+            whole-home and portable backup
+          </Link>{" "}
+          or see the{" "}
+          <Link href="/best-portable-power-stations" className="underline underline-offset-2 text-spark-orange">
+            best portable power stations
           </Link>
           .
         </p>

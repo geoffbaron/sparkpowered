@@ -2,8 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import type { BatteryProduct } from "@/lib/llm-content";
 import { useNoTesla } from "@/hooks/useNoTesla";
+import { AffiliateDisclosure, PartnerLink } from "@/components/affiliate";
+import { INSTALLED_BATTERY_COST } from "@/data/products";
+import { fullName, kwh, money, sizerMatches, watts } from "@/lib/products";
 
 // ── Estimation logic ──────────────────────────────────────────────────────────
 
@@ -45,44 +47,6 @@ function calcNeededKwh(coverage: Coverage, duration: Duration): number {
   const daily = DAILY_KWH[coverage];
   const days = DURATION_DAYS[duration];
   return Math.max(5, Math.ceil((daily * days) / 0.85));
-}
-
-function getMatches(quiz: QuizState, batteries: BatteryProduct[]): BatteryProduct[] {
-  const needed = calcNeededKwh(quiz.coverage!, quiz.duration!);
-  const budgetMax = BUDGET_MAX[quiz.budget!];
-
-  // Score each battery: capacity fit + budget fit
-  const scored = batteries.map((b) => {
-    const units = Math.ceil(needed / b.kwh);
-    const totalLow = b.price_low * units;
-    const maxCapacity = b.maxKwh ?? b.kwh;
-    const canScale = b.scalable || b.kwh >= needed;
-    const capacityFit = canScale && maxCapacity >= needed;
-    const budgetFit = totalLow <= budgetMax;
-    // solar goal requires solar_compatible; "store solar" also needs grid_tied
-    const solarOk = quiz.goal !== "solar" || (b.solar_compatible && b.grid_tied);
-
-    return { battery: b, units, totalLow, capacityFit, budgetFit, solarOk };
-  });
-
-  // Prefer: solar OK + capacity fits + budget fits → then relax budget → then relax capacity
-  const ideal = scored.filter((s) => s.solarOk && s.capacityFit && s.budgetFit);
-  const withoutBudget = scored.filter((s) => s.solarOk && s.capacityFit && !s.budgetFit);
-  const pool = ideal.length >= 2 ? ideal : [...ideal, ...withoutBudget];
-
-  return pool
-    .sort((a, b) => {
-      // Budget fits first
-      if (a.budgetFit !== b.budgetFit) return a.budgetFit ? -1 : 1;
-      // Then cheapest total
-      return a.totalLow - b.totalLow;
-    })
-    .map((s) => s.battery)
-    .slice(0, 4);
-}
-
-function unitsNeeded(product: BatteryProduct, neededKwh: number): number {
-  return Math.ceil(neededKwh / product.kwh);
 }
 
 // ── Step definitions ──────────────────────────────────────────────────────────
@@ -147,18 +111,13 @@ type StepId = (typeof STEPS)[number]["id"];
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export default function BatteryQuiz({ initialBatteries }: { initialBatteries: BatteryProduct[] }) {
+export default function BatteryQuiz() {
   const [step, setStep] = useState(0);
   const [quiz, setQuiz] = useState<QuizState>({
     goal: null, coverage: null, duration: null, solar: null, budget: null,
   });
   const [showResults, setShowResults] = useState(false);
   const [noTesla, setNoTesla] = useNoTesla();
-
-  // Respect the global No Tesla preference
-  const batteries = noTesla
-    ? initialBatteries.filter((b) => !/tesla/i.test(b.brand) && !/tesla/i.test(b.name))
-    : initialBatteries;
 
   const currentStep = STEPS[step];
   const progress = (step / STEPS.length) * 100;
@@ -184,11 +143,22 @@ export default function BatteryQuiz({ initialBatteries }: { initialBatteries: Ba
   if (showResults && quiz.coverage && quiz.duration && quiz.budget) {
     const needed = calcNeededKwh(quiz.coverage, quiz.duration);
     const budgetMax = BUDGET_MAX[quiz.budget];
-    const matches = getMatches(quiz, batteries);
-    const bestUnits = Math.ceil(needed / matches[0].kwh);
-    const bestTotal = matches[0].price_low * bestUnits;
-    const overBudget = bestTotal > budgetMax;
-
+    const matches = sizerMatches(needed, { excludeBrands: noTesla ? ["tesla"] : [] });
+    const fits = (cost: number) => cost <= budgetMax;
+    const anyFits = matches.some((m) => fits(m.cost));
+    const costText = (m: (typeof matches)[number]) =>
+      m.config.equipmentUsd != null
+        ? money(m.config.equipmentUsd)
+        : m.config.installedUsd
+          ? `about ${money(m.config.installedUsd)}`
+          : "Price by quote";
+    const configText = (m: (typeof matches)[number]) => {
+      const p = m.product;
+      if (p.install === "professional") return `${m.config.units} × ${p.model} = ${kwh(m.config.totalWh)}`;
+      if (m.config.addOns > 0 && p.addOn)
+        return `${p.model} + ${m.config.addOns} × ${p.addOn.model} = ${kwh(m.config.totalWh)}`;
+      return `1 × ${p.model} = ${kwh(m.config.totalWh)}`;
+    };
 
     return (
       <div className="min-h-screen bg-background">
@@ -205,136 +175,94 @@ export default function BatteryQuiz({ initialBatteries }: { initialBatteries: Ba
               of storage
             </h1>
             <p className="text-muted text-lg">
-              Based on your answers, here are the best battery systems for your home.
+              Here are {matches.length} real systems that reach that size, cheapest first.
             </p>
           </div>
         </div>
 
         <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10 space-y-8">
-          {/* Stats */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            {[
-              { label: "Storage needed", value: `${needed} kWh`, icon: "bolt" },
-              { label: `Suggested system (${matches[0].brand} ${matches[0].name})`, value: `${bestUnits} unit${bestUnits === 1 ? "" : "s"}`, icon: "battery_charging_full" },
-              { label: "Indicative installed cost", value: `$${bestTotal.toLocaleString()}–$${(matches[0].price_high * bestUnits).toLocaleString()}`, icon: "savings" },
-            ].map((stat) => (
-              <div key={stat.label} className="bg-surface border border-black/8 rounded-2xl p-5 text-center shadow-sm">
-                <div className="mb-1"><span aria-hidden="true" translate="no" className="material-symbols-outlined" style={{ fontSize: 28, color: "#f59e0b" }}>{stat.icon}</span></div>
-                <div className="text-2xl font-bold">{stat.value}</div>
-                <div className="text-sm text-muted mt-1">{stat.label}</div>
-              </div>
-            ))}
-          </div>
+          <AffiliateDisclosure />
 
           {/* ITC note */}
           <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 text-sm text-amber-800">
             <strong>The 30% federal credit has ended for homeowners:</strong> the Residential Clean
             Energy Credit (25D) covered 30% of a home battery, but the IRS says it is not allowed for
-            expenditures made after 31 December 2025 — so prices shown here are before any rebate
-            and are what a cash buyer pays. Leased or third-party-owned systems can still carry a
-            business credit claimed by the provider, and some states and utilities run their own
-            storage rebates.{" "}
+            expenditures made after 31 December 2025, so prices shown here are what a cash buyer pays.
+            Some states and utilities run their own storage rebates.{" "}
             <Link href="/incentives" className="underline font-semibold">See what is still available</Link>.
           </div>
 
-          {/* Over-budget notice */}
-          {overBudget && (
+          {!anyFits && (
             <div className="bg-sky-50 border border-sky-200 rounded-2xl p-4 text-sm text-sky-800">
-              <strong>Heads up:</strong> The storage capacity you need ({needed} kWh) is typically
-              installed for ${bestTotal.toLocaleString()}–${(matches[0].price_high * bestUnits).toLocaleString()} —
-              above your ${budgetMax === Infinity ? "20K+" : `$${budgetMax.toLocaleString()}`} budget.
-              We&apos;ve shown the closest options; consider a smaller coverage area, shorter backup time,
-              or getting quotes — installers sometimes have financing or bundle discounts.
+              <strong>Heads up:</strong> none of these reaches {needed} kWh within your{" "}
+              {budgetMax === Infinity ? "budget" : `${money(budgetMax)} budget`}. Backing up fewer circuits or
+              for a shorter time shrinks the battery quickly; try the sizer again with &quot;Essentials only&quot;.
             </div>
           )}
 
           {/* Product cards */}
           <div>
             <div className="flex flex-wrap items-center justify-between mb-4 gap-3">
-              <h2 className="text-xl font-bold">Top Matches for You</h2>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => setNoTesla(!noTesla)}
-                  className={`inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1 rounded-full border transition-all cursor-pointer ${
-                    noTesla
-                      ? "bg-red-50 text-red-600 border-red-300"
-                      : "bg-surface-light text-muted border-black/8 hover:border-black/16"
-                  }`}
-                >
-                  <span aria-hidden="true" translate="no" className="material-symbols-outlined" style={{ fontSize: 13 }}>
-                    {noTesla ? "block" : "electric_car"}
-                  </span>
-                  {noTesla ? "No Tesla (on)" : "No Tesla"}
-                </button>
-                <span className="text-xs text-muted bg-surface-light border border-black/6 rounded-full px-3 py-1 whitespace-nowrap">
-                  Prices are estimates
+              <h2 className="text-xl font-bold">Systems that reach {needed} kWh</h2>
+              <button
+                onClick={() => setNoTesla(!noTesla)}
+                className={`inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1 rounded-full border transition-all cursor-pointer ${
+                  noTesla
+                    ? "bg-red-50 text-red-600 border-red-300"
+                    : "bg-surface-light text-muted border-black/8 hover:border-black/16"
+                }`}
+              >
+                <span aria-hidden="true" translate="no" className="material-symbols-outlined" style={{ fontSize: 13 }}>
+                  {noTesla ? "block" : "electric_car"}
                 </span>
-              </div>
+                {noTesla ? "No Tesla (on)" : "No Tesla"}
+              </button>
             </div>
             <div className="space-y-4">
-              {matches.map((product, i) => {
-                const units = unitsNeeded(product, needed);
-                const totalLow = product.price_low * units;
-                const totalHigh = product.price_high * units;
-                const fitsUserBudget = totalLow <= budgetMax;
+              {matches.map((m, i) => {
+                const p = m.product;
+                const inBudget = fits(m.cost);
                 return (
                   <div
-                    key={product.id}
-                    className={`bg-surface border rounded-2xl p-6 shadow-sm transition-shadow hover:shadow-md ${
+                    key={p.id}
+                    className={`bg-surface border rounded-2xl p-5 sm:p-6 shadow-sm ${
                       i === 0 ? "border-amber-300 ring-1 ring-amber-200" : "border-black/8"
                     }`}
                   >
                     <div className="flex flex-wrap gap-2 mb-3">
-                      {i === 0 && (
-                        <div className="inline-flex items-center gap-1 bg-gradient-to-r from-spark-yellow to-spark-orange text-white text-xs font-bold px-3 py-1 rounded-full">
-                          <span aria-hidden="true" translate="no" className="material-symbols-outlined" style={{ fontSize: 14 }}>star</span> Best Match
-                        </div>
-                      )}
-                      {fitsUserBudget && (
-                        <div className="inline-flex items-center gap-1 bg-green-100 text-green-700 border border-green-200 text-xs font-semibold px-3 py-1 rounded-full">
-                          <span aria-hidden="true" translate="no" className="material-symbols-outlined" style={{ fontSize: 14 }}>check_circle</span> Within Your Budget
-                        </div>
+                      <span className="inline-flex items-center bg-surface-light border border-black/8 text-xs font-semibold px-3 py-1 rounded-full">
+                        {p.install === "professional" ? "Professionally installed" : "Plug in yourself"}
+                      </span>
+                      {inBudget && (
+                        <span className="inline-flex items-center gap-1 bg-green-100 text-green-700 border border-green-200 text-xs font-semibold px-3 py-1 rounded-full">
+                          <span aria-hidden="true" translate="no" className="material-symbols-outlined" style={{ fontSize: 14 }}>check_circle</span> Within your budget
+                        </span>
                       )}
                     </div>
                     <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                       <div className="flex-1">
-                        <div className="text-xs font-medium text-muted uppercase tracking-wider mb-1">{product.brand}</div>
-                        <h3 className="text-lg font-bold">{product.name}</h3>
-                        <div className="flex flex-wrap gap-3 mt-2 text-sm text-muted">
-                          <span className="inline-flex items-center gap-1"><span aria-hidden="true" translate="no" className="material-symbols-outlined" style={{ fontSize: 16 }}>battery_charging_full</span>{product.kwh} kWh{product.scalable && product.maxKwh ? ` (up to ${product.maxKwh} kWh)` : ""}</span>
-                          <span className="inline-flex items-center gap-1"><span aria-hidden="true" translate="no" className="material-symbols-outlined" style={{ fontSize: 16 }}>bolt</span>{product.power_kw} kW output</span>
-                          <span className="inline-flex items-center gap-1"><span aria-hidden="true" translate="no" className="material-symbols-outlined" style={{ fontSize: 16 }}>verified_user</span>{product.warranty_years}-yr warranty</span>
-                        </div>
-                        {units > 1 && (
-                          <div className="mt-2 text-sm font-medium text-amber-700 bg-amber-50 inline-flex items-center gap-1 px-2 py-0.5 rounded-lg">
-                            <span aria-hidden="true" translate="no" className="material-symbols-outlined" style={{ fontSize: 16 }}>info</span>{units} units recommended for {needed} kWh
-                          </div>
-                        )}
-                        <ul className="mt-3 space-y-1">
-                          {product.highlights.map((h) => (
-                            <li key={h} className="text-sm text-muted flex items-start gap-2">
-                              <span className="text-green-500 mt-0.5">✓</span>
-                              {h}
-                            </li>
-                          ))}
+                        <h3 className="text-lg font-bold">{fullName(p)}</h3>
+                        <p className="text-sm font-medium text-amber-800 mt-1">{configText(m)}</p>
+                        <ul className="mt-3 grid grid-cols-2 gap-x-4 gap-y-1 text-sm text-stone-700">
+                          <li>{watts(p.acOutputW)} continuous output</li>
+                          {p.chemistry && <li>{p.chemistry} battery</li>}
+                          <li>{p.volts}</li>
+                          {p.warrantyYears && <li>{p.warrantyYears}-year warranty</li>}
+                          {p.maxCapacityWh && <li>Expands to {kwh(p.maxCapacityWh)}</li>}
+                          {p.solarInputW && <li>{watts(p.solarInputW)} solar input</li>}
                         </ul>
+                        {p.notes[0] && <p className="mt-3 text-sm text-muted">{p.notes[0]}</p>}
                       </div>
-                      <div className="sm:text-right shrink-0 flex flex-col gap-2">
+                      <div className="sm:text-right shrink-0 flex flex-col gap-2 sm:max-w-[14rem]">
                         <div>
-                          <div className="text-sm text-muted">Installed cost est.</div>
-                          <div className="text-xl font-bold">${totalLow.toLocaleString()}–${totalHigh.toLocaleString()}</div>
+                          <div className="text-sm text-muted">
+                            {m.config.equipmentUsd != null ? "Listed price, this setup" : "Typical installed cost"}
+                          </div>
+                          <div className="text-xl font-bold">{costText(m)}</div>
                         </div>
-                        <a
-                          href={product.learnMoreUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-spark-yellow to-spark-orange text-white text-sm font-bold shadow hover:shadow-md transition-shadow"
-                        >
-                          Learn More
-                          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                            <path d="M2.5 9.5L9.5 2.5M9.5 2.5H4.5M9.5 2.5V7.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                          </svg>
-                        </a>
+                        <PartnerLink brand={p.brand} productId={p.id} productUrl={p.url} category="battery" variant="button">
+                          {p.install === "professional" ? `See ${p.model}` : `Check price`}
+                        </PartnerLink>
                       </div>
                     </div>
                   </div>
@@ -362,10 +290,13 @@ export default function BatteryQuiz({ initialBatteries }: { initialBatteries: Ba
           )}
 
           <p className="text-xs text-muted text-center pb-2">
-            Prices are estimates based on national averages and vary by installer, location, and
-            home configuration. Product prices and specs are gathered by automated research and can be
-            out of date — confirm them with the manufacturer and get several installer quotes.
-            Storage needed assumes about 85% of a battery&apos;s rated capacity is usable in practice.
+            Prices for plug-in systems are each maker&apos;s listed US price for the setup shown, checked on the
+            date on our{" "}
+            <Link href="/best-portable-power-stations" className="underline">power station guide</Link>; add-on
+            batteries are the maker&apos;s own. Installed costs multiply the kWh by EnergySage&apos;s average installed price
+            per kWh for that brand in the first half of 2026 (or {INSTALLED_BATTERY_COST.source}) and vary
+            with your home and installer, so get several quotes. Storage needed assumes about 85% of a
+            battery&apos;s rated capacity is usable in practice.
           </p>
 
           <div className="text-center">

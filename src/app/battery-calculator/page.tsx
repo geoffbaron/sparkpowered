@@ -1,7 +1,5 @@
-import { Suspense } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getDailyBatteries } from "@/lib/llm-content";
 import BatteryQuiz from "@/components/BatteryQuiz";
 import { Breadcrumbs, Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
 import { NATIONAL, POWERWALL_3_KWH, SOURCES, STATES, batteryFigures, num } from "@/lib/energy";
@@ -13,25 +11,6 @@ const DESCRIPTION =
   "How many kWh of home battery storage you need, based on what you want to keep running and for how long. Formula, worked examples and daily use by state.";
 
 export const metadata: Metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH });
-
-async function BatteryQuizLoader() {
-  const batteries = await getDailyBatteries();
-  return <BatteryQuiz initialBatteries={batteries} />;
-}
-
-function QuizSkeleton() {
-  return (
-    <div className="max-w-2xl mx-auto px-4 sm:px-6 py-16 text-center">
-      <p className="text-sm font-medium text-stone-600 mb-4">Loading battery systems…</p>
-      <p className="text-3xl sm:text-4xl font-bold mb-3" aria-hidden="true">Right-size your home battery</p>
-      <div className="mt-8 space-y-3" aria-hidden="true">
-        {[1, 2, 3].map((i) => (
-          <div key={i} className="w-full h-20 bg-surface rounded-2xl border border-black/8 animate-pulse" />
-        ))}
-      </div>
-    </div>
-  );
-}
 
 export default function BatteryCalculatorPage() {
   const usDaily = NATIONAL.avgMonthlyKwh / (365 / 12);
@@ -79,9 +58,7 @@ export default function BatteryCalculatorPage() {
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
         <Breadcrumbs items={[{ name: "Home battery sizer", path: PATH }]} />
       </div>
-      <Suspense fallback={<QuizSkeleton />}>
-        <BatteryQuizLoader />
-      </Suspense>
+      <BatteryQuiz />
 
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pb-14">
         <Section title="How to size a home battery" id="formula">
@@ -158,8 +135,8 @@ export default function BatteryCalculatorPage() {
 
         <Faq items={faqs} path={PATH} />
         <Disclaimer>
-          Product prices and specifications in the sizer come from automated research and are indicative only;
-          confirm them with the manufacturer and installer.
+          Product specifications and prices in the sizer are copied from manufacturers&apos; US websites and dated on
+          our guides; installed costs are averages. Confirm them with the seller and installer.
         </Disclaimer>
         <Sources
           items={[
@@ -179,6 +156,8 @@ export default function BatteryCalculatorPage() {
         <RelatedLinks
           links={[
             { href: "/solar-calculator", label: "Solar panel calculator", desc: "Pair your battery with the right-size array" },
+            { href: "/home-battery-backup", label: "Home battery backup guide", desc: "Whole-home vs portable, with real costs" },
+            { href: "/best-portable-power-stations", label: "Best portable power stations", desc: "Every model we track in one table" },
             { href: "/solar-finder", label: "Find installers", desc: "Companies serving your state" },
           ]}
         />

@@ -33,6 +33,8 @@ const navLinks = [
   { href: "/ev-charging-cost", label: "EV Charging Cost" },
   { href: "/solar-calculator", label: "Solar Calculator" },
   { href: "/battery-calculator", label: "Battery Sizer" },
+  { href: "/plug-in-solar", label: "Plug-in Solar" },
+  { href: "/best-portable-power-stations", label: "Power Stations" },
   { href: "/calculator", label: "EV Finder" },
   { href: "/states", label: "States" },
   { href: "/news", label: "Headlines" },
@@ -53,7 +55,7 @@ export default function Header() {
           </Link>
 
           {/* Desktop nav */}
-          <nav aria-label="Main" className="hidden lg:flex items-center gap-6">
+          <nav aria-label="Main" className="hidden xl:flex items-center gap-5">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
@@ -68,7 +70,7 @@ export default function Header() {
           {/* Mobile toggle */}
           <button
             type="button"
-            className="lg:hidden p-2 text-stone-700 hover:text-spark-orange"
+            className="xl:hidden p-2 text-stone-700 hover:text-spark-orange"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
             aria-expanded={mobileOpen}
@@ -87,7 +89,7 @@ export default function Header() {
 
       {/* Mobile nav */}
       {mobileOpen && (
-        <nav id="mobile-nav" aria-label="Main" className="lg:hidden border-t border-black/8 bg-background/98 backdrop-blur-lg">
+        <nav id="mobile-nav" aria-label="Main" className="xl:hidden border-t border-black/8 bg-background/98 backdrop-blur-lg">
           {navLinks.map((link) => (
             <Link
               key={link.href}

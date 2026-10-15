@@ -26,11 +26,19 @@ python3 scripts/solar_model.py        # PVWatts v8 model on NASA POWER weather, 
 python3 scripts/build_state_data.py   # EIA prices/usage/gasoline, AFDC chargers, fueleconomy.gov
 ```
 
+Plug-in solar output by state (`src/data/plugin-solar-model.json`) comes from
+`python3 scripts/plugin_solar_model.py` (same weather cache).
+
+Products, plug-in kits, state plug-in solar laws and comparisons are typed, hand-checked data in
+`src/data/products.ts`, `src/data/plugin-solar-law.ts` and `src/data/comparisons.ts`; every entry carries a
+source URL and date (enforced by `tests/products.test.ts`). Affiliate links live only in
+`src/data/affiliates.ts`.
+
 Refresh monthly after EIA publishes the Electric Power Monthly, then commit the JSON. Sources and
 formulas are documented on `/methodology`.
 
 ## Environment variables (Railway)
 
-- `ANTHROPIC_API_KEY` — daily refresh of the EV Finder and Battery Sizer product lists (falls back to built-in lists)
+- `ANTHROPIC_API_KEY` — daily refresh of the EV Finder list (falls back to a built-in list)
 - `ADMIN_PASSWORD` — `/admin` dashboard
 - `UMAMI_API_KEY` — analytics on the admin dashboard

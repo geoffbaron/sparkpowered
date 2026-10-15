@@ -28,7 +28,11 @@ for (const t of ["Power outage backup", "Essentials only", "12 hours", "No solar
 }
 await page.waitForSelector("text=of storage");
 const bat = await page.locator("main").innerText();
-ok(/Indicative installed cost/.test(bat), "Battery results show indicative cost");
+ok(/Listed price, this setup|Typical installed cost/.test(bat), "Battery results show a cost for each match");
+const partner = page.locator("a[data-partner]");
+ok((await partner.count()) >= 2, "Battery results link 2+ real products");
+ok((await partner.first().getAttribute("rel")) === "sponsored nofollow noopener", "Product links are marked sponsored");
+ok(/We may earn a commission/.test(bat), "Battery results show the affiliate disclosure");
 ok(!/ITC/.test(bat) && !/payback/i.test(bat), "Battery results have no ITC/payback claims");
 
 // Solar calculator

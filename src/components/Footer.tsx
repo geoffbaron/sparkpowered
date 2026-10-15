@@ -10,6 +10,10 @@ const TOOLS = [
 ];
 
 const GUIDES = [
+  { href: "/plug-in-solar", label: "Plug-in solar guide" },
+  { href: "/best-portable-power-stations", label: "Best portable power stations" },
+  { href: "/home-battery-backup", label: "Home battery backup" },
+  { href: "/compare", label: "Power station comparisons" },
   { href: "/states", label: "Energy data by state" },
   { href: "/incentives", label: "2026 incentives" },
   { href: "/objections", label: "EV myths & objections" },
@@ -49,7 +53,7 @@ export default function Footer() {
             <p className="text-lg font-bold text-spark-orange mb-3">Spark Powered</p>
             <p className="text-sm text-stone-700 leading-relaxed">
               Independent calculators and data for US households weighing an EV, solar panels or a home
-              battery. Not affiliated with any carmaker, installer or utility.
+              battery. Not owned by any carmaker, installer or utility; some product links earn us a commission.
             </p>
           </div>
           <Column title="Tools" links={TOOLS} />

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import type { CalcState } from "@/lib/calculator-data";
 
@@ -163,6 +164,19 @@ export default function SolarCalculator({ states, initialState = "CA" }: Props &
               : `if every kWh offsets one bought at ${st.centsPerKwh.toFixed(1)}¢`}
           </div>
         </div>
+      </div>
+      <div className="mt-5 rounded-xl border border-sky-200 bg-sky-50/60 p-4 text-sm text-stone-700">
+        <strong>Plug-in solar in {st.name}:</strong> a small 800 W kit that plugs into an outlet would make about{" "}
+        {Math.round(st.pluginKwhPerKwYear * 0.8).toLocaleString()} kWh a year on a south-facing stand, worth up to{" "}
+        {fmt(st.pluginKwhPerKwYear * 0.8 * rate)} a year if you use it all at home.{" "}
+        {st.pluginLaw === "law"
+          ? `${st.name} has a plug-in solar law (${st.pluginBill}).`
+          : st.pluginLaw === "pending"
+            ? `A plug-in solar bill (${st.pluginBill}) is pending in ${st.name}; until it passes, check with your utility.`
+            : `${st.name} has no plug-in solar law yet, so check with your utility before connecting one.`}{" "}
+        <Link href={`/plug-in-solar#state-${st.abbr.toLowerCase()}`} className="font-semibold text-spark-orange underline underline-offset-2">
+          Plug-in solar guide
+        </Link>
       </div>
       <p className="mt-4 text-xs text-muted">
         {mode === "bill" &&

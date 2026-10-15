@@ -106,6 +106,32 @@ export default function MethodologyPage() {
         </ul>
       </Section>
 
+      <Section title="Product data and plug-in solar">
+        <ul className="list-disc pl-5 space-y-2 text-stone-700 leading-relaxed">
+          <li>
+            <strong>Products</strong> on our <Link href="/best-portable-power-stations" className="underline">power station</Link>,{" "}
+            <Link href="/home-battery-backup" className="underline">home battery</Link> and{" "}
+            <Link href="/plug-in-solar" className="underline">plug-in solar</Link> guides use only figures published on
+            the maker&apos;s own US product page or datasheet, each with its link and the date we checked it. Where a maker
+            does not publish a figure we show it as not stated rather than estimate it.
+          </li>
+          <li>
+            <strong>Battery Sizer matches</strong> are the cheapest configurations of those products that reach the
+            computed size: one unit plus the maker&apos;s own add-on batteries for plug-in systems, at listed prices; or
+            whole units for installed batteries, priced at EnergySage&apos;s average installed cost per kWh for the brand.
+          </li>
+          <li>
+            <strong>Plug-in solar output</strong> uses the same PVWatts v8 model and NASA weather as our rooftop figures,
+            with a 1.0 DC-to-AC ratio and three mountings: south-facing at 30°, vertical facing south, and vertical
+            facing east or west. Its value assumes every kWh is used at home.
+          </li>
+          <li>
+            <strong>Plug-in solar laws</strong> are summarized from the bill or statute on each state legislature&apos;s
+            website, with the date reviewed. We list pending bills only when we could confirm them there.
+          </li>
+        </ul>
+      </Section>
+
       <Section title="What these figures leave out">
         <ul className="list-disc pl-5 space-y-2 text-stone-700 leading-relaxed">
           <li>Time-of-use, EV and tiered rate plans, which can make your marginal price higher or lower than the average.</li>

@@ -4,6 +4,8 @@
  */
 import evData from "@/data/epa-evs.json";
 import { NATIONAL, REFERENCE_EVS, STATES } from "@/lib/energy";
+import { lawFor } from "@/data/plugin-solar-law";
+import { pluginModel } from "@/lib/plugin-solar";
 
 export interface CalcState {
   abbr: string;
@@ -13,6 +15,11 @@ export interface CalcState {
   gasArea: string;
   avgMonthlyKwh: number;
   kwhPerKwYear: number;
+  /** Plug-in kit output per kW on a south-facing stand (scripts/plugin_solar_model.py). */
+  pluginKwhPerKwYear: number;
+  /** Plug-in solar law: "law", "pending" or "none", and the bill if any. */
+  pluginLaw: "law" | "pending" | "none";
+  pluginBill: string | null;
 }
 
 export interface CalcEv {
@@ -35,6 +42,9 @@ export const CALC_STATES: CalcState[] = [...STATES]
     gasArea: s.gasoline.level === "state" ? s.name : s.gasoline.area,
     avgMonthlyKwh: s.usage.avgMonthlyKwh,
     kwhPerKwYear: s.solar.kwhPerKwYear,
+    pluginKwhPerKwYear: pluginModel(s.abbr).tilted.kwhPerKwYear,
+    pluginLaw: lawFor(s.abbr)?.status ?? "none",
+    pluginBill: lawFor(s.abbr)?.bill ?? null,
   }));
 
 export const CALC_US = {

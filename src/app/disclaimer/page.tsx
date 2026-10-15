@@ -27,8 +27,9 @@ export default function DisclaimerPage() {
         </p>
         <p>
           <strong>Product information.</strong> Vehicle and battery prices and specifications change often.
-          Lists in the EV Finder and Home Battery Sizer are gathered by automated research and may be
-          incomplete or out of date. Confirm details with the manufacturer or dealer.
+          Battery, power station and plug-in solar specifications and prices on our guides are copied from the
+          manufacturer&apos;s own US product pages and dated; the EV Finder list is gathered by automated research.
+          Prices move daily, so confirm details with the manufacturer or dealer before you buy.
         </p>
         <p>
           <strong>Installer listings.</strong> The Solar Finder lists companies that say they serve your state.
@@ -44,6 +45,31 @@ export default function DisclaimerPage() {
           professionals under local codes and permits.
         </p>
       </div>
+
+      <section id="affiliate-disclosure" className="mt-12 scroll-mt-24">
+        <h2 className="text-2xl font-bold mb-4">Affiliate disclosure: how we make money</h2>
+        <div className="text-stone-700 leading-relaxed space-y-4">
+          <p>
+            Spark Powered is free to use. Some links to products and services, such as portable power stations,
+            home batteries, plug-in solar kits and solar quote marketplaces, are affiliate links. If you buy or sign
+            up through one, the seller may pay us a commission. You pay the same price.
+          </p>
+          <p>
+            <strong>Commissions never change our recommendations.</strong> We choose products from their published
+            specifications, prices and warranties, using the method described on each guide. We list products from
+            brands that pay us nothing alongside those that do, and a brand cannot pay to be included, ranked higher
+            or described more kindly.
+          </p>
+          <p>
+            Affiliate links are marked as sponsored for search engines and open in a new tab. Pages that contain them
+            say so near the top. Our calculators and state data do not depend on any partner.
+          </p>
+          <p>
+            We do not publish star ratings or customer reviews, and we have not bench-tested every product we list;
+            where we compare products, we say exactly which published figures we compared.
+          </p>
+        </div>
+      </section>
     </article>
   );
 }

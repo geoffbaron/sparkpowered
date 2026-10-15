@@ -13,6 +13,7 @@ import {
   Sources,
 } from "@/components/content";
 import { CALC_STATES, CALC_US } from "@/lib/calculator-data";
+import { SolarQuotesCta } from "@/components/affiliate";
 import {
   DATA_UPDATED,
   NATIONAL,
@@ -103,6 +104,10 @@ export default function SolarCalculatorPage() {
         <SolarCalculatorFromParams states={CALC_STATES} us={CALC_US} />
       </Suspense>
 
+      <div className="mt-8">
+        <SolarQuotesCta />
+      </div>
+
       <Section title="The formula" id="how">
         <div className="text-stone-700 leading-relaxed space-y-4 max-w-3xl">
           <p>
@@ -186,6 +191,7 @@ export default function SolarCalculatorPage() {
       />
       <RelatedLinks
         links={[
+          { href: "/plug-in-solar", label: "Plug-in solar guide", desc: "Balcony solar kits, state rules and real payback" },
           { href: "/solar-finder", label: "Find solar installers", desc: "Installers that list service in your state" },
           { href: "/battery-calculator", label: "Home battery sizer", desc: "Pair panels with backup storage" },
           { href: "/states", label: "Energy data by state", desc: "Prices, solar output and charging by state" },

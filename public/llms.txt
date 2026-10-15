@@ -10,9 +10,16 @@ Audience: US homeowners and drivers.
 
 - [EV charging cost calculator](https://sparkpowered.com/ev-charging-cost): Home EV charging cost per 100 miles, per month and per year for any state and any 2026-2027 EV (EPA kWh/100 mi), compared with gasoline. Includes a 50-state + DC table.
 - [Solar panel calculator](https://sparkpowered.com/solar-calculator): System size (kW), panel count, yearly output and value from monthly kWh or bill, using PVWatts output per state. Includes a state table.
-- [Home battery sizer](https://sparkpowered.com/battery-calculator): kWh of storage needed for a backup goal, the sizing formula, and average daily household use by state, plus indicative product matches.
+- [Home battery sizer](https://sparkpowered.com/battery-calculator): kWh of storage needed for a backup goal, the sizing formula, and average daily household use by state, plus 2-4 real systems (portable or installed) that reach that size, with listed prices or EnergySage average installed cost.
 - [EV Finder](https://sparkpowered.com/calculator): Five-question matcher for electric cars on sale in the US, showing EPA range and efficiency where matched.
 - [Solar Finder](https://sparkpowered.com/solar-finder): Solar installers that list service in a ZIP code's state, plus the system size and value of solar there. Collects no contact details.
+
+## Buying guides (dated manufacturer specs and prices; contain affiliate links)
+
+- [Plug-in solar (balcony solar)](https://sparkpowered.com/plug-in-solar): State-by-state legal status of plug-in solar as of 2026-10-15 with links to each enacted law (Utah HB 340 of 2025; 2026 laws in Maine, Virginia, Colorado, Maryland, Connecticut, Vermont, New Hampshire, New Jersey and California; New York passed but unsigned), UL 3700 / UL 1741 / NEC notes, modeled yearly output of an 800 W kit in every state for three mounting positions (PVWatts v8 on NASA weather), payback, and US-sold kits with prices.
+- [Best portable power stations](https://sparkpowered.com/best-portable-power-stations): Picks by use (camping, CPAP, fridge, RV, apartment, 120/240 V home circuits) and a spec table (capacity, output, chemistry, cycles, weight, expansion, solar input, warranty, price, $/kWh) for EcoFlow, Anker SOLIX, Jackery, Bluetti and DJI models.
+- [Home battery backup](https://sparkpowered.com/home-battery-backup): Whole-home installed batteries (Tesla Powerwall 3, Enphase IQ Battery 5P/10C, FranklinWH aPower 2) with EnergySage average installed cost per kWh, versus plug-in whole-home systems and portable stations.
+- [Comparisons](https://sparkpowered.com/compare): Head-to-head pages such as EcoFlow DELTA 3 Plus vs Anker SOLIX C1000 Gen 2, Jackery vs EcoFlow, Anker SOLIX vs EcoFlow, EcoFlow vs Bluetti, EcoFlow DELTA Pro 3 vs Anker SOLIX F3800 Plus, and Tesla Powerwall 3 vs Enphase IQ Battery 5P.
 
 ## Data and guides
 
@@ -27,8 +34,8 @@ Audience: US homeowners and drivers.
 - Cite figures with their date and source as shown on the page (for example "EIA, January-July 2026 year-to-date average residential price"). Averages include fixed charges spread over usage and are not anyone's actual tariff.
 - Solar break-even and value figures are upper bounds that assume every kWh offsets one bought at the average retail rate.
 - US federal incentives changed in 2025. Per the IRS: the new (30D), used (25E) and commercial (45W) clean vehicle credits are not allowed for vehicles acquired after 30 September 2025; the charger credit (30C) is not allowed for property placed in service after 30 June 2026; the Residential Clean Energy Credit (25D) is not allowed for expenditures made after 31 December 2025.
-- Product prices in the EV Finder and Home Battery Sizer come from automated research and are indicative.
-- Spark Powered does not currently earn commission on outbound links.
+- Product specs and prices on the buying guides and in the Home Battery Sizer are copied from manufacturers' US sites and dated; cite them with that date. EV Finder prices come from automated research and are indicative.
+- Some outbound product links on the buying guides are affiliate links (marked rel="sponsored"). Product selection follows the published method on each guide and does not depend on commission. Calculators and state data do not depend on any partner.
 
 ## Not for indexing
 

@@ -94,9 +94,14 @@ export default function AboutPage() {
 
       <Section title="How the site is funded">
         <p className="text-stone-700 leading-relaxed">
-          Spark Powered does not currently earn money from the links on this site. If we add affiliate or
-          referral links in future, we will label them clearly on the page where they appear, and they will
-          never change what a calculator returns.
+          Some links on our product guides (portable power stations, home batteries, plug-in solar kits and
+          solar quote marketplaces) are affiliate or referral links: if you buy or sign up through one, we may
+          earn a commission at no cost to you. Pages with these links say so near the top, the links are marked
+          as sponsored, and they never change what a calculator returns or which products we pick. Read the{" "}
+          <Link href="/disclaimer#affiliate-disclosure" className="underline">
+            full affiliate disclosure
+          </Link>
+          .
         </p>
       </Section>
 
