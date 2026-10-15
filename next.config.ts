@@ -3,6 +3,8 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   cacheComponents: true,
   poweredByHeader: false,
+  // Tailwind CSS is small; inlining it removes a render-blocking request for first-time visitors.
+  experimental: { inlineCss: true },
   images: { formats: ["image/avif", "image/webp"], qualities: [55, 65, 75] },
 
   async redirects() {
