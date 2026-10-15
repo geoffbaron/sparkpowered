@@ -28,6 +28,7 @@ export default function AboutPage() {
             "@id": url("/about#editor"),
             name: "Geoff Baron",
             jobTitle: "Owner and editor",
+            email: "mailto:geoff@mylastlap.com",
             worksFor: { "@id": url("/#organization") },
           },
         }}
@@ -102,7 +103,8 @@ export default function AboutPage() {
       <Section title="Corrections">
         <p className="text-stone-700 leading-relaxed">
           If you spot a number that is wrong or out of date, we want to fix it. Each data page shows when its
-          figures were last updated; corrections are made on the page itself and the update date changes.
+          figures were last updated; corrections are made on the page itself and the update date changes. Email corrections or questions to{" "}
+          <a className="underline" href="mailto:geoff@mylastlap.com">geoff@mylastlap.com</a>.
         </p>
       </Section>
     </article>
