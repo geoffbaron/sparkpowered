@@ -5,7 +5,6 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
   // Tailwind CSS is small; inlining it removes a render-blocking request for first-time visitors.
   experimental: { inlineCss: true },
-  images: { formats: ["image/avif", "image/webp"], qualities: [55, 65, 75] },
 
   async redirects() {
     return [{ source: "/objections", destination: "/myths", permanent: true }];
@@ -13,6 +12,11 @@ const nextConfig: NextConfig = {
 
   async headers() {
     return [
+      {
+        // Photos are pre-encoded and never change in place (new photo, new file name).
+        source: "/images/:path*",
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+      },
       {
         source: "/:path*",
         headers: [

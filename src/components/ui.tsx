@@ -3,7 +3,6 @@
  * product cards, myth callouts and the big call-to-action band.
  */
 
-import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "@/components/icons";
 import { PartnerLink } from "@/components/affiliate";
@@ -12,31 +11,37 @@ import { IMAGES, type ImageKey } from "@/data/images";
 import type { MythLite } from "@/data/myths";
 import type { BrandId } from "@/data/affiliates";
 
+/**
+ * Responsive photo from public/images. Each photo is pre-encoded as WebP at
+ * 640, 1024 and 1600 px wide, so the server never re-encodes on request and
+ * the browser picks the smallest file that fits.
+ */
 export function Photo({
   name,
   className,
   sizes = "(min-width: 1024px) 50vw, 100vw",
   priority = false,
-  quality = 65,
 }: {
   name: ImageKey;
   className?: string;
   sizes?: string;
   priority?: boolean;
-  quality?: 55 | 65 | 75;
 }) {
   const img = IMAGES[name];
   if (!img) return null;
+  const base = img.src.replace(/-1600\.webp$/, "");
   return (
-    <Image
-      src={img.src}
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={`${base}-1024.webp`}
+      srcSet={`${base}-640.webp 640w, ${base}-1024.webp 1024w, ${base}-1600.webp 1600w`}
+      sizes={sizes}
       width={img.width}
       height={img.height}
       alt={img.alt}
-      sizes={sizes}
-      quality={quality}
-      preload={priority}
+      loading={priority ? "eager" : "lazy"}
       fetchPriority={priority ? "high" : undefined}
+      decoding="async"
       className={className}
     />
   );
@@ -214,7 +219,7 @@ export function HubHero({
 }) {
   return (
     <section className="relative isolate overflow-hidden bg-ink text-white">
-      <Photo name={image} priority quality={55} className="absolute inset-0 -z-10 h-full w-full object-cover" sizes="100vw" />
+      <Photo name={image} priority className="absolute inset-0 -z-10 h-full w-full object-cover" sizes="(max-width: 767px) 360px, 100vw" />
       <div className="absolute inset-0 -z-10 hero-shade" />
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12 sm:pb-16">
         {crumbs && <Breadcrumbs items={crumbs} tone="dark" />}
