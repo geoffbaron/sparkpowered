@@ -90,6 +90,7 @@ export const CONTENT_UPDATED = "2026-10-15";
 
 export const ROUTES: { path: string; lastModified: string }[] = [
   { path: "/", lastModified: CONTENT_UPDATED },
+  { path: "/go-electric", lastModified: CONTENT_UPDATED },
   { path: "/ev-charging-cost", lastModified: CONTENT_UPDATED },
   { path: "/solar-calculator", lastModified: CONTENT_UPDATED },
   { path: "/battery-calculator", lastModified: CONTENT_UPDATED },
@@ -101,7 +102,7 @@ export const ROUTES: { path: string; lastModified: string }[] = [
   { path: "/compare", lastModified: CONTENT_UPDATED },
   { path: "/states", lastModified: CONTENT_UPDATED },
   { path: "/incentives", lastModified: CONTENT_UPDATED },
-  { path: "/objections", lastModified: CONTENT_UPDATED },
+  { path: "/myths", lastModified: CONTENT_UPDATED },
   { path: "/about", lastModified: CONTENT_UPDATED },
   { path: "/methodology", lastModified: CONTENT_UPDATED },
   { path: "/disclaimer", lastModified: CONTENT_UPDATED },

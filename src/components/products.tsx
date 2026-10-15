@@ -6,6 +6,7 @@
 
 import { PartnerLink } from "@/components/affiliate";
 import { formatDate } from "@/lib/energy";
+import { lifeSummary } from "@/lib/everyday";
 import { JsonLd, url } from "@/lib/seo";
 import { brandName, fullName, kwh, maxWh, money, perKwh, watts } from "@/lib/products";
 import type { Product } from "@/data/products";
@@ -102,23 +103,40 @@ export function SpecList({ p }: { p: Product }) {
   );
 }
 
-/** A "best for" pick: why, key specs, price and the outbound link. */
+/** A "best for" pick: everyday outcome first, then why, price and the outbound link; specs tucked into an expander. */
 export function PickCard({ p, label, why }: { p: Product; label: string; why: string }) {
+  const life = lifeSummary(p.capacityWh);
+  const outcomes = [
+    `Fridge, Wi-Fi and lights: ${life.essentials}`,
+    `Fridge alone: ${life.fridge}`,
+    `CPAP: ${life.cpap}`,
+    `Phone charges: about ${life.phones}`,
+  ];
   return (
-    <article className="bg-surface rounded-2xl border border-black/8 p-5 sm:p-6 shadow-sm" id={`pick-${p.id}`}>
-      <p className="text-xs font-semibold uppercase tracking-wide text-spark-amber mb-1">{label}</p>
-      <h3 className="text-xl font-bold mb-2">{fullName(p)}</h3>
+    <article className="bg-surface rounded-3xl border border-black/8 p-5 sm:p-6 shadow-sm" id={`pick-${p.id}`}>
+      <p className="text-xs font-bold uppercase tracking-wide text-spark-amber mb-1">{label}</p>
+      <h3 className="text-xl font-extrabold text-ink mb-2">{fullName(p)}</h3>
+      <ul className="grid sm:grid-cols-2 gap-x-4 gap-y-1 text-sm mb-3">
+        {outcomes.map((o) => (
+          <li key={o} className="flex items-center gap-2 text-stone-800">
+            <span className="text-leaf" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5" /></svg>
+            </span>
+            {o}
+          </li>
+        ))}
+      </ul>
       <p className="text-stone-700 leading-relaxed mb-4">{why}</p>
-      <div className="grid sm:grid-cols-[1fr_auto] gap-5 items-end">
-        <SpecList p={p} />
-        <div className="sm:text-right">
-          <div className="text-sm text-muted">Price on {brandSite(p)}*</div>
-          <div className="text-2xl font-extrabold mb-2"><PriceCell p={p} /></div>
-          <PartnerLink brand={p.brand} productId={p.id} productUrl={p.url} category="battery" variant="button">
-            Check price at {brandSite(p)}
-          </PartnerLink>
-        </div>
+      <div className="flex flex-wrap items-center gap-4">
+        <div className="text-2xl font-extrabold text-ink"><PriceCell p={p} /></div>
+        <PartnerLink brand={p.brand} productId={p.id} productUrl={p.url} category="battery" className="btn btn-primary">
+          Check price at {brandSite(p)}
+        </PartnerLink>
       </div>
+      <details className="mt-4">
+        <summary className="cursor-pointer text-sm font-semibold text-spark-orange">Specs</summary>
+        <div className="mt-3"><SpecList p={p} /></div>
+      </details>
     </article>
   );
 }

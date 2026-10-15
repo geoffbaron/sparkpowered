@@ -1,0 +1,488 @@
+{
+ "generated": "2026-10-15",
+ "national": {
+  "gasUsdPerMcf": 15.34,
+  "gasYear": 2025,
+  "elecWaterHeatKwh": 2706.0,
+  "fridgeKwh": 839.0,
+  "gasSpaceHeatMmbtu": 44.897,
+  "gasWaterHeatMmbtu": 18.154,
+  "gasCookingMmbtu": 2.023
+ },
+ "sources": {
+  "gasPrice": {
+   "name": "U.S. Energy Information Administration, Natural Gas Prices: price delivered to residential consumers",
+   "url": "https://www.eia.gov/dnav/ng/ng_pri_sum_a_EPG0_PRS_DMcf_a.htm",
+   "period": "2025 annual average",
+   "retrieved": "2026-10-15"
+  },
+  "recs": {
+   "name": "U.S. Energy Information Administration, 2020 Residential Energy Consumption Survey (RECS), state tables CE4.6.EL.ST and CE5.4.ST",
+   "url": "https://www.eia.gov/consumption/residential/data/2020/index.php?view=state",
+   "period": "2020 (released June 2023)",
+   "note": "Average per household that uses that fuel for that end use. 'Q' (too few samples) is stored as null and the national average is used instead.",
+   "retrieved": "2026-10-15"
+  }
+ },
+ "states": {
+  "AL": {
+   "gasUsdPerMcf": 17.56,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 2840.0,
+   "fridgeKwh": 914.0,
+   "gasSpaceHeatMmbtu": 28.591,
+   "gasWaterHeatMmbtu": 14.991,
+   "gasCookingMmbtu": 2.132
+  },
+  "AK": {
+   "gasUsdPerMcf": 12.96,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 3187.0,
+   "fridgeKwh": 762.0,
+   "gasSpaceHeatMmbtu": 94.501,
+   "gasWaterHeatMmbtu": 32.801,
+   "gasCookingMmbtu": 2.247
+  },
+  "AZ": {
+   "gasUsdPerMcf": 18.58,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 2375.0,
+   "fridgeKwh": 925.0,
+   "gasSpaceHeatMmbtu": 16.062,
+   "gasWaterHeatMmbtu": 14.212,
+   "gasCookingMmbtu": 1.88
+  },
+  "AR": {
+   "gasUsdPerMcf": 19.25,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 3220.0,
+   "fridgeKwh": 825.0,
+   "gasSpaceHeatMmbtu": 44.288,
+   "gasWaterHeatMmbtu": 16.065,
+   "gasCookingMmbtu": 2.095
+  },
+  "CA": {
+   "gasUsdPerMcf": 22.01,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 1694.0,
+   "fridgeKwh": 831.0,
+   "gasSpaceHeatMmbtu": 17.602,
+   "gasWaterHeatMmbtu": 18.789,
+   "gasCookingMmbtu": 2.004
+  },
+  "CO": {
+   "gasUsdPerMcf": 11.17,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 2397.0,
+   "fridgeKwh": 856.0,
+   "gasSpaceHeatMmbtu": 52.591,
+   "gasWaterHeatMmbtu": 19.16,
+   "gasCookingMmbtu": 2.126
+  },
+  "CT": {
+   "gasUsdPerMcf": 16.83,
+   "gasYear": 2024,
+   "elecWaterHeatKwh": 2077.0,
+   "fridgeKwh": 707.0,
+   "gasSpaceHeatMmbtu": 48.841,
+   "gasWaterHeatMmbtu": 20.778,
+   "gasCookingMmbtu": 2.482
+  },
+  "DE": {
+   "gasUsdPerMcf": 15.97,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 3060.0,
+   "fridgeKwh": 799.0,
+   "gasSpaceHeatMmbtu": 40.575,
+   "gasWaterHeatMmbtu": 16.847,
+   "gasCookingMmbtu": 1.834
+  },
+  "DC": {
+   "gasUsdPerMcf": 16.68,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 1979.0,
+   "fridgeKwh": 610.0,
+   "gasSpaceHeatMmbtu": 28.874,
+   "gasWaterHeatMmbtu": 15.596,
+   "gasCookingMmbtu": 2.357
+  },
+  "FL": {
+   "gasUsdPerMcf": 25.48,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 2354.0,
+   "fridgeKwh": 923.0,
+   "gasSpaceHeatMmbtu": 8.453,
+   "gasWaterHeatMmbtu": 12.809,
+   "gasCookingMmbtu": 1.462
+  },
+  "GA": {
+   "gasUsdPerMcf": 20.42,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 3263.0,
+   "fridgeKwh": 928.0,
+   "gasSpaceHeatMmbtu": 36.961,
+   "gasWaterHeatMmbtu": 17.485,
+   "gasCookingMmbtu": 2.082
+  },
+  "HI": {
+   "gasUsdPerMcf": 52.38,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 2179.0,
+   "fridgeKwh": 910.0,
+   "gasSpaceHeatMmbtu": null,
+   "gasWaterHeatMmbtu": 14.929,
+   "gasCookingMmbtu": 2.164
+  },
+  "ID": {
+   "gasUsdPerMcf": 7.69,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 3791.0,
+   "fridgeKwh": 882.0,
+   "gasSpaceHeatMmbtu": 51.102,
+   "gasWaterHeatMmbtu": 23.147,
+   "gasCookingMmbtu": 2.071
+  },
+  "IL": {
+   "gasUsdPerMcf": 11.25,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 2123.0,
+   "fridgeKwh": 810.0,
+   "gasSpaceHeatMmbtu": 66.297,
+   "gasWaterHeatMmbtu": 17.412,
+   "gasCookingMmbtu": 2.047
+  },
+  "IN": {
+   "gasUsdPerMcf": 11.49,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 3318.0,
+   "fridgeKwh": 892.0,
+   "gasSpaceHeatMmbtu": 59.309,
+   "gasWaterHeatMmbtu": 17.551,
+   "gasCookingMmbtu": 2.143
+  },
+  "IA": {
+   "gasUsdPerMcf": 10.61,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 2633.0,
+   "fridgeKwh": 887.0,
+   "gasSpaceHeatMmbtu": 56.846,
+   "gasWaterHeatMmbtu": 16.118,
+   "gasCookingMmbtu": 2.161
+  },
+  "KS": {
+   "gasUsdPerMcf": 14.81,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 2808.0,
+   "fridgeKwh": 889.0,
+   "gasSpaceHeatMmbtu": 50.925,
+   "gasWaterHeatMmbtu": 17.768,
+   "gasCookingMmbtu": 1.768
+  },
+  "KY": {
+   "gasUsdPerMcf": 14.23,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 2984.0,
+   "fridgeKwh": 837.0,
+   "gasSpaceHeatMmbtu": 42.971,
+   "gasWaterHeatMmbtu": 17.156,
+   "gasCookingMmbtu": 1.945
+  },
+  "LA": {
+   "gasUsdPerMcf": 17.39,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 2998.0,
+   "fridgeKwh": 895.0,
+   "gasSpaceHeatMmbtu": 20.76,
+   "gasWaterHeatMmbtu": 17.022,
+   "gasCookingMmbtu": 1.84
+  },
+  "ME": {
+   "gasUsdPerMcf": 18.95,
+   "gasYear": 2024,
+   "elecWaterHeatKwh": 2257.0,
+   "fridgeKwh": 678.0,
+   "gasSpaceHeatMmbtu": 49.297,
+   "gasWaterHeatMmbtu": 17.852,
+   "gasCookingMmbtu": 2.318
+  },
+  "MD": {
+   "gasUsdPerMcf": 16.14,
+   "gasYear": 2024,
+   "elecWaterHeatKwh": 2830.0,
+   "fridgeKwh": 855.0,
+   "gasSpaceHeatMmbtu": 43.784,
+   "gasWaterHeatMmbtu": 18.064,
+   "gasCookingMmbtu": 2.157
+  },
+  "MA": {
+   "gasUsdPerMcf": 25.06,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 2026.0,
+   "fridgeKwh": 701.0,
+   "gasSpaceHeatMmbtu": 48.857,
+   "gasWaterHeatMmbtu": 19.068,
+   "gasCookingMmbtu": 2.403
+  },
+  "MI": {
+   "gasUsdPerMcf": 10.92,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 2595.0,
+   "fridgeKwh": 798.0,
+   "gasSpaceHeatMmbtu": 72.663,
+   "gasWaterHeatMmbtu": 16.572,
+   "gasCookingMmbtu": 1.969
+  },
+  "MN": {
+   "gasUsdPerMcf": 10.98,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 3021.0,
+   "fridgeKwh": 798.0,
+   "gasSpaceHeatMmbtu": 64.108,
+   "gasWaterHeatMmbtu": 18.065,
+   "gasCookingMmbtu": 2.066
+  },
+  "MS": {
+   "gasUsdPerMcf": 16.65,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 2720.0,
+   "fridgeKwh": 925.0,
+   "gasSpaceHeatMmbtu": 34.233,
+   "gasWaterHeatMmbtu": 18.848,
+   "gasCookingMmbtu": 1.589
+  },
+  "MO": {
+   "gasUsdPerMcf": 14.94,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 2899.0,
+   "fridgeKwh": 894.0,
+   "gasSpaceHeatMmbtu": 56.745,
+   "gasWaterHeatMmbtu": 16.519,
+   "gasCookingMmbtu": 2.154
+  },
+  "MT": {
+   "gasUsdPerMcf": 8.99,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 2943.0,
+   "fridgeKwh": 768.0,
+   "gasSpaceHeatMmbtu": 60.518,
+   "gasWaterHeatMmbtu": 24.525,
+   "gasCookingMmbtu": 2.121
+  },
+  "NE": {
+   "gasUsdPerMcf": 11.4,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 2419.0,
+   "fridgeKwh": 924.0,
+   "gasSpaceHeatMmbtu": 51.367,
+   "gasWaterHeatMmbtu": 18.513,
+   "gasCookingMmbtu": 1.944
+  },
+  "NV": {
+   "gasUsdPerMcf": 13.14,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 2224.0,
+   "fridgeKwh": 898.0,
+   "gasSpaceHeatMmbtu": 25.095,
+   "gasWaterHeatMmbtu": 18.884,
+   "gasCookingMmbtu": 2.111
+  },
+  "NH": {
+   "gasUsdPerMcf": 18.61,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 2323.0,
+   "fridgeKwh": 754.0,
+   "gasSpaceHeatMmbtu": 44.04,
+   "gasWaterHeatMmbtu": 17.744,
+   "gasCookingMmbtu": 2.418
+  },
+  "NJ": {
+   "gasUsdPerMcf": 14.21,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 2192.0,
+   "fridgeKwh": 821.0,
+   "gasSpaceHeatMmbtu": 60.582,
+   "gasWaterHeatMmbtu": 23.314,
+   "gasCookingMmbtu": 2.248
+  },
+  "NM": {
+   "gasUsdPerMcf": 9.83,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 2238.0,
+   "fridgeKwh": 809.0,
+   "gasSpaceHeatMmbtu": 38.697,
+   "gasWaterHeatMmbtu": 18.353,
+   "gasCookingMmbtu": 2.144
+  },
+  "NY": {
+   "gasUsdPerMcf": 17.58,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 2116.0,
+   "fridgeKwh": 685.0,
+   "gasSpaceHeatMmbtu": 46.188,
+   "gasWaterHeatMmbtu": 19.534,
+   "gasCookingMmbtu": 2.197
+  },
+  "NC": {
+   "gasUsdPerMcf": 16.42,
+   "gasYear": 2024,
+   "elecWaterHeatKwh": 2895.0,
+   "fridgeKwh": 847.0,
+   "gasSpaceHeatMmbtu": 35.732,
+   "gasWaterHeatMmbtu": 17.036,
+   "gasCookingMmbtu": 1.729
+  },
+  "ND": {
+   "gasUsdPerMcf": 9.5,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 3153.0,
+   "fridgeKwh": 839.0,
+   "gasSpaceHeatMmbtu": 69.125,
+   "gasWaterHeatMmbtu": 19.388,
+   "gasCookingMmbtu": 1.995
+  },
+  "OH": {
+   "gasUsdPerMcf": 13.85,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 2849.0,
+   "fridgeKwh": 821.0,
+   "gasSpaceHeatMmbtu": 62.258,
+   "gasWaterHeatMmbtu": 17.031,
+   "gasCookingMmbtu": 1.79
+  },
+  "OK": {
+   "gasUsdPerMcf": 14.38,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 2870.0,
+   "fridgeKwh": 883.0,
+   "gasSpaceHeatMmbtu": 42.585,
+   "gasWaterHeatMmbtu": 19.86,
+   "gasCookingMmbtu": 1.785
+  },
+  "OR": {
+   "gasUsdPerMcf": 16.71,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 3656.0,
+   "fridgeKwh": 816.0,
+   "gasSpaceHeatMmbtu": 43.156,
+   "gasWaterHeatMmbtu": 22.859,
+   "gasCookingMmbtu": 1.998
+  },
+  "PA": {
+   "gasUsdPerMcf": 15.04,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 3034.0,
+   "fridgeKwh": 815.0,
+   "gasSpaceHeatMmbtu": 57.191,
+   "gasWaterHeatMmbtu": 17.515,
+   "gasCookingMmbtu": 1.858
+  },
+  "RI": {
+   "gasUsdPerMcf": 21.66,
+   "gasYear": 2024,
+   "elecWaterHeatKwh": 2002.0,
+   "fridgeKwh": 746.0,
+   "gasSpaceHeatMmbtu": 64.328,
+   "gasWaterHeatMmbtu": 21.541,
+   "gasCookingMmbtu": 2.419
+  },
+  "SC": {
+   "gasUsdPerMcf": 16.91,
+   "gasYear": 2024,
+   "elecWaterHeatKwh": 2918.0,
+   "fridgeKwh": 861.0,
+   "gasSpaceHeatMmbtu": 29.113,
+   "gasWaterHeatMmbtu": 15.585,
+   "gasCookingMmbtu": 1.881
+  },
+  "SD": {
+   "gasUsdPerMcf": 9.86,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 3026.0,
+   "fridgeKwh": 851.0,
+   "gasSpaceHeatMmbtu": 53.528,
+   "gasWaterHeatMmbtu": 18.231,
+   "gasCookingMmbtu": 1.483
+  },
+  "TN": {
+   "gasUsdPerMcf": 11.84,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 3111.0,
+   "fridgeKwh": 839.0,
+   "gasSpaceHeatMmbtu": 43.752,
+   "gasWaterHeatMmbtu": 18.193,
+   "gasCookingMmbtu": 2.636
+  },
+  "TX": {
+   "gasUsdPerMcf": 19.42,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 2655.0,
+   "fridgeKwh": 901.0,
+   "gasSpaceHeatMmbtu": 23.51,
+   "gasWaterHeatMmbtu": 15.359,
+   "gasCookingMmbtu": 1.603
+  },
+  "UT": {
+   "gasUsdPerMcf": 10.19,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 2585.0,
+   "fridgeKwh": 887.0,
+   "gasSpaceHeatMmbtu": 46.262,
+   "gasWaterHeatMmbtu": 20.596,
+   "gasCookingMmbtu": 2.196
+  },
+  "VT": {
+   "gasUsdPerMcf": 18.0,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 2632.0,
+   "fridgeKwh": 726.0,
+   "gasSpaceHeatMmbtu": 47.116,
+   "gasWaterHeatMmbtu": 19.669,
+   "gasCookingMmbtu": 2.334
+  },
+  "VA": {
+   "gasUsdPerMcf": 16.79,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 3156.0,
+   "fridgeKwh": 881.0,
+   "gasSpaceHeatMmbtu": 44.033,
+   "gasWaterHeatMmbtu": 19.131,
+   "gasCookingMmbtu": 2.133
+  },
+  "WA": {
+   "gasUsdPerMcf": 17.62,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 3261.0,
+   "fridgeKwh": 772.0,
+   "gasSpaceHeatMmbtu": 46.427,
+   "gasWaterHeatMmbtu": 24.161,
+   "gasCookingMmbtu": 2.158
+  },
+  "WV": {
+   "gasUsdPerMcf": 13.8,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 3448.0,
+   "fridgeKwh": 790.0,
+   "gasSpaceHeatMmbtu": 59.888,
+   "gasWaterHeatMmbtu": 16.896,
+   "gasCookingMmbtu": 2.135
+  },
+  "WI": {
+   "gasUsdPerMcf": 10.74,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 2464.0,
+   "fridgeKwh": 817.0,
+   "gasSpaceHeatMmbtu": 59.671,
+   "gasWaterHeatMmbtu": 14.932,
+   "gasCookingMmbtu": 2.248
+  },
+  "WY": {
+   "gasUsdPerMcf": 11.74,
+   "gasYear": 2025,
+   "elecWaterHeatKwh": 2921.0,
+   "fridgeKwh": 825.0,
+   "gasSpaceHeatMmbtu": 63.019,
+   "gasWaterHeatMmbtu": 18.816,
+   "gasCookingMmbtu": 1.904
+  }
+ }
+}

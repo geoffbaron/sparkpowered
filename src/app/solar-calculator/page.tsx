@@ -2,19 +2,22 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 import SolarCalculator, { SolarCalculatorFromParams } from "@/components/SolarCalculator";
+import { HubHero, MythCallout, PhotoCredit } from "@/components/ui";
+import { lite } from "@/data/myths";
+import { ROOFTOP_SOLAR_COST } from "@/data/products";
+import { solarQuotesUrl } from "@/data/affiliates";
 import {
-  Breadcrumbs,
   Callout,
   Disclaimer,
   Faq,
-  PageIntro,
   RelatedLinks,
   Section,
   Sources,
 } from "@/components/content";
 import { CALC_STATES, CALC_US } from "@/lib/calculator-data";
-import { SolarQuotesCta } from "@/components/affiliate";
+import { PARTNER_REL, SolarQuotesCta } from "@/components/affiliate";
 import {
+  formatDate,
   DATA_UPDATED,
   NATIONAL,
   PANEL_WATTS,
@@ -69,8 +72,9 @@ export default function SolarCalculatorPage() {
     },
   ];
 
+  const quotes = solarQuotesUrl();
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div>
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -87,25 +91,45 @@ export default function SolarCalculatorPage() {
           dateModified: DATA_UPDATED,
         }}
       />
-      <Breadcrumbs items={[{ name: "Solar panel calculator", path: PATH }]} />
-      <PageIntro
-        eyebrow="Free calculator"
-        title="How many solar panels do I need?"
-        lede={
+      <HubHero
+        image="solar-roof"
+        crumbs={[{ name: "Solar panel calculator", path: PATH }]}
+        eyebrow="Solar calculator"
+        title={<>How many solar panels do you need, <span className="text-amber-300">and what will they save?</span></>}
+        sub={
           <>
-            Enter your state and your monthly use or bill. We size the system from modeled solar output for
-            your state (the PVWatts model on ten years of NASA weather data) and value it at your state&apos;s average electricity price (EIA).
+            Panels on your roof make power for 25 years or more. Every unit they make is one you don&apos;t buy, so your bill
+            shrinks and rate hikes matter less. Tell us your state and your bill; we&apos;ll show the savings, the cost and how
+            fast it pays you back.
           </>
         }
-        updated={DATA_UPDATED}
-      />
+      >
+        <a href="#calculator" className="btn btn-primary">See what you&apos;d save</a>
+        <a href={quotes.href} target="_blank" rel={PARTNER_REL} data-partner="energysage" data-tracked={quotes.tracked ? "1" : "0"} className="btn btn-light">
+          Get solar quotes<span className="sr-only"> (opens in a new tab)</span>
+        </a>
+        <p className="w-full text-xs text-white/75">Partner link: we may earn a commission if you request quotes. It never changes our numbers.</p>
+      </HubHero>
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <p className="text-sm text-muted mb-6">
+        Built on the PVWatts solar model with ten years of NASA weather for your state, and your state&apos;s average electricity
+        price (EIA). Data updated <time dateTime={DATA_UPDATED}>{formatDate(DATA_UPDATED)}</time> ·{" "}
+        <Link href="/methodology" className="underline underline-offset-2 hover:text-spark-orange">How we calculate this</Link>
+      </p>
+      <h2 id="calculator" className="text-2xl font-extrabold text-ink mb-4 scroll-mt-24">Your state, your bill</h2>
 
-      <Suspense fallback={<SolarCalculator states={CALC_STATES} us={CALC_US} />}>
-        <SolarCalculatorFromParams states={CALC_STATES} us={CALC_US} />
+      <Suspense fallback={<SolarCalculator states={CALC_STATES} us={CALC_US} avgPerWatt={ROOFTOP_SOLAR_COST.perWatt} />}>
+        <SolarCalculatorFromParams states={CALC_STATES} us={CALC_US} avgPerWatt={ROOFTOP_SOLAR_COST.perWatt} />
       </Suspense>
 
       <div className="mt-8">
         <SolarQuotesCta />
+      </div>
+
+      <div className="mt-8 grid gap-3">
+        <MythCallout m={lite("solar-cloudy")} />
+        <MythCallout m={lite("solar-roof")} />
+        <MythCallout m={lite("need-whole-system")} />
       </div>
 
       <Section title="The formula" id="how">
@@ -198,6 +222,8 @@ export default function SolarCalculatorPage() {
           { href: "/incentives", label: "Solar incentives in 2026", desc: "What changed and where to check state rebates" },
         ]}
       />
+      <PhotoCredit name="solar-roof" />
+      </div>
     </div>
   );
 }

@@ -35,7 +35,8 @@ export default function ChargingCalculator({
   const makes = useMemo(() => [...new Set(evs.map((e) => e.make))], [evs]);
   const [make, setMake] = useState(evs.find((e) => e.id === defaultEvId)?.make ?? makes[0]);
   const models = evs.filter((e) => e.make === make);
-  const [miles, setMiles] = useState(1000);
+  const [weekly, setWeekly] = useState(230);
+  const miles = (weekly * 52) / 12;
   const [customRate, setCustomRate] = useState("");
   const [mpg, setMpg] = useState(us.gasMpg);
 
@@ -58,6 +59,7 @@ export default function ChargingCalculator({
       gasMonthly,
       gasYearly: gasMonthly * 12,
       saving: (gasMonthly - evMonthly) * 12,
+      eGallon: (ev.kwhPer100mi / 100) * (cents / 100) * mpg,
     };
   }, [ev, miles, cents, mpg, gasUsd]);
 
@@ -99,48 +101,56 @@ export default function ChargingCalculator({
             <select aria-label="Model" className={field} value={evId} onChange={(e) => setEvId(Number(e.target.value))}>
               {models.map((v) => (
                 <option key={v.id} value={v.id}>
-                  {v.model} ({v.kwhPer100mi} kWh/100 mi)
+                  {v.model} ({v.rangeMiles} mi range)
                 </option>
               ))}
             </select>
           </div>
         </fieldset>
         <label className="block">
-          <span className="block text-sm font-semibold mb-1.5">Miles per month</span>
+          <span className="block text-sm font-semibold mb-1.5">Miles you drive a week</span>
           <input
             className={field}
             type="number"
             inputMode="numeric"
             min={0}
-            step={50}
-            value={miles}
-            onChange={(e) => setMiles(Math.max(0, Number(e.target.value) || 0))}
+            step={10}
+            value={weekly}
+            onChange={(e) => setWeekly(Math.max(0, Number(e.target.value) || 0))}
           />
+          <span className="block text-xs text-muted mt-1">230 a week is about 12,000 a year.</span>
         </label>
         <label className="block">
-          <span className="block text-sm font-semibold mb-1.5">
-            Your electricity rate, ¢/kWh <span className="font-normal text-muted">(optional)</span>
-          </span>
+          <span className="block text-sm font-semibold mb-1.5">Your gas car&apos;s mpg</span>
           <input
             className={field}
             type="number"
             inputMode="decimal"
-            min={0}
-            step={0.1}
-            placeholder={`${avgCents.toFixed(1)} (${st ? st.name : "US"} average)`}
-            value={customRate}
-            onChange={(e) => setCustomRate(e.target.value)}
+            min={5}
+            step={0.5}
+            value={mpg}
+            onChange={(e) => setMpg(Math.max(5, Number(e.target.value) || us.gasMpg))}
           />
+          <span className="block text-xs text-muted mt-1">{us.gasMpg} is the average new car (EPA).</span>
         </label>
       </div>
 
-      <div className="mt-7 grid sm:grid-cols-3 gap-3" aria-live="polite">
+      <div className="mt-7 rounded-2xl bg-ink text-white p-5 sm:p-6" aria-live="polite">
+        <p className="text-sm text-amber-300 font-semibold">{r.saving >= 0 ? "You'd save on fuel" : "Charging would cost more"}</p>
+        <p className="text-4xl sm:text-5xl font-extrabold mt-1 tabular-nums">
+          {fmt(Math.abs(r.saving))}<span className="text-2xl font-bold text-white/80"> a year</span>
+        </p>
+        <p className="text-white/85 mt-2">
+          Charging at home is like paying <strong className="text-amber-300">{fmt(r.eGallon, 2)} a gallon</strong> instead of{" "}
+          {fmt(gasUsd, 2)}.
+        </p>
+      </div>
+
+      <div className="mt-3 grid sm:grid-cols-3 gap-3">
         <div className="rounded-xl bg-amber-50 border border-amber-200 p-4">
           <div className="text-xs font-medium text-amber-900">Charging at home, per month</div>
           <div className="text-3xl font-extrabold mt-1">{fmt(r.evMonthly)}</div>
-          <div className="text-xs text-stone-600 mt-1">
-            {Math.round(r.kwh)} kWh at {cents.toFixed(1)}¢ · {fmt(r.evPer100, 2)} per 100 mi
-          </div>
+          <div className="text-xs text-stone-600 mt-1">{fmt(r.evPer100, 2)} per 100 miles</div>
         </div>
         <div className="rounded-xl bg-stone-50 border border-black/10 p-4">
           <div className="text-xs font-medium text-stone-700">Gasoline for the same miles</div>
@@ -159,18 +169,23 @@ export default function ChargingCalculator({
       </div>
 
       <details className="mt-5 text-sm">
-        <summary className="cursor-pointer font-medium text-stone-700">Change the gasoline car&apos;s mpg</summary>
+        <summary className="cursor-pointer font-medium text-stone-700">Know your electricity rate? (optional)</summary>
         <label className="block mt-3 max-w-xs">
-          <span className="block text-sm mb-1.5">Comparison car fuel economy (mpg)</span>
+          <span className="block text-sm mb-1.5">Price per kWh, in cents (from your bill)</span>
           <input
             className={field}
             type="number"
-            min={5}
-            step={0.5}
-            value={mpg}
-            onChange={(e) => setMpg(Math.max(5, Number(e.target.value) || us.gasMpg))}
+            inputMode="decimal"
+            min={0}
+            step={0.1}
+            placeholder={`${avgCents.toFixed(1)} (${st ? st.name : "US"} average)`}
+            value={customRate}
+            onChange={(e) => setCustomRate(e.target.value)}
           />
         </label>
+        <p className="text-xs text-muted mt-2">
+          Uses {Math.round(r.kwh)} kWh a month at {cents.toFixed(1)}¢; {ev.label} is rated {ev.kwhPer100mi} kWh per 100 miles by the EPA.
+        </p>
       </details>
       <p className="mt-4 text-xs text-muted">
         {ev.label}: EPA range {ev.rangeMiles} miles. Home charging only; public fast charging typically costs

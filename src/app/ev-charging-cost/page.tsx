@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Suspense } from "react";
 import ChargingCalculator, { ChargingCalculatorFromParams } from "@/components/ChargingCalculator";
+import { AffiliateDisclosure } from "@/components/affiliate";
+import { HomeChargerGuide } from "@/components/chargers";
+import { HubHero, MythCallout, PhotoCredit } from "@/components/ui";
+import { lite } from "@/data/myths";
 import {
-  Breadcrumbs,
   Callout,
   Disclaimer,
   Faq,
-  PageIntro,
   RelatedLinks,
   Section,
   Sources,
@@ -22,6 +24,7 @@ import {
   cents,
   chargingFigures,
   evCostPer100,
+  formatDate,
   gasCostPer100,
   nationalRateUsd,
   num,
@@ -47,6 +50,8 @@ export default function EvChargingCostPage() {
   const priciest = rows[rows.length - 1];
   const usEv = evCostPer100(nationalRateUsd(), typical.kwhPer100mi);
   const usGas = gasCostPer100(NATIONAL.gasolineUsdPerGallon);
+  const eGallon = (usEv / 100) * NATIONAL.gasMpg;
+  const usYearSaving = ((usGas - usEv) * 12000) / 100;
   const props = { states: CALC_STATES, evs: CALC_EVS, us: CALC_US, defaultEvId: DEFAULT_EV_ID };
 
   const faqs = [
@@ -73,7 +78,7 @@ export default function EvChargingCostPage() {
   ];
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div>
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -90,23 +95,41 @@ export default function EvChargingCostPage() {
           dateModified: DATA_UPDATED,
         }}
       />
-      <Breadcrumbs items={[{ name: "EV charging cost", path: PATH }]} />
-      <PageIntro
-        eyebrow="Free calculator"
-        title="EV charging cost calculator"
-        lede={
+      <HubHero
+        image="ev"
+        crumbs={[{ name: "EV charging cost", path: PATH }]}
+        eyebrow="Electric cars"
+        title={<>Skip the gas station. <span className="text-amber-300">Fill up at home for less.</span></>}
+        sub={
           <>
-            Charging an electric car at home costs about <strong>{usd(usEv, 2)} per 100 miles</strong> at
-            the US average electricity price — versus {usd(usGas, 2)} for gasoline in a 25.5 mpg car. Your
-            number depends on where you live and what you drive. Pick both below.
+            At the US average electricity price, charging a compact electric SUV at home is like paying{" "}
+            <strong className="text-amber-300">{usd(eGallon, 2)} a gallon</strong>, against {usd(NATIONAL.gasolineUsdPerGallon, 2)} at the pump.
+            For 12,000 miles a year that&apos;s about <strong className="text-amber-300">{usd(usYearSaving)}</strong> you keep. Plug in at night,
+            wake up full.
           </>
         }
-        updated={DATA_UPDATED}
-      />
-
+      >
+        <a href="#calculator" className="btn btn-primary">See what you&apos;d save</a>
+        <Link href="/calculator" className="btn btn-light">Find an EV that fits</Link>
+      </HubHero>
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <p className="text-sm text-muted mb-6">
+        Data updated <time dateTime={DATA_UPDATED}>{formatDate(DATA_UPDATED)}</time> ·{" "}
+        <Link href="/methodology" className="underline underline-offset-2 hover:text-spark-orange">How we calculate this</Link>
+      </p>
+      <h2 id="calculator" className="text-2xl font-extrabold text-ink mb-4 scroll-mt-24">Your state, your car, your miles</h2>
       <Suspense fallback={<ChargingCalculator {...props} />}>
         <ChargingCalculatorFromParams {...props} />
       </Suspense>
+
+      <div className="mt-8 grid gap-3">
+        <MythCallout m={lite("ev-battery-life")} />
+        <MythCallout m={lite("chargers")} />
+        <MythCallout m={lite("cold-range")} />
+      </div>
+
+      <AffiliateDisclosure className="mt-10" />
+      <HomeChargerGuide />
 
       <Section title="How the calculation works" id="how">
         <div className="text-stone-700 leading-relaxed space-y-4 max-w-3xl">
@@ -195,9 +218,11 @@ export default function EvChargingCostPage() {
           { href: "/calculator", label: "EV Finder", desc: "Match an electric car to your budget and driving" },
           { href: "/states", label: "Energy data by state", desc: "Prices, chargers and solar output for every state" },
           { href: "/incentives", label: "EV incentives in 2026", desc: "What federal help is left, and where to find state rebates" },
-          { href: "/objections", label: "EV questions, answered", desc: "Range, battery life, cold weather and more" },
+          { href: "/myths", label: "EV questions, answered", desc: "Range, battery life, cold weather and more" },
         ]}
       />
+      <PhotoCredit name="ev" />
+      </div>
     </div>
   );
 }

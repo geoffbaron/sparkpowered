@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AffiliateDisclosure } from "@/components/affiliate";
-import { Breadcrumbs, Callout, Disclaimer, Faq, PageIntro, RelatedLinks, Section, Sources } from "@/components/content";
+import { Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
+import { BigStat, HubHero, MythCallout, PhotoCredit } from "@/components/ui";
+import { lite } from "@/data/myths";
+import { lifeSummary } from "@/lib/everyday";
 import { PickCard, PriceFootnote, ProductListJsonLd, SpecTable } from "@/components/products";
 import { COMPARISONS } from "@/data/comparisons";
 import { PRODUCTS } from "@/data/products";
 import { formatDate } from "@/lib/energy";
-import { fullName, productById } from "@/lib/products";
+import { fullName, money, productById } from "@/lib/products";
 import { pageMetadata } from "@/lib/seo";
 
 const PATH = "/best-portable-power-stations";
@@ -18,45 +21,47 @@ export const metadata: Metadata = pageMetadata({ title: TITLE, description: DESC
 
 const PICKS: { id: string; label: string; why: string }[] = [
   {
+    id: "ecoflow-delta-3-max",
+    label: "Our pick for outage backup",
+    why: "The most battery for the money of any in-stock model we list. Leave the fridge plugged into it all the time: when the power cuts out it takes over in about a hundredth of a second, so the food stays cold and you may not even notice.",
+  },
+  {
     id: "anker-solix-c1000-gen-2",
-    label: "Best value at 1 kWh · apartments",
-    why: "The cheapest 1 kWh unit we list that was in stock, with 2,000 W of continuous output and a 49-minute wall recharge by Anker's figure. Anker rates it at about 20 dB under light loads, which suits a bedroom or small apartment. It cannot take extra batteries, and Anker's US page does not state its chemistry or warranty.",
+    label: "Best value · apartments",
+    why: "The cheapest full-size unit we found in stock. It refills from the wall in under an hour by Anker's figure and runs whisper-quiet (about 20 dB under light loads), so it suits a bedroom or small apartment. It can't take extra batteries later.",
   },
   {
     id: "ecoflow-delta-3-plus",
-    label: "Best 1 kWh that can grow",
-    why: "Same 1 kWh LFP battery and 1,800 W output as the DELTA 3, but with two solar inputs totaling 1,000 W, so a couple of portable panels can refill it in a day. It accepts EcoFlow's extra batteries up to 5 kWh and switches over in under 10 ms, fast enough to protect a computer or router as a UPS. 5-year warranty.",
+    label: "Best one that can grow",
+    why: "Start small and add EcoFlow's extra batteries later (up to five times the capacity). Two solar inputs mean a couple of portable panels can refill it in a day, and it switches over fast enough to keep a computer or router running. 5-year warranty.",
   },
   {
     id: "jackery-explorer-1000-v2",
     label: "Best for camping",
-    why: "The lightest 1 kWh unit in our table at 23.8 lb, with LFP cells and a 5-year warranty (3 years plus 2 on registration). Three AC outlets and 400 W of solar input are enough for a campsite. Note Jackery's 4,000-cycle rating is to 70% capacity, a lower bar than rivals' 80%.",
+    why: "The lightest full-size unit in our table, at 23.8 lb, with long-life LFP cells and up to a 5-year warranty (3 years plus 2 on registration). Enough outlets and solar input for a campsite. Jackery rates its cycles to 70% capacity, a lower bar than rivals' 80%.",
   },
   {
     id: "ecoflow-river-3-plus",
     label: "Best for CPAP and small loads",
-    why: "286 Wh in a 10.4 lb box for $299, with a sub-10 ms UPS switchover so a CPAP keeps running if the power blips. A CPAP drawing 40 W (check your machine's rating) would run roughly 6 hours on 85% of its capacity; an EcoFlow extra battery takes it to 858 Wh.",
-  },
-  {
-    id: "ecoflow-delta-3-max",
-    label: "Best for a fridge and essentials",
-    why: "2 kWh and 2,400 W for $899 when we checked, the lowest price per kWh of any in-stock unit we list. That is enough to run a typical fridge, lights, internet and phones through an overnight outage, and its 10 ms switchover means the fridge can stay plugged into it full time.",
+    why: "A 10.4 lb box for $299 that switches over in about 10 ms, so a CPAP keeps running if the power blips. Add EcoFlow's extra battery to triple it. Check your own machine: our CPAP nights assume about 28 W with a heated humidifier, from ResMed's battery guide.",
   },
   {
     id: "anker-solix-f3000",
     label: "Best for RVs and vans",
-    why: "A TT-30 RV outlet that delivers the full 3,600 W, 3 kWh of LFP storage, and 2,400 W of solar input across two ports. It expands to 12.3 kWh with BP3000 batteries. At 91.5 lb it rolls rather than carries, and it is 120 V only unless you pair two.",
+    why: "Plugs straight into an RV with a TT-30 outlet that delivers its full output, takes a lot of solar, and grows to four times the capacity with Anker's batteries. At 91.5 lb it rolls rather than carries.",
   },
   {
     id: "anker-solix-f3800-plus",
-    label: "Best for home circuits (120/240 V)",
-    why: "6,000 W of 120/240-volt output for a well pump or a transfer switch, 3,200 W of solar input and expansion to 26.9 kWh. It was $199 cheaper than the EcoFlow DELTA Pro 3 with more output; the Jackery Explorer 5000 Plus is the pick if you want more capacity in one box.",
+    label: "Best for running home circuits",
+    why: "240-volt power for a well pump or a transfer switch, lots of solar input, and room to grow into whole-home backup. It was $199 cheaper than the EcoFlow DELTA Pro 3 with more output when we checked.",
   },
 ];
 
 export default function BestPowerStationsPage() {
   const all = PRODUCTS.filter((p) => p.category === "portable").sort((a, b) => a.capacityWh - b.capacityWh);
   const picks = PICKS.map((x) => ({ ...x, p: productById(x.id) }));
+  const top = lifeSummary(picks[0].p.capacityWh);
+  const cheapest = all.filter((p) => p.priceUsd != null).sort((a, b) => a.priceUsd! - b.priceUsd!)[0];
 
   const faqs = [
     {
@@ -82,36 +87,47 @@ export default function BestPowerStationsPage() {
   ];
 
   return (
-    <article className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <article>
       <ProductListJsonLd products={picks.map((x) => x.p)} path={PATH} name="Best portable power stations" />
-      <Breadcrumbs items={[{ name: "Best portable power stations", path: PATH }]} />
-      <PageIntro
-        eyebrow="Buying guide"
-        title="The best portable power stations of 2026"
-        lede={
+      <HubHero
+        image="power-station"
+        crumbs={[{ name: "Best portable power stations", path: PATH }]}
+        eyebrow="Backup power"
+        title={<>The power goes out. <span className="text-amber-300">Your life doesn&apos;t.</span></>}
+        sub={
           <>
-            Picks for camping, CPAP, fridge backup, RVs and apartments, chosen from the published specs and current US
-            prices of {all.length} power stations from EcoFlow, Anker SOLIX, Jackery, Bluetti and DJI.
+            A portable power station is a big, quiet battery with ordinary outlets. Plug in the fridge, the Wi-Fi, a CPAP or a
+            lamp, and keep going through a storm, a heat wave or a weekend off-grid. No gas, no fumes, no pull cord.
           </>
         }
-      />
-      <p className="text-sm text-muted -mt-6 mb-6">
-        Prices and specs checked on the makers&apos; US sites on <time dateTime={all[0].retrieved}>{formatDate(all[0].retrieved)}</time>.
+      >
+        <a href="#picks" className="btn btn-primary">See our picks</a>
+        <Link href="/battery-calculator" className="btn btn-light">Find the right size for you</Link>
+      </HubHero>
+
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <p className="text-sm text-muted mb-6">
+        {all.length} models from EcoFlow, Anker SOLIX, Jackery, Bluetti and DJI. Prices and specs checked on the makers&apos; US
+        sites on <time dateTime={all[0].retrieved}>{formatDate(all[0].retrieved)}</time>.
       </p>
       <AffiliateDisclosure className="mb-8" />
 
-      <Callout>
-        <strong>Quick answer:</strong> for most homes, a 2 kWh LFP station such as the {fullName(productById("ecoflow-delta-3-max"))}{" "}
-        covers a fridge and essentials overnight, and it had the lowest price per kWh of any in-stock model we list. For
-        camping, a 1 kWh unit around 24 lb is the sweet spot.
-      </Callout>
+      <section aria-label="What a 2 kWh station runs" className="grid sm:grid-cols-3 gap-3">
+        <BigStat tone="leaf" value={top.essentials} label="Fridge, Wi-Fi and lights" note={`On our top pick, the ${fullName(picks[0].p)}`} />
+        <BigStat value={top.cpap} label="Of CPAP" note="8 hours a night, with a heated humidifier (ResMed figure)" />
+        <BigStat tone="orange" value={`From ${money(cheapest.priceUsd!)}`} label="To get started" note={`The ${fullName(cheapest)}, when we checked`} />
+      </section>
+
+      <div className="mt-8 grid gap-3">
+        <MythCallout m={lite("battery-without-solar")} />
+      </div>
 
       <nav aria-label="Picks" className="mt-8">
-        <h2 className="text-lg font-bold mb-3">Our picks</h2>
+        <h2 className="text-lg font-bold mb-3">Jump to a pick</h2>
         <ol className="grid sm:grid-cols-2 gap-2 text-sm">
           {picks.map((x) => (
             <li key={x.id}>
-              <a href={`#pick-${x.id}`} className="block rounded-lg border border-black/8 bg-surface px-3 py-2 hover:border-amber-300">
+              <a href={`#pick-${x.id}`} className="block rounded-xl border border-black/8 bg-surface px-3 py-2 hover:border-amber-300">
                 <span className="font-semibold">{x.label}:</span> {fullName(x.p)}
               </a>
             </li>
@@ -119,7 +135,7 @@ export default function BestPowerStationsPage() {
         </ol>
       </nav>
 
-      <Section title="Best portable power stations by use" id="picks">
+      <Section title="Our picks, by what you need" id="picks">
         <div className="space-y-5">
           {picks.map((x) => (
             <PickCard key={x.id} p={x.p} label={x.label} why={x.why} />
@@ -128,7 +144,7 @@ export default function BestPowerStationsPage() {
         <PriceFootnote products={picks.map((x) => x.p)} />
       </Section>
 
-      <Section title="Every model compared" id="table">
+      <Section title="Every model compared (full specs)" id="table">
         <p className="text-stone-700 leading-relaxed max-w-3xl mb-4">
           Sorted by capacity. Swipe sideways on a phone. &quot;Expands to&quot; uses the maker&apos;s own add-on batteries on
           one unit. A dash means the maker does not publish the figure on its US page.
@@ -190,6 +206,8 @@ export default function BestPowerStationsPage() {
           { href: "/compare", label: "All comparisons", desc: "EcoFlow, Anker, Jackery and Bluetti head to head" },
         ]}
       />
+      <PhotoCredit name="power-station" />
+      </div>
     </article>
   );
 }

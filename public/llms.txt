@@ -25,7 +25,8 @@ Audience: US homeowners and drivers.
 
 - [Energy data by state](https://sparkpowered.com/states): Index of 51 state pages (50 states + DC), e.g. https://sparkpowered.com/states/texas. Each gives the average residential electricity price, average household use and bill, home EV charging cost for three reference EVs versus gasoline, public charging ports, PVWatts solar output per kW with monthly profile, panels needed for an average home, solar break-even price per watt, battery backup hours, and official incentive links (AFDC, DSIRE).
 - [2026 incentives](https://sparkpowered.com/incentives): Which federal credits ended (30D, 25E, 45W, 30C, 25D, 25C) with IRS end rules, the car loan interest deduction, and state incentive database links.
-- [EV objections and FAQs](https://sparkpowered.com/objections): Fifteen sourced answers on range, charging time, apartments, price, electricity cost, battery life, lifecycle emissions, mining, the grid, cold weather, reliability and solar.
+- [Go electric myths, answered](https://sparkpowered.com/myths): Sourced answers to the doubts people have about EVs, solar, batteries, heat pumps and induction: cost, battery life, fires, chargers, the grid, cold weather, cloudy climates, roofs and more.
+- [Go Electric savings calculator](https://sparkpowered.com/go-electric): Yearly savings for an EV, heat pump, heat pump water heater, induction, rooftop and plug-in solar, by state, from EIA and EPA data.
 - [Methodology](https://sparkpowered.com/methodology): Formulas, sources, dates and limitations.
 - [About and editorial standards](https://sparkpowered.com/about)
 

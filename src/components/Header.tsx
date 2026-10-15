@@ -30,14 +30,13 @@ function SparkIcon() {
 }
 
 const navLinks = [
-  { href: "/ev-charging-cost", label: "EV Charging Cost" },
-  { href: "/solar-calculator", label: "Solar Calculator" },
-  { href: "/battery-calculator", label: "Battery Sizer" },
+  { href: "/ev-charging-cost", label: "Electric Cars" },
+  { href: "/solar-calculator", label: "Solar" },
   { href: "/plug-in-solar", label: "Plug-in Solar" },
-  { href: "/best-portable-power-stations", label: "Power Stations" },
-  { href: "/calculator", label: "EV Finder" },
+  { href: "/best-portable-power-stations", label: "Backup Power" },
+  { href: "/home-battery-backup", label: "Home Batteries" },
+  { href: "/myths", label: "Myths" },
   { href: "/states", label: "States" },
-  { href: "/news", label: "Headlines" },
 ];
 
 export default function Header() {
@@ -49,7 +48,7 @@ export default function Header() {
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-2 group" aria-label="Spark Powered home">
             <SparkIcon />
-            <span className="text-xl font-bold bg-gradient-to-r from-spark-yellow to-spark-orange bg-clip-text text-transparent">
+            <span className="text-xl font-extrabold text-ink">
               Spark Powered
             </span>
           </Link>
@@ -66,6 +65,10 @@ export default function Header() {
               </Link>
             ))}
           </nav>
+
+          <Link href="/go-electric" className="hidden sm:inline-flex xl:ml-2 btn btn-primary btn-sm">
+            See what you&apos;d save
+          </Link>
 
           {/* Mobile toggle */}
           <button
@@ -90,6 +93,13 @@ export default function Header() {
       {/* Mobile nav */}
       {mobileOpen && (
         <nav id="mobile-nav" aria-label="Main" className="xl:hidden border-t border-black/8 bg-background/98 backdrop-blur-lg">
+          <Link
+            href="/go-electric"
+            className="block px-6 py-3 text-base font-bold text-spark-orange hover:bg-surface-light"
+            onClick={() => setMobileOpen(false)}
+          >
+            See what you&apos;d save
+          </Link>
           {navLinks.map((link) => (
             <Link
               key={link.href}

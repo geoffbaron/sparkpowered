@@ -29,6 +29,7 @@ export type BrandId =
   | "mangopower"
   | "pluggedsolar"
   | "craftstrom"
+  | "lectron"
   | "energysage";
 
 export interface BrandAffiliate {
@@ -63,6 +64,23 @@ export const AFFILIATES: Record<BrandId, BrandAffiliate> = {
   mangopower: { name: "Mango Power", homeUrl: "https://www.mangopower.com/", tracked: false },
   pluggedsolar: { name: "PluggedSolar", homeUrl: "https://pluggedsolar.com/", tracked: false },
   craftstrom: { name: "CraftStrom", homeUrl: "https://craftstrom.com/", tracked: false },
+  // Approved on Awin (MID 91891), 8% commission, 30-day cookie.
+  lectron: {
+    name: "Lectron",
+    homeUrl: "https://ev-lectron.com/",
+    tracked: true,
+    network: "Awin",
+    commission: "8%",
+    cookieDays: 30,
+    links: { home: "https://www.awin1.com/cread.php?awinmid=91891&awinaffid=3125360&ued=https%3A%2F%2Fev-lectron.com%2F" },
+    productLinks: {
+      "lectron-nexus-j1772": "https://www.awin1.com/cread.php?awinmid=91891&awinaffid=3125360&ued=https%3A%2F%2Fev-lectron.com%2Fproducts%2Flectron-nexus-level-2-j1772-ev-charging-station-240v-40-amp-23ft-cable-wall-mount-j-hook-plug-holder-nema-14-50",
+      "lectron-nexus-nacs": "https://www.awin1.com/cread.php?awinmid=91891&awinaffid=3125360&ued=https%3A%2F%2Fev-lectron.com%2Fproducts%2Flectron-nexus-level-2-nacs-tesla-ev-charging-station-240v-40-amp-23ft-cable-wall-mount-j-hook-plug-holder-nema-14-50",
+      "lectron-portable-nacs": "https://www.awin1.com/cread.php?awinmid=91891&awinaffid=3125360&ued=https%3A%2F%2Fev-lectron.com%2Fproducts%2Flectron-portable-level-1-2-tesla-nacs-ev-charger-120v-240v-adjustable-current-8-40a-nema-5-15-14-50",
+    },
+  },
+  // Applied, pending on Awin (plain links until approved): Bluetti, Jackery, EcoFlow, Oupes, Pecron, Autel,
+  // and per-sale solar installers Momentum Solar, Solar Savings, Solar Simplified, Nautilus community solar.
   energysage: {
     name: "EnergySage",
     homeUrl: "https://www.energysage.com/",

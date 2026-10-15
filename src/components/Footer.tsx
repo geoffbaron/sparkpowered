@@ -2,6 +2,7 @@ import Link from "next/link";
 import { DATA_UPDATED } from "@/lib/energy";
 
 const TOOLS = [
+  { href: "/go-electric", label: "Go Electric savings calculator" },
   { href: "/ev-charging-cost", label: "EV charging cost calculator" },
   { href: "/solar-calculator", label: "Solar panel calculator" },
   { href: "/battery-calculator", label: "Home battery sizer" },
@@ -16,7 +17,7 @@ const GUIDES = [
   { href: "/compare", label: "Power station comparisons" },
   { href: "/states", label: "Energy data by state" },
   { href: "/incentives", label: "2026 incentives" },
-  { href: "/objections", label: "EV myths & objections" },
+  { href: "/myths", label: "Myths, answered" },
   { href: "/news", label: "Latest headlines" },
 ];
 
@@ -52,8 +53,8 @@ export default function Footer() {
           <div>
             <p className="text-lg font-bold text-spark-orange mb-3">Spark Powered</p>
             <p className="text-sm text-stone-700 leading-relaxed">
-              Independent calculators and data for US households weighing an EV, solar panels or a home
-              battery. Not owned by any carmaker, installer or utility; some product links earn us a commission.
+              Helping US households go electric and keep more of their money, with numbers you can check. Not
+              owned by any carmaker, installer or utility; some product links earn us a commission.
             </p>
           </div>
           <Column title="Tools" links={TOOLS} />

@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AffiliateDisclosure, PartnerLink } from "@/components/affiliate";
-import { Breadcrumbs, Callout, Disclaimer, Faq, PageIntro, RelatedLinks, Section, Sources } from "@/components/content";
+import { BigStat, HubHero, MythCallout, OurPick, PhotoCredit } from "@/components/ui";
+import { lite } from "@/data/myths";
+import { Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
 import MonthlyBars from "@/components/MonthlyBars";
 import { LAW_REVIEWED, STANDARDS, STATE_LAWS, lawFor } from "@/data/plugin-solar-law";
 import { PLUGIN_KITS, ROOFTOP_SOLAR_COST, type PluginKit } from "@/data/products";
-import { NATIONAL, SOURCES, STATES, cents, formatDate, num, stateByAbbr, usd } from "@/lib/energy";
+import { NATIONAL, SOURCES, STATES, formatDate, num, stateByAbbr, usd } from "@/lib/energy";
 import { MOUNTING_LABEL, REFERENCE_KIT_W, pluginFigures, pluginModel } from "@/lib/plugin-solar";
 import { AFFILIATES } from "@/data/affiliates";
 import { JsonLd, pageMetadata, url } from "@/lib/seo";
@@ -22,40 +24,60 @@ const kitName = (k: PluginKit) => `${AFFILIATES[k.brand].name} ${k.name}`;
 
 /** A real 800 W kit used as the payback example everywhere on this page. */
 const EXAMPLE_KIT = PLUGIN_KITS.find((k) => k.id === "pluggedsolar-800w-kit")!;
+const BUDGET_KIT = PLUGIN_KITS.find((k) => k.id === "brightsaver-360w-kit")!;
+
+/** Average plug-in output per kW across the states, valued at the US average price: a "typical US home" figure for kit cards. */
+const US_PLUGIN_KWH_PER_KW = STATES.reduce((n, s) => n + pluginModel(s.abbr).tilted.kwhPerKwYear, 0) / STATES.length;
+const usValue = (k: PluginKit) => ((US_PLUGIN_KWH_PER_KW * k.panelW) / 1000) * (NATIONAL.residentialCentsPerKwhYtd / 100);
 
 function KitCard({ k }: { k: PluginKit }) {
   const pw = perWatt(k);
+  const value = usValue(k);
   return (
-    <article className="bg-surface rounded-2xl border border-black/8 p-5 sm:p-6 shadow-sm" id={`kit-${k.id}`}>
+    <article className="bg-surface rounded-3xl border border-black/8 p-5 sm:p-6 shadow-sm" id={`kit-${k.id}`}>
       <p className="text-xs font-semibold uppercase tracking-wide text-spark-amber mb-1">{AFFILIATES[k.brand].name}</p>
-      <h3 className="text-lg font-bold mb-3">{k.name}</h3>
-      <div className="grid sm:grid-cols-[1fr_auto] gap-5 items-end">
+      <h3 className="text-lg font-extrabold text-ink">{k.name}</h3>
+      <div className="grid sm:grid-cols-[1fr_auto] gap-5 items-end mt-2">
         <div>
-          <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 text-sm">
-            <dt className="text-muted">Panels included</dt>
-            <dd className="font-medium">{k.panelW ? `${num(k.panelW)} W` : "None"}</dd>
-            <dt className="text-muted">Inverter output</dt>
-            <dd className="font-medium">{num(k.inverterW)} W</dd>
-            <dt className="text-muted">Battery</dt>
-            <dd className="font-medium">{k.batteryWh ? `${num(k.batteryWh)} Wh` : "None"}</dd>
-            <dt className="text-muted">Certifications stated</dt>
-            <dd className="font-medium">{k.certifications.join(", ")}</dd>
-            {k.states && (
-              <>
-                <dt className="text-muted">Sold for</dt>
-                <dd className="font-medium">{k.states.join(", ")} only</dd>
-              </>
-            )}
-          </dl>
-          <ul className="list-disc pl-5 mt-3 text-sm text-stone-700 space-y-1">
+          {value > 0 && (
+            <p className="text-stone-800">
+              <strong className="text-leaf text-lg">Up to {usd(value)} a year</strong> off a typical US bill
+              {value > 0 ? `, paying for itself in about ${Math.round(k.priceUsd / value)} years` : ""}.
+            </p>
+          )}
+          <ul className="list-disc pl-5 mt-2 text-sm text-stone-700 space-y-1">
             {k.notes.map((n) => (
               <li key={n}>{n}</li>
             ))}
           </ul>
+          <details className="mt-3 text-sm">
+            <summary className="cursor-pointer font-semibold text-spark-orange">Specs</summary>
+            <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1.5 mt-2">
+              <dt className="text-muted">Panels included</dt>
+              <dd className="font-medium">{k.panelW ? `${num(k.panelW)} W` : "None"}</dd>
+              <dt className="text-muted">Inverter output</dt>
+              <dd className="font-medium">{num(k.inverterW)} W</dd>
+              <dt className="text-muted">Battery</dt>
+              <dd className="font-medium">{k.batteryWh ? `${num(k.batteryWh)} Wh` : "None"}</dd>
+              <dt className="text-muted">Certifications stated</dt>
+              <dd className="font-medium">{k.certifications.join(", ")}</dd>
+              {pw && (
+                <>
+                  <dt className="text-muted">Price per watt</dt>
+                  <dd className="font-medium">{usd(pw, 2)}</dd>
+                </>
+              )}
+              {k.states && (
+                <>
+                  <dt className="text-muted">Sold for</dt>
+                  <dd className="font-medium">{k.states.join(", ")} only</dd>
+                </>
+              )}
+            </dl>
+          </details>
         </div>
         <div className="sm:text-right">
-          <div className="text-sm text-muted">Price on seller&apos;s site*</div>
-          <div className="text-2xl font-extrabold">
+          <div className="text-2xl font-extrabold text-ink">
             {usd(k.priceUsd, k.priceUsd % 1 ? 2 : 0)}
             {k.listPriceUsd && (
               <span className="block text-xs font-normal text-muted">
@@ -63,9 +85,9 @@ function KitCard({ k }: { k: PluginKit }) {
               </span>
             )}
           </div>
-          {pw && <div className="text-xs text-muted mb-2">{usd(pw, 2)} per watt of panels</div>}
-          <PartnerLink brand={k.brand} productId={k.id} productUrl={k.url} category="solar" variant="button">
-            See it at {AFFILIATES[k.brand].name}
+          <div className="text-xs text-muted mb-2">when we checked*</div>
+          <PartnerLink brand={k.brand} productId={k.id} productUrl={k.url} category="solar" className="btn btn-primary btn-sm">
+            Check price
           </PartnerLink>
         </div>
       </div>
@@ -93,6 +115,7 @@ export default function PluginSolarPage() {
   const best = byPayback[0];
   const worst = byPayback[byPayback.length - 1];
   const nameOf = (abbr: string) => stateByAbbr(abbr)!.name;
+  const medianRow = byPayback[Math.floor(byPayback.length / 2)];
   const list = (xs: { abbr: string }[]) => xs.map((x) => nameOf(x.abbr)).join(", ");
 
   const faqs = [
@@ -123,7 +146,7 @@ export default function PluginSolarPage() {
   ];
 
   return (
-    <article className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <article>
       <JsonLd
         data={{
           "@context": "https://schema.org",
@@ -157,29 +180,76 @@ export default function PluginSolarPage() {
           })),
         }}
       />
-      <Breadcrumbs items={[{ name: "Plug-in solar", path: PATH }]} />
-      <PageIntro
-        eyebrow="Guide"
-        title="Plug-in solar in the US: is it legal, and is it worth it?"
-        lede={
+      <HubHero
+        image="plugin-solar"
+        crumbs={[{ name: "Plug-in solar", path: PATH }]}
+        eyebrow="Plug-in solar"
+        title={<>Solar for everyone. <span className="text-amber-300">Just plug it in.</span></>}
+        sub={
           <>
-            Plug-in (&quot;balcony&quot;) solar is a small kit of panels with a microinverter that plugs into an
-            ordinary outlet. {laws.length} states have now passed laws allowing it. Here is what one really produces
-            in your state, what it costs, the safety rules, and the kits you can buy in the US today.
+            A small set of panels plugs into an ordinary outdoor outlet and powers your fridge, Wi-Fi and TV while the sun
+            is up. No roof, no installer, no loan, and you can take it with you when you move. {laws.length} states now
+            allow it without utility paperwork.
           </>
         }
-      />
-      <p className="text-sm text-muted -mt-6 mb-6">
+      >
+        <a href="#kits" className="btn btn-primary">See the kits we&apos;d buy</a>
+        <a href="#laws" className="btn btn-light">Is it legal in my state?</a>
+      </HubHero>
+
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <p className="text-sm text-muted mb-6">
         Laws checked against state legislature sites on <time dateTime={LAW_REVIEWED}>{formatDate(LAW_REVIEWED)}</time>.
       </p>
       <AffiliateDisclosure className="mb-8" />
 
+      <section aria-label="What you get" className="grid sm:grid-cols-3 gap-3">
+        <BigStat tone="leaf" value={`${usd(medianRow.tilted.valueYear)}/yr`} label="Off your bill, typical state" note={`An 800 W kit on a stand in ${medianRow.s.name}, if you use what it makes`} />
+        <BigStat value={`${Math.round(medianRow.tilted.paybackYears!)} years`} label="To pay for itself" note={`The ${usd(EXAMPLE_KIT.priceUsd)} kit below; ${Math.round(best.tilted.paybackYears!)} years in ${best.s.name}`} />
+        <BigStat tone="orange" value={`From ${usd(Math.min(...PLUGIN_KITS.map((k) => k.priceUsd)))}`} label="To get started" note="Smallest kit we list, at the seller's price" />
+      </section>
+
+      <h2 className="sr-only">Our picks</h2>
+      <div className="mt-8 grid gap-4">
+        <OurPick
+          label="Our pick for most people"
+          name={kitName(EXAMPLE_KIT)}
+          icon="sun"
+          why={`800 W fits under every state's cap, the seller lists the UL 3700 plug-in safety standard, and the app shows what you're making. In a sunny state it can knock ${usd(utF.valueYear)} a year off your bill.`}
+          life={[`Up to ${usd(utF.valueYear)} a year in Utah`, `Covers your fridge and Wi-Fi in daylight`, "Moves with you", "No installer"]}
+          priceUsd={EXAMPLE_KIT.priceUsd}
+          brand={EXAMPLE_KIT.brand}
+          productId={EXAMPLE_KIT.id}
+          productUrl={EXAMPLE_KIT.url}
+          category="solar"
+        />
+        <OurPick
+          label="Our pick on a budget"
+          name={kitName(BUDGET_KIT)}
+          icon="plug"
+          why="The cheapest way in, from the nonprofit behind many of the state plug-in solar laws. It only ships to states with a law, so you know it's allowed where it lands."
+          priceUsd={BUDGET_KIT.priceUsd}
+          brand={BUDGET_KIT.brand}
+          productId={BUDGET_KIT.id}
+          productUrl={BUDGET_KIT.url}
+          category="solar"
+          moreHref="#kits"
+          moreLabel="Compare every kit"
+        />
+      </div>
+      <p className="text-xs text-muted mt-2">*Price on the seller&apos;s site when we checked on {formatDate(EXAMPLE_KIT.retrieved)}.</p>
+
+      <div className="mt-8 grid gap-3">
+        <MythCallout m={lite("need-whole-system")} />
+        <MythCallout m={lite("solar-cloudy")} />
+      </div>
+
       <Callout>
         <strong>The short version:</strong> legal without utility approval in {list(inEffect)} today, and in{" "}
-        {list(upcoming)} from 2027. An 800 W kit makes about {num(utF.kwhYear)} kWh a year in Utah, worth up to{" "}
-        {usd(utF.valueYear)} at {cents(ut.electricity.residentialCentsPerKwhYtd)}/kWh. It suits renters and anyone
-        without a roof for full solar; it does not give backup power in an outage.
+        {list(upcoming)} from 2027. It suits renters and anyone without a roof for full solar. A kit without a battery
+        switches off in a blackout; for backup, pair panels with a <Link href="/best-portable-power-stations" className="underline">power station</Link>.
       </Callout>
+      <div className="mt-8" />
 
       <nav aria-label="On this page" className="mt-8 text-sm">
         <ul className="flex flex-wrap gap-x-4 gap-y-2">
@@ -199,7 +269,7 @@ export default function PluginSolarPage() {
         </ul>
       </nav>
 
-      <Section title="What plug-in solar is" id="what">
+      <Section title="How it works, in plain English" id="what">
         <div className="text-stone-700 leading-relaxed space-y-4 max-w-3xl">
           <p>
             A plug-in kit is one to four solar panels, usually 400 to 1,200 watts in total, wired to a{" "}
@@ -222,7 +292,7 @@ export default function PluginSolarPage() {
         </div>
       </Section>
 
-      <Section title="How much plug-in solar really produces" id="output">
+      <Section title="What it's worth where you live" id="output">
         <div className="grid lg:grid-cols-2 gap-8 items-start">
           <div className="text-stone-700 leading-relaxed space-y-4">
             <p>
@@ -283,7 +353,7 @@ export default function PluginSolarPage() {
         </p>
       </Section>
 
-      <Section title="Cost and payback" id="cost">
+      <Section title="What it costs, and how fast it pays you back" id="cost">
         <div className="text-stone-700 leading-relaxed space-y-4 max-w-3xl">
           <p>
             Kits we found on US sellers&apos; sites cost from{" "}
@@ -309,7 +379,7 @@ export default function PluginSolarPage() {
         </div>
       </Section>
 
-      <Section title="Safety: what to look for" id="safety">
+      <Section title="Safe by design: what to look for" id="safety">
         <div className="text-stone-700 leading-relaxed space-y-4 max-w-3xl">
           <ul className="list-disc pl-5 space-y-2">
             <li>
@@ -401,7 +471,7 @@ export default function PluginSolarPage() {
         </div>
       </Section>
 
-      <Section title="Plug-in solar kits you can buy in the US" id="kits">
+      <Section title="The kits you can buy in the US" id="kits">
         <div className="text-stone-700 leading-relaxed space-y-3 max-w-3xl mb-5">
           <p>
             These are 120-volt kits listed for sale to US addresses on the seller&apos;s own website, with prices
@@ -423,7 +493,7 @@ export default function PluginSolarPage() {
         </p>
       </Section>
 
-      <Section title="Plug-in solar with a battery" id="battery">
+      <Section title="Want power in a blackout too? Add a battery" id="battery">
         <div className="text-stone-700 leading-relaxed space-y-4 max-w-3xl">
           <p>
             A battery stores midday surplus for the evening, which is where most of the extra savings come from. In
@@ -472,6 +542,8 @@ export default function PluginSolarPage() {
           { href: "/incentives", label: "2026 incentives", desc: "What federal help remains" },
         ]}
       />
+      <PhotoCredit name="plugin-solar" />
+      </div>
     </article>
   );
 }

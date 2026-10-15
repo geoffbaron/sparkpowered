@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { IMAGES } from "@/data/images";
 import { Breadcrumbs, PageIntro, Section } from "@/components/content";
 import { JsonLd, pageMetadata, url } from "@/lib/seo";
 
@@ -103,6 +104,20 @@ export default function AboutPage() {
           </Link>
           .
         </p>
+      </Section>
+
+      <Section title="Photo credits">
+        <div id="photo-credits" className="scroll-mt-24">
+          <p className="text-stone-700 mb-3">Photos are from Unsplash, used under the Unsplash License.</p>
+          <ul className="text-sm text-stone-700 space-y-1 list-disc pl-5">
+            {Object.entries(IMAGES).map(([k, img]) => (
+              <li key={k}>
+                {img!.alt}:{" "}
+                <a href={img!.pageUrl} className="underline" rel="noopener">{img!.credit}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
       </Section>
 
       <Section title="Corrections">

@@ -6,7 +6,6 @@ import {
   Callout,
   Disclaimer,
   Faq,
-  PageIntro,
   RelatedLinks,
   Section,
   Sources,
@@ -14,7 +13,11 @@ import {
 } from "@/components/content";
 import MonthlyBars from "@/components/MonthlyBars";
 import PluginSolarBox from "@/components/PluginSolarBox";
-import { SolarQuotesCta } from "@/components/affiliate";
+import { AffiliateDisclosure, SolarQuotesCta } from "@/components/affiliate";
+import { ChargerPick } from "@/components/chargers";
+import { BigStat, MythCallout } from "@/components/ui";
+import { lite } from "@/data/myths";
+import { typicalPlan } from "@/lib/planner-data";
 import {
   DATA_UPDATED,
   NATIONAL,
@@ -93,9 +96,7 @@ export default async function StatePage({ params }: Props) {
   const bat = batteryFigures(s);
   const typical = referenceEv("typical");
   const rate = s.electricity.residentialCentsPerKwhYtd;
-  const rateRank = rankBy((x) => x.electricity.residentialCentsPerKwhYtd, s);
   const solarRank = rankBy((x) => x.solar.kwhPerKwYear, s);
-  const vsNational = pct(rate, NATIONAL.residentialCentsPerKwhYtd);
   const yoy = pct(rate, s.electricity.residentialCentsPerKwhYtdPrevYear);
   const nationalEvPer100 = evCostPer100(nationalRateUsd(), typical.kwhPer100mi);
   const customersPerPort = s.usage.customers / Math.max(1, s.charging.ports);
@@ -103,6 +104,10 @@ export default async function StatePage({ params }: Props) {
     s.gasoline.level === "state" ? `${s.name} average` : `${s.gasoline.area} regional average`;
   const n = STATES.length;
   const links = stateSources(s);
+  const plan = typicalPlan(s.abbr);
+  const evRow = plan.all.find((x) => x.id === "ev");
+  const solarRow = plan.all.find((x) => x.id === "solar");
+  const eGallon = (typical.kwhPer100mi / 100) * (rate / 100) * NATIONAL.gasMpg;
 
   const faqs = [
     {
@@ -155,21 +160,33 @@ export default async function StatePage({ params }: Props) {
     <article className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <JsonLd data={datasetSchema} />
       <Breadcrumbs items={[{ name: "States", path: "/states" }, { name: s.name, path }]} />
-      <PageIntro
-        eyebrow={`${s.name} energy data`}
-        title={`Electricity, EV charging and solar in ${s.name}`}
-        lede={
-          <>
-            {s.name} homes paid an average of <strong>{cents(rate)} per kWh</strong> for electricity in{" "}
-            {ytdWindow()} — {compareWord(vsNational)} the US average of{" "}
-            {cents(NATIONAL.residentialCentsPerKwhYtd)} and the {ordinal(rateRank)} highest of {n} states
-            and DC. Here is what that means for charging an EV, sizing solar panels and backing up a
-            home with a battery.
-          </>
-        }
-        updated={DATA_UPDATED}
-      />
+      <header className="mb-8">
+        <p className="text-sm font-bold uppercase tracking-wide text-spark-amber mb-3">Going electric in {s.name}</p>
+        <h1 className="text-3xl sm:text-5xl font-extrabold leading-tight text-ink mb-4">{`Electricity, EV charging and solar in ${s.name}`}</h1>
+        <p className="text-lg sm:text-xl text-stone-700 leading-relaxed max-w-3xl">
+          A typical {s.name} household could keep about{" "}
+          <strong className="text-leaf">{usd(Math.round(plan.total / 10) * 10)} a year</strong> by going electric. Charging a car at
+          home here is like paying <strong>{usd(eGallon, 2)} a gallon</strong> instead of {usd(s.gasoline.usdPerGallon, 2)}
+          {solarRow?.yearly ? <>, and solar panels sized for an average home could cover up to {usd(solarRow.yearly / 12)} of the monthly bill</> : null}.
+        </p>
+        <div className="flex flex-wrap gap-3 mt-6">
+          <Link href={`/go-electric?state=${s.abbr}`} className="btn btn-primary">See what you&apos;d save</Link>
+          <a href="#solar" className="btn btn-outline">Solar in {s.name}</a>
+        </div>
+        <p className="text-sm text-muted mt-4">
+          Data updated <time dateTime={DATA_UPDATED}>{formatDate(DATA_UPDATED)}</time> ·{" "}
+          <Link href="/methodology" className="underline underline-offset-2 hover:text-spark-orange">How we calculate this</Link>
+        </p>
+      </header>
 
+      <section aria-label={`Going electric in ${s.name} at a glance`} className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-10">
+        <BigStat tone="leaf" value={`${usd(Math.round(plan.total / 10) * 10)}`} label="Saved a year, typical home" note="EV, solar and electric heat, hot water and cooking" />
+        <BigStat value={`${usd(eGallon, 2)}/gal`} label="What charging feels like" note={`vs ${usd(s.gasoline.usdPerGallon, 2)} for gas (${gasLabel})`} />
+        <BigStat tone="leaf" value={evRow?.yearly ? `${usd(evRow.yearly)}/yr` : "—"} label="EV vs gas car" note="Fuel plus maintenance, 12,000 miles" />
+        <BigStat value={`${usd(s.usage.avgMonthlyBillUsd)}/mo`} label="Average electric bill" note={`${s.name}, 2024 (EIA)`} />
+      </section>
+
+      <h2 className="text-lg font-bold text-ink mb-3">The numbers behind it</h2>
       <StatGrid
         stats={[
           {
@@ -262,6 +279,11 @@ export default async function StatePage({ params }: Props) {
           </Link>
           .
         </p>
+        <div className="mt-6 grid gap-3">
+          <MythCallout m={lite("ev-battery-life")} />
+        </div>
+        <AffiliateDisclosure className="mt-6 mb-4" />
+        <ChargerPick compact />
       </Section>
 
       <Section title={`Public charging in ${s.name}`} id="public-charging">
@@ -316,6 +338,7 @@ export default async function StatePage({ params }: Props) {
             values={s.solar.monthlyKwhPerKw}
           />
         </div>
+        <MythCallout m={lite("solar-cloudy")} className="mt-8" />
         <div className="grid lg:grid-cols-2 gap-5 mt-8">
           <PluginSolarBox s={s} />
           <SolarQuotesCta context={`in ${s.name}`} />

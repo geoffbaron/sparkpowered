@@ -43,6 +43,18 @@ const DURATION_DAYS: Record<Duration, number> = {
   days3: 3,
 };
 
+const COVERAGE_PHRASE: Record<string, string> = {
+  essentials: "the fridge, lights and Wi-Fi",
+  major: "your essentials plus heating or AC",
+  whole: "your whole home",
+};
+const DURATION_PHRASE: Record<string, string> = {
+  hours4: "4 hours",
+  hours12: "a whole night",
+  day1: "a full day",
+  days3: "3 days or more",
+};
+
 function calcNeededKwh(coverage: Coverage, duration: Duration): number {
   const daily = DAILY_KWH[coverage];
   const days = DURATION_DAYS[duration];
@@ -68,9 +80,9 @@ const STEPS = [
     question: "What do you want to keep running?",
     subtitle: "More coverage = more capacity needed.",
     options: [
-      { value: "essentials", label: "Essentials only",    icon: "lightbulb",   desc: "Lights, fridge, Wi-Fi, phone charging (~5 kWh/day)" },
-      { value: "major",      label: "Major appliances",   icon: "home",        desc: "Essentials + HVAC and TV (~15 kWh/day)" },
-      { value: "whole",      label: "Whole home",         icon: "cottage",     desc: "Everything running as normal (~30 kWh/day)" },
+      { value: "essentials", label: "Essentials only",    icon: "lightbulb",   desc: "Lights, fridge, Wi-Fi and phone charging" },
+      { value: "major",      label: "Major appliances",   icon: "home",        desc: "Essentials plus heating or AC and the TV" },
+      { value: "whole",      label: "Whole home",         icon: "cottage",     desc: "Everything running as normal" },
     ],
   },
   {
@@ -167,15 +179,12 @@ export default function BatteryQuiz() {
             <div className="inline-flex items-center gap-2 bg-white/80 border border-black/8 rounded-full px-4 py-1.5 text-sm font-medium text-muted mb-4">
               <span aria-hidden="true" translate="no" className="material-symbols-outlined" style={{ fontSize: 16, verticalAlign: "middle", marginRight: 4 }}>battery_charging_full</span>Your Battery Recommendation
             </div>
-            <h1 className="text-3xl sm:text-4xl font-bold mb-3">
-              You need about{" "}
-              <span className="bg-gradient-to-r from-spark-yellow to-spark-orange bg-clip-text text-transparent">
-                {needed} kWh
-              </span>{" "}
-              of storage
+            <h1 className="text-3xl sm:text-4xl font-extrabold text-ink mb-3">
+              Keep {COVERAGE_PHRASE[quiz.coverage ?? "essentials"]} running for{" "}
+              <span className="text-spark-orange">{DURATION_PHRASE[quiz.duration ?? "hours12"]}</span>
             </h1>
             <p className="text-muted text-lg">
-              Here are {matches.length} real systems that reach that size, cheapest first.
+              That takes about {needed} kWh of storage. Here are {matches.length} real systems that get you there, cheapest first.
             </p>
           </div>
         </div>

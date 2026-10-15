@@ -1,6 +1,8 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import Link from "next/link";
+import { AffiliateDisclosure } from "@/components/affiliate";
+import { ChargerPick } from "@/components/chargers";
 import { getDailyEVs } from "@/lib/llm-content";
 import EVQuiz from "@/components/EVQuiz";
 import { Breadcrumbs, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
@@ -109,12 +111,20 @@ export default function CalculatorPage() {
                 2026 incentives
               </Link>
               . Answers to common worries about battery life, cold weather and resale are on our{" "}
-              <Link href="/objections" className="underline text-spark-orange">
-                EV objections page
+              <Link href="/myths" className="underline text-spark-orange">
+                myths page
               </Link>
               .
             </p>
           </div>
+        </Section>
+        <Section title="Already decided? Charge at home" id="home-charger">
+          <p className="text-stone-700 leading-relaxed max-w-3xl mb-4">
+            Home charging is where an EV saves you money, and a 240-volt charger means you wake up full every day.{" "}
+            <Link href="/ev-charging-cost#home-charger" className="underline text-spark-orange">What a home charger costs and saves</Link>.
+          </p>
+          <AffiliateDisclosure className="mb-4" />
+          <ChargerPick compact />
         </Section>
         <Faq items={faqs} path={PATH} />
         <Disclaimer />
@@ -128,7 +138,7 @@ export default function CalculatorPage() {
         <RelatedLinks
           links={[
             { href: "/ev-charging-cost", label: "EV charging cost calculator", desc: "What your chosen EV costs to run in your state" },
-            { href: "/objections", label: "EV myths & objections", desc: "Straight answers with sources" },
+            { href: "/myths", label: "Myths, answered", desc: "Straight answers with sources" },
           ]}
         />
       </div>

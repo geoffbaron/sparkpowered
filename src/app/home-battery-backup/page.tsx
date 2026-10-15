@@ -1,11 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AffiliateDisclosure, PartnerLink } from "@/components/affiliate";
-import { Breadcrumbs, Callout, Disclaimer, Faq, PageIntro, RelatedLinks, Section, Sources } from "@/components/content";
+import { Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
+import { HubHero, MythCallout, OurPick, PhotoCredit } from "@/components/ui";
+import { lite } from "@/data/myths";
+import { lifeSummary } from "@/lib/everyday";
 import { PriceFootnote, ProductListJsonLd, SpecTable } from "@/components/products";
 import { INSTALLED_BATTERY_COST, PRODUCTS, type Product } from "@/data/products";
 import { NATIONAL, POWERWALL_3_KWH, SOURCES, formatDate, num } from "@/lib/energy";
-import { fullName, installedPerKwh, kwh, money, watts } from "@/lib/products";
+import { fullName, installedPerKwh, kwh, maxWh, money, productById, watts } from "@/lib/products";
 import { pageMetadata } from "@/lib/seo";
 
 const PATH = "/home-battery-backup";
@@ -62,6 +65,14 @@ export default function HomeBatteryBackupPage() {
   const usDaily = NATIONAL.avgMonthlyKwh / (365 / 12);
   const cheapestPortable = portable[0];
   const priced = [...plugInHome, ...portable];
+  const essentials = productById("ecoflow-delta-3-max");
+  const wholeHome = productById("anker-solix-f3800-plus");
+  const installedPick = productById("tesla-powerwall-3");
+  const tiers = [
+    { label: "2 kWh power station", life: lifeSummary(2048), note: `Like the ${fullName(essentials)}. No install, about ${money(essentials.priceUsd!)}.` },
+    { label: `${kwh(wholeHome.capacityWh)} home system`, life: lifeSummary(wholeHome.capacityWh), note: "Plug-in system plus an electrician for home circuits." },
+    { label: `${POWERWALL_3_KWH} kWh installed battery`, life: lifeSummary(POWERWALL_3_KWH * 1000 / 0.85), note: "Usable capacity of one Powerwall 3; automatic, whole-home." },
+  ];
 
   const faqs = [
     {
@@ -87,15 +98,81 @@ export default function HomeBatteryBackupPage() {
   ];
 
   return (
-    <article className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <article>
       <ProductListJsonLd products={[...installed, ...plugInHome]} path={PATH} name="Home battery backup systems" />
-      <Breadcrumbs items={[{ name: "Home battery backup", path: PATH }]} />
-      <PageIntro
-        eyebrow="Buying guide"
-        title="Home battery backup: whole-home vs portable"
-        lede="Three ways to keep the power on in an outage, from a $1,000 power station for the fridge to a professionally installed battery for the whole house, with real specs and 2026 prices."
-      />
+      <HubHero
+        image="home-battery"
+        crumbs={[{ name: "Home battery backup", path: PATH }]}
+        eyebrow="Home battery backup"
+        title={<>Storm outside. <span className="text-amber-300">Lights on inside.</span></>}
+        sub={
+          <>
+            A home battery switches on by itself when the grid goes down. The fridge stays cold, the Wi-Fi stays up and the
+            house stays quiet: no generator to start, no fuel to store, no fumes. Start with a $900 battery for the
+            essentials or go whole-home.
+          </>
+        }
+      >
+        <a href="#picks" className="btn btn-primary">See our picks</a>
+        <Link href="/battery-calculator" className="btn btn-light">Find the right size</Link>
+      </HubHero>
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <AffiliateDisclosure className="mb-8" />
+
+      <section aria-labelledby="keeps-heading">
+        <h2 id="keeps-heading" className="text-2xl font-extrabold text-ink mb-4">What each size keeps running</h2>
+        <div className="grid sm:grid-cols-3 gap-3">
+          {tiers.map((t) => (
+            <div key={t.label} className="rounded-2xl bg-white border border-black/8 p-5">
+              <p className="text-xs font-bold uppercase tracking-wide text-spark-amber">{t.label}</p>
+              <p className="text-3xl font-extrabold text-leaf mt-1">{t.life.essentials}</p>
+              <p className="font-semibold text-ink">of fridge, Wi-Fi, lights and phones</p>
+              <p className="text-sm text-muted mt-2">{t.note}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section id="picks" className="mt-10 grid gap-4 scroll-mt-24" aria-label="Our picks">
+        <OurPick
+          label="Our pick to keep the essentials on"
+          name={fullName(essentials)}
+          why="Plug the fridge, router and a lamp into it and leave them there. When the power cuts out it takes over in about a hundredth of a second. No electrician needed."
+          life={[`Fridge alone: ${lifeSummary(essentials.capacityWh).fridge}`, `CPAP: ${lifeSummary(essentials.capacityWh).cpap}`]}
+          priceUsd={essentials.priceUsd}
+          brand={essentials.brand}
+          productId={essentials.id}
+          productUrl={essentials.url}
+          category="battery"
+        />
+        <OurPick
+          label="Our pick for whole-home backup you can buy online"
+          name={fullName(wholeHome)}
+          why="240-volt power for a well pump or home circuits, room to grow into days of backup, and lots of solar input. An electrician connects it through a transfer switch or smart panel."
+          life={[`Fridge, Wi-Fi and lights: ${lifeSummary(wholeHome.capacityWh).essentials}`, `Expands to ${lifeSummary(maxWh(wholeHome)).essentials}`]}
+          priceUsd={wholeHome.priceUsd}
+          brand={wholeHome.brand}
+          productId={wholeHome.id}
+          productUrl={wholeHome.url}
+          category="battery"
+        />
+        <OurPick
+          label="Our pick for an installed battery"
+          name={fullName(installedPick)}
+          icon="home"
+          why="One box that handles both solar and storage, switches over automatically, and is covered for 10 years. Sold through Tesla and certified installers."
+          life={[`Whole-home: ${Math.round((POWERWALL_3_KWH / usDaily) * 24)} hours of average use`, `Essentials: ${lifeSummary(installedPick.capacityWh).essentials}`]}
+          priceNote={`About ${money(Math.round((installedPerKwh(installedPick) * installedPick.capacityWh) / 1000 / 100) * 100)} installed (EnergySage average)`}
+          brand={installedPick.brand}
+          productId={installedPick.id}
+          productUrl={installedPick.url}
+          category="battery"
+          cta="See Powerwall"
+        />
+        <p className="text-xs text-muted">*Prices on the makers&apos; US sites when we checked on {formatDate(essentials.retrieved)}; prices change often.</p>
+      </section>
+
+      <MythCallout m={lite("battery-without-solar")} className="mt-8" />
 
       <Section title="The three options at a glance" id="options">
         <div className="overflow-x-auto rounded-xl border border-black/8 bg-surface">
@@ -248,6 +325,8 @@ export default function HomeBatteryBackupPage() {
           { href: "/plug-in-solar", label: "Plug-in solar", desc: "Small solar that plugs into an outlet" },
         ]}
       />
+      <PhotoCredit name="home-battery" />
+      </div>
     </article>
   );
 }

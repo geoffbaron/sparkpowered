@@ -61,11 +61,11 @@ export default function OpengraphImage() {
               maxWidth: 940,
             }}
           >
-            EVs, solar and home batteries — explained
+            Go electric. Keep more of your money.
           </div>
           <div style={{ fontSize: 34, color: "#475569", maxWidth: 900 }}>
-            Hourly clean-energy news, an EV matcher, a battery sizer, and honest
-            answers to the objections.
+            What an EV, solar, a battery and a heat pump save in your state,
+            from government data.
           </div>
         </div>
 

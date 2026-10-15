@@ -11,6 +11,9 @@
   --surface: #ffffff;
   --surface-light: #fef9ee;
   --muted: #6b645f; /* 5:1 contrast on the page background */
+  --ink: #0b1f33; /* deep navy for bold sections */
+  --leaf: #15803d; /* green-700: 5:1 on white, used for savings */
+  --sky-soft: #e0f2fe;
 }
 
 @theme inline {
@@ -24,6 +27,8 @@
   --color-surface: var(--surface);
   --color-surface-light: var(--surface-light);
   --color-muted: var(--muted);
+  --color-ink: var(--ink);
+  --color-leaf: var(--leaf);
   --font-sans: var(--font-geist-sans);
 }
 
@@ -131,4 +136,45 @@ body {
 .card-glow:hover {
   box-shadow: 0 12px 40px rgba(0,0,0,0.10), 0 0 0 2px rgba(245,158,11,0.25);
   transform: translateY(-2px);
+}
+
+@layer components {
+/* Buttons. Solid colors (not gradients) so white text always passes AA contrast. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  padding: 0.8rem 1.4rem;
+  font-size: 1rem;
+  line-height: 1.2;
+  transition: background-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+  min-height: 44px;
+}
+.btn:hover { transform: translateY(-1px); }
+.btn:focus-visible { outline: 3px solid #fbbf24; outline-offset: 2px; }
+.btn-primary { background: #c2410c; color: #fff; box-shadow: 0 6px 20px -8px rgba(194, 65, 12, 0.7); }
+.btn-primary:hover { background: #9a3412; }
+.btn-light { background: #fff; color: var(--ink); }
+.btn-light:hover { background: #fef3c7; }
+.btn-outline { border: 2px solid currentColor; color: var(--ink); background: transparent; }
+.btn-outline:hover { background: rgba(0, 0, 0, 0.04); }
+.btn-green { background: var(--leaf); color: #fff; }
+.btn-green:hover { background: #166534; }
+.btn-sm { padding: 0.55rem 1rem; font-size: 0.875rem; min-height: 40px; }
+
+}
+
+.hero-shade {
+  background: linear-gradient(90deg, rgba(11, 31, 51, 0.92) 0%, rgba(11, 31, 51, 0.78) 45%, rgba(11, 31, 51, 0.25) 100%);
+}
+@media (max-width: 767px) {
+  .hero-shade { background: linear-gradient(180deg, rgba(11, 31, 51, 0.65) 0%, rgba(11, 31, 51, 0.92) 55%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn:hover { transform: none; }
+  .card-glow:hover { transform: none; }
 }

@@ -8,6 +8,8 @@ import type { CalcState } from "@/lib/calculator-data";
 interface Props {
   states: CalcState[];
   us: { centsPerKwh: number };
+  /** National average installed price per watt (EnergySage), used until the reader enters a quote. */
+  avgPerWatt?: number;
 }
 
 const fmt = (n: number, d = 0) =>
@@ -19,12 +21,12 @@ export function SolarCalculatorFromParams(props: Props) {
   return <SolarCalculator key={initial} {...props} initialState={initial} />;
 }
 
-export default function SolarCalculator({ states, initialState = "CA" }: Props & { initialState?: string }) {
+export default function SolarCalculator({ states, initialState = "CA", avgPerWatt = 2.6 }: Props & { initialState?: string }) {
   const start = states.find((s) => s.abbr === initialState) ?? states.find((s) => s.abbr === "CA")!;
   const [abbr, setAbbr] = useState(start.abbr);
-  const [mode, setMode] = useState<"kwh" | "bill">("kwh");
+  const [mode, setMode] = useState<"kwh" | "bill">("bill");
   const [kwh, setKwh] = useState(Math.round(start.avgMonthlyKwh));
-  const [bill, setBill] = useState(150);
+  const [bill, setBill] = useState(Math.round((start.avgMonthlyKwh * start.centsPerKwh) / 100));
   const [offset, setOffset] = useState(100);
   const [panelW, setPanelW] = useState(400);
   const [pricePerW, setPricePerW] = useState("");
@@ -37,13 +39,17 @@ export default function SolarCalculator({ states, initialState = "CA" }: Props &
   const panels = Math.ceil((systemKw * 1000) / Math.max(100, panelW));
   const annualValue = annualKwh * rate;
   const price = parseFloat(pricePerW);
-  const cost = Number.isFinite(price) && price > 0 ? price * systemKw * 1000 : null;
+  const quoted = Number.isFinite(price) && price > 0;
+  const cost = (quoted ? price : avgPerWatt) * systemKw * 1000;
   const payback = cost && annualValue > 0 ? cost / annualValue : null;
 
   function changeState(next: string) {
     setAbbr(next);
     const s = states.find((x) => x.abbr === next);
-    if (s) setKwh(Math.round(s.avgMonthlyKwh));
+    if (s) {
+      setKwh(Math.round(s.avgMonthlyKwh));
+      setBill(Math.round((s.avgMonthlyKwh * s.centsPerKwh) / 100));
+    }
   }
 
   const field = "w-full rounded-lg border border-black/15 bg-white px-3 py-2.5 text-base focus:outline-none focus:ring-2 focus:ring-amber-400";
@@ -62,7 +68,7 @@ export default function SolarCalculator({ states, initialState = "CA" }: Props &
           </select>
         </label>
         <fieldset>
-          <legend className="block text-sm font-semibold mb-1.5">Your usage</legend>
+          <legend className="block text-sm font-semibold mb-1.5">Your monthly electric bill</legend>
           <div className="flex gap-2">
             <select
               aria-label="Usage type"
@@ -70,8 +76,8 @@ export default function SolarCalculator({ states, initialState = "CA" }: Props &
               value={mode}
               onChange={(e) => setMode(e.target.value as "kwh" | "bill")}
             >
-              <option value="kwh">kWh / month</option>
               <option value="bill">$ bill / month</option>
+              <option value="kwh">kWh / month</option>
             </select>
             {mode === "kwh" ? (
               <input
@@ -97,7 +103,7 @@ export default function SolarCalculator({ states, initialState = "CA" }: Props &
           </div>
         </fieldset>
         <label className="block">
-          <span className="block text-sm font-semibold mb-1.5">Share of use to cover: {offset}%</span>
+          <span className="block text-sm font-semibold mb-1.5">How much of your bill to cover: {offset}%</span>
           <input
             className="w-full accent-amber-500"
             type="range"
@@ -109,7 +115,46 @@ export default function SolarCalculator({ states, initialState = "CA" }: Props &
           />
         </label>
         <label className="block">
-          <span className="block text-sm font-semibold mb-1.5">Panel size (watts)</span>
+          <span className="block text-sm font-semibold mb-1.5">
+            Got an installer quote? <span className="font-normal text-muted">(optional, $ per watt)</span>
+          </span>
+          <input
+            className={field}
+            type="number"
+            inputMode="decimal"
+            min={0}
+            step={0.05}
+            placeholder={`${avgPerWatt.toFixed(2)} (US average)`}
+            value={pricePerW}
+            onChange={(e) => setPricePerW(e.target.value)}
+          />
+        </label>
+      </div>
+
+      <div className="mt-7 rounded-2xl bg-ink text-white p-5 sm:p-6" aria-live="polite">
+        <p className="text-sm text-amber-300 font-semibold">Solar in {st.name}</p>
+        <p className="text-4xl sm:text-5xl font-extrabold mt-1 tabular-nums">
+          Up to {fmt(annualValue / 12)}<span className="text-2xl font-bold text-white/80"> a month</span>
+        </p>
+        <p className="text-white/85 mt-2">
+          off your bill ({fmt(annualValue)} a year).{" "}
+          {payback ? (
+            <>
+              Pays for itself in about <strong className="text-amber-300">{Math.round(payback)} years</strong>, then it&apos;s
+              savings for the rest of its 25+ year life.
+            </>
+          ) : null}
+        </p>
+        <p className="text-sm text-white/75 mt-3">
+          About {panels} panels ({systemKw.toFixed(1)} kW) for about {fmt(cost)} before incentives
+          {quoted ? " at your quoted price" : ` at the US average of $${avgPerWatt.toFixed(2)} a watt`}.
+        </p>
+      </div>
+
+      <details className="mt-4 text-sm">
+        <summary className="cursor-pointer font-medium text-stone-700">Panel size and output details</summary>
+        <label className="block mt-3 max-w-xs">
+          <span className="block text-sm mb-1.5">Panel size (watts)</span>
           <input
             className={field}
             type="number"
@@ -119,56 +164,13 @@ export default function SolarCalculator({ states, initialState = "CA" }: Props &
             onChange={(e) => setPanelW(Number(e.target.value) || 400)}
           />
         </label>
-        <label className="block sm:col-span-2">
-          <span className="block text-sm font-semibold mb-1.5">
-            Quoted price per watt, $ <span className="font-normal text-muted">(optional, from an installer quote)</span>
-          </span>
-          <input
-            className={`${field} sm:max-w-xs`}
-            type="number"
-            inputMode="decimal"
-            min={0}
-            step={0.05}
-            placeholder="e.g. 3.00"
-            value={pricePerW}
-            onChange={(e) => setPricePerW(e.target.value)}
-          />
-        </label>
-      </div>
-
-      <div className="mt-7 grid sm:grid-cols-3 gap-3" aria-live="polite">
-        <div className="rounded-xl bg-amber-50 border border-amber-200 p-4">
-          <div className="text-xs font-medium text-amber-900">System size</div>
-          <div className="text-3xl font-extrabold mt-1">{systemKw.toFixed(1)} kW</div>
-          <div className="text-xs text-stone-600 mt-1">
-            about {panels} panels of {panelW} W
-          </div>
-        </div>
-        <div className="rounded-xl bg-stone-50 border border-black/10 p-4">
-          <div className="text-xs font-medium text-stone-700">Expected output</div>
-          <div className="text-3xl font-extrabold mt-1">{Math.round(annualKwh).toLocaleString()} kWh</div>
-          <div className="text-xs text-stone-600 mt-1">
-            per year at {Math.round(st.kwhPerKwYear).toLocaleString()} kWh per kW in {st.name}
-          </div>
-        </div>
-        <div className="rounded-xl bg-green-50 border border-green-200 p-4">
-          <div className="text-xs font-medium text-green-900">
-            {payback ? "Simple payback (best case)" : "Value at your average rate"}
-          </div>
-          <div className="text-3xl font-extrabold mt-1">
-            {payback ? `${payback.toFixed(1)} yrs` : `${fmt(annualValue)}/yr`}
-          </div>
-          <div className="text-xs text-stone-600 mt-1">
-            {payback && cost
-              ? `${fmt(cost)} system, ${fmt(annualValue)}/yr at ${st.centsPerKwh.toFixed(1)}¢`
-              : `if every kWh offsets one bought at ${st.centsPerKwh.toFixed(1)}¢`}
-          </div>
-        </div>
-      </div>
+        <p className="mt-2 text-stone-600">
+          Makes about {Math.round(annualKwh).toLocaleString()} kWh a year, at {Math.round(st.kwhPerKwYear).toLocaleString()} kWh per kW of panels in {st.name} (PVWatts).
+        </p>
+      </details>
       <div className="mt-5 rounded-xl border border-sky-200 bg-sky-50/60 p-4 text-sm text-stone-700">
-        <strong>Plug-in solar in {st.name}:</strong> a small 800 W kit that plugs into an outlet would make about{" "}
-        {Math.round(st.pluginKwhPerKwYear * 0.8).toLocaleString()} kWh a year on a south-facing stand, worth up to{" "}
-        {fmt(st.pluginKwhPerKwYear * 0.8 * rate)} a year if you use it all at home.{" "}
+        <strong>Renting, or not ready for a full system?</strong> A small plug-in solar kit that plugs into an outlet could take up
+        to {fmt(st.pluginKwhPerKwYear * 0.8 * rate)} a year off your bill in {st.name}, if you use what it makes.{" "}
         {st.pluginLaw === "law"
           ? `${st.name} has a plug-in solar law (${st.pluginBill}).`
           : st.pluginLaw === "pending"
@@ -181,8 +183,9 @@ export default function SolarCalculator({ states, initialState = "CA" }: Props &
       <p className="mt-4 text-xs text-muted">
         {mode === "bill" &&
           `A $${bill} bill at ${st.centsPerKwh.toFixed(1)}¢ is treated as ${Math.round(monthlyKwh)} kWh; fixed monthly fees make the real figure somewhat lower. `}
-        Output assumes south-facing panels at a 20° tilt with no shading (PVWatts). Payback assumes full
-        retail-rate credit for every kWh and no rebates; it ignores financing, maintenance and rate changes.
+        Output assumes south-facing panels at a 20° tilt with no shading (PVWatts). Savings and payback assume your
+        utility credits all the power the panels make at the full retail price, with no rebates; they ignore financing,
+        maintenance and rate changes. Where exports earn less, savings are lower.
       </p>
     </div>
   );

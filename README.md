@@ -26,6 +26,11 @@ python3 scripts/solar_model.py        # PVWatts v8 model on NASA POWER weather, 
 python3 scripts/build_state_data.py   # EIA prices/usage/gasoline, AFDC chargers, fueleconomy.gov
 ```
 
+Natural gas prices and household heating, hot water and cooking use by state (`src/data/home-energy.json`, used by the
+Go Electric planner at `/go-electric`) come from `python3 scripts/build_home_energy.py` (EIA natural gas prices and the
+2020 RECS state tables). Planner assumptions and their sources are in `src/lib/go-electric.ts`; myths and their sources in
+`src/data/myths.ts`; home EV chargers in `src/data/chargers.ts`; photos and credits in `src/data/images.ts`.
+
 Plug-in solar output by state (`src/data/plugin-solar-model.json`) comes from
 `python3 scripts/plugin_solar_model.py` (same weather cache).
 

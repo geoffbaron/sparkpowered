@@ -40,13 +40,30 @@ await page.goto(base + "/solar-calculator?state=AZ", { waitUntil: "networkidle" 
 const solar = await page.locator("main [aria-live=polite]").innerText();
 ok(/kW/.test(solar) && /panels/.test(solar), "Solar calculator renders results for AZ: " + solar.replace(/\s+/g, " ").slice(0, 80));
 
+// Go Electric planner
+await page.goto(base + "/go-electric?state=TX", { waitUntil: "networkidle" });
+ok((await page.locator("#ge-state").inputValue()) === "TX", "Go Electric reads ?state=TX");
+const before = await page.locator("#ge-total").innerText();
+ok(/Save about \$[\d,]+ a year/.test(before), "Go Electric shows a yearly total: " + before);
+await page.locator("#ge-car").selectOption("none");
+await page.waitForTimeout(300);
+const afterCar = await page.locator("#ge-total").innerText();
+ok(afterCar !== before, "Changing the car changes the total: " + afterCar);
+ok((await page.locator("main a[data-partner]").first().getAttribute("rel")) === "sponsored nofollow noopener", "Go Electric partner links are sponsored");
+ok(/We may earn a commission/.test(await page.locator("main").innerText()), "Go Electric shows the affiliate disclosure");
+
+// Myths page and the old URL
+await page.goto(base + "/objections", { waitUntil: "networkidle" });
+ok(page.url().endsWith("/myths"), "/objections redirects to /myths");
+ok((await page.locator("main article").count()) >= 13, "Myths page lists the myths");
+
 // News filters
 await page.goto(base + "/news", { waitUntil: "networkidle" });
-const before = await page.locator("main li").count();
+const newsBefore = await page.locator("main li").count();
 await page.getByRole("button", { name: /Hide Tesla/ }).tap();
 await page.waitForTimeout(300);
-const after = await page.locator("main li").count();
-ok(before > 5 && after <= before, `News list ${before} items, ${after} with Tesla hidden`);
+const newsAfter = await page.locator("main li").count();
+ok(newsBefore > 5 && newsAfter <= newsBefore, `News list ${newsBefore} items, ${newsAfter} with Tesla hidden`);
 ok((await page.locator("main img").count()) === 0, "News page republishes no images");
 
 // State page link from calculator

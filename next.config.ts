@@ -3,6 +3,11 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   cacheComponents: true,
   poweredByHeader: false,
+  images: { formats: ["image/avif", "image/webp"], qualities: [55, 65, 75] },
+
+  async redirects() {
+    return [{ source: "/objections", destination: "/myths", permanent: true }];
+  },
 
   async headers() {
     return [

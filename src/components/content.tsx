@@ -13,7 +13,7 @@ export interface Crumb {
   path: string;
 }
 
-export function Breadcrumbs({ items }: { items: Crumb[] }) {
+export function Breadcrumbs({ items, tone = "light" }: { items: Crumb[]; tone?: "light" | "dark" }) {
   const all = [{ name: "Home", path: "/" }, ...items];
   return (
     <>
@@ -29,17 +29,17 @@ export function Breadcrumbs({ items }: { items: Crumb[] }) {
           })),
         }}
       />
-      <nav aria-label="Breadcrumb" className="text-sm text-muted mb-6">
+      <nav aria-label="Breadcrumb" className={`text-sm mb-6 ${tone === "dark" ? "text-white/80" : "text-muted"}`}>
         <ol className="flex flex-wrap items-center gap-1.5">
           {all.map((c, i) => (
             <li key={c.path} className="flex items-center gap-1.5">
               {i > 0 && <span aria-hidden="true">/</span>}
               {i === all.length - 1 ? (
-                <span aria-current="page" className="text-foreground">
+                <span aria-current="page" className={tone === "dark" ? "text-white" : "text-foreground"}>
                   {c.name}
                 </span>
               ) : (
-                <Link href={c.path} className="hover:text-spark-orange underline-offset-2 hover:underline">
+                <Link href={c.path} className={`underline-offset-2 hover:underline ${tone === "dark" ? "hover:text-amber-300" : "hover:text-spark-orange"}`}>
                   {c.name}
                 </Link>
               )}

@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs, PageIntro, Section, Sources } from "@/components/content";
+import homeEnergy from "@/data/home-energy.json";
+import { ASSUMPTIONS } from "@/lib/go-electric";
+import { FRIDGE_AVG_W, FRIDGE_KWH_YEAR, LOADS, USABLE_FRACTION } from "@/lib/everyday";
 import {
   DATA_UPDATED,
   MONTHLY_MILES,
@@ -130,6 +133,37 @@ export default function MethodologyPage() {
             website, with the date reviewed. We list pending bills only when we could confirm them there.
           </li>
         </ul>
+      </Section>
+
+      <Section title="The Go Electric planner">
+        <div className="text-stone-700 leading-relaxed space-y-3 max-w-3xl">
+          <p>
+            The planner at <Link href="/go-electric" className="underline">/go-electric</Link> compares the same driving, heat,
+            hot water and cooking done two ways, so only price and efficiency change. Prices are each state&apos;s EIA averages
+            (electricity this year so far, the latest weekly gasoline price, and the {homeEnergy.sources.gasPrice.period}{" "}
+            residential natural gas price). How much gas the average gas-heated home in each state uses for heating, water
+            heating and cooking comes from EIA&apos;s 2020 Residential Energy Consumption Survey state tables, as does the
+            electricity used by electric water heaters and fridges.
+          </p>
+          <ul className="list-disc pl-5 space-y-1">
+            {Object.values(ASSUMPTIONS).filter((a) => "text" in a).map((a) => (
+              <li key={(a as { text: string }).text}>
+                {(a as { text: string }).text}.{" "}
+                {"source" in a && <a href={(a as { source: { url: string } }).source.url} className="underline" rel="noopener">Source</a>}
+              </li>
+            ))}
+            <li>Gas cars are EPA combined ratings from fueleconomy.gov (2025 Toyota Corolla 35 mpg, 2025 Toyota RAV4 30 mpg, 2025 Ford F-150 2.7L 21 mpg) or the 25.5 mpg new-vehicle average.</li>
+            <li>Rooftop solar is sized to cover the bill you enter at your state&apos;s PVWatts output and priced at EnergySage&apos;s national average per watt; the saving assumes full retail credit, so it is an upper bound.</li>
+          </ul>
+          <p>
+            <strong>Battery sizes in everyday terms.</strong> We count {Math.round(USABLE_FRACTION * 100)}% of a power station&apos;s
+            rated capacity as usable after inverter losses. A fridge averages {Math.round(FRIDGE_AVG_W)} W around the clock
+            (the {FRIDGE_KWH_YEAR} kWh a year the average US home&apos;s fridges use, EIA RECS 2020); &quot;essentials&quot; adds a
+            {` ${LOADS.routerW}`} W Wi-Fi router, four {LOADS.ledW} W LED bulbs for five hours and two phone charges of{" "}
+            {LOADS.phoneChargeWh} Wh. A CPAP is {LOADS.cpapW} W for {LOADS.cpapNightHours} hours, ResMed&apos;s figure with a heated
+            humidifier. Your own appliances may use more or less.
+          </p>
+        </div>
       </Section>
 
       <Section title="What these figures leave out">
