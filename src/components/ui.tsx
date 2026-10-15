@@ -214,7 +214,7 @@ export function HubHero({
 }) {
   return (
     <section className="relative isolate overflow-hidden bg-ink text-white">
-      <Photo name={image} priority className="absolute inset-0 -z-10 h-full w-full object-cover" sizes="100vw" />
+      <Photo name={image} priority quality={55} className="absolute inset-0 -z-10 h-full w-full object-cover" sizes="100vw" />
       <div className="absolute inset-0 -z-10 hero-shade" />
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12 sm:pb-16">
         {crumbs && <Breadcrumbs items={crumbs} tone="dark" />}

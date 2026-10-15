@@ -81,7 +81,7 @@ export default function HomePage() {
       />
 
       <section className="relative isolate overflow-hidden bg-ink text-white">
-        <Photo name="hero" priority className="absolute inset-0 -z-10 h-full w-full object-cover object-[70%_30%]" sizes="100vw" />
+        <Photo name="hero" priority quality={55} className="absolute inset-0 -z-10 h-full w-full object-cover object-[70%_30%]" sizes="100vw" />
         <div className="absolute inset-0 -z-10 hero-shade" />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-24">
           <p className="text-amber-300 font-bold uppercase tracking-wide text-sm">Spark Powered</p>
