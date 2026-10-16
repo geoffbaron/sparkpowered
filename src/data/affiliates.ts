@@ -55,7 +55,17 @@ export const AFFILIATES: Record<BrandId, BrandAffiliate> = {
   ecoflow: { name: "EcoFlow", homeUrl: "https://us.ecoflow.com/", tracked: false },
   anker: { name: "Anker SOLIX", homeUrl: "https://www.anker.com/", tracked: false },
   jackery: { name: "Jackery", homeUrl: "https://www.jackery.com/", tracked: false },
-  bluetti: { name: "Bluetti", homeUrl: "https://www.bluettipower.com/", tracked: false },
+  // Approved Oct 16 2026 on Awin (BLUETTI US, MID 59271) for publisher 3125360.
+  bluetti: {
+    name: "Bluetti",
+    homeUrl: "https://www.bluettipower.com/",
+    tracked: true,
+    network: "Awin",
+    commission: "5-10%",
+    cookieDays: 30,
+    links: { home: "https://www.awin1.com/cread.php?awinmid=59271&awinaffid=3125360&ued=https%3A%2F%2Fwww.bluettipower.com%2F" },
+    deepLink: "https://www.awin1.com/cread.php?awinmid=59271&awinaffid=3125360&ued={url}",
+  },
   dji: { name: "DJI", homeUrl: "https://store.dji.com/", tracked: false },
   tesla: { name: "Tesla", homeUrl: "https://www.tesla.com/powerwall", tracked: false },
   enphase: { name: "Enphase", homeUrl: "https://enphase.com/", tracked: false },
@@ -64,13 +74,13 @@ export const AFFILIATES: Record<BrandId, BrandAffiliate> = {
   mangopower: { name: "Mango Power", homeUrl: "https://www.mangopower.com/", tracked: false },
   pluggedsolar: { name: "PluggedSolar", homeUrl: "https://pluggedsolar.com/", tracked: false },
   craftstrom: { name: "CraftStrom", homeUrl: "https://craftstrom.com/", tracked: false },
-  // Approved on Awin (MID 91891), 8% commission, 30-day cookie.
+  // Approved on Awin (MID 91891); welcome email says 5% commission, 30-day cookie.
   lectron: {
     name: "Lectron",
     homeUrl: "https://ev-lectron.com/",
     tracked: true,
     network: "Awin",
-    commission: "8%",
+    commission: "5%",
     cookieDays: 30,
     links: { home: "https://www.awin1.com/cread.php?awinmid=91891&awinaffid=3125360&ued=https%3A%2F%2Fev-lectron.com%2F" },
     productLinks: {
