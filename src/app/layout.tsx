@@ -132,6 +132,8 @@ export default function RootLayout({
       className={`${geistSans.variable} h-full antialiased`}
     >
       <head>
+        {/* impact.com site verification, in the exact form impact.com asks for (value attribute). */}
+        <meta name="impact-site-verification" {...{ value: "1daf2570-8c42-4207-898d-a7885836ebd8" }} />
         {/* The icon font (globals.css) is only used by the two quizzes, so it is not preloaded site-wide. */}
         <script
           defer
