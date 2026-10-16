@@ -169,6 +169,18 @@ export default function BestPowerStationsPage() {
         </ul>
       </Section>
 
+      <aside className="mt-10 rounded-2xl border border-amber-200 bg-amber-50 p-5 max-w-3xl" aria-label="RV and boat batteries">
+        <p className="font-bold text-ink">Have an RV, van or boat with a battery bay?</p>
+        <p className="text-stone-700 text-sm mt-1">
+          Swapping the lead-acid house battery for lithium is often cheaper than a power station: a few hundred dollars for twice the
+          usable power at a third of the weight.{" "}
+          <Link href="/lithium-rv-battery" className="text-spark-orange font-semibold underline underline-offset-2">
+            See what a lithium RV battery saves
+          </Link>
+          .
+        </p>
+      </aside>
+
       <Section title="How we chose" id="how-we-chose">
         <div className="text-stone-700 leading-relaxed space-y-3 max-w-3xl">
           <p>
@@ -204,6 +216,7 @@ export default function BestPowerStationsPage() {
           { href: "/home-battery-backup", label: "Home battery backup", desc: "Whole-home vs portable, with real costs" },
           { href: "/plug-in-solar", label: "Plug-in solar", desc: "Small solar kits that plug into an outlet" },
           { href: "/compare", label: "All comparisons", desc: "EcoFlow, Anker, Jackery and Bluetti head to head" },
+          { href: "/lithium-rv-battery", label: "Lithium RV and boat batteries", desc: "Swap lead-acid for lithium: savings and sizes" },
         ]}
       />
       <PhotoCredit name="power-station" />

@@ -35,6 +35,22 @@ ok((await partner.first().getAttribute("rel")) === "sponsored nofollow noopener"
 ok(/We may earn a commission/.test(bat), "Battery results show the affiliate disclosure");
 ok(!/ITC/.test(bat) && !/payback/i.test(bat), "Battery results have no ITC/payback claims");
 
+// Lithium RV battery picker
+await page.goto(base + "/lithium-rv-battery", { waitUntil: "networkidle" });
+const pick1 = await page.locator("[data-testid=rv-pick]").innerText();
+ok(/Redodo 12V 100Ah/.test(pick1), "RV picker default pick: " + pick1);
+await page.getByLabel(/CPAP machine/).check();
+await page.getByLabel(/Laptop for work/).check();
+await page.getByRole("button", { name: "A week" }).tap();
+await page.waitForTimeout(300);
+const pick2 = await page.locator("[data-testid=rv-pick]").innerText();
+ok(pick2 !== pick1, "RV picker scales up: " + pick2);
+const rd = page.locator("main a[data-partner=redodo]");
+ok((await rd.count()) >= 6, "RV page links Redodo products");
+ok(/awinmid=97969&awinaffid=3125360/.test(await rd.first().getAttribute("href")), "Redodo links carry the Awin IDs");
+ok((await rd.first().getAttribute("rel")) === "sponsored nofollow noopener", "Redodo links are sponsored");
+ok(/We may earn a commission/.test(await page.locator("main").innerText()), "RV page shows the affiliate disclosure");
+
 // Solar calculator
 await page.goto(base + "/solar-calculator?state=AZ", { waitUntil: "networkidle" });
 const solar = await page.locator("main [aria-live=polite]").innerText();

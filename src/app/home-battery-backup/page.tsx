@@ -284,6 +284,11 @@ export default function HomeBatteryBackupPage() {
               input watts.
             </li>
             <li>
+              <strong>Building your own off-grid or cabin system?</strong> 48 V and 12 V lithium batteries paired with
+              an inverter cost far less per kWh than a finished home battery; see{" "}
+              <Link href="/lithium-rv-battery" className="underline">lithium RV, boat and off-grid batteries</Link>.
+            </li>
+            <li>
               <strong>Incentives:</strong> the 30% federal credit for homeowners ended after 2025, but some utilities
               pay battery owners to share power at peak times. See{" "}
               <Link href="/incentives" className="underline">2026 incentives</Link>.
@@ -323,6 +328,7 @@ export default function HomeBatteryBackupPage() {
           { href: "/best-portable-power-stations", label: "Best portable power stations", desc: "Picks for camping, CPAP, RVs and apartments" },
           { href: "/compare", label: "Head-to-head comparisons", desc: "EcoFlow vs Anker vs Jackery vs Bluetti" },
           { href: "/plug-in-solar", label: "Plug-in solar", desc: "Small solar that plugs into an outlet" },
+          { href: "/lithium-rv-battery", label: "Lithium RV and boat batteries", desc: "12 V, 24 V and 48 V batteries that replace lead-acid" },
         ]}
       />
       <PhotoCredit name="home-battery" />

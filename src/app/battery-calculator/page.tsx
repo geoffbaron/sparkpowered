@@ -159,6 +159,7 @@ export default function BatteryCalculatorPage() {
             { href: "/home-battery-backup", label: "Home battery backup guide", desc: "Whole-home vs portable, with real costs" },
             { href: "/best-portable-power-stations", label: "Best portable power stations", desc: "Every model we track in one table" },
             { href: "/solar-finder", label: "Find installers", desc: "Companies serving your state" },
+            { href: "/lithium-rv-battery", label: "RV, van and boat batteries", desc: "Size a 12 V lithium battery for what you run" },
           ]}
         />
       </div>

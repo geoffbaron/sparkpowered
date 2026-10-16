@@ -30,6 +30,7 @@ export type BrandId =
   | "pluggedsolar"
   | "craftstrom"
   | "lectron"
+  | "redodo"
   | "energysage";
 
 export interface BrandAffiliate {
@@ -88,6 +89,19 @@ export const AFFILIATES: Record<BrandId, BrandAffiliate> = {
       "lectron-nexus-nacs": "https://www.awin1.com/cread.php?awinmid=91891&awinaffid=3125360&ued=https%3A%2F%2Fev-lectron.com%2Fproducts%2Flectron-nexus-level-2-nacs-tesla-ev-charging-station-240v-40-amp-23ft-cable-wall-mount-j-hook-plug-holder-nema-14-50",
       "lectron-portable-nacs": "https://www.awin1.com/cread.php?awinmid=91891&awinaffid=3125360&ued=https%3A%2F%2Fev-lectron.com%2Fproducts%2Flectron-portable-level-1-2-tesla-nacs-ev-charger-120v-240v-adjustable-current-8-40a-nema-5-15-14-50",
     },
+  },
+  // Approved Oct 16 2026 on Awin (Redodo Power, MID 97969, read from the Awin tag on
+  // redodopower.com) for publisher 3125360. Commission and cookie window are our
+  // working figures until confirmed on the Awin programme page.
+  redodo: {
+    name: "Redodo",
+    homeUrl: "https://www.redodopower.com/",
+    tracked: true,
+    network: "Awin",
+    commission: "about 5%",
+    cookieDays: 30,
+    links: { home: "https://www.awin1.com/cread.php?awinmid=97969&awinaffid=3125360&ued=https%3A%2F%2Fwww.redodopower.com%2F" },
+    deepLink: "https://www.awin1.com/cread.php?awinmid=97969&awinaffid=3125360&ued={url}",
   },
   // Applied, pending on Awin (plain links until approved): Bluetti, Jackery, EcoFlow, Oupes, Pecron, Autel,
   // and per-sale solar installers Momentum Solar, Solar Savings, Solar Simplified, Nautilus community solar.

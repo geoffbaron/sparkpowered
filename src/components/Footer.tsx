@@ -14,6 +14,7 @@ const GUIDES = [
   { href: "/plug-in-solar", label: "Plug-in solar guide" },
   { href: "/best-portable-power-stations", label: "Best portable power stations" },
   { href: "/home-battery-backup", label: "Home battery backup" },
+  { href: "/lithium-rv-battery", label: "Lithium RV & boat batteries" },
   { href: "/compare", label: "Power station comparisons" },
   { href: "/states", label: "Energy data by state" },
   { href: "/incentives", label: "2026 incentives" },

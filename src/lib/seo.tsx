@@ -99,6 +99,7 @@ export const ROUTES: { path: string; lastModified: string }[] = [
   { path: "/plug-in-solar", lastModified: CONTENT_UPDATED },
   { path: "/best-portable-power-stations", lastModified: CONTENT_UPDATED },
   { path: "/home-battery-backup", lastModified: CONTENT_UPDATED },
+  { path: "/lithium-rv-battery", lastModified: "2026-10-16" },
   { path: "/compare", lastModified: CONTENT_UPDATED },
   { path: "/states", lastModified: CONTENT_UPDATED },
   { path: "/incentives", lastModified: CONTENT_UPDATED },
