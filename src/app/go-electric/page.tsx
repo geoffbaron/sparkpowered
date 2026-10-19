@@ -27,6 +27,7 @@ export const metadata: Metadata = pageMetadata({ title: TITLE, description: DESC
 export default function GoElectricPage() {
   const outage = productById("ecoflow-delta-3-max");
   const charger = chargerById("lectron-nexus-j1772");
+  const smartCharger = chargerById("autel-elite-home-40a");
   const life = lifeSummary(outage.capacityWh);
   const oh = typicalPlan("OH");
   const totals = Object.values(TYPICAL_TOTALS);
@@ -73,6 +74,14 @@ export default function GoElectricPage() {
             name: `Lectron ${charger.name}`,
             url: charger.url,
             priceUsd: charger.priceUsd,
+            life: "",
+          },
+    smartChargerPick: {
+            id: smartCharger.id,
+            brand: smartCharger.brand,
+            name: `Autel ${smartCharger.name}`,
+            url: smartCharger.url,
+            priceUsd: smartCharger.priceUsd,
             life: "",
           },
     solarQuotes: solarQuotesUrl(),

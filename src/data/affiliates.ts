@@ -31,6 +31,7 @@ export type BrandId =
   | "craftstrom"
   | "lectron"
   | "redodo"
+  | "autel"
   | "energysage";
 
 export interface BrandAffiliate {
@@ -103,7 +104,20 @@ export const AFFILIATES: Record<BrandId, BrandAffiliate> = {
     links: { home: "https://www.awin1.com/cread.php?awinmid=97969&awinaffid=3125360&ued=https%3A%2F%2Fwww.redodopower.com%2F" },
     deepLink: "https://www.awin1.com/cread.php?awinmid=97969&awinaffid=3125360&ued={url}",
   },
-  // Applied, pending on Awin (plain links until approved): Bluetti, Jackery, EcoFlow, Oupes, Pecron, Autel,
+  // Approved Oct 19 2026 on Awin (Autel Energy, MID 72577) for publisher 3125360.
+  // Commission and cookie window are working figures (about 10%, unconfirmed) until
+  // read from the Awin programme page.
+  autel: {
+    name: "Autel",
+    homeUrl: "https://autelenergy.us/",
+    tracked: true,
+    network: "Awin",
+    commission: "about 10%, unconfirmed",
+    cookieDays: 30,
+    links: { home: "https://www.awin1.com/cread.php?awinmid=72577&awinaffid=3125360&ued=https%3A%2F%2Fautelenergy.us%2F" },
+    deepLink: "https://www.awin1.com/cread.php?awinmid=72577&awinaffid=3125360&ued={url}",
+  },
+  // Applied, pending on Awin (plain links until approved): Jackery, EcoFlow, Oupes, Pecron,
   // and per-sale solar installers Momentum Solar, Solar Savings, Solar Simplified, Nautilus community solar.
   energysage: {
     name: "EnergySage",

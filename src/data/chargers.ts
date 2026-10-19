@@ -16,6 +16,10 @@ export interface HomeCharger {
   amps: number;
   /** Maker's stated miles of range added per hour at full power. */
   milesPerHour: number | null;
+  /** Maker's stated maximum output in kW, where given. */
+  maxKw?: number;
+  /** Phone app that can schedule charging (e.g. for cheaper overnight rates). */
+  scheduling?: boolean;
   outlet: string;
   cableFt: number | null;
   certifications: string[];
@@ -94,6 +98,56 @@ export const HOME_CHARGERS: HomeCharger[] = [
     notes: [
       "Comes with plugs for both an ordinary outlet and a 240-volt NEMA 14-50, adjustable from 8 to 40 amps.",
       "Good for renters or a second home; Lectron listed it as shipping in mid-November when we checked.",
+    ],
+  },
+  {
+    id: "autel-elite-home-40a",
+    brand: "autel",
+    name: "MaxiCharger AC Elite Home 40A",
+    plug: "J1772",
+    level: "Level 2",
+    amps: 40,
+    milesPerHour: null,
+    maxKw: 9.6,
+    scheduling: true,
+    outlet: "NEMA 14-50 (240 V)",
+    cableFt: 25,
+    certifications: [],
+    warrantyYears: 3,
+    priceUsd: 559,
+    listPriceUsd: null,
+    url: "https://autelenergy.us/products/maxicharger-ac-wallbox-home-40a-nema-14-50-ev-charger-with-separate-holster",
+    sourceUrl: "https://autelenergy.us/products/maxicharger-ac-wallbox-home-40a-nema-14-50-ev-charger-with-separate-holster",
+    retrieved: "2026-10-19",
+    notes: [
+      "Smart charger: the Autel Charge app starts, stops and schedules charging, so you can set it to charge only in your utility's cheaper overnight hours.",
+      "Fits every EV and plug-in hybrid with a J1772 port; Teslas need a J1772 adapter.",
+      "Plugs into a 240-volt NEMA 14-50 outlet; 25-foot cable reaches a car parked nose-in or backed in. Free US shipping.",
+    ],
+  },
+  {
+    id: "autel-elite-home-50a",
+    brand: "autel",
+    name: "MaxiCharger AC Elite Home 50A (hardwired)",
+    plug: "J1772",
+    level: "Level 2",
+    amps: 50,
+    milesPerHour: null,
+    maxKw: 12,
+    scheduling: true,
+    outlet: "Hardwired by an electrician (240 V)",
+    cableFt: 25,
+    certifications: [],
+    warrantyYears: 3,
+    priceUsd: 599,
+    listPriceUsd: null,
+    url: "https://autelenergy.us/products/maxicharger-ac-hardwired-wallbox-with-side-holster",
+    sourceUrl: "https://autelenergy.us/products/maxicharger-ac-hardwired-wallbox-with-side-holster",
+    retrieved: "2026-10-19",
+    notes: [
+      "The fastest home option here: up to 12 kW, about a quarter faster than a 40-amp plug-in charger, for cars that can take it.",
+      "Wired straight into your panel, which Autel recommends for outdoor installs.",
+      "Same app scheduling, 25-foot cable and 3-year warranty as the 40-amp model.",
     ],
   },
 ];

@@ -13,6 +13,46 @@ import { chargingFigures, formatDate, MONTHLY_MILES, referenceEv, usd, type Stat
 /** Level 1: a typical 12-amp cord on an ordinary 120-volt outlet (1.44 kW). */
 const LEVEL1_KW = 0.12 * 12;
 
+/** Miles of range an hour at a charger's stated kW, for a typical EV (our arithmetic). */
+export function milesPerHourAt(kw: number) {
+  return kw / (referenceEv("typical").kwhPer100mi / 100);
+}
+
+/** Dollars a year saved on 12,000 miles for every 5 cents/kWh cheaper (off-peak) power. */
+export function offPeakYearSaving(centsCheaper = 5) {
+  return ((MONTHLY_MILES * 12 * referenceEv("typical").kwhPer100mi) / 100) * (centsCheaper / 100);
+}
+
+/** The Autel smart-charger alternative, shown under our Lectron pick. */
+function SmartChargerPick({ compact = false }: { compact?: boolean }) {
+  const a = chargerById("autel-elite-home-40a");
+  const h = chargerById("autel-elite-home-50a");
+  const l1Mph = LEVEL1_KW / (referenceEv("typical").kwhPer100mi / 100);
+  return (
+    <div className="mt-5 pt-5 border-t border-black/10">
+      <p className="text-xs font-bold uppercase tracking-wide text-spark-amber">Also good: a smart charger that saves on overnight rates · sponsored link</p>
+      <h3 className="text-lg font-extrabold text-ink mt-1">Autel {a.name}</h3>
+      <p className="text-stone-700 mt-1">
+        {usd(a.priceUsd)} when we checked {formatDate(a.retrieved)}. Adds about {Math.round(milesPerHourAt(a.maxKw!))} miles of range an
+        hour, roughly {Math.round(milesPerHourAt(a.maxKw!) / l1Mph)}x a wall-outlet cord. Its phone app schedules charging for your
+        utility&apos;s cheaper overnight hours: on a time-of-use plan, every 5 cents a kWh off saves about{" "}
+        {usd(offPeakYearSaving())} a year over 12,000 miles. {a.warrantyYears}-year warranty, 25-foot cable.
+        {compact ? "" : ` The hardwired 50-amp version (${usd(h.priceUsd)}) charges about a quarter faster for cars that can take it.`}
+      </p>
+      <div className="flex flex-wrap items-center gap-3 mt-3">
+        <PartnerLink brand={a.brand} productId={a.id} productUrl={a.url} className="btn btn-outline btn-sm">
+          Check price: Autel 40A plug-in ({usd(a.priceUsd)})
+        </PartnerLink>
+        {!compact && (
+          <PartnerLink brand={h.brand} productId={h.id} productUrl={h.url} className="btn btn-outline btn-sm">
+            50A hardwired ({usd(h.priceUsd)})
+          </PartnerLink>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export function ChargerPick({ compact = false }: { compact?: boolean }) {
   const j = chargerById("lectron-nexus-j1772");
   const n = chargerById("lectron-nexus-nacs");
@@ -53,6 +93,7 @@ export function ChargerPick({ compact = false }: { compact?: boolean }) {
           </div>
         </div>
       </div>
+      <SmartChargerPick compact={compact} />
     </article>
   );
 }
@@ -62,6 +103,7 @@ export function HomeChargerGuide({ state }: { state?: StateEnergy }) {
   const typical = referenceEv("typical");
   const portable = chargerById("lectron-portable-nacs");
   const j = chargerById("lectron-nexus-j1772");
+  const autel = chargerById("autel-elite-home-40a");
   const rate = state ? state.electricity.residentialCentsPerKwhYtd / 100 : nationalRateUsd();
   const gas = state ? state.gasoline.usdPerGallon : NATIONAL.gasolineUsdPerGallon;
   const fig = state ? chargingFigures(state) : null;
@@ -99,6 +141,12 @@ export function HomeChargerGuide({ state }: { state?: StateEnergy }) {
           charger refills even a long day&apos;s driving overnight, so you never think about it.
         </p>
         <p>
+          <strong>Want it to charge when power is cheapest?</strong> Many utilities sell power for less overnight on a
+          time-of-use or EV plan. A smart charger such as Autel&apos;s ({usd(autel.priceUsd)} when we checked) lets you set the
+          hours in an app, so the car only fills up at the low price. Every 5 cents a kWh off is worth about{" "}
+          {usd(offPeakYearSaving())} a year on 12,000 miles.
+        </p>
+        <p>
           <strong>Renting or not ready to wire?</strong> Lectron&apos;s portable charger ({usd(portable.priceUsd, 2)} when we checked)
           works on an ordinary outlet and on a 240-volt one, and moves with you.
         </p>
@@ -107,8 +155,9 @@ export function HomeChargerGuide({ state }: { state?: StateEnergy }) {
         <ChargerPick />
       </div>
       <p className="text-xs text-muted mt-2">
-        Prices and specs from Lectron&apos;s US site on {formatDate(j.retrieved)}. Miles per hour is Lectron&apos;s figure; the
-        ordinary-outlet figure assumes a 12-amp cord and a {typical.kwhPer100mi} kWh/100 mi EV (EPA). Sponsored links: we earn a
+        Prices and specs from Lectron&apos;s US site on {formatDate(j.retrieved)} and Autel&apos;s US store on{" "}
+        {formatDate(autel.retrieved)}. Lectron&apos;s miles per hour is its own figure; Autel&apos;s is our arithmetic from its stated
+        kW. The time-of-use saving is arithmetic, not a quote from any utility. The ordinary-outlet figure assumes a 12-amp cord and a {typical.kwhPer100mi} kWh/100 mi EV (EPA). Sponsored links: we earn a
         commission if you buy.
       </p>
     </section>

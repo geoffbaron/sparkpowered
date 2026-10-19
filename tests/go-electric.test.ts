@@ -60,13 +60,23 @@ test("every myth has a short answer, a verdict and https sources", () => {
   }
 });
 
-test("home chargers are sourced, dated and use tracked Lectron links", () => {
+test("home chargers are sourced, dated and use tracked Lectron and Autel links", () => {
   for (const c of HOME_CHARGERS) {
     assert.ok(isHttps(c.url) && isHttps(c.sourceUrl) && /^\d{4}-\d{2}-\d{2}$/.test(c.retrieved), c.id);
     const link = partnerUrl(c.brand, { productId: c.id, productUrl: c.url });
     assert.ok(link.tracked && link.href.startsWith("https://www.awin1.com/"), c.id);
   }
   assert.equal(AFFILIATES.lectron.tracked, true);
+  assert.equal(AFFILIATES.autel.tracked, true);
+  const autel = HOME_CHARGERS.filter((c) => c.brand === "autel");
+  assert.ok(autel.length >= 2);
+  for (const c of autel) {
+    assert.ok(c.url.startsWith("https://autelenergy.us/products/"), c.id);
+    assert.ok(c.maxKw && c.maxKw > 0 && c.priceUsd > 0 && c.scheduling, c.id);
+    const href = partnerUrl(c.brand, { productId: c.id, productUrl: c.url }).href;
+    assert.ok(href.includes("awinmid=72577&awinaffid=3125360&ued="), c.id);
+    assert.ok(href.endsWith(encodeURIComponent(c.url)), c.id);
+  }
 });
 
 test("battery life terms scale with capacity", () => {

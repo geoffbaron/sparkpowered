@@ -25,6 +25,7 @@ interface Props {
   outagePick: PlannerProduct;
   pluginPick: PlannerProduct;
   chargerPick: PlannerProduct;
+  smartChargerPick: PlannerProduct;
   solarQuotes: { href: string; tracked: boolean };
   myths: Partial<Record<SwitchId | "battery", MythLite>>;
   sources: { label: string; url: string }[];
@@ -71,7 +72,7 @@ export function GoElectricPlannerFromParams(props: Props) {
   return <GoElectricPlanner key={initial} {...props} initialState={initial} />;
 }
 
-export default function GoElectricPlanner({ states, costs, outagePick, pluginPick, chargerPick, solarQuotes, myths, sources, initialState = "OH" }: Props & { initialState?: string }) {
+export default function GoElectricPlanner({ states, costs, outagePick, pluginPick, chargerPick, smartChargerPick, solarQuotes, myths, sources, initialState = "OH" }: Props & { initialState?: string }) {
   const [abbr, setAbbr] = useState(initialState);
   const st = states.find((s) => s.abbr === abbr) ?? states[0];
   const [inputs, setInputs] = useState<PlannerInputs>({
@@ -249,7 +250,7 @@ export default function GoElectricPlanner({ states, costs, outagePick, pluginPic
           <p className="text-muted mb-4">Biggest yearly savings first.</p>
           <ol className="space-y-4">
             {ranked.map((r, i) => (
-              <SwitchCard key={r.id} r={r} rank={i + 1} myth={myths[r.id]} pluginPick={pluginPick} chargerPick={chargerPick} solarQuotes={solarQuotes} />
+              <SwitchCard key={r.id} r={r} rank={i + 1} myth={myths[r.id]} pluginPick={pluginPick} chargerPick={chargerPick} smartChargerPick={smartChargerPick} solarQuotes={solarQuotes} />
             ))}
           </ol>
         </section>
@@ -357,6 +358,7 @@ function SwitchCard({
   myth,
   pluginPick,
   chargerPick,
+  smartChargerPick,
   solarQuotes,
 }: {
   r: SwitchResult;
@@ -364,6 +366,7 @@ function SwitchCard({
   myth?: MythLite;
   pluginPick: PlannerProduct;
   chargerPick: PlannerProduct;
+  smartChargerPick: PlannerProduct;
   solarQuotes: { href: string; tracked: boolean };
 }) {
   const m = META[r.id];
@@ -412,6 +415,9 @@ function SwitchCard({
                 </Link>
                 <PartnerLink brand={chargerPick.brand} productId={chargerPick.id} productUrl={chargerPick.url} className="btn btn-outline btn-sm">
                   Home charger, {money(chargerPick.priceUsd)} (sponsored)
+                </PartnerLink>
+                <PartnerLink brand={smartChargerPick.brand} productId={smartChargerPick.id} productUrl={smartChargerPick.url} className="btn btn-outline btn-sm">
+                  Smart charger for off-peak rates, {money(smartChargerPick.priceUsd)} (sponsored)
                 </PartnerLink>
               </>
             )}

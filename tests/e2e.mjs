@@ -51,6 +51,13 @@ ok(/awinmid=97969&awinaffid=3125360/.test(await rd.first().getAttribute("href"))
 ok((await rd.first().getAttribute("rel")) === "sponsored nofollow noopener", "Redodo links are sponsored");
 ok(/We may earn a commission/.test(await page.locator("main").innerText()), "RV page shows the affiliate disclosure");
 
+// Autel home chargers on the EV charging cost page
+await page.goto(base + "/ev-charging-cost", { waitUntil: "networkidle" });
+const au = page.locator("main a[data-partner=autel]");
+ok((await au.count()) >= 2, "EV charging page links Autel chargers");
+ok(/awinmid=72577&awinaffid=3125360/.test(await au.first().getAttribute("href")), "Autel links carry the Awin IDs");
+ok((await au.first().getAttribute("rel")) === "sponsored nofollow noopener", "Autel links are sponsored");
+
 // Solar calculator
 await page.goto(base + "/solar-calculator?state=AZ", { waitUntil: "networkidle" });
 const solar = await page.locator("main [aria-live=polite]").innerText();
