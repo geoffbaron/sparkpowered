@@ -28,7 +28,7 @@ export interface DeepCycleBattery {
   /** YYYY-MM-DD the specs and price were checked. */
   retrieved: string;
   /** Nominal volts as sold (12.8 V packs are sold as "12V"). */
-  volts: 12 | 24 | 48;
+  volts: 12 | 24 | 36 | 48;
   nominalV: number;
   ampHours: number;
   /** Rated energy in watt-hours (nominal volts x amp-hours, as the maker states it). */
@@ -133,6 +133,77 @@ export const BATTERIES: DeepCycleBattery[] = [
       "For 48 V off-grid solar and home backup systems with a 48 V inverter; up to four in parallel (20.48 kWh).",
       "Bluetooth monitoring; charging pauses below 32°F.",
     ],
+  },
+];
+
+const CHECKED_TROLLING = "2026-10-19";
+
+/**
+ * Redodo batteries sold for trolling motors, used on /best-trolling-motor-battery
+ * alongside the 12V 100Ah and 24V 50Ah above. Same sourcing rules.
+ */
+export const TROLLING_EXTRA: DeepCycleBattery[] = [
+  {
+    id: "redodo-12v-120ah-group24-trolling", brand: "redodo", model: "12V 120Ah Group 24 Bluetooth Lithium Battery", short: "12V 120Ah Group 24",
+    url: `${RD}redodo-12v-120ah-group-24-trolling-motor-bluetooth-lithium-battery-for-3-days-fishing`,
+    sourceUrl: `${RD}redodo-12v-120ah-group-24-trolling-motor-bluetooth-lithium-battery-for-3-days-fishing`, retrieved: CHECKED_TROLLING,
+    volts: 12, nominalV: 12.8, ampHours: 120, energyWh: 1536, continuousA: 120, cycles: 4000,
+    weightLb: 23.81, warrantyYears: 5, lifeYears: null, bluetooth: true, lowTempCutoff: true, selfHeating: false,
+    priceUsd: 329.99, listPriceUsd: 459.99, uses: ["trolling", "marine"],
+    notes: [
+      "Fits a Group 24 battery tray, the size many small boats use, with 20% more energy than a 100 Ah battery.",
+      "Redodo quotes up to 19.2 hours on a 55 lb thrust motor at 1/8 power; IP65 water resistance.",
+    ],
+  },
+  {
+    id: "redodo-24v-125ah-trolling-self-heating", brand: "redodo", model: "24V 125Ah Bluetooth Self-Heating Trolling Motor Battery", short: "24V 125Ah Self-Heating",
+    url: `${RD}redodo-24v-125ah-lifepo4-trolling-motor-battery`, sourceUrl: `${RD}redodo-24v-125ah-lifepo4-trolling-motor-battery`, retrieved: CHECKED_TROLLING,
+    volts: 24, nominalV: 25.6, ampHours: 125, energyWh: 3200, continuousA: 125, cycles: 4000,
+    weightLb: 52.47, warrantyYears: 5, lifeYears: null, bluetooth: true, lowTempCutoff: true, selfHeating: true,
+    priceUsd: 629.99, listPriceUsd: 939.99, uses: ["trolling", "marine", "cold"],
+    notes: [
+      "One battery for a 24 V motor of 70 to 100 lb thrust, in place of two Group 31 AGMs (about 134 lb, per Redodo).",
+      "Warms itself to charge on cold mornings; IP67 water resistance.",
+    ],
+  },
+  {
+    id: "redodo-36v-50ah-trolling", brand: "redodo", model: "36V 50Ah Trolling Motor Battery with Low-Temp Cutoff", short: "36V 50Ah",
+    url: `${RD}redodo-36v-50ah-trolling-motor-battery-with-low-temp-cutoff`, sourceUrl: `${RD}redodo-36v-50ah-trolling-motor-battery-with-low-temp-cutoff`, retrieved: CHECKED_TROLLING,
+    volts: 36, nominalV: 38.4, ampHours: 50, energyWh: 1920, continuousA: 50, cycles: 4000,
+    weightLb: 32.8, warrantyYears: 5, lifeYears: null, bluetooth: false, lowTempCutoff: true, selfHeating: false,
+    priceUsd: 399.99, listPriceUsd: 499.99, uses: ["trolling", "marine"],
+    notes: [
+      "For 36 V motors of 100 to 120 lb thrust, replacing three 12 V lead-acid batteries wired together.",
+      "Redodo says it is not for electric outboards or golf carts.",
+    ],
+  },
+];
+
+/** Non-partner lithium batteries we compare against, from the makers' US stores. */
+export interface OtherBattery {
+  id: string;
+  name: string;
+  url: string;
+  retrieved: string;
+  energyWh: number;
+  priceUsd: number;
+  listPriceUsd: number | null;
+  weightLb: number | null;
+  cycles: number | null;
+  warrantyYears: number | null;
+  note: string;
+}
+
+export const OTHER_LITHIUM: OtherBattery[] = [
+  {
+    id: "litime-12v-100ah", name: "LiTime 12V 100Ah LiFePO4", url: "https://www.litime.com/products/litime-12v-100ah-lithium-lifepo4-battery",
+    retrieved: CHECKED_TROLLING, energyWh: 1280, priceUsd: 335.99, listPriceUsd: 359.99, weightLb: 24.25, cycles: 4000, warrantyYears: 5,
+    note: "Popular rival with the same 1,280 Wh and 4,000-cycle rating; it cost $93 more than Redodo's 12V 100Ah when we checked.",
+  },
+  {
+    id: "battle-born-100ah", name: "Battle Born 100Ah 12V LiFePO4", url: "https://battlebornbatteries.com/products/100ah-12v-lifepo4-deep-cycle-battery",
+    retrieved: CHECKED_TROLLING, energyWh: 1280, priceUsd: 799, listPriceUsd: 949, weightLb: null, cycles: null, warrantyYears: 10,
+    note: "Assembled in the USA with a 10-year warranty, twice Redodo's. You pay about three times as much for the same energy.",
   },
 ];
 

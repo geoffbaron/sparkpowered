@@ -417,6 +417,8 @@ export default function LithiumRvBatteryPage() {
             { href: "/battery-calculator", label: "Home battery sizer", desc: "How much storage a house needs" },
             { href: "/plug-in-solar", label: "Plug-in solar", desc: "Small solar that plugs into an outlet" },
             { href: "/home-battery-backup", label: "Home battery backup", desc: "Whole-home and plug-in systems with real costs" },
+            { href: "/best-trolling-motor-battery", label: "Best trolling motor battery", desc: "12 V, 24 V and 36 V lithium for your boat" },
+            { href: "/lithium-vs-agm-battery", label: "100Ah lithium vs AGM", desc: "Cost per year, worked out for how you use it" },
           ]}
         />
         <PhotoCredit name="power-station" />

@@ -58,6 +58,48 @@ ok((await au.count()) >= 2, "EV charging page links Autel chargers");
 ok(/awinmid=72577&awinaffid=3125360/.test(await au.first().getAttribute("href")), "Autel links carry the Awin IDs");
 ok((await au.first().getAttribute("rel")) === "sponsored nofollow noopener", "Autel links are sponsored");
 
+// Buyer's guides: each page renders, has a quick answer, a disclosure, and tracked partner links
+for (const [path, partner, mid] of [
+  ["/best-power-station-for-cpap", "bluetti", "59271"],
+  ["/power-station-for-refrigerator", "bluetti", "59271"],
+  ["/best-trolling-motor-battery", "redodo", "97969"],
+  ["/lithium-vs-agm-battery", "redodo", "97969"],
+  ["/best-home-ev-charger", "lectron", "91891"],
+  ["/ev-charger-installation-cost", "lectron", "91891"],
+]) {
+  await page.goto(base + path, { waitUntil: "networkidle" });
+  ok((await page.locator("[data-testid=quick-answer]").count()) === 1, `${path} has a quick answer`);
+  const links = page.locator(`main a[data-partner=${partner}]`);
+  ok((await links.count()) >= 1 && new RegExp(`awinmid=${mid}&awinaffid=3125360`).test(await links.first().getAttribute("href")), `${path} ${partner} links carry the Awin IDs`);
+  ok((await links.first().getAttribute("rel")) === "sponsored nofollow noopener", `${path} partner links are sponsored`);
+  ok(/We may earn a commission/.test(await page.locator("main").innerText()), `${path} shows the disclosure`);
+  ok(!(await page.locator("main a[data-partner=none][href*=awin1]").count()), `${path} plain links carry no tracking`);
+}
+
+// CPAP picker: more nights needed -> a bigger pick
+await page.goto(base + "/best-power-station-for-cpap", { waitUntil: "networkidle" });
+const cp1 = await page.locator("[data-testid=runtime-pick]").innerText();
+await page.getByRole("button", { name: "A week" }).tap();
+await page.waitForTimeout(300);
+const cp2 = await page.locator("[data-testid=runtime-pick]").innerText();
+ok(cp1 !== cp2, `CPAP picker changes with nights: ${cp1} -> ${cp2}`);
+
+// Trolling picker: 36 V picks the 36 V battery
+await page.goto(base + "/best-trolling-motor-battery", { waitUntil: "load" });
+await page.waitForTimeout(1500);
+await page.getByRole("button", { name: /^36 V/ }).tap();
+await page.waitForTimeout(300);
+ok(/36V/.test(await page.locator("[data-testid=trolling-pick]").innerText()), "Trolling picker 36 V pick");
+
+// Install cost calculator: state changes the total
+await page.goto(base + "/ev-charger-installation-cost", { waitUntil: "load" });
+await page.waitForTimeout(1500);
+const ic1 = await page.locator("[data-testid=install-total]").innerText();
+await page.locator("#install-state").selectOption("MS");
+await page.waitForTimeout(300);
+const ic2 = await page.locator("[data-testid=install-total]").innerText();
+ok(ic1 !== ic2 && /\$/.test(ic2), `Install estimate changes by state: ${ic1} -> ${ic2}`);
+
 // Solar calculator
 await page.goto(base + "/solar-calculator?state=AZ", { waitUntil: "networkidle" });
 const solar = await page.locator("main [aria-live=polite]").innerText();

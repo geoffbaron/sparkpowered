@@ -215,6 +215,8 @@ export default function EvChargingCostPage() {
       />
       <RelatedLinks
         links={[
+          { href: "/best-home-ev-charger", label: "Best home EV charger", desc: "Lectron, Autel, Tesla and more compared" },
+          { href: "/ev-charger-installation-cost", label: "Charger installation cost", desc: "Average price to install in your state" },
           { href: "/calculator", label: "EV Finder", desc: "Match an electric car to your budget and driving" },
           { href: "/states", label: "Energy data by state", desc: "Prices, chargers and solar output for every state" },
           { href: "/incentives", label: "EV incentives in 2026", desc: "What federal help is left, and where to find state rebates" },

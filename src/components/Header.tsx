@@ -31,6 +31,7 @@ function SparkIcon() {
 
 const navLinks = [
   { href: "/ev-charging-cost", label: "Electric Cars" },
+  { href: "/best-home-ev-charger", label: "EV Chargers" },
   { href: "/solar-calculator", label: "Solar" },
   { href: "/plug-in-solar", label: "Plug-in Solar" },
   { href: "/best-portable-power-stations", label: "Backup Power" },

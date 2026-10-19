@@ -660,7 +660,7 @@ const PORTABLE: Product[] = [
     category: "portable",
     url: "https://www.bluettipower.com/products/ac180",
     sourceUrl: "https://www.bluettipower.com/products/ac180",
-    retrieved: "2026-10-15",
+    retrieved: "2026-10-19",
     capacityWh: 1152,
     maxCapacityWh: null,
     acOutputW: 1800,
@@ -678,7 +678,8 @@ const PORTABLE: Product[] = [
     priceUsd: 499,
     listPriceUsd: null,
     notes: [
-      "Out of stock on Bluetti's US site when we checked; the page said restock was expected in late November."
+      "Back in stock on Bluetti's US site on Oct 19 2026, after being out of stock on Oct 15.",
+      "Its 2,700 W figure is Bluetti's Power Lifting mode for heating-type loads (kettles, space heaters), not a motor-start surge."
     ]
   },
   {
@@ -688,11 +689,11 @@ const PORTABLE: Product[] = [
     category: "portable",
     url: "https://www.bluettipower.com/products/elite-100-v2-portable-power-station",
     sourceUrl: "https://www.bluettipower.com/products/elite-100-v2-portable-power-station",
-    retrieved: "2026-10-15",
+    retrieved: "2026-10-19",
     capacityWh: 1024,
     maxCapacityWh: null,
     acOutputW: 1800,
-    surgeW: 2700,
+    surgeW: 3600,
     chemistry: "LFP",
     cycles: 4000,
     cyclesTo: 80,
@@ -700,14 +701,14 @@ const PORTABLE: Product[] = [
     solarInputW: 1000,
     acOutlets: null,
     upsMs: 10.0,
-    warrantyYears: null,
+    warrantyYears: 5,
     volts: "120V",
     install: "diy",
     priceUsd: 499,
     listPriceUsd: null,
     notes: [
       "Up to 1,000 W of solar input, unusually high for a 1 kWh unit.",
-      "Out of stock on Bluetti's US site when we checked."
+      "In stock on Bluetti's US site on Oct 19 2026; Bluetti lists a 3,600 W surge and a 5-year warranty."
     ]
   },
   {
@@ -717,7 +718,7 @@ const PORTABLE: Product[] = [
     category: "portable",
     url: "https://www.bluettipower.com/products/elite-200-v2-portable-power-station",
     sourceUrl: "https://www.bluettipower.com/products/elite-200-v2-portable-power-station",
-    retrieved: "2026-10-15",
+    retrieved: "2026-10-19",
     capacityWh: 2073.6,
     maxCapacityWh: null,
     notExpandable: true,
@@ -738,7 +739,127 @@ const PORTABLE: Product[] = [
     notes: [
       "Rated for 6,000 cycles to 80%, the highest rating among the 2 kWh units we list.",
       "Its surge figure applies to heating-type loads only (Bluetti's Power Lifting mode). Not expandable.",
-      "Out of stock on Bluetti's US site when we checked."
+      "In stock on Bluetti's US site on Oct 19 2026."
+    ]
+  },
+  {
+    id: "bluetti-elite-30-v2",
+    brand: "bluetti",
+    model: "Elite 30 V2",
+    category: "portable",
+    url: "https://www.bluettipower.com/products/elite-30-v2-portable-power-station",
+    sourceUrl: "https://www.bluettipower.com/products/elite-30-v2-portable-power-station",
+    retrieved: "2026-10-19",
+    capacityWh: 288,
+    maxCapacityWh: null,
+    notExpandable: true,
+    acOutputW: 600,
+    surgeW: null,
+    chemistry: "LFP",
+    cycles: 3000,
+    cyclesTo: 80,
+    weightLb: 9.48,
+    solarInputW: 200,
+    acOutlets: null,
+    upsMs: 10.0,
+    warrantyYears: 5,
+    volts: "120V",
+    install: "diy",
+    priceUsd: 289.99,
+    listPriceUsd: null,
+    notes: [
+      "Under 10 lb and rated under 30 dB at light loads, quiet enough for a bedroom.",
+      "Bluetti quotes 4.5 W standby draw; 1,500 W lifting power applies to heating-type loads only.",
+      "Not expandable, per Bluetti's FAQ."
+    ]
+  },
+  {
+    id: "bluetti-elite-300",
+    brand: "bluetti",
+    model: "Elite 300",
+    category: "portable",
+    url: "https://www.bluettipower.com/products/elite-300-portable-power-station",
+    sourceUrl: "https://www.bluettipower.com/products/elite-300-portable-power-station",
+    retrieved: "2026-10-19",
+    capacityWh: 3014.4,
+    maxCapacityWh: null,
+    acOutputW: 2400,
+    surgeW: 4800,
+    chemistry: "LFP",
+    cycles: 6000,
+    cyclesTo: 80,
+    weightLb: 57.98,
+    solarInputW: 1200,
+    acOutlets: 4,
+    upsMs: 10.0,
+    warrantyYears: 5,
+    volts: "120V",
+    install: "diy",
+    priceUsd: 1199,
+    listPriceUsd: null,
+    notes: [
+      "3 kWh for $1,199, about $398 per kWh, with an RV (TT-30) outlet and a 12 V/30 A port.",
+      "Listed as a pre-order on Bluetti's US site when we checked."
+    ]
+  },
+  {
+    id: "bluetti-elite-400",
+    brand: "bluetti",
+    model: "Elite 400",
+    category: "portable",
+    url: "https://www.bluettipower.com/products/elite-400-portable-power-station",
+    sourceUrl: "https://www.bluettipower.com/products/elite-400-portable-power-station",
+    retrieved: "2026-10-19",
+    capacityWh: 3840,
+    maxCapacityWh: null,
+    acOutputW: 2600,
+    surgeW: 5200,
+    chemistry: "LFP",
+    cycles: null,
+    cyclesTo: null,
+    weightLb: 85.98,
+    solarInputW: 1000,
+    acOutlets: 4,
+    upsMs: 15.0,
+    warrantyYears: 5,
+    volts: "120V",
+    install: "diy",
+    priceUsd: 1399,
+    listPriceUsd: null,
+    notes: [
+      "3.84 kWh on wheels with a telescopic handle, for $1,399 (about $364 per kWh).",
+      "Listed as a pre-order on Bluetti's US site when we checked; Bluetti gives no cycle rating on the page."
+    ]
+  },
+  {
+    id: "bluetti-ac200l",
+    brand: "bluetti",
+    model: "AC200L",
+    category: "portable",
+    url: "https://www.bluettipower.com/products/ac200l-portable-power-station",
+    sourceUrl: "https://www.bluettipower.com/products/ac200l-portable-power-station",
+    retrieved: "2026-10-19",
+    capacityWh: 2048,
+    maxCapacityWh: 8192,
+    expansion: "with up to two B300K or B300 batteries (Bluetti also lists B210 and B230)",
+    acOutputW: 2400,
+    surgeW: null,
+    chemistry: "LFP",
+    cycles: 3000,
+    cyclesTo: 80,
+    weightLb: 62.4,
+    solarInputW: 1200,
+    acOutlets: 5,
+    upsMs: null,
+    warrantyYears: 5,
+    volts: "120V",
+    install: "diy",
+    priceUsd: 899,
+    listPriceUsd: null,
+    certifications: ["UL 2743"],
+    notes: [
+      "Out of stock on Bluetti's US site when we checked.",
+      "Expands with Bluetti's add-on batteries; 8.2 kWh assumes two 3.07 kWh B300 units."
     ]
   },
   {

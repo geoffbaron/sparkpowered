@@ -115,7 +115,7 @@ test("battery sizer returns 2-4 real products that reach the computed size", () 
 });
 
 test("comparisons reference products in the dataset and have unique slugs", () => {
-  assert.ok(COMPARISONS.length >= 6 && COMPARISONS.length <= 10);
+  assert.ok(COMPARISONS.length >= 6 && COMPARISONS.length <= 14);
   const slugs = COMPARISONS.map((c) => c.slug);
   assert.equal(new Set(slugs).size, slugs.length);
   for (const c of COMPARISONS) {

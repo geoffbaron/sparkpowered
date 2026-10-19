@@ -426,6 +426,7 @@ export default async function StatePage({ params }: Props) {
             desc: `${cents(p.electricity.residentialCentsPerKwhYtd)}/kWh · ${num(p.solar.kwhPerKwYear)} kWh per kW of solar`,
           })),
           { href: "/ev-charging-cost", label: "EV charging cost in every state", desc: "Compare all 50 states and DC side by side" },
+          { href: "/ev-charger-installation-cost", label: `Charger installation cost in ${s.name}`, desc: "Average 2026 price to install a home charger, by state" },
           { href: "/states", label: "All state data", desc: "Electricity prices, solar output and charging by state" },
         ]}
       />

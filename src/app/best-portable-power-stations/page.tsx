@@ -169,7 +169,21 @@ export default function BestPowerStationsPage() {
         </ul>
       </Section>
 
-      <aside className="mt-10 rounded-2xl border border-amber-200 bg-amber-50 p-5 max-w-3xl" aria-label="RV and boat batteries">
+      <aside className="mt-10 rounded-2xl border border-amber-200 bg-amber-50 p-5 max-w-3xl" aria-label="Buying for one job">
+        <p className="font-bold text-ink">Buying for one job?</p>
+        <ul className="text-stone-700 text-sm mt-1 space-y-1">
+          <li>
+            <Link href="/best-power-station-for-cpap" className="text-spark-orange font-semibold underline underline-offset-2">Power station for a CPAP</Link>:
+            nights of sleep each one gives, with and without the humidifier.
+          </li>
+          <li>
+            <Link href="/power-station-for-refrigerator" className="text-spark-orange font-semibold underline underline-offset-2">Power station for a fridge</Link>:
+            how many hours each keeps the food cold in an outage.
+          </li>
+        </ul>
+      </aside>
+
+      <aside className="mt-4 rounded-2xl border border-amber-200 bg-amber-50 p-5 max-w-3xl" aria-label="RV and boat batteries">
         <p className="font-bold text-ink">Have an RV, van or boat with a battery bay?</p>
         <p className="text-stone-700 text-sm mt-1">
           Swapping the lead-acid house battery for lithium is often cheaper than a power station: a few hundred dollars for twice the
@@ -217,6 +231,8 @@ export default function BestPowerStationsPage() {
           { href: "/plug-in-solar", label: "Plug-in solar", desc: "Small solar kits that plug into an outlet" },
           { href: "/compare", label: "All comparisons", desc: "EcoFlow, Anker, Jackery and Bluetti head to head" },
           { href: "/lithium-rv-battery", label: "Lithium RV and boat batteries", desc: "Swap lead-acid for lithium: savings and sizes" },
+          { href: "/best-power-station-for-cpap", label: "Power station for CPAP", desc: "Nights of CPAP per dollar" },
+          { href: "/power-station-for-refrigerator", label: "Power station for a fridge", desc: "Hours of fridge each one gives" },
         ]}
       />
       <PhotoCredit name="power-station" />
