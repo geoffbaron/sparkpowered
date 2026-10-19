@@ -4,7 +4,7 @@ import { useState } from "react";
 import { PartnerLink } from "@/components/affiliate";
 import { PlainLink, pillClass } from "@/components/guide-ui";
 import type { BrandId } from "@/data/affiliates";
-import { FRIDGE_KWH_YEAR, LOADS, USABLE_FRACTION } from "@/lib/everyday";
+import { COOLER_WH_DAY, CPAP_NO_HUMIDIFIER_W, FRIDGE_KWH_YEAR, LOADS, USABLE_FRACTION } from "@/lib/everyday";
 
 export interface RuntimeOption {
   id: string;
@@ -17,10 +17,6 @@ export interface RuntimeOption {
   note?: string;
 }
 
-/** CPAP with no heated humidifier: about 11 W (ResMed battery guide, AirSense 10 at pressure 10). */
-export const CPAP_NO_HUMIDIFIER_W = 11;
-/** A 12 V compressor cooler: 0.98 Ah an hour at 12 V on a 90°F day (Dometic CFX3 35 spec). */
-export const COOLER_WH_DAY = Math.round(0.98 * 12 * 24);
 
 const money = (n: number) =>
   n.toLocaleString("en-US", { style: "currency", currency: "USD", minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: n % 1 ? 2 : 0 });

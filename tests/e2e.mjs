@@ -83,6 +83,9 @@ await page.getByRole("button", { name: "A week" }).tap();
 await page.waitForTimeout(300);
 const cp2 = await page.locator("[data-testid=runtime-pick]").innerText();
 ok(cp1 !== cp2, `CPAP picker changes with nights: ${cp1} -> ${cp2}`);
+const cpapText = await page.locator("main").innerText();
+ok(/28 W vs 11 W/.test(cpapText) && /2\.5x/.test(cpapText), "CPAP page shows 28 W vs 11 W and 2.5x");
+ok(/Without humidifier: \d+(\.\d)? nights/.test(cpapText) && !/NaN|Attempted to call/.test(cpapText), "CPAP no-humidifier nights are numbers");
 
 // Trolling picker: 36 V picks the 36 V battery
 await page.goto(base + "/best-trolling-motor-battery", { waitUntil: "load" });
@@ -137,3 +140,6 @@ ok(await page.locator("h1").innerText() === "Electricity, EV charging and solar 
 
 ok(errors.length === 0, "No console/page errors " + errors.join(" | "));
 await browser.close();
+
+// Every sitemap page: no NaN, undefined, [object Object] or raw error text.
+await import("./scan-html.mjs");

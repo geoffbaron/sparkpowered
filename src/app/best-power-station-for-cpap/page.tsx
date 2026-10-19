@@ -3,12 +3,12 @@ import Link from "next/link";
 import { AffiliateDisclosure, PartnerLink } from "@/components/affiliate";
 import { Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
 import { PlainLink, QuickAnswer } from "@/components/guide-ui";
-import { CpapPicker, CPAP_NO_HUMIDIFIER_W, type RuntimeOption } from "@/components/RuntimePicker";
+import { CpapPicker, type RuntimeOption } from "@/components/RuntimePicker";
 import { BigStat, HubHero, OurPick, PhotoCredit } from "@/components/ui";
 import { CPAP_PACK } from "@/data/buyer-guides";
 import type { Product } from "@/data/products";
 import { formatDate } from "@/lib/energy";
-import { LOADS, USABLE_FRACTION } from "@/lib/everyday";
+import { CPAP_NO_HUMIDIFIER_W, LOADS, USABLE_FRACTION } from "@/lib/everyday";
 import { fullName, money, productById } from "@/lib/products";
 import { JsonLd, pageMetadata, url } from "@/lib/seo";
 

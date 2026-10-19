@@ -31,6 +31,15 @@ export const LOADS = {
   phoneChargeWh: 15,
 };
 
+/**
+ * CPAP with no heated humidifier: about 11 W (ResMed battery guide, AirSense 10 at pressure 10).
+ * Lives here, not in a client component file: a server page importing a plain value from a
+ * client module gets a client reference instead of the number, which renders as NaN.
+ */
+export const CPAP_NO_HUMIDIFIER_W = 11;
+/** A 12 V compressor cooler: 0.98 Ah an hour at 12 V on a 90°F day (Dometic CFX3 35 spec). */
+export const COOLER_WH_DAY = Math.round(0.98 * 12 * 24);
+
 /** Fridge + Wi-Fi all day, 4 LED bulbs for 5 hours, and 2 phone charges: watt-hours per day. */
 export const ESSENTIALS_WH_DAY =
   FRIDGE_AVG_W * 24 + LOADS.routerW * 24 + 4 * LOADS.ledW * 5 + 2 * LOADS.phoneChargeWh;
