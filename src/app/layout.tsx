@@ -51,7 +51,10 @@ export const metadata: Metadata = {
   },
   verification: {
     google: "cG0gVqtz4mgGTJadC8OFgakrDaQw1FzD9zdTvncIDyg",
-    other: { "fo-verify": "3c3711c9-f239-4c8e-8a17-c475544cb3ec" },
+    other: {
+      "fo-verify": "3c3711c9-f239-4c8e-8a17-c475544cb3ec",
+      "p:domain_verify": "c488b883c298dc9c1122e0e72d2b2d44",
+    },
   },
   robots: {
     index: true,
