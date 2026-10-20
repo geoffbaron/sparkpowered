@@ -137,6 +137,8 @@ export default function RootLayout({
       <head>
         {/* impact.com site verification, in the exact form impact.com asks for (value attribute). */}
         <meta name="impact-site-verification" {...{ value: "1daf2570-8c42-4207-898d-a7885836ebd8" }} />
+        {/* AvantLink affiliate site verification (https so browsers don't block it on our https pages). */}
+        <script type="text/javascript" src="https://classic.avantlink.com/affiliate_app_confirm.php?mode=js&authResponse=4a49886173dc86f56ae1d4eb573e2f8c6cbb46bc" async />
         {/* The icon font (globals.css) is only used by the two quizzes, so it is not preloaded site-wide. */}
         <script
           defer
