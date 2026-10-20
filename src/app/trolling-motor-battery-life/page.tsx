@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { AffiliateDisclosure, PartnerLink } from "@/components/affiliate";
+import { RedodoSaleCallout } from "@/components/SaleCallout";
 import { Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
 import { QuickAnswer } from "@/components/guide-ui";
 import TrollingRuntimeCalc from "@/components/TrollingRuntimeCalc";
@@ -109,6 +110,8 @@ export default function TrollingRuntimePage() {
             {money(li120.priceUsd ?? 0)}) covers most calm days at a mix of slow and half speed. For 24 V, see the calculator below.
           </p>
         </QuickAnswer>
+
+        <RedodoSaleCallout className="mt-4" />
 
         <section aria-label="Lithium vs AGM on the water" className="grid sm:grid-cols-3 gap-3 mt-8">
           <BigStat tone="leaf" value="2x" label="The hours of a same-size AGM" note="Lithium runs to empty; AGM should stop at half" />

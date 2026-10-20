@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AffiliateDisclosure, PartnerLink } from "@/components/affiliate";
+import { RedodoSaleCallout } from "@/components/SaleCallout";
 import { Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
 import { PlainLink, QuickAnswer } from "@/components/guide-ui";
 import TrollingPicker from "@/components/TrollingPicker";
@@ -130,6 +131,8 @@ export default function TrollingPage() {
             the price for the same energy.
           </p>
         </QuickAnswer>
+
+        <RedodoSaleCallout className="mt-4" />
 
         <section aria-label="What switching saves" className="grid sm:grid-cols-3 gap-3 mt-8">
           <BigStat tone="leaf" value={`${Math.round(agmPairLb - b24.weightLb)} lb`} label="Lighter on a 24 V boat" note={`${b24.weightLb} lb vs two AGMs at ${agmPairLb} lb`} />

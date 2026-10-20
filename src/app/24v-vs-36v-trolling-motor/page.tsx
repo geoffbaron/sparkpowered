@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { AffiliateDisclosure, PartnerLink } from "@/components/affiliate";
+import { RedodoSaleCallout } from "@/components/SaleCallout";
 import { Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
 import { QuickAnswer } from "@/components/guide-ui";
 import { BigStat, HubHero, PhotoCredit } from "@/components/ui";
@@ -110,6 +111,8 @@ export default function VoltageComparePage() {
             {money(li36_50.priceUsd ?? 0)}) replaces three lead-acid batteries.
           </p>
         </QuickAnswer>
+
+        <RedodoSaleCallout className="mt-4" />
 
         <section aria-label="24V vs 36V at a glance" className="grid sm:grid-cols-3 gap-3 mt-8">
           <BigStat value={`+${m112.thrustLb - m80.thrustLb} lb`} label="More thrust at 36 V" note={`${m112.thrustLb} lb vs ${m80.thrustLb} lb (Minn Kota)`} />

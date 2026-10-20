@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AffiliateDisclosure, PartnerLink } from "@/components/affiliate";
+import { RedodoSaleCallout } from "@/components/SaleCallout";
 import { Callout, Faq, Section } from "@/components/content";
 import { Icon } from "@/components/icons";
 import { BigStat, HubHero, PhotoCredit } from "@/components/ui";
@@ -114,6 +115,7 @@ export default function BoatingHub() {
               ({money(2 * LEAD_ACID_REF.priceUsd)}) and is rated for 4,000 full cycles against the AGM&apos;s {LEAD_ACID_REF.cycles} half cycles.
               See the <Link href="/lithium-vs-agm-battery" className="underline">year-by-year cost</Link>.
             </Callout>
+            <RedodoSaleCallout />
             <Callout>
               <strong>Motors.</strong> A small electric outboard such as the ePropulsion Spirit 1.0 ({money(spirit.packagePriceUsd ?? 0)} with battery)
               costs more than a gas motor up front, then about {Math.round(ELECTRIC_HOUR_USD * 100)}¢ an hour to run, with no oil, plugs or winterizing.
