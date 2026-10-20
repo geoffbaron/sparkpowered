@@ -32,6 +32,7 @@ export type BrandId =
   | "lectron"
   | "redodo"
   | "autel"
+  | "piscifun"
   | "energysage";
 
 export interface BrandAffiliate {
@@ -116,6 +117,19 @@ export const AFFILIATES: Record<BrandId, BrandAffiliate> = {
     cookieDays: 30,
     links: { home: "https://www.awin1.com/cread.php?awinmid=72577&awinaffid=3125360&ued=https%3A%2F%2Fautelenergy.us%2F" },
     deepLink: "https://www.awin1.com/cread.php?awinmid=72577&awinaffid=3125360&ued={url}",
+  },
+  // Joined Oct 20 2026 on Awin (Piscifun, MID 89509, from the Awin invitation email) for
+  // publisher 3125360. Invitation states 10% commission and a 30-day cookie. Fishing
+  // gear; used only for a short "rounding out the boat" note on the trolling page.
+  piscifun: {
+    name: "Piscifun",
+    homeUrl: "https://www.piscifun.com/",
+    tracked: true,
+    network: "Awin",
+    commission: "10%",
+    cookieDays: 30,
+    links: { home: "https://www.awin1.com/cread.php?awinmid=89509&awinaffid=3125360&ued=https%3A%2F%2Fwww.piscifun.com%2F" },
+    deepLink: "https://www.awin1.com/cread.php?awinmid=89509&awinaffid=3125360&ued={url}",
   },
   // Applied, pending on Awin (plain links until approved): Jackery, EcoFlow, Oupes, Pecron,
   // and per-sale solar installers Momentum Solar, Solar Savings, Solar Simplified, Nautilus community solar.

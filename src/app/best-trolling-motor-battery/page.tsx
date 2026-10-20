@@ -18,6 +18,14 @@ const DESCRIPTION =
 
 export const metadata: Metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH, type: "article" });
 
+/** Piscifun rod and reel combos (Awin partner), prices from piscifun.com. */
+const PISCIFUN_CHECKED = "2026-10-20";
+const PF = "https://www.piscifun.com/products/";
+const PISCIFUN = {
+  spinning: { name: "Torrent Lite spinning combo", priceUsd: 89.99, url: `${PF}torrent-lite-twin-tip-spinning-rod-and-reel-combo` },
+  baitcasting: { name: "Torrent Lite baitcasting combo", priceUsd: 94.99, url: `${PF}torrent-lite-twin-tip-baitcasting-rod-and-reel-combo` },
+};
+
 const ALL: DeepCycleBattery[] = [...BATTERIES, ...TROLLING_EXTRA];
 const byId = (id: string) => {
   const b = ALL.find((x) => x.id === id);
@@ -268,6 +276,21 @@ export default function TrollingPage() {
               cutoff pauses charging to protect it; a self-heating battery warms up and then charges.
             </Callout>
           </div>
+        </Section>
+
+        <Section title="Rounding out the boat" id="gear">
+          <p className="max-w-3xl">
+            With the battery sorted, the rest of the money can go on fishing. If your rod and reel are due for an upgrade,
+            Piscifun&apos;s Torrent Lite combos are good value: the{" "}
+            <PartnerLink brand="piscifun" productUrl={PISCIFUN.spinning.url}>{PISCIFUN.spinning.name}</PartnerLink>{" "}
+            ({money(PISCIFUN.spinning.priceUsd)}) suits kayaks and lighter lures, and the{" "}
+            <PartnerLink brand="piscifun" productUrl={PISCIFUN.baitcasting.url}>{PISCIFUN.baitcasting.name}</PartnerLink>{" "}
+            ({money(PISCIFUN.baitcasting.priceUsd)}) is built for bass. Both come with a spare rod tip, which is handy when rods ride
+            loose in a boat.
+          </p>
+          <p className="text-xs text-muted mt-2">
+            Prices from piscifun.com, checked {formatDate(PISCIFUN_CHECKED)}. Piscifun links are sponsored.
+          </p>
         </Section>
 
         <Faq items={faqs} path={PATH} />
