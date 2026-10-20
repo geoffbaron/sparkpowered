@@ -78,14 +78,14 @@ export function normalizeIp(raw: string | null | undefined): string | null {
   return isIPv4(ip) || isIPv6(ip) ? ip : null;
 }
 
-/** The client address from proxy headers (Railway's edge sets X-Forwarded-For). */
+/**
+ * The client address from proxy headers. Railway's edge documents X-Real-IP
+ * as the visitor's address, so it wins; X-Forwarded-For is a fallback.
+ */
 export function clientIp(headers: Headers): string | null {
-  const xff = headers.get("x-forwarded-for");
-  if (xff) {
-    const first = normalizeIp(xff.split(",")[0]);
-    if (first) return first;
-  }
-  return normalizeIp(headers.get("x-real-ip"));
+  const real = normalizeIp(headers.get("x-real-ip"));
+  if (real) return real;
+  return normalizeIp((headers.get("x-forwarded-for") ?? "").split(",")[0]);
 }
 
 export function stateForIp(table: IpTable, rawIp: string | null | undefined): string | null {

@@ -45,7 +45,8 @@ test("IP addresses are cleaned before lookup", () => {
   assert.equal(normalizeIp(""), null);
 });
 
-test("client IP comes from the first forwarded address", () => {
+test("client IP prefers Railway's X-Real-IP, then the first forwarded address", () => {
+  assert.equal(clientIp(new Headers({ "x-real-ip": "2.136.0.1", "x-forwarded-for": "72.177.0.1" })), "2.136.0.1");
   assert.equal(clientIp(new Headers({ "x-forwarded-for": "72.177.0.1, 10.0.0.2" })), "72.177.0.1");
   assert.equal(clientIp(new Headers({ "x-real-ip": "2.136.0.1" })), "2.136.0.1");
   assert.equal(clientIp(new Headers()), null);
