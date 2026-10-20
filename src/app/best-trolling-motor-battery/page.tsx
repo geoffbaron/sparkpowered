@@ -10,7 +10,8 @@ import { BATTERIES, BATTERY_FACTS, LEAD_ACID_REF, OTHER_LITHIUM, TROLLING_EXTRA,
 import { formatDate } from "@/lib/energy";
 import { money } from "@/lib/products";
 import { lifetimeCost } from "@/lib/rv-battery";
-import { JsonLd, pageMetadata, url } from "@/lib/seo";
+import { JsonLd, pageMetadata } from "@/lib/seo";
+import { batteryProduct, productList } from "@/lib/structured-data";
 
 const PATH = "/best-trolling-motor-battery";
 const TITLE = "Best Trolling Motor Battery (2026): Lithium That Lasts All Day";
@@ -71,24 +72,11 @@ export default function TrollingPage() {
   return (
     <article>
       <JsonLd
-        data={{
-          "@context": "https://schema.org",
-          "@type": "ItemList",
-          "@id": `${url(PATH)}#products`,
-          name: "Trolling motor batteries",
-          numberOfItems: list.length,
-          itemListElement: list.map((b, i) => ({
-            "@type": "ListItem",
-            position: i + 1,
-            item: {
-              "@type": "Product",
-              name: `Redodo ${b.model}`,
-              brand: { "@type": "Brand", name: "Redodo" },
-              url: b.url,
-              offers: { "@type": "Offer", price: b.priceUsd, priceCurrency: "USD", url: b.url, seller: { "@type": "Organization", name: "Redodo" } },
-            },
-          })),
-        }}
+        data={productList(
+          PATH,
+          "Trolling motor batteries",
+          list.map((b) => batteryProduct({ ...b, name: `Redodo ${b.model}`, maker: "Redodo" }, PATH)),
+        )}
       />
       <HubHero
         image="power-station"

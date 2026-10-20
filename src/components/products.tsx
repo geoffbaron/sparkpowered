@@ -7,7 +7,8 @@
 import { PartnerLink } from "@/components/affiliate";
 import { formatDate } from "@/lib/energy";
 import { lifeSummary } from "@/lib/everyday";
-import { JsonLd, url } from "@/lib/seo";
+import { JsonLd } from "@/lib/seo";
+import { productList, reviewedProduct } from "@/lib/structured-data";
 import { brandName, fullName, kwh, maxWh, money, perKwh, watts } from "@/lib/products";
 import type { Product } from "@/data/products";
 
@@ -162,51 +163,30 @@ export function PriceFootnote({ products }: { products: Product[] }) {
   );
 }
 
-/** ItemList of Product entities with Offers. No ratings or reviews: we have none to give. */
+/** ItemList of the products a guide reviews. See src/lib/structured-data.ts. */
 export function ProductListJsonLd({ products, path, name }: { products: Product[]; path: string; name: string }) {
-  return (
-    <JsonLd
-      data={{
-        "@context": "https://schema.org",
-        "@type": "ItemList",
-        "@id": `${url(path)}#products`,
-        name,
-        numberOfItems: products.length,
-        itemListElement: products.map((p, i) => ({
-          "@type": "ListItem",
-          position: i + 1,
-          item: productJson(p),
-        })),
-      }}
-    />
-  );
+  return <JsonLd data={productList(path, name, products.map((p) => productJson(p, path)))} />;
 }
 
-export function productJson(p: Product) {
-  return {
-    "@type": "Product",
+export function productJson(p: Product, pagePath: string, reviewDate?: string) {
+  const kind = p.category === "home" ? "home battery" : "portable power station";
+  return reviewedProduct({
     name: fullName(p),
-    brand: { "@type": "Brand", name: brandName(p) },
+    brand: brandName(p),
     model: p.model,
     url: p.url,
-    category: p.category === "home" ? "Home battery" : "Portable power station",
-    additionalProperty: [
-      { "@type": "PropertyValue", name: "Capacity", value: p.capacityWh, unitCode: "WHR" },
-      { "@type": "PropertyValue", name: "Continuous AC output", value: p.acOutputW, unitCode: "WTT" },
-      ...(p.chemistry ? [{ "@type": "PropertyValue", name: "Battery chemistry", value: p.chemistry }] : []),
-      ...(p.maxCapacityWh ? [{ "@type": "PropertyValue", name: "Maximum expanded capacity", value: maxWh(p), unitCode: "WHR" }] : []),
-    ],
-    ...(p.priceUsd != null
-      ? {
-          offers: {
-            "@type": "Offer",
-            price: p.priceUsd,
-            priceCurrency: "USD",
-            url: p.url,
-            availability: "https://schema.org/InStock",
-            seller: { "@type": "Organization", name: brandName(p) },
-          },
-        }
-      : {}),
-  };
+    pagePath,
+    reviewDate,
+    description: `${fullName(p)} is a ${kwh(p.capacityWh)} ${kind} with ${watts(p.acOutputW)} of continuous AC output.`,
+    priceUsd: p.priceUsd,
+    extra: {
+      category: p.category === "home" ? "Home battery" : "Portable power station",
+      additionalProperty: [
+        { "@type": "PropertyValue", name: "Capacity", value: p.capacityWh, unitCode: "WHR" },
+        { "@type": "PropertyValue", name: "Continuous AC output", value: p.acOutputW, unitCode: "WTT" },
+        ...(p.chemistry ? [{ "@type": "PropertyValue", name: "Battery chemistry", value: p.chemistry }] : []),
+        ...(p.maxCapacityWh ? [{ "@type": "PropertyValue", name: "Maximum expanded capacity", value: maxWh(p), unitCode: "WHR" }] : []),
+      ],
+    },
+  });
 }

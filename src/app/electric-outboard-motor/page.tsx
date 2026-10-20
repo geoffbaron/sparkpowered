@@ -17,7 +17,8 @@ import { BATTERIES } from "@/data/batteries";
 import { formatDate } from "@/lib/energy";
 import { money } from "@/lib/products";
 import { ELECTRIC_HOUR_USD, GAS_HOUR_USD, chargeCostUsd, seasonFuel } from "@/lib/boating";
-import { JsonLd, pageMetadata, url } from "@/lib/seo";
+import { JsonLd, pageMetadata } from "@/lib/seo";
+import { productList, reviewedProduct } from "@/lib/structured-data";
 
 const PATH = "/electric-outboard-motor";
 const TITLE = "Electric Outboard Motors (2026): Prices, Range and Cost vs Gas";
@@ -65,26 +66,21 @@ export default function ElectricOutboardPage() {
   return (
     <article>
       <JsonLd
-        data={{
-          "@context": "https://schema.org",
-          "@type": "ItemList",
-          "@id": `${url(PATH)}#products`,
-          name: "Electric outboard motors",
-          numberOfItems: ELECTRIC_OUTBOARDS.length,
-          itemListElement: ELECTRIC_OUTBOARDS.map((o, i) => ({
-            "@type": "ListItem",
-            position: i + 1,
-            item: {
-              "@type": "Product",
+        data={productList(
+          PATH,
+          "Electric outboard motors",
+          ELECTRIC_OUTBOARDS.map((o) =>
+            reviewedProduct({
               name: o.name,
-              brand: { "@type": "Brand", name: o.maker },
+              brand: o.maker,
               url: o.url,
-              ...(o.packagePriceUsd ?? o.motorPriceUsd
-                ? { offers: { "@type": "Offer", price: o.packagePriceUsd ?? o.motorPriceUsd, priceCurrency: "USD", url: o.priceUrl } }
-                : {}),
-            },
-          })),
-        }}
+              pagePath: PATH,
+              description: `${o.name} is a ${o.watts.toLocaleString("en-US")} W electric outboard that ${o.maker} compares to a ${o.gasHpClaim} gas motor.`,
+              priceUsd: o.packagePriceUsd ?? o.motorPriceUsd,
+              priceUrl: o.priceUrl,
+            }),
+          ),
+        )}
       />
       <HubHero
         image="power-station"

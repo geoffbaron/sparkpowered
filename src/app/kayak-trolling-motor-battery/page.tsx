@@ -9,7 +9,8 @@ import { BLUETTI_BOAT, BOATING_CHECKED, BOAT_BATTERIES, PISCIFUN_GEAR } from "@/
 import { formatDate } from "@/lib/energy";
 import { money } from "@/lib/products";
 import { MINN_KOTA_MANUAL, NEWPORT_RUNTIME_GUIDE, hoursLabel, motorById, runtimeHours } from "@/lib/boating";
-import { JsonLd, pageMetadata, url } from "@/lib/seo";
+import { JsonLd, pageMetadata } from "@/lib/seo";
+import { batteryProduct, productList, reviewedProduct } from "@/lib/structured-data";
 
 const PATH = "/kayak-trolling-motor-battery";
 const TITLE = "Best Kayak Trolling Motor Battery (2026): Light Lithium for All-Day Fishing";
@@ -69,36 +70,17 @@ export default function KayakBatteryPage() {
   return (
     <article>
       <JsonLd
-        data={{
-          "@context": "https://schema.org",
-          "@type": "ItemList",
-          "@id": `${url(PATH)}#products`,
-          name: "Kayak trolling motor batteries",
-          numberOfItems: 3,
-          itemListElement: [k50, mini].map((b, i) => ({
-            "@type": "ListItem",
-            position: i + 1,
-            item: {
-              "@type": "Product",
-              name: b.name,
-              brand: { "@type": "Brand", name: b.maker },
-              url: b.url,
-              offers: { "@type": "Offer", price: b.priceUsd, priceCurrency: "USD", url: b.url },
-            },
-          })).concat([
-            {
-              "@type": "ListItem",
-              position: 3,
-              item: {
-                "@type": "Product",
-                name: b1210.name,
-                brand: { "@type": "Brand", name: "Bluetti" },
-                url: b1210.url,
-                offers: { "@type": "Offer", price: b1210.priceUsd, priceCurrency: "USD", url: b1210.url },
-              },
-            },
-          ]),
-        }}
+        data={productList(PATH, "Kayak trolling motor batteries", [
+          ...[k50, mini].map((b) => batteryProduct(b, PATH)),
+          reviewedProduct({
+            name: b1210.name,
+            brand: "Bluetti",
+            url: b1210.url,
+            pagePath: PATH,
+            description: b1210.note,
+            priceUsd: b1210.priceUsd,
+          }),
+        ])}
       />
       <HubHero
         image="power-station"

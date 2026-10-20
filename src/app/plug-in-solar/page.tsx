@@ -11,6 +11,7 @@ import { NATIONAL, SOURCES, STATES, formatDate, num, stateByAbbr, usd } from "@/
 import { MOUNTING_LABEL, REFERENCE_KIT_W, pluginFigures, pluginModel } from "@/lib/plugin-solar";
 import { AFFILIATES } from "@/data/affiliates";
 import { JsonLd, pageMetadata, url } from "@/lib/seo";
+import { productList, reviewedProduct } from "@/lib/structured-data";
 
 const PATH = "/plug-in-solar";
 const TITLE = "Plug-In Solar (Balcony Solar) in the US: State Laws, Kits & Payback";
@@ -163,21 +164,24 @@ export default function PluginSolarPage() {
       />
       <JsonLd
         data={{
-          "@context": "https://schema.org",
-          "@type": "ItemList",
+          ...productList(
+            PATH,
+            "Plug-in solar kits sold in the US",
+            PLUGIN_KITS.map((k) =>
+              reviewedProduct({
+                name: kitName(k),
+                brand: AFFILIATES[k.brand].name,
+                url: k.url,
+                pagePath: PATH,
+                description:
+                  k.panelW > 0
+                    ? `Plug-in solar kit with ${k.panelW.toLocaleString("en-US")} W of panels and a ${k.inverterW.toLocaleString("en-US")} W inverter.`
+                    : `Plug-in solar inverter rated at ${k.inverterW.toLocaleString("en-US")} W (no panels included).`,
+                priceUsd: k.priceUsd,
+              }),
+            ),
+          ),
           "@id": `${url(PATH)}#kits`,
-          name: "Plug-in solar kits sold in the US",
-          itemListElement: PLUGIN_KITS.map((k, i) => ({
-            "@type": "ListItem",
-            position: i + 1,
-            item: {
-              "@type": "Product",
-              name: kitName(k),
-              brand: { "@type": "Brand", name: AFFILIATES[k.brand].name },
-              url: k.url,
-              offers: { "@type": "Offer", price: k.priceUsd, priceCurrency: "USD", url: k.url },
-            },
-          })),
         }}
       />
       <HubHero

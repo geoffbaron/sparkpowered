@@ -10,7 +10,8 @@ import { INSTALL_COST, OTHER_CHARGERS } from "@/data/buyer-guides";
 import { HOME_CHARGERS, chargerById, type HomeCharger } from "@/data/chargers";
 import { MONTHLY_MILES, NATIONAL, evCostPer100, formatDate, gasCostPer100, nationalRateUsd, referenceEv } from "@/lib/energy";
 import { money } from "@/lib/products";
-import { JsonLd, pageMetadata, url } from "@/lib/seo";
+import { JsonLd, pageMetadata } from "@/lib/seo";
+import { productList, reviewedProduct } from "@/lib/structured-data";
 
 const PATH = "/best-home-ev-charger";
 const TITLE = "Best Home EV Charger (2026): Level 2 Chargers Compared, With Prices";
@@ -62,9 +63,10 @@ export default function BestHomeEvChargerPage() {
     j1772: "J1772 is the round five-pin plug used by nearly every non-Tesla EV and plug-in hybrid sold in the US until recently. If you might switch to a NACS car later, an adapter bridges the gap.",
   };
 
-  type Row = { name: string; brand: HomeCharger["brand"] | null; id: string; url: string; price: number; plug: string; amps: number; mph: string; app: string; cable: string; warranty: string };
+  type Row = { name: string; maker: string; brand: HomeCharger["brand"] | null; id: string; url: string; price: number; plug: string; amps: number; mph: string; app: string; cable: string; warranty: string };
   const partnerRows: Row[] = HOME_CHARGERS.filter((c) => c.level === "Level 2").map((c) => ({
     name: `${c.brand === "lectron" ? "Lectron" : "Autel"} ${c.name}`,
+    maker: c.brand === "lectron" ? "Lectron" : "Autel",
     brand: c.brand,
     id: c.id,
     url: c.url,
@@ -78,6 +80,7 @@ export default function BestHomeEvChargerPage() {
   }));
   const otherRows: Row[] = OTHER_CHARGERS.map((c) => ({
     name: c.name,
+    maker: c.brand,
     brand: null,
     id: c.id,
     url: c.url,
@@ -117,18 +120,20 @@ export default function BestHomeEvChargerPage() {
   return (
     <article>
       <JsonLd
-        data={{
-          "@context": "https://schema.org",
-          "@type": "ItemList",
-          "@id": `${url(PATH)}#products`,
-          name: "Home EV chargers",
-          numberOfItems: rows.length,
-          itemListElement: rows.map((r, i) => ({
-            "@type": "ListItem",
-            position: i + 1,
-            item: { "@type": "Product", name: r.name, url: r.url, offers: { "@type": "Offer", price: r.price, priceCurrency: "USD", url: r.url } },
-          })),
-        }}
+        data={productList(
+          PATH,
+          "Home EV chargers",
+          rows.map((r) =>
+            reviewedProduct({
+              name: r.name,
+              brand: r.maker,
+              url: r.url,
+              pagePath: PATH,
+              description: `${r.name} is a ${r.amps}-amp Level 2 home EV charger with a ${r.plug} plug.`,
+              priceUsd: r.price,
+            }),
+          ),
+        )}
       />
       <HubHero
         image="ev"

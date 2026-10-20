@@ -40,7 +40,7 @@ export default function StatesIndex() {
           creator: { "@id": url("/#organization") },
           dateModified: DATA_UPDATED,
           isBasedOn: Object.values(SOURCES).map((s) => s.url),
-          spatialCoverage: { "@type": "Country", name: "United States" },
+          spatialCoverage: { "@type": "Place", name: "United States" },
           variableMeasured: [
             "Average residential electricity price (cents per kWh)",
             "Average monthly residential electricity use (kWh)",

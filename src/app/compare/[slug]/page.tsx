@@ -128,7 +128,7 @@ export default async function ComparisonPage({ params }: Props) {
           author: { "@id": url("/about#editor") },
           publisher: { "@id": url("/#organization") },
           isPartOf: { "@id": url("/#website") },
-          about: all.map(productJson),
+          about: all.map((p) => productJson(p, path, c.updated)),
         }}
       />
       <Breadcrumbs items={[{ name: "Comparisons", path: "/compare" }, { name: c.title, path }]} />

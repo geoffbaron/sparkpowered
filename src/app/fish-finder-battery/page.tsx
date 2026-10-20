@@ -9,7 +9,8 @@ import { formatDate } from "@/lib/energy";
 import { USABLE_FRACTION } from "@/lib/everyday";
 import { money, productById } from "@/lib/products";
 import { ELECTRONICS, electronicsById, electronicsHours, hoursLabel } from "@/lib/boating";
-import { JsonLd, pageMetadata, url } from "@/lib/seo";
+import { JsonLd, pageMetadata } from "@/lib/seo";
+import { batteryProduct, productList } from "@/lib/structured-data";
 
 const PATH = "/fish-finder-battery";
 const TITLE = "Best Fish Finder Battery (2026): What Size, and How Long It Lasts";
@@ -68,26 +69,7 @@ export default function FishFinderBatteryPage() {
 
   return (
     <article>
-      <JsonLd
-        data={{
-          "@context": "https://schema.org",
-          "@type": "ItemList",
-          "@id": `${url(PATH)}#products`,
-          name: "Fish finder batteries",
-          numberOfItems: 2,
-          itemListElement: [ff, k50].map((b, i) => ({
-            "@type": "ListItem",
-            position: i + 1,
-            item: {
-              "@type": "Product",
-              name: b.name,
-              brand: { "@type": "Brand", name: b.maker },
-              url: b.url,
-              offers: { "@type": "Offer", price: b.priceUsd, priceCurrency: "USD", url: b.url },
-            },
-          })),
-        }}
-      />
+      <JsonLd data={productList(PATH, "Fish finder batteries", [ff, k50].map((b) => batteryProduct(b, PATH)))} />
       <HubHero
         image="power-station"
         crumbs={[

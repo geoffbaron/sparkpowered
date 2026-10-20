@@ -8,7 +8,8 @@ import { BATTERIES, BATTERY_FACTS, LEAD_ACID_REF, type DeepCycleBattery } from "
 import { SOURCES, STATES, formatDate } from "@/lib/energy";
 import { money } from "@/lib/products";
 import { leadAcidUsableWh, lifetimeCost, lifetimeKwh } from "@/lib/rv-battery";
-import { JsonLd, pageMetadata, url } from "@/lib/seo";
+import { JsonLd, pageMetadata } from "@/lib/seo";
+import { productList, reviewedProduct } from "@/lib/structured-data";
 
 const PATH = "/lithium-rv-battery";
 const TITLE = "Lithium RV Battery: What Switching From Lead-Acid Saves (2026)";
@@ -132,39 +133,30 @@ export default function LithiumRvBatteryPage() {
   return (
     <article>
       <JsonLd
-        data={{
-          "@context": "https://schema.org",
-          "@type": "ItemList",
-          "@id": `${url(PATH)}#products`,
-          name: "Lithium RV, van and boat batteries",
-          numberOfItems: BATTERIES.length,
-          itemListElement: BATTERIES.map((b, i) => ({
-            "@type": "ListItem",
-            position: i + 1,
-            item: {
-              "@type": "Product",
+        data={productList(
+          PATH,
+          "Lithium RV, van and boat batteries",
+          BATTERIES.map((b) =>
+            reviewedProduct({
               name: fullName(b),
-              brand: { "@type": "Brand", name: "Redodo" },
+              brand: "Redodo",
               model: b.model,
               url: b.url,
-              category: "Deep-cycle LiFePO4 battery",
-              additionalProperty: [
-                { "@type": "PropertyValue", name: "Energy", value: b.energyWh, unitCode: "WHR" },
-                { "@type": "PropertyValue", name: "Nominal voltage", value: b.nominalV, unitCode: "VLT" },
-                { "@type": "PropertyValue", name: "Weight", value: b.weightLb, unitCode: "LBR" },
-                { "@type": "PropertyValue", name: "Rated cycles", value: b.cycles },
-              ],
-              offers: {
-                "@type": "Offer",
-                price: b.priceUsd,
-                priceCurrency: "USD",
-                url: b.url,
-                availability: "https://schema.org/InStock",
-                seller: { "@type": "Organization", name: "Redodo" },
+              pagePath: PATH,
+              description: `${b.volts}V ${b.ampHours}Ah LiFePO4 deep-cycle battery from Redodo, rated at ${b.energyWh.toLocaleString("en-US")} Wh and ${b.cycles.toLocaleString("en-US")} cycles.`,
+              priceUsd: b.priceUsd,
+              extra: {
+                category: "Deep-cycle LiFePO4 battery",
+                additionalProperty: [
+                  { "@type": "PropertyValue", name: "Energy", value: b.energyWh, unitCode: "WHR" },
+                  { "@type": "PropertyValue", name: "Nominal voltage", value: b.nominalV, unitCode: "VLT" },
+                  { "@type": "PropertyValue", name: "Weight", value: b.weightLb, unitCode: "LBR" },
+                  { "@type": "PropertyValue", name: "Rated cycles", value: b.cycles },
+                ],
               },
-            },
-          })),
-        }}
+            }),
+          ),
+        )}
       />
       <HubHero
         image="power-station"

@@ -10,7 +10,9 @@ import type { Product } from "@/data/products";
 import { formatDate } from "@/lib/energy";
 import { CPAP_NO_HUMIDIFIER_W, LOADS, USABLE_FRACTION } from "@/lib/everyday";
 import { fullName, money, productById } from "@/lib/products";
-import { JsonLd, pageMetadata, url } from "@/lib/seo";
+import { JsonLd, pageMetadata } from "@/lib/seo";
+import { productList, reviewedProduct } from "@/lib/structured-data";
+import { productJson } from "@/components/products";
 
 const PATH = "/best-power-station-for-cpap";
 const TITLE = "Best Power Station for CPAP (2026): Nights of Sleep per Dollar";
@@ -73,23 +75,19 @@ export default function CpapPage() {
   return (
     <article>
       <JsonLd
-        data={{
-          "@context": "https://schema.org",
-          "@type": "ItemList",
-          "@id": `${url(PATH)}#products`,
-          name: "Power stations for a CPAP",
-          numberOfItems: rows.length,
-          itemListElement: rows.map((o, i) => ({
-            "@type": "ListItem",
-            position: i + 1,
-            item: {
-              "@type": "Product",
-              name: o.name,
-              url: o.url,
-              offers: { "@type": "Offer", price: o.priceUsd, priceCurrency: "USD", url: o.url },
-            },
-          })),
-        }}
+        data={productList(PATH, "Power stations for a CPAP", [
+          ...[...products]
+            .sort((a, b) => a.priceUsd! - b.priceUsd!)
+            .map((p) => productJson(p, PATH)),
+          reviewedProduct({
+            name: CPAP_PACK.name,
+            brand: "Bluetti",
+            url: CPAP_PACK.url,
+            pagePath: PATH,
+            description: CPAP_PACK.notes[0],
+            priceUsd: CPAP_PACK.priceUsd,
+          }),
+        ])}
       />
       <HubHero
         image="outage"
