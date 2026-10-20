@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import LocalNote from "@/components/LocalNote";
+import { useChooseState, useVisitorState } from "@/hooks/useVisitorState";
 
 /**
  * Home-page hero picker: choose a state, see the typical household's yearly
@@ -16,7 +18,15 @@ export default function StatePicker({
   totals: Record<string, number>;
   initial?: string;
 }) {
-  const [abbr, setAbbr] = useState(initial);
+  const valid = useMemo(() => states.map((s) => s.abbr), [states]);
+  const located = useVisitorState(valid);
+  const choose = useChooseState();
+  const [picked, setPicked] = useState<string | null>(null);
+  const abbr = picked ?? located.abbr ?? initial;
+  const setAbbr = (a: string) => {
+    setPicked(a);
+    choose(a);
+  };
   const name = states.find((s) => s.abbr === abbr)?.name ?? "";
   const total = totals[abbr] ?? 0;
   return (
@@ -41,6 +51,7 @@ export default function StatePicker({
           See what you&apos;d save
         </Link>
       </div>
+      <LocalNote name={name} local={picked !== null || located.abbr !== null} selectId="hero-state" />
       <p className="mt-3 text-stone-700" aria-live="polite">
         A typical {name} home could save about{" "}
         <strong className="text-leaf text-xl tabular-nums">${total.toLocaleString("en-US")} a year</strong> by going

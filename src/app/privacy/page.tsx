@@ -24,6 +24,16 @@ export default function PrivacyPage() {
           Finder sends the ZIP code you enter to our server to look up your state; we do not store it.
         </p>
         <p>
+          <strong>Your state.</strong> We estimate your state from your connection to show local prices; we
+          don&apos;t store your IP address or exact location. The estimate uses GeoLite2 data created by MaxMind,
+          available from{" "}
+          <a href="https://www.maxmind.com" className="underline" rel="noopener">
+            maxmind.com
+          </a>
+          , looked up on our own server. If you pick a state yourself, that choice is saved in your browser&apos;s
+          local storage.
+        </p>
+        <p>
           <strong>Preferences.</strong> If you turn on the &quot;No Tesla&quot; filter, that choice is saved in
           your browser&apos;s local storage so it persists between pages. You can clear it at any time in your
           browser settings.
@@ -36,7 +46,7 @@ export default function PrivacyPage() {
           <strong>Changes.</strong> If we start collecting anything else, such as an email address for a
           newsletter, we will update this page first and ask for your consent where required.
         </p>
-        <p className="text-sm text-muted">Last updated 15 October 2026.</p>
+        <p className="text-sm text-muted">Last updated 20 October 2026.</p>
       </div>
     </article>
   );

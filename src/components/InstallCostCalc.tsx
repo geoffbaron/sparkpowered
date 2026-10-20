@@ -1,7 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { PartnerLink } from "@/components/affiliate";
+import LocalNote from "@/components/LocalNote";
+import { useChooseState, useVisitorState } from "@/hooks/useVisitorState";
+import { NATIONAL_CHOICE } from "@/lib/visitor-state";
 import { pillClass } from "@/components/guide-ui";
 import type { BrandId } from "@/data/affiliates";
 
@@ -28,14 +31,24 @@ export default function InstallCostCalc({
   extras,
   chargers,
   initialState = "",
+  autoLocate = true,
 }: {
   states: { abbr: string; name: string; avg: number }[];
   usAverage: number;
   extras: Record<Extra, { label: string; range: [number, number] }>;
   chargers: ChargerChoice[];
   initialState?: string;
+  autoLocate?: boolean;
 }) {
-  const [abbr, setAbbr] = useState(initialState);
+  const valid = useMemo(() => states.map((s) => s.abbr), [states]);
+  const located = useVisitorState(valid, autoLocate);
+  const choose = useChooseState();
+  const [picked, setPicked] = useState<string | null>(null);
+  const abbr = picked ?? located.abbr ?? initialState;
+  const setAbbr = (a: string) => {
+    setPicked(a);
+    choose(a || NATIONAL_CHOICE);
+  };
   const [hasOutlet, setHasOutlet] = useState(false);
   const [chargerId, setChargerId] = useState(chargers[0]?.id ?? "");
   const [on, setOn] = useState<Record<Extra, boolean>>({ longRun: false, subpanel: false, serviceUpgrade: false });
@@ -65,6 +78,7 @@ export default function InstallCostCalc({
               <option key={s.abbr} value={s.abbr}>{s.name}</option>
             ))}
           </select>
+          <LocalNote name={states.find((s) => s.abbr === abbr)?.name ?? null} local selectId="install-state" />
         </label>
         <fieldset>
           <legend className="font-bold text-ink mb-2">2. Is there already a 240-volt outlet (dryer or RV type) where you park?</legend>

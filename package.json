@@ -10,7 +10,8 @@
     "test": "tsx --tsconfig tsconfig.json --test tests/*.test.ts",
     "data": "python3 scripts/build_state_data.py",
     "test:e2e": "node tests/e2e.mjs",
-    "test:html": "node tests/scan-html.mjs"
+    "test:html": "node tests/scan-html.mjs",
+    "data:ip": "npm install --no-save geoip-lite@latest && node scripts/build_ip_states.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.80.0",

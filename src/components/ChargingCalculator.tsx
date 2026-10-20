@@ -3,6 +3,8 @@
 import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import type { CalcEv, CalcState } from "@/lib/calculator-data";
+import LocalNote from "@/components/LocalNote";
+import { useChooseState, useVisitorState } from "@/hooks/useVisitorState";
 
 interface Props {
   states: CalcState[];
@@ -17,8 +19,10 @@ const fmt = (n: number, d = 0) =>
 /** Reads ?state=XX so state pages can deep-link into a pre-filled calculator. */
 export function ChargingCalculatorFromParams(props: Props) {
   const params = useSearchParams();
-  const initial = params.get("state")?.toUpperCase() ?? "US";
-  return <ChargingCalculator key={initial} {...props} initialState={initial} />;
+  const q = params.get("state")?.toUpperCase();
+  const fromUrl = !!q && props.states.some((s) => s.abbr === q);
+  const initial = fromUrl ? q : "US";
+  return <ChargingCalculator key={initial} {...props} initialState={initial} autoLocate={!fromUrl} />;
 }
 
 export default function ChargingCalculator({
@@ -27,10 +31,17 @@ export default function ChargingCalculator({
   us,
   defaultEvId,
   initialState = "US",
-}: Props & { initialState?: string }) {
-  const [stateAbbr, setStateAbbr] = useState(
-    states.some((s) => s.abbr === initialState) ? initialState : "US",
-  );
+  autoLocate = false,
+}: Props & { initialState?: string; autoLocate?: boolean }) {
+  const valid = useMemo(() => states.map((s) => s.abbr), [states]);
+  const located = useVisitorState(valid, autoLocate);
+  const choose = useChooseState();
+  const [picked, setPicked] = useState<string | null>(null);
+  const stateAbbr = picked ?? located.abbr ?? (valid.includes(initialState) ? initialState : "US");
+  const setStateAbbr = (a: string) => {
+    setPicked(a);
+    choose(a);
+  };
   const [evId, setEvId] = useState(defaultEvId);
   const makes = useMemo(() => [...new Set(evs.map((e) => e.make))], [evs]);
   const [make, setMake] = useState(evs.find((e) => e.id === defaultEvId)?.make ?? makes[0]);
@@ -70,7 +81,7 @@ export default function ChargingCalculator({
       <div className="grid sm:grid-cols-2 gap-5">
         <label className="block">
           <span className="block text-sm font-semibold mb-1.5">Your state</span>
-          <select className={field} value={stateAbbr} onChange={(e) => setStateAbbr(e.target.value)}>
+          <select id="calc-state" className={field} value={stateAbbr} onChange={(e) => setStateAbbr(e.target.value)}>
             <option value="US">US average</option>
             {states.map((s) => (
               <option key={s.abbr} value={s.abbr}>
@@ -78,6 +89,7 @@ export default function ChargingCalculator({
               </option>
             ))}
           </select>
+          <LocalNote name={st?.name ?? null} local selectId="calc-state" />
         </label>
         <fieldset className="block">
           <legend className="block text-sm font-semibold mb-1.5">Your EV (EPA rating)</legend>

@@ -10,6 +10,7 @@ import {
   Section,
   Sources,
 } from "@/components/content";
+import IncentivesForState from "@/components/IncentivesForState";
 import { STATES } from "@/lib/energy";
 import { stateSources } from "@/lib/state-sources";
 import { JsonLd, pageMetadata, url } from "@/lib/seo";
@@ -153,6 +154,14 @@ export default function IncentivesPage() {
           </Link>{" "}
           also lists them.
         </p>
+        <IncentivesForState
+          states={[...STATES]
+            .sort((a, b) => a.name.localeCompare(b.name))
+            .map((s) => {
+              const [afdc, dsire] = stateSources(s);
+              return { abbr: s.abbr, name: s.name, slug: s.slug, afdc: afdc.url, dsire: dsire.url };
+            })}
+        />
         <ul className="grid sm:grid-cols-2 gap-x-6 gap-y-2 text-sm">
           {[...STATES]
             .sort((a, b) => a.name.localeCompare(b.name))

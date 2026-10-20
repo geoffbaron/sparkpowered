@@ -1,9 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Icon } from "@/components/icons";
+import LocalNote from "@/components/LocalNote";
+import { useChooseState, useVisitorState } from "@/hooks/useVisitorState";
 import { PartnerLink, PARTNER_REL } from "@/components/affiliate";
 import { ASSUMPTIONS, GAS_CARS, MMBTU_PER_MCF, homeFigures, plan, type Costs, type PlannerInputs, type PlannerState, type SwitchId, type SwitchResult } from "@/lib/go-electric";
 import type { BrandId } from "@/data/affiliates";
@@ -68,12 +70,17 @@ const inputCls =
 /** Reads ?state=XX so the home page picker and state pages can deep-link in. */
 export function GoElectricPlannerFromParams(props: Props) {
   const q = useSearchParams().get("state")?.toUpperCase();
-  const initial = q && props.states.some((s) => s.abbr === q) ? q : "OH";
-  return <GoElectricPlanner key={initial} {...props} initialState={initial} />;
+  const fromUrl = !!q && props.states.some((s) => s.abbr === q);
+  const initial = fromUrl ? q : "OH";
+  return <GoElectricPlanner key={initial} {...props} initialState={initial} fromUrl={fromUrl} autoLocate={!fromUrl} />;
 }
 
-export default function GoElectricPlanner({ states, costs, outagePick, pluginPick, chargerPick, smartChargerPick, solarQuotes, myths, sources, initialState = "OH" }: Props & { initialState?: string }) {
-  const [abbr, setAbbr] = useState(initialState);
+export default function GoElectricPlanner({ states, costs, outagePick, pluginPick, chargerPick, smartChargerPick, solarQuotes, myths, sources, initialState = "OH", fromUrl = false, autoLocate = false }: Props & { initialState?: string; fromUrl?: boolean; autoLocate?: boolean }) {
+  const valid = useMemo(() => states.map((s) => s.abbr), [states]);
+  const located = useVisitorState(valid, autoLocate);
+  const choose = useChooseState();
+  const [picked, setPicked] = useState<string | null>(null);
+  const abbr = picked ?? located.abbr ?? initialState;
   const st = states.find((s) => s.abbr === abbr) ?? states[0];
   const [inputs, setInputs] = useState<PlannerInputs>({
     car: "average",
@@ -88,15 +95,16 @@ export default function GoElectricPlanner({ states, costs, outagePick, pluginPic
 
   const set = <K extends keyof PlannerInputs>(k: K, v: PlannerInputs[K]) => setInputs((x) => ({ ...x, [k]: v }));
   const onState = (a: string) => {
-    setAbbr(a);
-    const ns = states.find((s) => s.abbr === a)!;
-    if (!billTouched) set("monthlyBillUsd", ns.avgMonthlyBillUsd);
+    setPicked(a);
+    choose(a);
     const url = new URL(window.location.href);
     url.searchParams.set("state", a);
     window.history.replaceState(null, "", url);
   };
 
-  const safeInputs = { ...inputs, monthlyBillUsd: Math.max(10, inputs.monthlyBillUsd || st.avgMonthlyBillUsd), milesPerWeek: Math.max(0, inputs.milesPerWeek || 0) };
+  // Until the visitor types a bill, use the typical bill for whichever state is showing.
+  const bill = billTouched ? inputs.monthlyBillUsd : st.avgMonthlyBillUsd;
+  const safeInputs = { ...inputs, monthlyBillUsd: Math.max(10, bill || st.avgMonthlyBillUsd), milesPerWeek: Math.max(0, inputs.milesPerWeek || 0) };
   const result = plan(st, safeInputs, costs);
 
   // Monthly spend on energy today vs after, for the before/after bars.
@@ -133,6 +141,7 @@ export default function GoElectricPlanner({ states, costs, outagePick, pluginPic
               </option>
             ))}
           </select>
+          <LocalNote name={st.name} local={fromUrl || picked !== null || located.abbr !== null} selectId="ge-state" />
         </Field>
         <fieldset>
           <legend className="block text-sm font-semibold text-ink mb-1.5">Your home</legend>
@@ -160,7 +169,7 @@ export default function GoElectricPlanner({ states, costs, outagePick, pluginPic
               min={10}
               max={2000}
               className={`${inputCls} pl-7`}
-              value={inputs.monthlyBillUsd || ""}
+              value={bill || ""}
               onChange={(e) => {
                 setBillTouched(true);
                 set("monthlyBillUsd", Number(e.target.value));

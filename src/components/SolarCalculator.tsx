@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import type { CalcState } from "@/lib/calculator-data";
+import LocalNote from "@/components/LocalNote";
+import { useChooseState, useVisitorState } from "@/hooks/useVisitorState";
 
 interface Props {
   states: CalcState[];
@@ -17,21 +19,36 @@ const fmt = (n: number, d = 0) =>
 
 export function SolarCalculatorFromParams(props: Props) {
   const params = useSearchParams();
-  const initial = params.get("state")?.toUpperCase() ?? "CA";
-  return <SolarCalculator key={initial} {...props} initialState={initial} />;
+  const q = params.get("state")?.toUpperCase();
+  const fromUrl = !!q && props.states.some((s) => s.abbr === q);
+  const initial = fromUrl ? q : "CA";
+  return <SolarCalculator key={initial} {...props} initialState={initial} fromUrl={fromUrl} autoLocate={!fromUrl} />;
 }
 
-export default function SolarCalculator({ states, initialState = "CA", avgPerWatt = 2.6 }: Props & { initialState?: string }) {
+export default function SolarCalculator({
+  states,
+  initialState = "CA",
+  avgPerWatt = 2.6,
+  fromUrl = false,
+  autoLocate = false,
+}: Props & { initialState?: string; fromUrl?: boolean; autoLocate?: boolean }) {
   const start = states.find((s) => s.abbr === initialState) ?? states.find((s) => s.abbr === "CA")!;
-  const [abbr, setAbbr] = useState(start.abbr);
+  const valid = useMemo(() => states.map((s) => s.abbr), [states]);
+  const located = useVisitorState(valid, autoLocate);
+  const choose = useChooseState();
+  const [picked, setPicked] = useState<string | null>(null);
+  const abbr = picked ?? located.abbr ?? start.abbr;
   const [mode, setMode] = useState<"kwh" | "bill">("bill");
-  const [kwh, setKwh] = useState(Math.round(start.avgMonthlyKwh));
-  const [bill, setBill] = useState(Math.round((start.avgMonthlyKwh * start.centsPerKwh) / 100));
+  // null = the typical home in the state showing; a number once the visitor types their own.
+  const [kwhIn, setKwh] = useState<number | null>(null);
+  const [billIn, setBill] = useState<number | null>(null);
   const [offset, setOffset] = useState(100);
   const [panelW, setPanelW] = useState(400);
   const [pricePerW, setPricePerW] = useState("");
 
-  const st = states.find((s) => s.abbr === abbr)!;
+  const st = states.find((s) => s.abbr === abbr) ?? start;
+  const kwh = kwhIn ?? Math.round(st.avgMonthlyKwh);
+  const bill = billIn ?? Math.round((st.avgMonthlyKwh * st.centsPerKwh) / 100);
   const rate = st.centsPerKwh / 100;
   const monthlyKwh = mode === "kwh" ? kwh : bill / rate;
   const annualKwh = monthlyKwh * 12 * (offset / 100);
@@ -44,12 +61,10 @@ export default function SolarCalculator({ states, initialState = "CA", avgPerWat
   const payback = cost && annualValue > 0 ? cost / annualValue : null;
 
   function changeState(next: string) {
-    setAbbr(next);
-    const s = states.find((x) => x.abbr === next);
-    if (s) {
-      setKwh(Math.round(s.avgMonthlyKwh));
-      setBill(Math.round((s.avgMonthlyKwh * s.centsPerKwh) / 100));
-    }
+    setPicked(next);
+    choose(next);
+    setKwh(null);
+    setBill(null);
   }
 
   const field = "w-full rounded-lg border border-black/15 bg-white px-3 py-2.5 text-base focus:outline-none focus:ring-2 focus:ring-amber-400";
@@ -59,13 +74,14 @@ export default function SolarCalculator({ states, initialState = "CA", avgPerWat
       <div className="grid sm:grid-cols-2 gap-5">
         <label className="block">
           <span className="block text-sm font-semibold mb-1.5">Your state</span>
-          <select className={field} value={abbr} onChange={(e) => changeState(e.target.value)}>
+          <select id="solar-state" className={field} value={abbr} onChange={(e) => changeState(e.target.value)}>
             {states.map((s) => (
               <option key={s.abbr} value={s.abbr}>
                 {s.name}
               </option>
             ))}
           </select>
+          <LocalNote name={st.name} local={fromUrl || picked !== null || located.abbr !== null} selectId="solar-state" />
         </label>
         <fieldset>
           <legend className="block text-sm font-semibold mb-1.5">Your monthly electric bill</legend>

@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import type { Installer } from "@/data/installers";
 import type { CalcState } from "@/lib/calculator-data";
+import { useVisitorState } from "@/hooks/useVisitorState";
 
 interface Result {
   installers: Installer[];
@@ -20,6 +21,24 @@ export default function SolarFinder({ states, panelWatts }: { states: CalcState[
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<Result | null>(null);
+  const valid = useMemo(() => states.map((s) => s.abbr), [states]);
+  const located = useVisitorState(valid);
+  const [searched, setSearched] = useState(false);
+
+  // Start on the visitor's state (estimated from their connection) until they enter a ZIP.
+  useEffect(() => {
+    if (searched || !located.abbr) return;
+    let live = true;
+    fetch(`/api/solar-installers?state=${located.abbr}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data: Result | null) => {
+        if (live && data) setResult(data);
+      })
+      .catch(() => {});
+    return () => {
+      live = false;
+    };
+  }, [located.abbr, searched]);
 
   async function search(e: React.FormEvent) {
     e.preventDefault();
@@ -28,6 +47,7 @@ export default function SolarFinder({ states, panelWatts }: { states: CalcState[
       return;
     }
     setError("");
+    setSearched(true);
     setLoading(true);
     try {
       const res = await fetch(`/api/solar-installers?zip=${zip}`);
@@ -60,6 +80,7 @@ export default function SolarFinder({ states, panelWatts }: { states: CalcState[
               className={field}
               inputMode="numeric"
               autoComplete="postal-code"
+              id="finder-zip"
               maxLength={5}
               placeholder="e.g. 85004"
               value={zip}
@@ -86,6 +107,14 @@ export default function SolarFinder({ states, panelWatts }: { states: CalcState[
             {loading ? "Searching…" : "Find installers"}
           </button>
         </div>
+        {result && !result.zip && result.stateName && (
+          <p className="mt-3 text-sm text-stone-700" data-testid="local-note">
+            Showing installers for {result.stateName}.{" "}
+            <button type="button" className="underline font-medium text-spark-orange" onClick={() => document.getElementById("finder-zip")?.focus()}>
+              Change
+            </button>
+          </p>
+        )}
         {error && (
           <p role="alert" className="mt-3 text-sm text-red-700">
             {error}
