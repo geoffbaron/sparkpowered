@@ -137,7 +137,15 @@ export default function RootLayout({
       <head>
         {/* impact.com site verification, in the exact form impact.com asks for (value attribute). */}
         <meta name="impact-site-verification" {...{ value: "1daf2570-8c42-4207-898d-a7885836ebd8" }} />
-        {/* AvantLink affiliate site verification (https so browsers don't block it on our https pages). */}
+        {/* AvantLink affiliate site verification. Their checker string-matches the exact tag they gave
+            (http, raw "&"), which React would escape, so the exact text is emitted verbatim inside a
+            noscript (inert to browsers) and loaded for real over https. */}
+        <noscript
+          dangerouslySetInnerHTML={{
+            __html:
+              '<script type="text/javascript" src="http://classic.avantlink.com/affiliate_app_confirm.php?mode=js&authResponse=4a49886173dc86f56ae1d4eb573e2f8c6cbb46bc"></script>',
+          }}
+        />
         <script type="text/javascript" src="https://classic.avantlink.com/affiliate_app_confirm.php?mode=js&authResponse=4a49886173dc86f56ae1d4eb573e2f8c6cbb46bc" async />
         {/* The icon font (globals.css) is only used by the two quizzes, so it is not preloaded site-wide. */}
         <script
