@@ -11,6 +11,9 @@ import {
   SPEEDS,
   electronicsHours,
   hoursLabel,
+  hoursPrecise,
+  lithiumCostPhrase,
+  minutesApart,
   runtimeFor,
   runtimeHours,
   seasonFuel,
@@ -76,4 +79,14 @@ test("boating pages are in the sitemap", () => {
   for (const p of ["/boating", "/trolling-motor-battery-life", "/kayak-trolling-motor-battery", "/electric-outboard-motor", "/fish-finder-battery", "/24v-vs-36v-trolling-motor", "/charge-lithium-battery-on-boat"]) {
     assert.ok(ROUTES.some((r) => r.path === p), p);
   }
+});
+
+test("comparison copy never shows a negative dollar figure", () => {
+  const usd = (n: number) => `$${n}`;
+  assert.equal(lithiumCostPhrase(399.99, 626.97, usd), "pay about $227 less for lithium");
+  assert.equal(lithiumCostPhrase(700, 650, usd), "pay about $50 more for lithium");
+  assert.equal(lithiumCostPhrase(500.2, 500, usd), "pay about the same for lithium");
+  assert.equal(hoursPrecise(100 / 26), "about 3.8 hours");
+  assert.equal(minutesApart(100 / 26, 100 / 28), 15);
+  assert.equal(minutesApart(1, 2), 60);
 });

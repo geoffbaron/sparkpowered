@@ -7,7 +7,17 @@ import { LEAD_ACID_REF } from "@/data/batteries";
 import { BOATING_CHECKED } from "@/data/boating";
 import { formatDate } from "@/lib/energy";
 import { money } from "@/lib/products";
-import { MINN_KOTA_MANUAL, NEWPORT_RUNTIME_GUIDE, RUNTIME_BATTERIES, hoursLabel, motorById, runtimeHours } from "@/lib/boating";
+import {
+  MINN_KOTA_MANUAL,
+  NEWPORT_RUNTIME_GUIDE,
+  RUNTIME_BATTERIES,
+  hoursLabel,
+  hoursPrecise,
+  lithiumCostPhrase,
+  minutesApart,
+  motorById,
+  runtimeHours,
+} from "@/lib/boating";
 import { TROLLING_CHOICE } from "@/lib/trolling";
 import { pageMetadata } from "@/lib/seo";
 
@@ -26,6 +36,11 @@ export default function VoltageComparePage() {
   const hrs = (m: typeof m80, share: number, ah: number) => hoursLabel(runtimeHours(m, share, ah));
   const w80 = m80.maxAmps * 24;
   const w112 = m112.maxAmps * 36;
+  const h24 = runtimeHours(m80, 0.5, 100);
+  const h36 = runtimeHours(m112, 0.5, 100);
+  const gapMin = minutesApart(h36, h24);
+  const longer = h36 >= h24 ? "36 V" : "24 V";
+  const weightGap = Math.round((agm36.weightLb ?? 0) - (li36_50.weightLb ?? 0));
 
   const rows: [string, string, string][] = [
     ["Thrust (Minn Kota)", `${m80.thrustLb} lb`, `${m112.thrustLb} lb`],
@@ -45,7 +60,7 @@ export default function VoltageComparePage() {
     },
     {
       q: "Does a 36V trolling motor run longer than 24V?",
-      a: `On the same amp-hours, a little: the 112 lb motor's maximum draw (${m112.maxAmps} A) is slightly lower than the 80 lb motor's (${m80.maxAmps} A) because the higher voltage does more of the work. At half speed on 100 Ah of lithium, that's ${hrs(m112, 0.5, 100)} for 36 V against ${hrs(m80, 0.5, 100)} for 24 V. But the 36 V bank holds more energy, which costs more.`,
+      a: `On the same amp-hours, a little: the 112 lb motor's maximum draw (${m112.maxAmps} A) is slightly lower than the 80 lb motor's (${m80.maxAmps} A) because the higher voltage does more of the work. At half speed on 100 Ah of lithium, that's ${hoursPrecise(h36)} for 36 V against ${hoursPrecise(h24)} for 24 V, ${gapMin > 0 ? `so ${longer} gets about ${gapMin} more minutes on the water` : "about the same"}. Both round to ${hoursLabel(h36)}. The 36 V bank also holds 50% more energy (three 12 V batteries' worth instead of two), and that extra battery is what you pay for.`,
     },
     {
       q: "Can you run a 36V trolling motor on 24V?",
@@ -181,8 +196,8 @@ export default function VoltageComparePage() {
             </Callout>
             <Callout>
               <strong>&quot;Lithium for 36 V costs a fortune.&quot;</strong> One Redodo 36V 50Ah was {money(li36_50.priceUsd ?? 0)}; three Renogy AGMs were{" "}
-              {money(agm36.priceUsd ?? 0)} and weigh {Math.round(agm36.weightLb ?? 0)} lb. You pay about {money(Math.round((li36_50.priceUsd ?? 0) - (agm36.priceUsd ?? 0)))}{" "}
-              less for lithium here, and lift about {Math.round((agm36.weightLb ?? 0) - (li36_50.weightLb ?? 0))} lb less.
+              {money(agm36.priceUsd ?? 0)} and weigh {Math.round(agm36.weightLb ?? 0)} lb. You {lithiumCostPhrase(li36_50.priceUsd ?? 0, agm36.priceUsd ?? 0, money)} here
+              {weightGap > 0 ? `, and lift about ${weightGap} lb less.` : "."}
             </Callout>
           </div>
         </Section>

@@ -167,6 +167,26 @@ export function hoursLabel(h: number): string {
   return `about ${Math.round(h)} hours`;
 }
 
+/** One decimal place, for side-by-side comparisons where whole hours hide the gap: "about 3.8 hours". */
+export function hoursPrecise(h: number): string {
+  if (!Number.isFinite(h) || h <= 0) return "under an hour";
+  return `about ${h.toFixed(1)} hours`;
+}
+
+/** Minutes between two run times, rounded to the nearest 5 (never negative). */
+export const minutesApart = (a: number, b: number) => Math.round((Math.abs(a - b) * 60) / 5) * 5;
+
+/**
+ * Plain sentence for what lithium costs against lead-acid, whichever way the
+ * gap runs: "pay about $227 less for lithium" or "pay about $50 more for lithium".
+ * Never yields a negative dollar figure.
+ */
+export function lithiumCostPhrase(lithiumUsd: number, leadAcidUsd: number, fmt: (n: number) => string): string {
+  const gap = Math.round(lithiumUsd - leadAcidUsd);
+  if (gap === 0) return "pay about the same for lithium";
+  return `pay about ${fmt(Math.abs(gap))} ${gap < 0 ? "less" : "more"} for lithium`;
+}
+
 export const motorById = (id: string) => {
   const m = MOTORS.find((x) => x.id === id);
   if (!m) throw new Error(`Unknown motor ${id}`);

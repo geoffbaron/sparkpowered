@@ -9,6 +9,7 @@ const BAD = [
   [/\b(?:Type|Reference|Range|Syntax)?Error:/, "Error:"],
   [/Attempted to call .* from the server/, "client reference called on server"],
   [/function\s*\(\s*\)\s*\{/, "raw function source"],
+  [/(?:^|[\s(])-\$\d/, "negative dollar amount in prose"],
 ];
 
 const sitemap = await (await fetch(base + "/sitemap.xml")).text();
