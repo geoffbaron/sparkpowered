@@ -37,6 +37,7 @@ const navLinks = [
   { href: "/best-portable-power-stations", label: "Backup Power" },
   { href: "/home-battery-backup", label: "Home Batteries" },
   { href: "/lithium-rv-battery", label: "RV Batteries" },
+  { href: "/boating", label: "Boating" },
   { href: "/myths", label: "Myths" },
   { href: "/states", label: "States" },
 ];

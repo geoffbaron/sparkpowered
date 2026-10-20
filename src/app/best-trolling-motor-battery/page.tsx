@@ -308,6 +308,8 @@ export default function TrollingPage() {
         />
         <RelatedLinks
           links={[
+            { href: "/trolling-motor-battery-life", label: "How long will it last?", desc: "Runtime calculator for your motor" },
+            { href: "/boating", label: "Electric boating and fishing", desc: "Every boating guide in one place" },
             { href: "/lithium-vs-agm-battery", label: "100Ah lithium vs AGM", desc: "The cost per year, worked out" },
             { href: "/lithium-rv-battery", label: "Lithium RV and boat house batteries", desc: "Size a battery for the fridge, lights and CPAP" },
             { href: "/best-portable-power-stations", label: "Portable power stations", desc: "All-in-one batteries with outlets" },

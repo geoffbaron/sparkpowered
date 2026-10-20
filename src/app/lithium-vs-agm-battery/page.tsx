@@ -188,6 +188,7 @@ export default function LithiumVsAgmPage() {
           links={[
             { href: "/lithium-rv-battery", label: "Lithium RV battery guide", desc: "What size you need, with a picker" },
             { href: "/best-trolling-motor-battery", label: "Best trolling motor battery", desc: "12 V, 24 V and 36 V picks" },
+            { href: "/boating", label: "Electric boating and fishing", desc: "Trolling, kayak and outboard guides" },
             { href: "/best-portable-power-stations", label: "Portable power stations", desc: "Batteries with outlets built in" },
             { href: "/home-battery-backup", label: "Home battery backup", desc: "Whole-home and plug-in systems" },
           ]}
