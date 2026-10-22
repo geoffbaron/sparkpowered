@@ -60,13 +60,17 @@ export function Win({ x, y, w = 9, h = 10, lit, delay = 0 }: { x: number; y: num
         fill="#FFF3C0"
         style={{ opacity: lit ? 1 : 0, transitionDelay: `${lit ? delay : 0}ms` }}
       />
-      <circle
+      <rect
         className="st-win"
-        cx={x + w / 2}
-        cy={y + h / 2}
-        r={w * 2.8}
-        fill={COLORS.glow}
-        style={{ opacity: lit ? 0.4 : 0, transitionDelay: `${lit ? delay : 0}ms`, mixBlendMode: "screen" }}
+        x={x - 2}
+        y={y - 2}
+        width={w + 4}
+        height={h + 4}
+        rx={3}
+        fill="none"
+        stroke={COLORS.glow}
+        strokeWidth={2}
+        style={{ opacity: lit ? 0.55 : 0, transitionDelay: `${lit ? delay : 0}ms` }}
       />
     </g>
   );
@@ -80,7 +84,7 @@ export function House({ seed, lit, delay, night = 0 }: { seed: number; lit: bool
   return (
     <g>
       <ellipse cx={37} cy={63} rx={29} ry={4} fill={SHADOW} />
-      <ellipse className="st-win" cx={34} cy={64} rx={34} ry={9} fill={COLORS.glow} style={{ opacity: lit ? 0.5 : 0, transitionDelay: `${lit ? delay : 0}ms`, mixBlendMode: "screen" }} />
+      <ellipse className="st-win" cx={34} cy={64} rx={26} ry={6} fill={COLORS.glow} style={{ opacity: lit ? 0.28 : 0, transitionDelay: `${lit ? delay : 0}ms`, mixBlendMode: "screen" }} />
       <Outline d={wobblyRect(8, top + 6, 52, 56 - top, seed, 1.3)} fill={wall} shadow={wobblyRect(44, top + 8, 15, 52 - top, seed + 1, 0.8)} night={night} offset />
       <Outline d={wobblyRect(4, top, 60, 11, seed + 2, 1.1)} fill="#EFDCB0" shadow={wobblyRect(4, top + 7, 60, 4, seed + 3, 0.5)} night={night * 0.6} />
       <path d={`M4 ${top + 1} L64 ${top + 1}`} stroke="#b8b0a0" strokeWidth={1.4} opacity={0.8} />
@@ -119,7 +123,7 @@ export function Tower({ seed, lit, delay, night = 0 }: { seed: number; lit: bool
   return (
     <g>
       <ellipse cx={37} cy={64} rx={29} ry={3.5} fill={SHADOW} />
-      <ellipse className="st-win" cx={34} cy={64} rx={34} ry={8} fill={COLORS.glow} style={{ opacity: lit ? 0.42 : 0, transitionDelay: `${lit ? delay : 0}ms`, mixBlendMode: "screen" }} />
+      <ellipse className="st-win" cx={34} cy={64} rx={26} ry={6} fill={COLORS.glow} style={{ opacity: lit ? 0.25 : 0, transitionDelay: `${lit ? delay : 0}ms`, mixBlendMode: "screen" }} />
       <Outline d={wobblyRect(9, top + 6, 50, 58 - top, seed, 1.2)} fill={wall} shadow={wobblyRect(46, top + 8, 12, 54 - top, seed + 1, 0.7)} night={night} offset />
       <Outline d={wobblyRect(5, top, 58, 9, seed + 2, 1)} fill="#EFDCB0" night={night * 0.6} />
       {[0, 1].map((k) => <line key={k} x1={9} y1={top + 17 + k * 22} x2={59} y2={top + 17 + k * 22} stroke="#fffef7" strokeOpacity={0.5} strokeWidth={1.2} />)}
@@ -165,6 +169,12 @@ export function FieldPlot({ seed }: { seed: number }) {
       <Outline d={wobblyRect(5, 10, 58, 52, seed, 1.5)} fill="#d9c79b" shadow={wobblyRect(5, 54, 58, 8, seed + 1, 0.6)} />
       {[0, 1, 2, 3].map((i) => (
         <circle key={i} cx={14 + ((i * 17 + seed) % 40)} cy={18 + ((i * 13 + seed) % 36)} r={2} fill="#b9a779" />
+      ))}
+      {[24, 36, 48].map((y, i) => (
+        <path key={y} d={wobblyLine([[10, y], [58, y]], seed + 20 + i, 1.6)} stroke="#b39d6e" strokeWidth={1.4} fill="none" />
+      ))}
+      {[0, 1, 2, 3, 4, 5].map((i) => (
+        <path key={`t${i}`} d={`M${12 + ((i * 23 + seed * 3) % 44)} ${20 + ((i * 17 + seed) % 36)} l1.5 -4 M${15 + ((i * 23 + seed * 3) % 44)} ${20 + ((i * 17 + seed) % 36)} l0 -5`} stroke="#9b8458" strokeWidth={1} fill="none" opacity={0.6} />
       ))}
       <path d={wobblyLine([[5, 62], [63, 62]], seed + 9, 1)} stroke="#7a5a3c" strokeWidth={2} strokeDasharray="3 3" fill="none" opacity={0.7} />
     </g>
@@ -286,13 +296,14 @@ export function Pump({ level, running, ripple, lit }: { level: number; running: 
       <ellipse cx={34} cy={63} rx={27} ry={4} fill={SHADOW} />
       <path d={wobblyLine([[22, 62], [26, 36]], 3, 0.6)} stroke="#6b4a36" strokeWidth={3} fill="none" />
       <path d={wobblyLine([[48, 62], [44, 36]], 4, 0.6)} stroke="#6b4a36" strokeWidth={3} fill="none" />
-      <path d={wobblyRect(18, 12, 32, 26, 5, 1)} fill="#d9d2c0" {...INK} />
+      <path d={wobblyRect(18, 12, 32, 26, 5, 1)} fill={level > 0.02 ? "#d9d2c0" : "#5f6f78"} {...INK} />
       <clipPath id="tank-clip">
         <path d={wobblyRect(20, 14, 28, 22, 6, 0.5)} />
       </clipPath>
       <g clipPath="url(#tank-clip)">
         <rect x={18} y={36 - h} width={34} height={h + 1} fill={COLORS.water} />
       </g>
+      {level < 0.5 && <path d="M34 17 q-6 8 -6 11 a6 6 0 0 0 12 0 q0 -3 -6 -11z" fill={COLORS.water} />}
       <path d={wobblyRect(16, 8, 36, 6, 7, 0.8)} fill={COLORS.clay} {...INK} />
       <path d="M52 40 q8 0 8 10 v10" stroke="#8a8a8a" strokeWidth={3} fill="none" />
       {running && <path className="st-drip" d="M60 60 q2 4 0 6" stroke={COLORS.water} strokeWidth={2.5} fill="none" strokeLinecap="round" />}

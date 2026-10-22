@@ -512,7 +512,7 @@ export type Goal = "bill" | "outage" | "drive";
 export const GOALS: { id: Goal; label: string; note: string }[] = [
   { id: "bill", label: "A smaller bill", note: "Panels that plug in" },
   { id: "outage", label: "Lights on when the grid goes down", note: "A battery for the house" },
-  { id: "drive", label: "Drive on sunshine", note: "Charge a car at home" },
+  { id: "drive", label: "Cheaper driving", note: "Charge a car at home" },
 ];
 
 export const CREDIT_ENDED = "The 30% federal tax credit for home solar and batteries has ended.";

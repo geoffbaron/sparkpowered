@@ -46,6 +46,13 @@ declare global {
 
 export default function Game({ focus, onExit, picks }: { focus: boolean; onExit: () => void; picks: { outage: ReactNode; drive: ReactNode } }) {
   const speedParam = useMemo(readSpeed, []);
+  const autoAdvance = useMemo(() => {
+    try {
+      return new URLSearchParams(window.location.search).has("speed");
+    } catch {
+      return false;
+    }
+  }, []);
   const reduced = useMemo(() => {
     try {
       return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -226,12 +233,12 @@ export default function Game({ focus, onExit, picks }: { focus: boolean; onExit:
     track("st_day_start", { day: dayRef.current });
   }, []);
 
-  // Request card lasts 3 s (shorter when ?speed is set).
+  // The request card waits for a tap. Only the test hook (?speed) moves on by itself, after 3 s.
   useEffect(() => {
-    if (phase !== "request") return;
+    if (phase !== "request" || !autoAdvance) return;
     const t = setTimeout(goBuild, 3000 / speedParam);
     return () => clearTimeout(t);
-  }, [phase, day, goBuild, speedParam]);
+  }, [phase, day, goBuild, speedParam, autoAdvance]);
 
   const startDay = () => {
     unlock();
@@ -325,7 +332,9 @@ export default function Game({ focus, onExit, picks }: { focus: boolean; onExit:
           const flexOk = s.active.every((id) => JOBS[id].kind !== "flex" || deadlineOf(s.day, id) > 18 || s.jobs[id].done);
           const darkOk = s.active.every((id) => JOBS[id].kind !== "fixed" || s.jobs[id].darkHours < 0.001);
           litRef.current = true;
-          if (flexOk && darkOk) {
+          if (s.cap === 0) {
+            showToast("Sunset. With no battery jar the village goes dark tonight. Tomorrow you get one.", 4200);
+          } else if (flexOk && darkOk) {
             setLitNow(true);
             play("swell");
           }
@@ -514,12 +523,13 @@ export default function Game({ focus, onExit, picks }: { focus: boolean; onExit:
       running: phase === "play" && !paused,
       batteryFrac: s ? batteryFraction(s) : placementsFrac(placements, d.startCharge),
       usingBattery: !!s && s.flow.fromBattery > 0.01 && s.step < TOTAL_STEPS,
+      usingFlex: !!s && s.flow.fromBatteryFlex > 0.01 && s.step < TOTAL_STEPS,
       flowTotal: s ? s.flow.toLoads : 0,
       jobs,
       fridgeWarm: fr > 0,
       fridgeLate: fr >= SIM.fridgeGraceHours - 1,
       wasted: !!s && s.cap > 0 && s.flow.wasted > 0.2 && batteryFraction(s) > 0.97,
-      lit: litNow,
+      lit: litNow && !!s && s.cap > 0 && s.battery > 0.02 * s.cap,
       schoolLit: !!s && ((s.jobs.school.powered >= 0.99 && h24 >= 9 && h24 < 15 && s.active.includes("school")) || (s.jobs.lights.powered >= 0.99 && h24 >= 18 && h24 < 21 && s.active.includes("lights"))),
       needPct: { pump: 0, fridge: 0, school: 0, lights: 0, irrigation: 0, bus: 0 },
       night: day === 1 && (phase === "request" || phase === "build") ? 1 : nightAt(hour),
@@ -675,6 +685,11 @@ export default function Game({ focus, onExit, picks }: { focus: boolean; onExit:
 
         {(phase === "build" || phase === "request") && (
           <div className="absolute left-2 top-2 z-10 flex flex-col gap-1.5 items-start max-w-[calc(100%-1rem)]">
+            {phase === "build" && (
+              <div className="st-chip" data-testid="build-goal">
+                <strong>Goal:</strong> {d.goal}
+              </div>
+            )}
             <Forecast day={d} />
             {phase === "build" && check && <BuildStrip check={check} />}
           </div>
@@ -689,7 +704,7 @@ export default function Game({ focus, onExit, picks }: { focus: boolean; onExit:
             <div className="st-chip st-toast">{toast}</div>
           </div>
         )}
-        {phase === "request" && !paused && <RequestCard day={d} onGo={goBuild} seconds={3 / speedParam} />}
+        {phase === "request" && !paused && <RequestCard day={d} onGo={goBuild} seconds={autoAdvance ? 3 / speedParam : 0} />}
         {paused && <PauseCard onResume={() => setPaused(false)} onExit={exit} focus={focus} />}
         {phase === "result" && result && (
           <ResultCard day={d} result={result} crates={{ used, total: d.crates }} onNext={nextDay} onReplay={replay} onSource={() => track("st_fact_source", { day })} />
@@ -718,7 +733,7 @@ export default function Game({ focus, onExit, picks }: { focus: boolean; onExit:
       {!isFinaleOrEnding && (
         <div className="shrink-0 bg-[#FFFEF7] border-t-2 border-[#3a2a33]/30 px-2 pt-1.5 pb-2" data-testid="controls">
           <div className="flex items-center gap-2 min-h-[2rem]">
-            <JarMeter frac={snap.batteryFrac} using={snap.usingBattery} has={Object.values(placements).includes("battery")} />
+            <JarMeter frac={snap.batteryFrac} using={snap.usingFlex} night={snap.usingBattery && !snap.usingFlex} has={Object.values(placements).includes("battery")} />
             <p className="text-[12.5px] leading-tight flex-1" data-testid="tip">
               {phase === "build" ? "Tap a spot to build. When the day starts: tap a glowing building to switch it on or off" : "Tap a glowing building to switch it on or off"}
             </p>
@@ -805,7 +820,7 @@ function Progress({ step }: { step: number }) {
   );
 }
 
-function JarMeter({ frac, using, has }: { frac: number; using: boolean; has: boolean }) {
+function JarMeter({ frac, using, night, has }: { frac: number; using: boolean; night: boolean; has: boolean }) {
   const h = 26 * Math.max(0, Math.min(1, frac));
   return (
     <div className="flex items-center gap-1.5 shrink-0" data-testid="jar-meter" data-frac={frac.toFixed(2)}>
@@ -816,7 +831,7 @@ function JarMeter({ frac, using, has }: { frac: number; using: boolean; has: boo
         <rect x={1} y={2} width={24} height={6} rx={2} fill="#C8734B" stroke="#3a2a33" strokeOpacity={0.7} strokeWidth={1.2} />
       </svg>
       <span className="text-[11px] leading-tight w-[4.2rem]">
-        {using ? <strong className="text-[#b45309]">Running on stored power</strong> : has ? "Battery jar" : "No battery yet"}
+        {using ? <strong className="text-[#b45309]">Running on stored power</strong> : night ? "Jar powering the night" : has ? "Battery jar" : "No battery yet"}
       </span>
     </div>
   );

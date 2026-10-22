@@ -29,7 +29,7 @@ export function shareSentence(stars: number[], person: "first" | "third" = "firs
 export function achievementLine(stars: number[]) {
   const n = daysMet(stars);
   if (n === 5) return "You lit a village, a town and a city.";
-  if (n > 0) return `You lit ${n} of 5 days. Replay a day to light the rest.`;
+  if (n > 0) return `You lit ${n} of 5 days. Play again to light the rest.`;
   return "You gave Solartopia a try.";
 }
 

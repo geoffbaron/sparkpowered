@@ -67,9 +67,11 @@ export function RequestCard({ day, onGo, seconds }: { day: Day; onGo: () => void
             <button type="button" onClick={onGo} className="st-btn st-btn-primary" data-testid="request-go">
               Let&apos;s build
             </button>
-            <span className="h-1 flex-1 rounded bg-[#e9d3a6] overflow-hidden" aria-hidden="true">
-              <span className="block h-full bg-[#c8734b] st-timer" style={{ animationDuration: `${seconds}s` }} />
-            </span>
+            {seconds > 0 && (
+              <span className="h-1 flex-1 rounded bg-[#e9d3a6] overflow-hidden" aria-hidden="true">
+                <span className="block h-full bg-[#c8734b] st-timer" style={{ animationDuration: `${seconds}s` }} />
+              </span>
+            )}
           </div>
         </div>
       </div>

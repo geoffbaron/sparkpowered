@@ -210,6 +210,19 @@ async function fullRun(speed, label) {
   await page.context().close();
 }
 
+// Real players: the request card waits for a tap, then Build shows the goal.
+{
+  const errors = [];
+  const page = await newPage({ width: 390, height: 844 }, errors);
+  await page.goto(`${base}/solartopia`, { waitUntil: "networkidle" });
+  await page.getByTestId("play").tap();
+  await page.waitForTimeout(4500);
+  ok((await page.getByTestId("request-card").count()) === 1, "request card does not auto-advance without ?speed");
+  await page.getByTestId("request-go").tap();
+  ok(/Goal:/.test(await page.getByTestId("build-goal").innerText()), "Build shows the goal chip");
+  await page.context().close();
+}
+
 await fullRun(8, "fast run");
 
 // Phone checks: no scroll in play, controls visible, targets >= 48 px, pause on hidden tab.

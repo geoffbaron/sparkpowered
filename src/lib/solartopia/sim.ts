@@ -69,6 +69,8 @@ export interface Flow {
   toLoads: number;
   toBattery: number;
   fromBattery: number;
+  /** Part of fromBattery that flexible jobs draw. */
+  fromBatteryFlex: number;
   wasted: number;
 }
 
@@ -138,7 +140,7 @@ export function create(day: number, placements: Placements): SimState {
     lost: 0,
     wasted: 0,
     atDeadline: {},
-    flow: { panels: 0, toLoads: 0, toBattery: 0, fromBattery: 0, wasted: 0 },
+    flow: { panels: 0, toLoads: 0, toBattery: 0, fromBattery: 0, fromBatteryFlex: 0, wasted: 0 },
     sun: 0,
     firstDark: null,
     events: [],
@@ -173,7 +175,7 @@ export function advance(s: SimState): SimState {
   let avail = power * DT;
   s.produced += avail;
   s.sun = sun;
-  const flow: Flow = { panels: power, toLoads: 0, toBattery: 0, fromBattery: 0, wasted: 0 };
+  const flow: Flow = { panels: power, toLoads: 0, toBattery: 0, fromBattery: 0, fromBatteryFlex: 0, wasted: 0 };
   const hour24 = ((h % 24) + 24) % 24;
 
   // 1. Fixed jobs, first on the sun and then on the jar, down to empty.
@@ -227,6 +229,7 @@ export function advance(s: SimState): SimState {
         s.battery -= out / EFF;
         s.lost += out / EFF - out;
         flow.fromBattery += out / DT;
+        flow.fromBatteryFlex += out / DT;
         got += out;
         if (need - out > EPS) trip = true;
       }
@@ -436,7 +439,7 @@ export function buildCheck(day: number, placements: Placements): BuildCheck {
   const hasJar = state.cap > 0;
   const noPanels = state.panels.length === 0;
   let status: BuildCheck["status"] = "green";
-  let text = "Looks good: the sun covers the day and the jar covers the night.";
+  let text = day === 1 ? "Looks good: enough sun to fill the tank by evening." : "Looks good: the sun covers the day and the jar covers the night.";
   const failed = result.requirements.find((r) => !r.met);
   if (noPanels) {
     status = "red";

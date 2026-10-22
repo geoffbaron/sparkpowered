@@ -34,6 +34,8 @@ export interface SceneSnap {
   running: boolean;
   batteryFrac: number;
   usingBattery: boolean;
+  /** A flexible job is drawing on the jar (the amber warning). */
+  usingFlex: boolean;
   flowTotal: number;
   jobs: Record<JobId, JobSnap>;
   fridgeWarm: boolean;
@@ -437,7 +439,7 @@ export function World(p: WorldProps) {
         )}
         {kind && (
           <g key={`${s.id}-${nonce[s.id] ?? 0}`} className={drop} style={{ transformOrigin: "34px 60px", transformBox: "view-box" } as React.CSSProperties}>
-            {kind === "panel" ? <Panel flat={flat} glint={snap.sun} seed={seed + 1} /> : <Jar fill={snap.batteryFrac} strain={snap.usingBattery && snap.running} hot={snap.usingBattery} seed={seed + 2} waste={snap.wasted && snap.running} />}
+            {kind === "panel" ? <Panel flat={flat} glint={snap.sun} seed={seed + 1} /> : <Jar fill={snap.batteryFrac} strain={snap.usingFlex && snap.running} hot={snap.usingFlex} seed={seed + 2} waste={snap.wasted && snap.running} />}
             {!p.reduced && nonce[s.id] ? <Dust /> : null}
           </g>
         )}
@@ -511,21 +513,23 @@ export function World(p: WorldProps) {
       {ch >= 2 && decor(6, 0, <Tower seed={9} lit={lit} delay={nextDelay()} />, "tower2")}
       {slots.map(renderSlot)}
       {/* buildings */}
-      {flexBuilding("pump", BUILDINGS.pump.c, BUILDINGS.pump.r, <Pump level={snap.jobs.pump.progress / 8} running={snap.jobs.pump.on && snap.jobs.pump.powered > 0.02} ripple={snap.jobs.pump.done} lit={snap.jobs.pump.done && lit} />, "Water pump")}
+      {flexBuilding("pump", BUILDINGS.pump.c, BUILDINGS.pump.r, <Pump level={snap.jobs.pump.progress / 8} running={snap.jobs.pump.on && snap.jobs.pump.powered > 0.02} ripple={snap.jobs.pump.done} lit={snap.jobs.pump.done} />, "Water pump")}
       {decor(BUILDINGS.clinic.c, BUILDINGS.clinic.r, <Clinic lit={fixedLit && !clinicWarm} delay={nextDelay()} warm={clinicWarm} pulse={snap.fridgeLate} night={snap.night} />, "clinic")}
       {decor(BUILDINGS.school.c, BUILDINGS.school.r, <School lit={snap.schoolLit || (fixedLit && p.day >= 3 && snap.hour < 21)} delay={nextDelay()} day={p.day} night={snap.night} />, "school")}
       {flexBuilding("irrigation", BUILDINGS.irrigation.c, BUILDINGS.irrigation.r, <Fields progress={snap.jobs.irrigation.progress / 9} running={snap.jobs.irrigation.on && snap.jobs.irrigation.powered > 0.02} />, "Irrigation")}
       {ch >= 2 && flexBuilding("bus", BUILDINGS.depot.c, BUILDINGS.depot.r, <Depot progress={snap.jobs.bus.progress / 12} running={snap.jobs.bus.on && snap.jobs.bus.powered > 0.02} />, "Bus depot")}
       <Life ch={ch} jobsOn={false} />
       <FlowLines ch={ch} placements={placements} snap={snap} jobs={jobs} />
-      {/* mist over the town until it is unlocked: drifting cream blobs */}
+      {/* sand haze over the town until it is unlocked */}
       <g style={{ opacity: ch >= 1 ? 0 : 1, transition: p.reduced ? "none" : "opacity 1.2s" }} pointerEvents="none">
-        {[[300, 330, 62, 38], [380, 300, 70, 40], [450, 350, 66, 42], [330, 420, 70, 44], [430, 440, 72, 46], [300, 500, 64, 40], [410, 520, 72, 40], [500, 380, 70, 50]].map(([cx, cy, rx, ry], i) => (
-          <g key={i} className="st-mist" style={{ animationDelay: `-${i * 3}s` }}>
-            <path d={blob(cx + 40, cy, rx, ry, 900 + i, 0.14)} fill="#fffef7" opacity={0.6} />
-          </g>
-        ))}
-        <rect x={cellX(4) + 190} y={262} width={900} height={640} fill="#fffef7" opacity={0.6} />
+        <defs>
+          <linearGradient id="st-haze" gradientUnits="userSpaceOnUse" x1={cellX(4) - 30} y1="0" x2={cellX(4) - 30 + 360} y2="0">
+            <stop offset="0" stopColor="#e9d3a6" stopOpacity="0" />
+            <stop offset="0.3" stopColor="#e9d3a6" stopOpacity="0.95" />
+            <stop offset="1" stopColor="#e9d3a6" stopOpacity="0.95" />
+          </linearGradient>
+        </defs>
+        <rect x={cellX(4) - 30} y={262} width={1200} height={640} fill="url(#st-haze)" />
       </g>
       <Foreground />
       {p.cloud && <Cloud cloud={p.cloud} hour={snap.hour} reduced={p.reduced} />}
