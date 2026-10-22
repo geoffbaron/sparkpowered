@@ -13,7 +13,7 @@ test("every fact has a source, an https url and dates, and is verified", () => {
   for (const f of Object.values(FACTS)) {
     assert.ok(f.source.length > 5, f.id);
     assert.match(f.url, /^https:\/\//, f.id);
-    assert.match(f.published, /^\d{4}-\d{2}-\d{2}$/, f.id);
+    assert.match(f.published, /^(\d{4}-\d{2}-\d{2}|undated)$/, f.id);
     assert.match(f.retrieved, /^\d{4}-\d{2}-\d{2}$/, f.id);
     assert.equal(f.verified, true, `${f.id} is not verified`);
     assert.ok(f.text.length > 20 && !/\bkWh\b|\bkW\b/.test(f.text), f.id);

@@ -71,7 +71,7 @@ export default function Launcher({ picks }: { picks: { outage: ReactNode; drive:
   const play = () => {
     let phone = false;
     try {
-      phone = window.matchMedia("(max-width: 700px)").matches;
+      phone = window.matchMedia("(max-width: 700px), (max-height: 500px) and (pointer: coarse)").matches;
     } catch {}
     track("st_start");
     setFocus(phone);
@@ -82,7 +82,7 @@ export default function Launcher({ picks }: { picks: { outage: ReactNode; drive:
   if (playing) {
     const game = <Game focus={focus} onExit={exit} picks={picks} />;
     return focus ? (
-      <div className="fixed inset-0 z-[100] bg-[#1E2A4A]" style={{ height: "100dvh" }} role="dialog" aria-label="Solartopia">
+      <div className="fixed inset-0 z-[100] bg-[#1E2A4A]" style={{ height: "100dvh" }} role="dialog" aria-modal="true" aria-label="Solartopia">
         {game}
       </div>
     ) : (

@@ -47,9 +47,9 @@
  *     average fossil fuel-fired solution" in 2023.
  *   - batteries: same PDF, battery storage project costs "declined 89%" from
  *     USD 2,511/kWh to USD 273/kWh between 2010 and 2023.
- *   - Dates: the FAO and DOE pages print no date. 2002 (FAO booklet) is inferred
- *     from its text (world population "6 000 million"); the DOE quiz year is an
- *     estimate. The UNICEF fridge page is dated 19 November 2015.
+ *   - Dates: the FAO and DOE pages print no date, so they are marked "undated".
+ *     The FAO booklet is old (its text says world population "6 000 million"),
+ *     and the fact text says so. The UNICEF fridge page is dated 19 November 2015.
  *   - share: Ember Global Electricity Review 2025: "solar (6.9%)" of 2024
  *     global electricity.
  */
@@ -66,6 +66,7 @@ export interface Fact {
   text: string;
   source: string;
   url: string;
+  /** YYYY-MM-DD, or "undated" when the page prints no date. Never an invented day. */
   published: string;
   retrieved: string;
   verified: boolean;
@@ -131,10 +132,10 @@ export const FACTS = {
   irrigation: fact({
     id: "irrigation",
     short: "FAO",
-    text: "In developing countries about 20 percent of farmland is irrigated, and that land provides about 40 percent of crop production.",
+    text: "An older FAO estimate: about 20 percent of farmland in developing countries is irrigated, and it provides about 40 percent of their crop production.",
     source: "FAO, Crops and Drops: making the best use of water for agriculture",
     url: "https://www.fao.org/4/y3918e/y3918e07.htm",
-    published: "2002-01-01",
+    published: "undated",
     verified: true,
   }),
   shenzhen: fact({
@@ -161,7 +162,7 @@ export const FACTS = {
     text: "Enough sunlight hits the Earth's surface in about an hour and a half to power the world's electricity use for a year.",
     source: "US Department of Energy, Quiz: Test Your Solar IQ",
     url: "https://www.energy.gov/articles/quiz-test-your-solar-iq",
-    published: "2016-01-01",
+    published: "undated",
     verified: true,
   }),
   cost: fact({
@@ -176,7 +177,7 @@ export const FACTS = {
   cheaper: fact({
     id: "cheaper",
     short: "IRENA",
-    text: "In 2023, new utility-scale solar cost 56% less than the cheapest fossil-fuel option, on average.",
+    text: "In 2023, new utility-scale solar cost 56% less than the least-cost new fossil-fuel option, on IRENA's weighted average.",
     source: "IRENA, Renewable Power Generation Costs in 2023, executive summary",
     url: "https://www.irena.org/-/media/Files/IRENA/Agency/Publication/2024/Sep/IRENA_Renewable_power_generation_costs_in_2023_executive_summary.pdf",
     published: "2024-09-01",
@@ -239,10 +240,9 @@ export const SIM = {
   stepsPerHour: 10,
   batteryUnits: 8,
   roundTrip: 0.9,
-  startFraction: 0.5,
   shade: 0.5,
   cloud: 0.25,
-  breakerFloor: 0.1,
+  breakerFloor: 0.15,
   threeStarBattery: 0.25,
   fridgeGraceHours: 3,
   panelCost: 1,
@@ -252,6 +252,8 @@ export const SIM = {
   secondsPerHourNight: 0.75,
   /** Recommended plan must use no more than this share of panel energy. */
   marginRule: 0.75,
+  /** ...and at least this much, so the build is not wildly oversized. */
+  marginFloor: 0.5,
   day1ThreeStarBy: 13,
 } as const;
 
@@ -342,6 +344,8 @@ export interface Day {
   newCrates: number;
   /** Total crates owned on this day. */
   crates: number;
+  /** Jar charge at 06:00 as a fraction of full (the jar starts days 3-5 only a quarter full). */
+  startCharge: number;
   jobs: JobId[];
   villager: { name: string; role: string; line: string; look: { skin: string; hair: string; shirt: string; extra: "hat" | "glasses" | "scarf" | "cap" | "headwrap" } };
   goal: string;
@@ -350,6 +354,8 @@ export interface Day {
   main: FactId;
   behind: FactId;
   cloud?: CloudBank;
+  /** Earlier deadlines (game hour) than the job default, from day 3 on. */
+  deadlines?: Partial<Record<JobId, number>>;
   /** Shown on the forecast strip during Build. */
   forecast: string;
 }
@@ -363,6 +369,7 @@ export const DAYS: Day[] = [
     title: "Water",
     newCrates: 4,
     crates: 4,
+    startCharge: 0.5,
     jobs: ["pump"],
     villager: {
       name: "Joseph",
@@ -385,6 +392,7 @@ export const DAYS: Day[] = [
     title: "The clinic fridge",
     newCrates: 4,
     crates: 8,
+    startCharge: 0.5,
     jobs: ["pump", "fridge"],
     villager: {
       name: "Nurse Amara",
@@ -405,21 +413,24 @@ export const DAYS: Day[] = [
     place: "A village of 1,200 people",
     population: "1,200",
     title: "The school",
-    newCrates: 4,
-    crates: 12,
+    newCrates: 2,
+    crates: 10,
+    startCharge: 0.25,
     jobs: ["pump", "fridge", "school", "lights"],
     villager: {
       name: "Mr. Tembo",
       role: "Teacher",
-      line: "The laptops run from nine to three, and the children study here after dark. The school has to be powered at those hours. Save some sun for the evening.",
+      line: "The laptops run from nine to three, and the children study here after dark. The school has to be powered at those hours. Fill the tank by three, and save some sun for the evening.",
       look: { skin: "#7a4e36", hair: "#26201e", shirt: "#2d5d8c", extra: "glasses" },
     },
-    goal: "Keep the school and the evening lights on, and keep the fridge cold.",
+    goal: "Fill the tank by 3 pm, keep the school and the evening lights on, and keep the fridge cold.",
+    deadlines: { pump: 15 },
     win: "School stays open after dark, and it's online.",
     tip: "The school and the evening lights run on a fixed schedule. The jar has to be full by sunset to carry them, and the fridge, through the night.",
     main: "internet",
     behind: "internet",
-    forecast: "Clear skies all day.",
+    cloud: { cols: [0], start: 14, end: 16, label: "A small cloud passes over the west edge from 2 pm to 4 pm." },
+    forecast: "A small cloud passes over the west edge from 2 pm to 4 pm.",
   },
   {
     n: 4,
@@ -427,8 +438,9 @@ export const DAYS: Day[] = [
     place: "A town of 12,000 people",
     population: "12,000",
     title: "Fields",
-    newCrates: 6,
-    crates: 18,
+    newCrates: 2,
+    crates: 12,
+    startCharge: 0.25,
     jobs: ["pump", "fridge", "school", "lights", "irrigation"],
     villager: {
       name: "Grace",
@@ -436,7 +448,8 @@ export const DAYS: Day[] = [
       line: "The dry season is long. If the fields drink before evening, the market will be full by the weekend. Watch the sky this afternoon, a cloud is coming.",
       look: { skin: "#9a6a48", hair: "#33241f", shirt: "#15803d", extra: "scarf" },
     },
-    goal: "Water the fields, and keep everything else running through the cloud.",
+    goal: "Fill the tank by 3 pm, water the fields by 4 pm, and keep everything else running through the cloud.",
+    deadlines: { pump: 15, irrigation: 16 },
     win: "Fields watered in the dry season. The market is full.",
     tip: "Irrigation takes a lot of power. Run it in the morning, before the afternoon cloud covers the left side of town.",
     main: "irrigation",
@@ -450,8 +463,9 @@ export const DAYS: Day[] = [
     place: "A city of 400,000 people",
     population: "400,000",
     title: "Electric buses",
-    newCrates: 8,
-    crates: 26,
+    newCrates: 4,
+    crates: 16,
+    startCharge: 0.25,
     jobs: ["pump", "fridge", "school", "lights", "irrigation", "bus"],
     villager: {
       name: "Lindiwe",
@@ -459,7 +473,8 @@ export const DAYS: Day[] = [
       line: "Twelve buses are waiting at the depot. Charge them in the sun. If they charge at midnight, they drink the whole jar and the morning comes up dark.",
       look: { skin: "#7d523a", hair: "#1e1816", shirt: "#f5b700", extra: "cap" },
     },
-    goal: "Charge the buses by morning without draining the jar.",
+    goal: "Tank by 3 pm, fields by 4 pm, buses by morning, and the jar not drained.",
+    deadlines: { pump: 15, irrigation: 16 },
     win: "Clean air on the morning commute.",
     tip: "Buses need a lot of power. Charge them while the sun is high, and leave the jar at least a quarter full at sunrise.",
     main: "shenzhen",
@@ -479,6 +494,9 @@ export const FAIL_LINES = {
   school: (h: number) => `The school lost power for about ${Math.max(1, Math.round(h))} hours, and the lessons stopped.`,
   lights: (h: number) => `The study lights went out for about ${Math.max(1, Math.round(h))} hours. The children went home early.`,
 } as const;
+
+/** Game hour by which a flexible job must be done on a given day. */
+export const deadlineOf = (day: number, id: JobId) => DAYS[day - 1].deadlines?.[id] ?? JOBS[id].deadline ?? 30;
 
 export const BREAKER_LINE = "Breaker saved the clinic's power.";
 
@@ -570,8 +588,8 @@ export const ARTICLE: ArticleSection[] = [
     id: "health",
     heading: "Health",
     paragraphs: [
-      "Day two is a clinic fridge. Vaccines must stay cold around the clock, so the fridge is a job that cannot wait for the sun. In the game you solve it with a battery jar, which is also how many real clinics solve it.",
-      "Solar vaccine fridges use a neat trick: they store the sun's energy as ice, and the ice keeps the vaccines cold through the night. The wider problem is still big. Many clinics have power that cuts out, or no power at all.",
+      "Day two is a clinic fridge. Vaccines must stay cold around the clock, so the fridge is a job that cannot wait for the sun. In the game you solve it with a battery jar.",
+      "Solar vaccine fridges use a neat trick: they store the sun's energy as ice, and the ice keeps the vaccines cold through the night. The game gives you a battery jar instead, because a jar is easier to see. The wider problem is still big: many clinics have power that cuts out, or no power at all.",
     ],
     facts: ["health", "fridge"],
   },
@@ -589,7 +607,7 @@ export const ARTICLE: ArticleSection[] = [
     heading: "Food",
     paragraphs: [
       "Day four moves to a town of 12,000 people and a field that needs watering. Irrigation draws a lot of power, and in the game a cloud bank drifts across the left half of the map at midafternoon. You learn to water in the morning and leave the afternoon for the jar.",
-      "Irrigation matters because watered land grows much more than its share of the farmland. A pump that runs on sunlight only needs the sun to be up, so the game asks you to do the watering while it is.",
+      "Irrigation matters because watered land grows much more than its share of the farmland. The figure we use comes from an older FAO booklet, so treat it as a rough guide, not a current count. A pump that runs on sunlight only needs the sun to be up, so the game asks you to do the watering while it is.",
     ],
     facts: ["irrigation"],
   },
@@ -606,7 +624,7 @@ export const ARTICLE: ArticleSection[] = [
     id: "cost",
     heading: "Why solar is now the cheapest power we've built",
     paragraphs: [
-      "The reason Solartopia is even possible is price. New solar farms now produce electricity at a fraction of their cost in 2010, and in 2023 they cost less than the cheapest fossil-fuel option on average. Batteries followed the same curve, which is what lets solar power the night too.",
+      "The reason Solartopia is even possible is price. New solar farms now produce electricity at a fraction of their cost in 2010, and in 2023 IRENA found they cost 56% less than the least-cost new fossil-fuel option, on a weighted average. Batteries followed the same curve, which is what lets solar power the night too.",
       "Cheaper panels and batteries are why a village can afford four crates of panels in the first place. They are also why the game gives you more crates each day.",
     ],
     facts: ["cost", "cheaper", "batteries", "sun"],
@@ -616,7 +634,7 @@ export const ARTICLE: ArticleSection[] = [
     heading: "What solar can't do yet",
     paragraphs: [
       "Solar is not the whole answer. It made about 7% of the world's electricity in 2024. It makes nothing at night, and less in winter and under clouds. The rest of the grid still has to cover those hours with batteries, wind, hydropower and strong power lines.",
-      "That is why the game never lets you finish by building only panels. You have to work with the sun, and with the jar. Real grids do the same, at a much larger scale.",
+      "That is why, from day two on, the game needs a battery jar as well as panels. You have to work with the sun, and with the jar. Real grids do the same, at a much larger scale.",
     ],
     facts: ["share"],
   },
@@ -631,8 +649,8 @@ export const ARTICLE: ArticleSection[] = [
     id: "how",
     heading: "How the game works and what we simplified",
     paragraphs: [
-      "The sun follows a smooth daytime curve: nothing at night, a peak at noon. A panel in the shade of the mango tree makes half as much, and a panel under a cloud makes a quarter. A battery jar returns 90% of what you put in, so a little is lost each time. The jar starts every day half full, and a breaker switches the flexible jobs off if the jar runs low, to protect the clinic.",
-      "We simplified on purpose. You get crates, not dollars, because real prices differ by place and year. Every panel is the same size, every job draws a steady amount, and each day is 24 game hours that last about 24 seconds. The facts are real and linked below, but the game is a model, not a design tool for a real village.",
+      "The sun follows a smooth daytime curve: nothing at night, a peak at noon. A panel in the shade of the mango tree makes half as much, and a panel under a cloud makes a quarter. A battery jar returns 90% of what you put in, so a little is lost each time. The jar starts the first two days half full and the last three a quarter full, so you leave it as full as you found it. A breaker switches the flexible jobs off if the jar runs low, to protect the clinic.",
+      "We simplified on purpose. You get crates, not dollars, because real prices differ by place and year. Every panel is the same size, every job draws a steady amount, each day is 24 game hours that last about 24 seconds, and from day three the tank has to be full by 3 pm. The facts are real and linked below, but the game is a model, not a design tool for a real village.",
     ],
   },
 ];

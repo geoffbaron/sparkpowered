@@ -74,6 +74,18 @@
 .st-mote { animation: st-mote 0.9s ease-in infinite; }
 @keyframes st-mote { 0% { transform: translateY(-4px); opacity: 1; } 60% { transform: translateY(4px) translateX(5px); } 100% { transform: translateY(-14px) translateX(12px); opacity: 0; } }
 
+/* life: clouds drift, villagers bob, smoke rises, a bus crosses the city every 15 s */
+.st-cloud { animation: st-cloud linear infinite; }
+@keyframes st-cloud { from { transform: translateX(-120px); } to { transform: translateX(calc(100vw + 120px)); } }
+.st-bob { animation: st-bob 1.6s ease-in-out infinite; }
+@keyframes st-bob { 50% { transform: translateY(-1.6px); } }
+.st-smoke { animation: st-smoke 3.2s ease-out infinite; }
+@keyframes st-smoke { from { transform: translate(0, 0) scale(0.6); opacity: 0.6; } to { transform: translate(5px, -14px) scale(1.5); opacity: 0; } }
+.st-bus { animation: st-bus 15s linear infinite; }
+@keyframes st-bus { from { transform: translateX(-80px); } to { transform: translateX(560px); } }
+.st-mist { animation: st-mist 24s ease-in-out infinite alternate; }
+@keyframes st-mist { from { transform: translateX(-8px); } to { transform: translateX(10px); } }
+
 /* panel drop: squash 1.15 / 0.85 over 120 ms */
 .st-drop { animation: st-drop 120ms ease-out; }
 @keyframes st-drop { 0% { transform: translateY(-10px) scale(1, 1); opacity: 0.4; } 60% { transform: translateY(0) scale(1.15, 0.85); opacity: 1; } 100% { transform: scale(1, 1); } }
@@ -117,7 +129,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .st-flow, .st-pulse, .st-glowring, .st-ripple, .st-spray, .st-drip, .st-strain, .st-hotpulse { animation: none; }
-  .st-dust circle, .st-mote, .st-drop, .st-stamp, .st-pop, .st-fadein, .st-birds, .st-toast { animation: none; }
+  .st-cloud, .st-bob, .st-smoke, .st-bus, .st-mist, .st-dust circle, .st-mote, .st-drop, .st-stamp, .st-pop, .st-fadein, .st-birds, .st-toast { animation: none; }
   .st-brownout .st-dim, .st-brownout [data-testid="world"] { animation: none; }
   .st-win, .st-wash { transition: none; }
 }

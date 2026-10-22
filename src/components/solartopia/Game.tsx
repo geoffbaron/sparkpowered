@@ -1,14 +1,15 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { DAYS, JOBS, SIM, SLOT_BY_ID, BREAKER_LINE, type JobId } from "@/data/solartopia";
+import { DAYS, JOBS, SIM, SLOT_BY_ID, BREAKER_LINE, deadlineOf, type JobId } from "@/data/solartopia";
 import { play, setMuted, unlock } from "@/lib/solartopia/audio";
+import { nightAt } from "@/lib/solartopia/paint";
 import { encodeStars } from "@/lib/solartopia/share";
 import {
-  DT, TOTAL_STEPS, advance, batteryFraction, create, hourOf, isOver, setJob, summarize, type DayResult, type Placements, type SimState,
+  DT, TOTAL_STEPS, advance, batteryFraction, buildCheck, create, hourOf, isOver, setJob, summarize, type DayResult, type Placements, type SimState,
 } from "@/lib/solartopia/sim";
 import { track } from "@/lib/solartopia/track";
-import { Finale, Forecast, PauseCard, RequestCard, ResultCard } from "./Cards";
+import { BuildStrip, Finale, Forecast, PauseCard, RequestCard, ResultCard } from "./Cards";
 import Ending from "./Ending";
 import { Backdrop, Wash, World, dayChapter, horizonY, lerpView, type SceneSnap, type View } from "./Scene";
 import { CELL, cellX, cellY } from "./art";
@@ -70,6 +71,9 @@ export default function Game({ focus, onExit, picks }: { focus: boolean; onExit:
   const [stage, setStage] = useState({ w: 360, h: 460 });
   const [brown, setBrown] = useState(0);
   const [litNow, setLitNow] = useState(false);
+  const [confirmLeave, setConfirmLeave] = useState(false);
+  const [jars, setJars] = useState(0);
+  const leaving = useRef(false);
 
   const simRef = useRef<SimState | null>(null);
   const dayStartPlacements = useRef<Placements>({});
@@ -81,6 +85,8 @@ export default function Game({ focus, onExit, picks }: { focus: boolean; onExit:
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const bestRef = useRef(best);
   const mounted = useRef(false);
+  const placementsRef = useRef(placements);
+  placementsRef.current = placements;
   phaseRef.current = phase;
   dayRef.current = day;
   bestRef.current = best;
@@ -231,6 +237,7 @@ export default function Game({ focus, onExit, picks }: { focus: boolean; onExit:
     unlock();
     if (phase !== "build") return;
     dayStartPlacements.current = { ...placements };
+    setJars((j) => Math.max(j, Object.values(placements).filter((k) => k === "battery").length));
     simRef.current = create(day, placements);
     litRef.current = false;
     setLitNow(false);
@@ -276,7 +283,7 @@ export default function Game({ focus, onExit, picks }: { focus: boolean; onExit:
   /* ---------------- play loop ---------------- */
 
   const togglePause = useCallback(() => {
-    if (phaseRef.current === "play" || phaseRef.current === "build" || phaseRef.current === "request") setPaused((p) => !p);
+    if (phaseRef.current === "play") setPaused((p) => !p);
   }, []);
 
   useEffect(() => {
@@ -315,7 +322,7 @@ export default function Game({ focus, onExit, picks }: { focus: boolean; onExit:
         }
         // The dusk light-up: once, when the clock reaches 18:00.
         if (!litRef.current && hourOf(s.step) >= 18) {
-          const flexOk = s.active.every((id) => JOBS[id].kind !== "flex" || JOBS[id].deadline! > 18 || s.jobs[id].done);
+          const flexOk = s.active.every((id) => JOBS[id].kind !== "flex" || deadlineOf(s.day, id) > 18 || s.jobs[id].done);
           const darkOk = s.active.every((id) => JOBS[id].kind !== "fixed" || s.jobs[id].darkHours < 0.001);
           litRef.current = true;
           if (flexOk && darkOk) {
@@ -362,6 +369,10 @@ export default function Game({ focus, onExit, picks }: { focus: boolean; onExit:
   const onJob = (id: JobId) => {
     unlock();
     const s = simRef.current;
+    if (phase === "build") {
+      showToast("Start the day first, then switch it on.");
+      return;
+    }
     if (phase !== "play" || !s || paused) return;
     const j = s.jobs[id];
     const turnOn = !j.on;
@@ -372,10 +383,54 @@ export default function Game({ focus, onExit, picks }: { focus: boolean; onExit:
     }
   };
 
-  const exit = () => {
-    if (phase !== "ending") track("st_abandon", { day, phase });
+  const needConfirm = () => phaseRef.current !== "ending" && (dayRef.current > 1 || bestRef.current.some((n) => n > 0) || Object.keys(placementsRef.current).length > 0);
+
+  const doLeave = useCallback(() => {
+    leaving.current = true;
+    if (phaseRef.current !== "ending") track("st_abandon", { day: dayRef.current, phase: phaseRef.current });
+    // Drop the history entry the full-screen mode added, so Back keeps working normally afterwards.
+    try {
+      if (history.state && history.state.stGame) history.back();
+    } catch {}
     onExit();
-  };
+  }, [onExit]);
+
+  /** Exit and Back both come here: ask first when a run would be lost. */
+  const exit = useCallback(() => {
+    if (needConfirm()) {
+      if (phaseRef.current === "play") setPaused(true);
+      setConfirmLeave(true);
+    } else doLeave();
+  }, [doLeave]);
+
+  // Full-screen focus mode (phones): one history entry, so Back closes the game instead of leaving the page.
+  useEffect(() => {
+    if (!focus) return;
+    try {
+      if (!(history.state && history.state.stGame)) history.pushState({ stGame: 1 }, "");
+    } catch {}
+    const onPop = () => {
+      if (leaving.current) return;
+      if (needConfirm()) {
+        try {
+          history.pushState({ stGame: 1 }, "");
+        } catch {}
+        if (phaseRef.current === "play") setPaused(true);
+        setConfirmLeave(true);
+      } else {
+        leaving.current = true;
+        if (phaseRef.current !== "ending") track("st_abandon", { day: dayRef.current, phase: phaseRef.current });
+        onExit();
+      }
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [focus]);
+
+  useEffect(() => {
+    rootRef.current?.focus();
+  }, []);
 
   /* ---------------- keyboard ---------------- */
 
@@ -391,8 +446,27 @@ export default function Game({ focus, onExit, picks }: { focus: boolean; onExit:
       return;
     }
     if (e.key === "Escape") {
-      setSelected(null);
-      setMoving(false);
+      if (confirmLeave) setConfirmLeave(false);
+      else if (selected || moving) {
+        setSelected(null);
+        setMoving(false);
+      } else exit();
+      return;
+    }
+    if (e.key === "Tab" && focus && rootRef.current) {
+      const items = Array.from(rootRef.current.querySelectorAll<HTMLElement>("button:not(:disabled), a[href], select, [tabindex='0']")).filter((n) => n.getClientRects().length > 0);
+      if (items.length) {
+        const first = items[0];
+        const last = items[items.length - 1];
+        const cur = document.activeElement;
+        if (e.shiftKey && (cur === first || cur === rootRef.current)) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && cur === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
       return;
     }
     const dir = { ArrowLeft: [-1, 0], ArrowRight: [1, 0], ArrowUp: [0, -1], ArrowDown: [0, 1] }[e.key];
@@ -438,7 +512,7 @@ export default function Game({ focus, onExit, picks }: { focus: boolean; onExit:
       hour,
       sun: s ? s.sun : 0,
       running: phase === "play" && !paused,
-      batteryFrac: s ? batteryFraction(s) : placementsFrac(placements),
+      batteryFrac: s ? batteryFraction(s) : placementsFrac(placements, d.startCharge),
       usingBattery: !!s && s.flow.fromBattery > 0.01 && s.step < TOTAL_STEPS,
       flowTotal: s ? s.flow.toLoads : 0,
       jobs,
@@ -448,9 +522,10 @@ export default function Game({ focus, onExit, picks }: { focus: boolean; onExit:
       lit: litNow,
       schoolLit: !!s && ((s.jobs.school.powered >= 0.99 && h24 >= 9 && h24 < 15 && s.active.includes("school")) || (s.jobs.lights.powered >= 0.99 && h24 >= 18 && h24 < 21 && s.active.includes("lights"))),
       needPct: { pump: 0, fridge: 0, school: 0, lights: 0, irrigation: 0, bus: 0 },
+      night: day === 1 && (phase === "request" || phase === "build") ? 1 : nightAt(hour),
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [s?.step, phase, paused, litNow, placements, s?.flow, hour]);
+  }, [s?.step, phase, paused, litNow, placements, s?.flow, hour, day]);
 
   useEffect(() => {
     Object.defineProperty(window, "__solartopia", {
@@ -496,6 +571,8 @@ export default function Game({ focus, onExit, picks }: { focus: boolean; onExit:
     return { x, y: above ? c.y - half - 6 : c.y + half + 6, above };
   })();
   const kind = sel ? placements[sel] : undefined;
+  const check = useMemo(() => (phase === "build" ? buildCheck(day, placements) : null), [phase, day, placements]);
+  const toEnding = useCallback(() => setPhase((p) => (p === "finale" ? "ending" : p)), []);
 
   const locked = phase !== "play";
   const barBtn = "st-btn st-bar-btn";
@@ -505,7 +582,10 @@ export default function Game({ focus, onExit, picks }: { focus: boolean; onExit:
   return (
     <div
       ref={rootRef}
-      className={`st-root relative flex flex-col w-full ${focus ? "h-full" : "h-[min(calc(100dvh-6rem),780px)] min-h-[540px] rounded-3xl overflow-hidden"} ${brown ? "st-brownout" : ""}`}
+      tabIndex={-1}
+      role={focus ? undefined : "group"}
+      aria-label="Solartopia"
+      className={`st-root relative flex flex-col w-full outline-none ${focus ? "h-full" : "h-[min(calc(100dvh-6rem),780px)] min-h-[540px] rounded-3xl overflow-hidden"} ${brown ? "st-brownout" : ""}`}
       data-testid="solartopia-game"
       data-phase={phase}
       data-day={day}
@@ -593,24 +673,45 @@ export default function Game({ focus, onExit, picks }: { focus: boolean; onExit:
         <Wash hour={wallHour} dark={dark} />
         {brown > 0 && <div className="absolute inset-0 pointer-events-none st-dim" />}
 
-        {(phase === "build" || phase === "request") && <Forecast day={d} />}
+        {(phase === "build" || phase === "request") && (
+          <div className="absolute left-2 top-2 z-10 flex flex-col gap-1.5 items-start max-w-[calc(100%-1rem)]">
+            <Forecast day={d} />
+            {phase === "build" && check && <BuildStrip check={check} />}
+          </div>
+        )}
         {phase === "play" && (
           <div className="absolute left-2 top-2 z-10 st-chip max-w-[calc(100%-1rem)]" data-testid="goal">
             <strong>Goal:</strong> {d.goal}
           </div>
         )}
         {toast && (
-          <div className="absolute inset-x-0 top-12 z-20 flex justify-center px-3 pointer-events-none" role="status" data-testid="toast">
+          <div className="absolute inset-x-0 bottom-3 z-20 flex justify-center px-3 pointer-events-none" role="status" data-testid="toast">
             <div className="st-chip st-toast">{toast}</div>
           </div>
         )}
         {phase === "request" && !paused && <RequestCard day={d} onGo={goBuild} seconds={3 / speedParam} />}
         {paused && <PauseCard onResume={() => setPaused(false)} onExit={exit} focus={focus} />}
         {phase === "result" && result && (
-          <ResultCard day={d} result={result} onNext={nextDay} onReplay={replay} onSource={() => track("st_fact_source", { day })} />
+          <ResultCard day={d} result={result} crates={{ used, total: d.crates }} onNext={nextDay} onReplay={replay} onSource={() => track("st_fact_source", { day })} />
         )}
-        {phase === "finale" && <Finale seconds={20 / speedParam} onDone={() => setPhase((p) => (p === "finale" ? "ending" : p))} />}
-        {phase === "ending" && <Ending stars={best} picks={picks} onReplay={() => { track("st_replay"); setBest([0, 0, 0, 0, 0]); setPlacements({}); beginRequest(1); }} />}
+        {phase === "finale" && <Finale seconds={20 / speedParam} onDone={toEnding} />}
+        {phase === "ending" && <Ending stars={best} jars={jars} picks={picks} onReplay={() => { track("st_replay"); setBest([0, 0, 0, 0, 0]); setJars(0); setPlacements({}); beginRequest(1); }} />}
+        {confirmLeave && (
+          <div className="absolute inset-0 z-40 flex items-center justify-center p-4 bg-[#1e2a4a]/70" role="alertdialog" aria-modal="true" aria-labelledby="st-leave-h" data-testid="leave-dialog">
+            <div className="st-card rounded-2xl p-4 max-w-xs w-full">
+              <h2 id="st-leave-h" className="text-lg font-extrabold">Leave Solartopia?</h2>
+              <p className="text-[14px] mt-1">Your stars and your build so far will be lost.</p>
+              <div className="flex gap-2 mt-3">
+                <button type="button" className="st-btn st-btn-primary flex-1" onClick={() => setConfirmLeave(false)} data-testid="leave-stay" autoFocus>
+                  Keep playing
+                </button>
+                <button type="button" className="st-btn flex-1" onClick={doLeave} data-testid="leave-confirm">
+                  Leave
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* controls bar: always on screen */}
@@ -619,7 +720,7 @@ export default function Game({ focus, onExit, picks }: { focus: boolean; onExit:
           <div className="flex items-center gap-2 min-h-[2rem]">
             <JarMeter frac={snap.batteryFrac} using={snap.usingBattery} has={Object.values(placements).includes("battery")} />
             <p className="text-[12.5px] leading-tight flex-1" data-testid="tip">
-              Tap a glowing building to switch it on or off
+              {phase === "build" ? "Tap a spot to build. When the day starts: tap a glowing building to switch it on or off" : "Tap a glowing building to switch it on or off"}
             </p>
             {phase === "build" && (
               <p className="text-[12.5px] font-bold tabular-nums whitespace-nowrap" data-testid="crates" data-left={left}>
@@ -627,12 +728,35 @@ export default function Game({ focus, onExit, picks }: { focus: boolean; onExit:
               </p>
             )}
           </div>
+          {phase === "play" && s && (
+            <div className="flex gap-1.5 mt-1.5" data-testid="job-chips">
+              {d.jobs.filter((id) => JOBS[id].kind === "flex").map((id) => {
+                const js = s.jobs[id];
+                const sunLeft = Math.max(0, Math.min(16, deadlineOf(d.n, id)) - Math.max(8, hour));
+                const label = js.done ? "Done" : js.tripped ? "Breaker off: tap to retry" : js.on ? "On" : "Off";
+                return (
+                  <button
+                    key={id}
+                    type="button"
+                    className="st-btn flex-1 !min-w-0 !px-1.5 !flex-col !gap-0 leading-tight"
+                    onClick={() => onJob(id)}
+                    disabled={js.done || paused}
+                    aria-pressed={js.on}
+                    data-testid={`chip-${id}`}
+                  >
+                    <span className="text-[13px]">{JOBS[id].label.replace("Bus depot", "Buses")}: {label}</span>
+                    <span className="text-[10.5px] font-medium opacity-80">{js.done ? "finished" : sunLeft >= 0.5 ? `${Math.round(sunLeft)} hrs of strong sun left` : "strong sun is over"}</span>
+                  </button>
+                );
+              })}
+            </div>
+          )}
           <div className="flex gap-1.5 mt-1.5">
-            <button type="button" className={barBtn} onClick={() => { unlock(); togglePause(); }} data-testid="btn-pause" aria-pressed={paused}>
+            <button type="button" className={barBtn} onClick={() => { unlock(); togglePause(); }} data-testid="btn-pause" aria-pressed={paused} disabled={phase !== "play"}>
               {paused ? "Play" : "Pause"}
             </button>
             <button type="button" className={barBtn} onClick={() => setFast((f) => !f)} data-testid="btn-speed" aria-pressed={fast}>
-              {fast ? "1x" : "2x"}
+              {fast ? "Speed: 1x" : "Speed: 2x"}
             </button>
             <button
               type="button"
@@ -669,8 +793,8 @@ export default function Game({ focus, onExit, picks }: { focus: boolean; onExit:
   );
 }
 
-function placementsFrac(p: Placements) {
-  return Object.values(p).includes("battery") ? SIM.startFraction : 0;
+function placementsFrac(p: Placements, start: number) {
+  return Object.values(p).includes("battery") ? start : 0;
 }
 
 function Progress({ step }: { step: number }) {

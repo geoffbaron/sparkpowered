@@ -28,7 +28,7 @@
   },
   "toggles": [
    {
-    "h": 7,
+    "h": 8,
     "job": "pump",
     "on": true
    }
@@ -43,14 +43,12 @@
    "v6": "panel",
    "g1": "panel",
    "g2": "panel",
-   "v2": "panel",
-   "v3": "panel",
    "g3": "battery",
    "g4": "battery"
   },
   "toggles": [
    {
-    "h": 8,
+    "h": 9,
     "job": "pump",
     "on": true
    }
@@ -59,21 +57,16 @@
  {
   "day": 4,
   "placements": {
-   "v1": "panel",
-   "v4": "panel",
-   "v5": "panel",
-   "v6": "panel",
-   "g1": "panel",
-   "g2": "panel",
-   "v2": "panel",
-   "v3": "panel",
-   "g3": "battery",
-   "g4": "battery",
    "t1": "panel",
    "t2": "panel",
    "t3": "panel",
    "t4": "panel",
-   "t5": "battery"
+   "t5": "panel",
+   "t6": "panel",
+   "t7": "panel",
+   "v1": "panel",
+   "g3": "battery",
+   "g4": "battery"
   },
   "toggles": [
    {
@@ -82,7 +75,7 @@
     "on": true
    },
    {
-    "h": 9,
+    "h": 10,
     "job": "irrigation",
     "on": true
    }
@@ -97,19 +90,11 @@
    "v6": "panel",
    "g1": "panel",
    "g2": "panel",
-   "v2": "panel",
-   "v3": "panel",
-   "g3": "battery",
-   "g4": "battery",
-   "t1": "panel",
-   "t2": "panel",
-   "t3": "panel",
-   "t4": "panel",
-   "t5": "battery",
+   "g3": "panel",
+   "g4": "panel",
    "c1": "panel",
    "c2": "panel",
-   "c3": "panel",
-   "c4": "panel",
+   "t5": "battery",
    "t6": "battery",
    "t7": "battery"
   },
@@ -120,7 +105,7 @@
     "on": true
    },
    {
-    "h": 9,
+    "h": 10,
     "job": "irrigation",
     "on": true
    },

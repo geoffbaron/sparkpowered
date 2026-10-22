@@ -26,6 +26,8 @@ export default function SolartopiaPage() {
     offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
     publisher: { "@type": "Organization", name: SITE_NAME, url: url("/") },
     dateModified: PAGE.updated,
+    image: url("/opengraph-image"),
+    author: { "@type": "Person", name: "Geoff Baron", url: url("/about") },
   };
   return (
     <article className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -87,7 +89,7 @@ export default function SolartopiaPage() {
                     {f.source}
                   </a>
                   <span className="text-muted">
-                    , published <time dateTime={f.published}>{formatDate(f.published)}</time>, checked <time dateTime={f.retrieved}>{formatDate(f.retrieved)}</time>
+                    , {/^\d{4}-\d{2}-\d{2}$/.test(f.published) ? <>published <time dateTime={f.published}>{formatDate(f.published)}</time></> : "undated page"}, checked <time dateTime={f.retrieved}>{formatDate(f.retrieved)}</time>
                   </span>
                 </li>
               );

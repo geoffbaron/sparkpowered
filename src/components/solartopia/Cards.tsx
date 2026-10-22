@@ -1,9 +1,9 @@
 /** Cards laid over the stage: villager request, forecast, pause, result and finale. */
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { DAYS, FACTS, FINALE_FACTS, FINALE_HONEST, type Day } from "@/data/solartopia";
 import { COLORS, wobblyPoly } from "@/lib/solartopia/paint";
-import type { DayResult } from "@/lib/solartopia/sim";
+import type { BuildCheck, DayResult } from "@/lib/solartopia/sim";
 import { Stars } from "./Stars";
 
 export function Villager({ look, size = 76 }: { look: Day["villager"]["look"]; size?: number }) {
@@ -88,7 +88,7 @@ export function Forecast({ day }: { day: Day }) {
     return `${x(h).toFixed(1)},${(24 - s * 18).toFixed(1)}`;
   }).join(" ");
   return (
-    <div className="absolute left-2 top-2 z-10 st-chip flex items-center gap-2 max-w-[calc(100%-1rem)]" data-testid="forecast">
+    <div className="st-chip flex items-center gap-2" data-testid="forecast">
       <svg width={120} height={28} viewBox="0 0 120 28" aria-hidden="true">
         <polyline points={pts} fill="none" stroke={COLORS.sun} strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" />
         {c && <rect x={x(c.start)} y={2} width={x(c.end) - x(c.start)} height={24} rx={3} fill="#5b3a63" opacity={0.35} />}
@@ -97,6 +97,34 @@ export function Forecast({ day }: { day: Day }) {
       <span className="text-[12px] leading-tight">
         <strong>Forecast:</strong> {day.forecast}
       </span>
+    </div>
+  );
+}
+
+const DOT = { green: "#15803d", amber: "#d97706", red: "#b91c1c" } as const;
+const WORD = { green: "Enough", amber: "Tight", red: "Not enough" } as const;
+
+/** Supply versus demand for the build on screen, from the pure sim. Never colour alone: the word is there too. */
+export function BuildStrip({ check }: { check: BuildCheck }) {
+  const full = Math.floor(check.nightHours);
+  return (
+    <div className="st-chip max-w-[19rem]" data-testid="build-check" data-status={check.status}>
+      <div className="flex items-start gap-2">
+        <span className="mt-0.5 shrink-0 inline-block h-3 w-3 rounded-full border border-black/40" style={{ background: DOT[check.status] }} aria-hidden="true" />
+        <span>
+          <strong>{WORD[check.status]}.</strong> {check.text}
+        </span>
+      </div>
+      {check.showNight && (
+        <div className="mt-1" data-testid="night-bar" data-hours={full}>
+          <div className="flex gap-0.5" aria-hidden="true">
+            {Array.from({ length: 12 }, (_, i) => (
+              <span key={i} className="h-2 flex-1 rounded-sm border border-black/30" style={{ background: i < full ? "#F5B700" : "#d8d0e0" }} />
+            ))}
+          </div>
+          <span className="text-[11.5px]">The jar covers {full} of 12 night hours.</span>
+        </div>
+      )}
     </div>
   );
 }
@@ -131,12 +159,14 @@ export function PauseCard({ onResume, onExit, focus }: { onResume: () => void; o
 export function ResultCard({
   day,
   result,
+  crates,
   onNext,
   onReplay,
   onSource,
 }: {
   day: Day;
   result: DayResult;
+  crates: { used: number; total: number };
   onNext: () => void;
   onReplay: () => void;
   onSource: () => void;
@@ -169,6 +199,16 @@ export function ResultCard({
         ))}
         {result.breakerTrips > 0 && <p className="text-[14px] mt-1">The breaker saved the clinic&apos;s power, but it switched your jobs off.</p>}
         {result.hint && <p className="text-[14px] mt-2 text-[#5b3a63]">{result.hint}</p>}
+        <ul className="mt-2 text-[12.5px] leading-snug space-y-0.5" data-testid="star-rules">
+          <li>{result.stars >= 1 ? "Earned" : "Not earned"}: 1 star, every job done.</li>
+          <li>{result.stars >= 2 ? "Earned" : "Not earned"}: 2 stars, nothing went dark and the breaker never tripped.</li>
+          <li>
+            {result.stars >= 3 ? "Earned" : "Not earned"}: 3 stars, {day.n === 1 ? "the tank full by 1 pm." : "the jar at least a quarter full at sunrise."}
+          </li>
+        </ul>
+        <p className="text-[12.5px] mt-1.5 text-[#4a3a43]" data-testid="result-stats">
+          Crates used {crates.used} of {crates.total}. Sun wasted {Math.round(result.wastedShare * 100)}%.
+        </p>
         <p className="text-[13px] mt-3 leading-snug">
           {main.text}{" "}
           <a href={main.url} target="_blank" rel="noopener noreferrer" className="underline font-semibold" data-testid="fact-source" onClick={onSource}>
@@ -199,18 +239,22 @@ export function ResultCard({
 /** 20 seconds, no gameplay: the globe lights up and three facts appear. */
 export function Finale({ seconds, onDone }: { seconds: number; onDone: () => void }) {
   const [t, setT] = useState(0);
+  const done = useRef(onDone);
+  useEffect(() => {
+    done.current = onDone;
+  });
   useEffect(() => {
     const start = performance.now();
     let raf = 0;
     const loop = (now: number) => {
       const k = Math.min(1, (now - start) / 1000 / seconds);
       setT(k);
-      if (k >= 1) onDone();
+      if (k >= 1) done.current();
       else raf = requestAnimationFrame(loop);
     };
     raf = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(raf);
-  }, [seconds, onDone]);
+  }, [seconds]);
   const blobs = [
     "M52 70 C46 60 56 48 70 50 C84 52 86 64 78 74 C70 84 56 82 52 70Z",
     "M92 52 C100 44 120 46 128 54 C138 62 132 76 120 78 C106 80 92 70 92 52Z",
@@ -257,7 +301,7 @@ export function Finale({ seconds, onDone }: { seconds: number; onDone: () => voi
       <div className="h-1 w-48 rounded bg-white/20 overflow-hidden" aria-hidden="true">
         <div className="h-full bg-[#ffd27a]" style={{ width: `${t * 100}%` }} />
       </div>
-      <button type="button" className="st-btn" onClick={onDone} data-testid="finale-skip">
+      <button type="button" className="st-btn" onClick={() => done.current()} data-testid="finale-skip">
         Continue
       </button>
     </div>

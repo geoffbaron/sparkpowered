@@ -17,10 +17,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { code } = await params;
   const stars = decodeStars(code);
   const title = stars ? `${totalStars(stars)} of ${MAX_STARS} stars in Solartopia` : "Solartopia";
-  const description = stars ? shareSentence(stars) : PAGE.description;
+  const description = stars ? shareSentence(stars, "third") : PAGE.description;
   return {
     title,
     description,
+    // The root layout sets a canonical of "/" on every page that does not set its own, so this page points at the game instead.
     alternates: { canonical: PAGE.path },
     robots: { index: false, follow: true },
     openGraph: { type: "website", siteName: SITE_NAME, title, description, url: `/solartopia/r/${code}` },
@@ -36,7 +37,7 @@ export default async function SharePage({ params }: Props) {
     <div className="max-w-xl mx-auto px-4 py-12 text-center">
       <p className="text-sm font-semibold uppercase tracking-wide text-spark-amber">Solartopia</p>
       <h1 className="text-3xl font-extrabold mt-2">{totalStars(stars)} of {MAX_STARS} stars</h1>
-      <p className="text-lg text-stone-600 mt-3">{shareSentence(stars)}</p>
+      <p className="text-lg text-stone-600 mt-3">{shareSentence(stars, "third")}</p>
       <ul className="mt-6 grid gap-2 text-left">
         {DAYS.map((d, i) => (
           <li key={d.n} className="flex items-center justify-between rounded-xl border border-black/10 bg-white px-4 py-2">

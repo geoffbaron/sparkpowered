@@ -39,16 +39,32 @@ const tapNoNav = async (loc) => {
 const state = (page) => page.evaluate(() => window.__solartopia);
 const waitHour = (page, h) => page.waitForFunction((x) => window.__solartopia && window.__solartopia.hour >= x, h, { polling: "raf", timeout: 120000 });
 
-async function playDay(page, plan, log) {
-  await page.waitForSelector("[data-testid=solartopia-game][data-phase=build], [data-testid=request-go]", { timeout: 20000 });
-  if (await page.getByTestId("request-go").count()) await page.getByTestId("request-go").tap();
-  await page.waitForSelector("[data-testid=solartopia-game][data-phase=build]");
-  for (const [id, kind] of Object.entries(plan.placements)) {
+// Make the board match a plan: take back what is not in it, then place what is missing.
+async function arrange(page, placements) {
+  const slots = await page.locator("[data-testid^=slot-]").evaluateAll((els) => els.map((e) => [e.getAttribute("data-testid").slice(5), e.getAttribute("data-kind")]));
+  for (const [id, kind] of slots) {
+    if (kind !== "empty" && placements[id] !== kind) {
+      await page.getByTestId("slot-" + id).tap();
+      await page.getByTestId("pick-remove").tap();
+    }
+  }
+  for (const [id, kind] of Object.entries(placements)) {
     const slot = page.getByTestId("slot-" + id);
     if ((await slot.getAttribute("data-kind")) === kind) continue;
     await slot.tap();
     await page.getByTestId(kind === "panel" ? "pick-panel" : "pick-battery").tap();
   }
+}
+
+async function playDay(page, plan, log) {
+  await page.waitForSelector("[data-testid=solartopia-game][data-phase=build], [data-testid=request-go]", { timeout: 20000 });
+  if (await page.getByTestId("request-go").count()) await page.getByTestId("request-go").tap();
+  await page.waitForSelector("[data-testid=solartopia-game][data-phase=build]");
+  await arrange(page, plan.placements);
+  const check = await page.getByTestId("build-check").getAttribute("data-status");
+  ok(check === "green", `day ${plan.day}: build strip is green for the recommended build (${check})`);
+  if (plan.day === 3) ok((await page.getByTestId("night-bar").count()) === 1, "day 3: night bar shown");
+  if (plan.day === 5) ok((await page.getByTestId("night-bar").count()) === 0, "day 5: no night bar");
   const left = Number(await page.getByTestId("crates").getAttribute("data-left"));
   ok(left >= 0, `day ${plan.day}: crates left ${left}`);
   await page.getByTestId("start-day").tap();
@@ -102,7 +118,7 @@ async function fullRun(speed, label) {
   ok(saved === "WA", `${label}: chosen state written to spark_state (${saved})`);
   const goals = {
     bill: { text: /plug-in kit here is worth up to \$\d+ a year/, primary: "/plug-in-solar", partner: false },
-    outage: { text: /just did what a home battery does/, primary: "/battery-calculator", partner: "bluetti" },
+    outage: { text: /backup battery|battery jar/, primary: "/battery-calculator", partner: "bluetti" },
     drive: { text: /Charging at home costs about \$\d+ a month/, primary: "/go-electric", partner: "lectron" },
   };
   for (const [g, spec] of Object.entries(goals)) {
@@ -138,6 +154,7 @@ async function fullRun(speed, label) {
   const r = await fetch(`${base}/solartopia/r/${code}`);
   const html = await r.text();
   ok(r.status === 200 && /noindex/.test(html) && /rel="canonical" href="[^"]*\/solartopia"/.test(html), `${label}: share page is 200, noindex, canonical /solartopia`);
+  ok(!/>I powered/.test(html) && /Someone powered|Someone lit up|Someone tried/.test(html), `${label}: share page speaks in the third person`);
   const total = code.split("").reduce((a, b) => a + Number(b), 0);
   ok(html.includes(`${total} of 15 stars`), `${label}: share page says ${total} of 15 stars`);
   const og = html.match(/property="og:image" content="([^"]+)"/)?.[1];
@@ -233,16 +250,13 @@ for (const [w, h] of [[360, 640], [375, 667]]) {
   await page.waitForSelector("[data-testid=solartopia-game][data-phase=build]");
   await page.waitForTimeout(1500);
   await checkBar("day 5 build (all 30 slots)");
-  for (const [id, kind] of Object.entries(plans[4].placements)) {
-    const slot = page.getByTestId("slot-" + id);
-    if ((await slot.getAttribute("data-kind")) === kind) continue;
-    await slot.tap();
-    await page.getByTestId(kind === "panel" ? "pick-panel" : "pick-battery").tap();
-  }
+  await arrange(page, plans[4].placements);
   await page.getByTestId("start-day").tap();
   await page.getByTestId("building-pump").tap();
   await page.waitForTimeout(300);
   await checkBar("day 5 play");
+  const chipText = await page.getByTestId("job-chips").innerText();
+  ok(/pump/i.test(chipText) && /Irrigation/.test(chipText) && /Buses/.test(chipText) && /hrs of strong sun left/.test(chipText), `${tag}: job buttons show hours of strong sun left`);
   // hidden tab pauses
   await page.evaluate(() => {
     Object.defineProperty(document, "hidden", { configurable: true, get: () => true });
@@ -257,6 +271,15 @@ for (const [w, h] of [[360, 640], [375, 667]]) {
   ok(/Tap a glowing building to switch it on or off/.test(pauseText) && (await page.getByTestId("btn-sound").isVisible()) && (await page.getByTestId("btn-speed").isVisible()), `${tag}: pause screen shows the controls`);
   await checkBar("pause");
   await page.getByTestId("pause-exit").tap();
+  ok((await page.getByTestId("leave-dialog").getAttribute("aria-modal")) === "true", `${tag}: Exit asks first, in its own dialog`);
+  await page.getByTestId("leave-stay").tap();
+  ok((await page.getByTestId("pause-card").count()) === 1, `${tag}: Keep playing returns to the paused game`);
+  await page.goBack();
+  await page.waitForSelector("[data-testid=leave-dialog]");
+  ok(page.url().includes("/solartopia"), `${tag}: Back asks before leaving and stays on the page`);
+  await page.getByTestId("leave-confirm").tap();
+  await page.waitForSelector("[data-testid=solartopia-title]");
+  ok(page.url().includes("/solartopia"), `${tag}: after Leave the title is back, still on /solartopia`);
   const abandon = await page.evaluate(() => window.__ev.filter((e) => e[0] === "st_abandon"));
   ok(abandon.length === 1 && abandon[0][1].day === 5 && abandon[0][1].phase === "play", `${tag}: Exit mid-day sends st_abandon {day, phase} ${JSON.stringify(abandon)}`);
   ok(errors.length === 0, `${tag}: no errors ${errors.join(" | ")}`);

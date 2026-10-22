@@ -7,7 +7,7 @@
  * Units are internal. The player never sees them.
  */
 
-import { DAYS, JOBS, SIM, SLOT_BY_ID, FAIL_LINES, BREAKER_LINE, type CloudBank, type JobId } from "@/data/solartopia";
+import { DAYS, JOBS, SIM, SLOT_BY_ID, FAIL_LINES, BREAKER_LINE, deadlineOf, type CloudBank, type JobId } from "@/data/solartopia";
 
 export const DT = 1 / SIM.stepsPerHour;
 export const TOTAL_STEPS = (SIM.endHour - SIM.startHour) * SIM.stepsPerHour;
@@ -94,6 +94,8 @@ export interface SimState {
   /** Rates for the last step (units per hour), for the scene. */
   flow: Flow;
   sun: number;
+  /** Game hour a fixed job first went dark, or null. */
+  firstDark: number | null;
   /** Events since the UI last drained them. */
   events: SimEvent[];
 }
@@ -125,8 +127,8 @@ export function create(day: number, placements: Placements): SimState {
     panels,
     batteries,
     cap,
-    battery: cap * SIM.startFraction,
-    startBattery: cap * SIM.startFraction,
+    battery: cap * d.startCharge,
+    startBattery: cap * d.startCharge,
     jobs,
     active: d.jobs,
     switchCount: 0,
@@ -138,6 +140,7 @@ export function create(day: number, placements: Placements): SimState {
     atDeadline: {},
     flow: { panels: 0, toLoads: 0, toBattery: 0, fromBattery: 0, wasted: 0 },
     sun: 0,
+    firstDark: null,
     events: [],
   };
 }
@@ -199,6 +202,7 @@ export function advance(s: SimState): SimState {
     flow.toLoads += got / DT;
     if (js.powered < 0.999) {
       if (js.darkHours === 0) s.events.push({ type: "dark", job: id, hour: h });
+      if (s.firstDark === null) s.firstDark = h;
       js.darkHours += DT;
     }
   }
@@ -270,7 +274,7 @@ export function advance(s: SimState): SimState {
   const now = hourOf(s.step);
   for (const id of s.active) {
     const job = JOBS[id];
-    if (job.kind === "flex" && job.deadline !== undefined && s.atDeadline[id] === undefined && now >= job.deadline - 1e-9) {
+    if (job.kind === "flex" && s.atDeadline[id] === undefined && now >= deadlineOf(s.day, id) - 1e-9) {
       s.atDeadline[id] = s.jobs[id].progress;
     }
   }
@@ -297,6 +301,8 @@ export interface DayResult {
   utilisation: number;
   produced: number;
   wasted: number;
+  /** Share of the sun that was wasted, 0..1. */
+  wastedShare: number;
   /** Plain-language reason for the first problem, or null. */
   cause: string | null;
   /** One hint for the next try, or null. */
@@ -352,6 +358,7 @@ export function summarize(s: SimState): DayResult {
     utilisation: s.produced > 0 ? used / s.produced : 0,
     produced: s.produced,
     wasted: s.wasted,
+    wastedShare: s.produced > 0 ? s.wasted / s.produced : 0,
     cause,
     hint,
   };
@@ -390,4 +397,59 @@ export function slotsForDay(day: number) {
   const ch = DAYS[day - 1].chapter;
   const open = ch === "village" ? ["village"] : ch === "town" ? ["village", "town"] : ["village", "town", "city"];
   return Object.values(SLOT_BY_ID).filter((s) => open.includes(s.chapter));
+}
+
+/** A good, staggered plan for the day: the pump first, then irrigation, then the buses at noon. */
+export function referencePlan(day: number): Toggle[] {
+  const jobs = DAYS[day - 1].jobs;
+  const t: Toggle[] = [];
+  if (jobs.includes("pump")) t.push({ h: day === 1 ? 6 : 8, job: "pump", on: true });
+  if (jobs.includes("irrigation")) t.push({ h: 10, job: "irrigation", on: true });
+  if (jobs.includes("bus")) t.push({ h: 12, job: "bus", on: true });
+  return t;
+}
+
+export interface BuildCheck {
+  status: "green" | "amber" | "red";
+  /** One plain sentence for the player. */
+  text: string;
+  /** Hours of the 12 night hours (18:00 to 06:00) the fixed jobs stay powered, 0..12. */
+  nightHours: number;
+  /** Share of the day's power need the sun covers (before the jar), 0..1+. */
+  sunCover: number;
+  /** True on days where the night bar is shown (the clinic and school nights). */
+  showNight: boolean;
+}
+
+/**
+ * Supply versus demand for the build on screen, from the same pure sim: run the
+ * day with a good staggered plan and read the outcome. Green: it works with room
+ * to spare. Amber: it works but the jar ends low or the breaker trips. Red: a job fails.
+ */
+export function buildCheck(day: number, placements: Placements): BuildCheck {
+  const { state, result } = runDay(day, placements, referencePlan(day));
+  const d = DAYS[day - 1];
+  const nightHours = state.firstDark !== null && state.firstDark >= 18 ? Math.max(0, Math.min(12, state.firstDark - 18)) : state.firstDark !== null ? 0 : 12;
+  const demand = state.delivered;
+  const sunCover = demand > 0 ? state.produced / demand : 0;
+  const showNight = day >= 2 && day <= 3;
+  const hasJar = state.cap > 0;
+  const noPanels = state.panels.length === 0;
+  let status: BuildCheck["status"] = "green";
+  let text = "Looks good: the sun covers the day and the jar covers the night.";
+  const failed = result.requirements.find((r) => !r.met);
+  if (noPanels) {
+    status = "red";
+    text = "No panels yet, so nothing will run.";
+  } else if (failed) {
+    status = "red";
+    if (failed.job === "fridge" || failed.job === "school" || failed.job === "lights") text = hasJar ? `The jar covers only ${Math.floor(nightHours)} of 12 night hours. Add panels or a jar.` : "No battery jar yet: the clinic fridge goes dark at night.";
+    else if (failed.job === "pump") text = "Not enough sun for the pump" + (d.deadlines?.pump ? " by 3 pm." : " by evening.");
+    else if (failed.job === "irrigation") text = "Not enough sun to water the fields by 4 pm.";
+    else text = "The buses will not fully charge by morning. Add panels.";
+  } else if (result.breakerTrips > 0 || (day > 1 && result.batteryEnd < SIM.threeStarBattery)) {
+    status = "amber";
+    text = result.breakerTrips > 0 ? "Tight: the breaker would trip on a good plan. Add panels." : "Tight: the jar ends the day below a quarter full.";
+  }
+  return { status, text, nightHours, sunCover, showNight };
 }

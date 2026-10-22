@@ -1,11 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { CREDIT_ENDED, GOALS, GOAL_LINKS, type Goal } from "@/data/solartopia";
 import { useChooseState, useVisitorState } from "@/hooks/useVisitorState";
 import type { EndingFigures } from "@/lib/solartopia/ending";
-import { sharePath, shareSentence, totalStars } from "@/lib/solartopia/share";
+import { achievementLine, sharePath, shareSentence, totalStars } from "@/lib/solartopia/share";
 import { track } from "@/lib/solartopia/track";
 import { MAX_STARS } from "@/data/solartopia";
 
@@ -13,7 +13,7 @@ type Step = "turn" | "goal" | "answer";
 
 const usd = (n: number) => `$${n.toLocaleString("en-US")}`;
 
-export default function Ending({ stars, picks, onReplay }: { stars: number[]; picks: { outage: ReactNode; drive: ReactNode }; onReplay: () => void }) {
+export default function Ending({ stars, jars, picks, onReplay }: { stars: number[]; jars: number; picks: { outage: ReactNode; drive: ReactNode }; onReplay: () => void }) {
   const [data, setData] = useState<Record<string, EndingFigures> | null>(null);
   const [failed, setFailed] = useState(false);
   const [step, setStep] = useState<Step>("turn");
@@ -39,9 +39,14 @@ export default function Ending({ stars, picks, onReplay }: { stars: number[]; pi
   const fig = data && abbr !== "US" ? data[abbr] : null;
   const total = totalStars(stars);
 
+  const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  useEffect(() => () => {
+    if (toastTimer.current) clearTimeout(toastTimer.current);
+  }, []);
   const showToast = (t: string) => {
     setToast(t);
-    setTimeout(() => setToast(null), 2400);
+    if (toastTimer.current) clearTimeout(toastTimer.current);
+    toastTimer.current = setTimeout(() => setToast(null), 2400);
   };
 
   const proceed = () => {
@@ -90,7 +95,7 @@ export default function Ending({ stars, picks, onReplay }: { stars: number[]; pi
               {total} of {MAX_STARS} stars
             </p>
             <h2 className="text-xl font-extrabold leading-tight mt-1">Your turn</h2>
-            <p className="text-[15px] mt-1">You lit a village, a town and a city. Now think about your own home.</p>
+            <p className="text-[15px] mt-1">{achievementLine(stars)} Now think about your own home.</p>
             {failed && (
               <p className="text-[14px] mt-3">
                 We could not load the numbers. Try the <Link href="/states" className="underline">state pages</Link> instead.
@@ -163,10 +168,10 @@ export default function Ending({ stars, picks, onReplay }: { stars: number[]; pi
             {goal === "outage" && (
               <>
                 <h2 className="text-xl font-extrabold leading-tight mt-1" data-testid="answer-line">
-                  You just did what a home battery does.
+                  {jars > 0 ? "You ran the night on a battery jar. At home, a backup battery does the same job." : "A backup battery keeps the lights on when the grid goes down."}
                 </h2>
                 <p className="text-[14px] mt-2">
-                  One home battery could run an average {fig.name} home for about {fig.batteryHours} hours.
+                  The pick below is a portable power station: it runs the essentials, not the whole house. A whole-home battery is a bigger purchase; one would run an average {fig.name} home for about {fig.batteryHours} hours.
                 </p>
               </>
             )}
@@ -175,7 +180,9 @@ export default function Ending({ stars, picks, onReplay }: { stars: number[]; pi
                 <h2 className="text-xl font-extrabold leading-tight mt-1" data-testid="answer-line">
                   Charging at home costs about {usd(fig.evMonthlyUsd)} a month. Gas costs about {usd(fig.gasMonthlyUsd)}.
                 </h2>
-                <p className="text-[14px] mt-2">That is for 1,000 miles a month, and it adds up to about {usd(fig.savingMonthlyUsd)} a month back in your pocket.</p>
+                <p className="text-[14px] mt-2">
+                  That is for 1,000 miles a month, so about {usd(fig.savingMonthlyUsd)} a month less to run, before the cost of the car and a charger. It is grid power, not solar: solar at home could lower it further.
+                </p>
               </>
             )}
             <div className="mt-3 grid gap-2">
