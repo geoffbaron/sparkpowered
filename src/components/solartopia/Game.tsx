@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { DAYS, JOBS, SIM, SLOT_BY_ID, BREAKER_LINE, deadlineOf, type JobId } from "@/data/solartopia";
+import { BUILDINGS, DAYS, JOBS, SIM, SLOT_BY_ID, BREAKER_LINE, deadlineOf, type JobId } from "@/data/solartopia";
 import { play, setMuted, unlock } from "@/lib/solartopia/audio";
 import { nightAt } from "@/lib/solartopia/paint";
 import { encodeStars } from "@/lib/solartopia/share";
@@ -9,7 +9,7 @@ import {
   DT, TOTAL_STEPS, advance, batteryFraction, buildCheck, create, hourOf, isOver, setJob, summarize, type DayResult, type Placements, type SimState,
 } from "@/lib/solartopia/sim";
 import { track } from "@/lib/solartopia/track";
-import { BuildStrip, Finale, Forecast, PauseCard, RequestCard, ResultCard } from "./Cards";
+import { Finale, HudCard, PauseCard, RequestCard, ResultCard } from "./Cards";
 import Ending from "./Ending";
 import { Backdrop, Wash, World, dayChapter, horizonY, lerpView, type SceneSnap, type View } from "./Scene";
 import { CELL, cellX, cellY } from "./art";
@@ -81,6 +81,8 @@ export default function Game({ focus, onExit, picks }: { focus: boolean; onExit:
   const [confirmLeave, setConfirmLeave] = useState(false);
   const [jars, setJars] = useState(0);
   const leaving = useRef(false);
+  const hudRef = useRef<HTMLDivElement>(null);
+  const [hudH, setHudH] = useState(0);
 
   const simRef = useRef<SimState | null>(null);
   const dayStartPlacements = useRef<Placements>({});
@@ -577,9 +579,30 @@ export default function Game({ focus, onExit, picks }: { focus: boolean; onExit:
     const half = CELL * scale * 0.5;
     const w = 2 * 96 + 8;
     const x = Math.min(Math.max(c.x, w / 2 + 4), stage.w - w / 2 - 4);
-    const above = c.y - half - 64 > 0;
+    const hudBottom = hudH > 0 ? 8 + hudH + 6 : 0;
+    const popH = 62;
+    const spaceAbove = c.y - half - hudBottom;
+    const spaceBelow = stage.h - (c.y + half);
+    const above = spaceAbove >= popH + 6 && (spaceAbove >= spaceBelow || spaceBelow < popH + 6);
     return { x, y: above ? c.y - half - 6 : c.y + half + 6, above };
   })();
+  useEffect(() => {
+    const h = hudRef.current?.offsetHeight ?? 0;
+    if (h !== hudH) setHudH(h);
+  });
+  const labels: { key: string; x: number; y: number; text: string }[] = [];
+  {
+    const add = (key: string, c: number, r: number, text: string) => {
+      const p = toPx(cellX(c) + CELL / 2, cellY(r) + CELL - 3);
+      labels.push({ key, x: p.x, y: p.y, text });
+    };
+    add("pump", BUILDINGS.pump.c, BUILDINGS.pump.r, "Water pump");
+    add("clinic", BUILDINGS.clinic.c, BUILDINGS.clinic.r, "Clinic");
+    add("school", BUILDINGS.school.c, BUILDINGS.school.r, "School");
+    if (ch >= 1) add("fields", BUILDINGS.irrigation.c, BUILDINGS.irrigation.r, "Fields");
+    if (ch >= 2) add("depot", BUILDINGS.depot.c, BUILDINGS.depot.r, "Bus depot");
+    for (const [id, k] of Object.entries(placements)) if (k === "battery") add(`jar-${id}`, SLOT_BY_ID[id].c, SLOT_BY_ID[id].r, "Battery");
+  }
   const kind = sel ? placements[sel] : undefined;
   const check = useMemo(() => (phase === "build" ? buildCheck(day, placements) : null), [phase, day, placements]);
   const toEnding = useCallback(() => setPhase((p) => (p === "finale" ? "ending" : p)), []);
@@ -640,6 +663,11 @@ export default function Game({ focus, onExit, picks }: { focus: boolean; onExit:
           onJob={onJob}
         />
         <div className="absolute inset-0 pointer-events-none">
+          {labels.map((l) => (
+            <span key={l.key} className="st-tag" style={{ left: l.x, top: l.y }} data-testid={`tag-${l.key}`}>
+              {l.text}
+            </span>
+          ))}
           {popup && (
             <div
               className="absolute z-20 flex gap-2 st-pop pointer-events-auto"
@@ -683,20 +711,9 @@ export default function Game({ focus, onExit, picks }: { focus: boolean; onExit:
         <Wash hour={wallHour} dark={dark} />
         {brown > 0 && <div className="absolute inset-0 pointer-events-none st-dim" />}
 
-        {(phase === "build" || phase === "request") && (
-          <div className="absolute left-2 top-2 z-10 flex flex-col gap-1.5 items-start max-w-[calc(100%-1rem)]">
-            {phase === "build" && (
-              <div className="st-chip" data-testid="build-goal">
-                <strong>Goal:</strong> {d.goal}
-              </div>
-            )}
-            <Forecast day={d} />
-            {phase === "build" && check && <BuildStrip check={check} />}
-          </div>
-        )}
-        {phase === "play" && (
-          <div className="absolute left-2 top-2 z-10 st-chip max-w-[calc(100%-1rem)]" data-testid="goal">
-            <strong>Goal:</strong> {d.goal}
+        {(phase === "build" || phase === "play") && (
+          <div ref={hudRef} className="absolute left-2 top-2 z-10 max-w-[calc(100%-1rem)]">
+            <HudCard day={d} check={check} phase={phase} />
           </div>
         )}
         {toast && (

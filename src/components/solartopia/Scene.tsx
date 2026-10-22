@@ -5,11 +5,11 @@
  */
 
 import type { ReactNode } from "react";
-import { BUILDINGS, DAYS, SLOTS, type CloudBank, type JobId, type Slot } from "@/data/solartopia";
+import { BUILDINGS, DAYS, JOBS, SLOTS, type CloudBank, type JobId, type Slot } from "@/data/solartopia";
 import { COLORS, blob, hills, nightAt, skyAt, washAt, wobblyLine, wobblyPoly, wobblyRect } from "@/lib/solartopia/paint";
 import { cloudWeight, rng, type Placements } from "@/lib/solartopia/sim";
 import {
-  Badge, Chickens, Clinic, Depot, Dust, Fields, FieldPlot, Garden, Goat, GrassTuft, HalfSun, House, Jar, MangoTree, Marker, MarketStalls, Panel, Person, Pump, Rock, School, Tower, Tree,
+  Badge, Clinic, Depot, Dust, Fields, FieldPlot, Garden, Goat, GrassTuft, HalfSun, House, Jar, MangoTree, Marker, MarketStalls, Panel, Person, Pump, Rock, School, Tower, Tree,
   CELL, WORLD, cellCenter, cellX, cellY,
 } from "./art";
 
@@ -99,12 +99,11 @@ export function Backdrop({ hour, horizon, dark }: { hour: number; horizon: numbe
   const arc = (isDay ? Math.sin(Math.PI * Math.min(1, Math.max(0, dayT))) : Math.sin(Math.PI * Math.min(1, Math.max(0, nightT)))) * (horizon - 14);
   const sy = horizon - 2 - arc * (isDay ? 0.95 : 0.7);
   const starA = Math.max(0, Math.min(1, d24 >= 18 ? (d24 - 18.2) / 1.5 : d24 < 6 ? 1 - Math.max(0, d24 - 5) / 1.2 : 0));
-  const birds = hour >= 6 && hour < 9 && !dark;
   const dayness = 1 - nightAt(h);
   return (
     <div className="absolute inset-0 overflow-hidden" aria-hidden="true" style={{ background: `linear-gradient(${sky.top}, ${sky.bot} ${horizon}%)` }}>
       {/* three hard paper bands of sky */}
-      <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100" style={{ opacity: 0.5 * dayness }}>
+      <svg className="absolute inset-0 w-full h-full" preserveAspectRatio="none" viewBox="0 0 100 100" style={{ opacity: 0.3 * dayness }}>
         <path d={`M0 ${horizon * 0.55} Q25 ${horizon * 0.5} 50 ${horizon * 0.56} T100 ${horizon * 0.52} V${horizon * 0.75} Q70 ${horizon * 0.8} 40 ${horizon * 0.74} T0 ${horizon * 0.78}Z`} fill="#b8d4e6" />
         <path d={`M0 ${horizon * 0.8} Q30 ${horizon * 0.76} 55 ${horizon * 0.82} T100 ${horizon * 0.79} V${horizon + 2} H0Z`} fill="#f6e3bf" />
       </svg>
@@ -115,8 +114,8 @@ export function Backdrop({ hour, horizon, dark }: { hour: number; horizon: numbe
           style={{ left: `${s.x}%`, top: `${s.y * (horizon / 50)}%`, width: s.s + 0.4, height: s.s + 0.4, opacity: starA * (0.6 + 0.4 * Math.sin(hour * 2 + s.p * 9)) }}
         />
       ))}
-      {dayness > 0.1 && [0, 1, 2].map((i) => (
-        <svg key={i} className="absolute st-cloud" style={{ top: `${horizon * (0.12 + i * 0.17)}%`, left: `${i * 38}%`, width: 90 + i * 22, height: 36, opacity: 0.85 * dayness, animationDuration: `${70 + i * 25}s`, animationDelay: `-${i * 30}s` }} viewBox="0 0 90 36">
+      {dayness > 0.1 && [0, 1].map((i) => (
+        <svg key={i} className="absolute st-cloud" style={{ top: `${horizon * (0.12 + i * 0.17)}%`, left: `${i * 38}%`, width: 90 + i * 22, height: 36, opacity: 0.85 * dayness, animationDuration: `${140 + i * 50}s`, animationDelay: `-${i * 70}s` }} viewBox="0 0 90 36">
           <path d={blob(30, 22, 24, 10, 800 + i, 0.1)} fill="#fffef7" stroke={COLORS.ink} strokeOpacity={0.3} strokeWidth={1} />
           <path d={blob(52, 16, 22, 11, 810 + i, 0.1)} fill="#fffef7" stroke={COLORS.ink} strokeOpacity={0.3} strokeWidth={1} />
         </svg>
@@ -124,12 +123,6 @@ export function Backdrop({ hour, horizon, dark }: { hour: number; horizon: numbe
       <div className="absolute" style={{ left: `${sx}%`, top: `${sy}%`, marginLeft: -32, marginTop: -32, opacity: isDay ? 1 : starA, filter: isDay ? "drop-shadow(0 0 14px rgba(255,210,122,.55))" : "none" }}>
         <PaperSun moon={!isDay} />
       </div>
-      {birds && (
-        <svg className="absolute st-birds" style={{ left: 0, top: `${horizon * 0.35}%`, width: 70, height: 24 }} viewBox="0 0 70 24">
-          <path d="M4 12q5-8 10 0q5-8 10 0" stroke={COLORS.ink} strokeWidth="1.6" fill="none" strokeLinecap="round" />
-          <path d="M38 6q4-6 8 0q4-6 8 0" stroke={COLORS.ink} strokeWidth="1.4" fill="none" strokeLinecap="round" />
-        </svg>
-      )}
       <div className="absolute left-0 right-0 bottom-0" style={{ top: `${horizon - 1}%`, background: "linear-gradient(#e9d3a6, #dcc08a)" }} />
     </div>
   );
@@ -141,9 +134,8 @@ export function Wash({ hour, dark }: { hour: number; dark: boolean }) {
   return (
     <>
       <div className="absolute inset-0 pointer-events-none st-wash" style={{ background: washAt(dark ? 2 : hour), mixBlendMode: "multiply" }} aria-hidden="true" />
-      <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 55%, rgba(20,24,50,0) 45%, rgba(20,24,50,0.55) 100%)", opacity: 0.25 + 0.75 * n }} aria-hidden="true" />
-      <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: BLOTCH, backgroundSize: "400px 400px", opacity: 0.07, mixBlendMode: "multiply" }} aria-hidden="true" />
-      <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: GRAIN, backgroundSize: "180px 180px", opacity: 0.1, mixBlendMode: "multiply" }} aria-hidden="true" />
+      <div className="absolute inset-0 pointer-events-none" style={{ background: "radial-gradient(ellipse at 50% 55%, rgba(20,24,50,0) 45%, rgba(20,24,50,0.55) 100%)", opacity: 0.8 * n }} aria-hidden="true" />
+      <div className="absolute inset-0 pointer-events-none" style={{ backgroundImage: GRAIN, backgroundSize: "180px 180px", opacity: 0.05, mixBlendMode: "multiply" }} aria-hidden="true" />
     </>
   );
 }
@@ -183,17 +175,16 @@ function hubFor(s: Slot) {
 function Terrain({ ch, night }: { ch: number; night: number }) {
   const r = rng(515);
   const rivers = wobblyPoly([[-10, 470], [40, 488], [110, 520], [160, 566], [100, 570], [40, 540], [-10, 520]], 91, 4);
-  const patches = Array.from({ length: 11 }, (_, i) => {
+  const patches = Array.from({ length: 3 }, (_, i) => {
     const kind = i % 3;
     return { cx: -200 + r() * 880, cy: 300 + r() * 250, rx: 28 + r() * 46, ry: 10 + r() * 20, c: kind === 0 ? "#d9b878" : kind === 1 ? COLORS.clay : COLORS.leaf, o: kind === 0 ? 0.35 : kind === 1 ? 0.15 : 0.18, i };
   });
-  const ticks = Array.from({ length: 70 }, () => ({ x: -300 + r() * 1100, y: 292 + r() * 270 }));
   const road = [[cellX(1) + 34, cellY(3) + 40], [cellX(2) + 34, cellY(4) + 34], [cellX(3) + 34, cellY(5) + 34], [cellX(4) + 20, cellY(5) + 50], [cellX(6) + 34, cellY(5) + 34], [cellX(6) + 120, cellY(5) + 30]] as [number, number][];
   const road2 = [[cellX(2) + 34, cellY(4) + 34], [cellX(3) + 34, cellY(3) + 34], [cellX(4) + 34, cellY(2) + 34]] as [number, number][];
   return (
     <g>
-      <path d={hills(-700, 1200, 258, 50, 11, 420)} fill={COLORS.plum} opacity={0.5} />
-      <path d={hills(-700, 1200, 274, 34, 12, 420)} fill={COLORS.clay} opacity={0.42} />
+      <path d={hills(-700, 1200, 258, 50, 11, 420)} fill={COLORS.plum} opacity={0.28} />
+      <path d={hills(-700, 1200, 274, 34, 12, 420)} fill={COLORS.clay} opacity={0.3} />
       <path d={hills(-700, 1200, 286, 22, 13, 420)} fill="#b99a64" opacity={0.5} />
       {/* ground, with a scalloped shadow edge */}
       <path d={wobblyPoly([[-700, 288], [-300, 282], [-100, 286], [120, 280], [260, 286], [380, 278], [510, 286], [800, 282], [1200, 288], [1200, 900], [-700, 900]], 21, 3)} fill="#b99a64" opacity={0.7} />
@@ -201,15 +192,11 @@ function Terrain({ ch, night }: { ch: number; night: number }) {
       {patches.map((p) => (
         <path key={p.i} d={blob(p.cx, p.cy, p.rx, p.ry, 300 + p.i, 0.2)} fill={p.c} opacity={p.o} />
       ))}
-      {ticks.map((t, i) => (
-        <path key={i} d={`M${t.x} ${t.y} l1.5 -4 M${t.x + 3} ${t.y} l0 -5 M${t.x + 6} ${t.y} l-1.5 -4`} stroke="#9b8458" strokeWidth={1} opacity={0.5} fill="none" />
-      ))}
       {/* dry riverbed */}
       <path d={rivers} fill="#cdb98f" stroke={COLORS.ink} strokeOpacity={0.3} strokeWidth={1} />
       {[[30, 500], [70, 520], [110, 540], [140, 556]].map(([x, y], i) => (
         <ellipse key={i} cx={x} cy={y} rx={4} ry={2.2} fill="#a8946a" />
       ))}
-      <path d="M0 490 q18 -6 36 0 M24 520 q18 -6 36 0" stroke="#fffef7" strokeWidth={1.4} fill="none" opacity={0.5} className="st-mist" />
       {/* roads: shadow, body, cream edge, dashed centre */}
       {[road, road2].map((pts, i) => (
         <g key={i}>
@@ -226,12 +213,6 @@ function Terrain({ ch, night }: { ch: number; night: number }) {
           {[0, 1, 2, 3, 4].map((k) => (
             <path key={k} d={`M${cellX(5) + 4 + k * 7} ${cellY(2) - 11} v16`} stroke="#fffef7" strokeWidth={3.4} opacity={0.85} />
           ))}
-          <g className="st-bus" style={{ transformOrigin: "0 0" }}>
-            <path d={wobblyRect(-24, cellY(2) - 15, 24, 11, 77, 0.6)} fill={COLORS.sun} stroke={COLORS.ink} strokeOpacity={0.6} strokeWidth={1.2} />
-            <rect x={-22} y={cellY(2) - 13} width={19} height={4} fill="#fffbe6" opacity={0.85} />
-            <circle cx={-18} cy={cellY(2) - 3} r={2.2} fill="#3a2a33" />
-            <circle cx={-6} cy={cellY(2) - 3} r={2.2} fill="#3a2a33" />
-          </g>
         </g>
       )}
       <rect x={-700} y={150} width={1900} height={760} fill="#1e2a4a" opacity={0.5 * night} />
@@ -335,28 +316,18 @@ function Foreground() {
 }
 
 /** Life: villagers bob along the roads, a goat and chickens in the yards. */
-function Life({ ch, jobsOn }: { ch: number; jobsOn: boolean }) {
-  const colors = [COLORS.sun, COLORS.water, COLORS.plum, COLORS.clay, COLORS.leaf, COLORS.panel];
-  const folk: [number, number][] = [
-    [cellX(1) + 22, cellY(3) + 62], [cellX(2) + 20, cellY(5) + 6], [cellX(3) + 50, cellY(4) + 62], [cellX(2) + 56, cellY(4) + 34], [cellX(0) + 40, cellY(5) + 40],
-  ];
-  if (ch >= 1) folk.push([cellX(5) + 30, cellY(5) + 40], [cellX(6) + 40, cellY(4) + 66], [cellX(6) + 12, cellY(5) + 42]);
-  if (ch >= 2) folk.push([cellX(1) + 34, cellY(2) - 12], [cellX(4) + 20, cellY(2) - 14], [cellX(6) + 20, cellY(2) - 12]);
+function Life({ ch }: { ch: number }) {
   return (
     <g pointerEvents="none">
-      <Goat x={cellX(0) + 50} y={cellY(5) + 52} />
-      <Chickens x={cellX(2) + 38} y={cellY(5) + 40} />
-      <Tree x={cellX(0) - 6} y={cellY(4) + 70} s={0.9} seed={7} />
-      {folk.map(([x, y], i) => (
-        <Person key={i} x={x} y={y} color={colors[i % colors.length]} i={i} />
-      ))}
-      {jobsOn && null}
+      <Person x={cellX(2) + 20} y={cellY(5) + 8} color={COLORS.sun} />
+      <Person x={cellX(3) + 52} y={cellY(4) + 62} color={COLORS.water} i={1} />
+      {ch >= 1 && <Goat x={cellX(5) + 24} y={cellY(5) + 44} />}
     </g>
   );
 }
 
 function FlowLines({ ch, placements, snap, jobs }: { ch: number; placements: Placements; snap: SceneSnap; jobs: JobId[] }) {
-  const dur = Math.max(0.35, 2.4 / (1 + snap.flowTotal * 0.6));
+  const dur = 2.6;
   const style = { "--d": `${dur}s`, animationPlayState: snap.running ? "running" : "paused" } as React.CSSProperties;
   const lines: ReactNode[] = [];
   const idsByKind = Object.entries(placements);
@@ -366,14 +337,15 @@ function FlowLines({ ch, placements, snap, jobs }: { ch: number; placements: Pla
     const [x, y] = cellCenter(slot.c, slot.r);
     const on = kind === "panel" ? snap.sun > 0.02 : snap.usingBattery;
     lines.push(
-      <path key={id} d={`M${x} ${y} L${hub[0]} ${hub[1]}`} className={on && snap.running ? "st-flow" : undefined} stroke={on ? COLORS.glow : "#fffef7"} strokeOpacity={on ? 0.95 : 0.16} strokeWidth={on ? 1.8 : 1} fill="none" strokeLinecap="round" style={style} />,
+      <path key={id} d={`M${x} ${y} L${hub[0]} ${hub[1]}`} stroke={on ? COLORS.glow : "#fffef7"} strokeOpacity={on ? 0.7 : 0.14} strokeWidth={on ? 1.4 : 1} fill="none" strokeLinecap="round" />,
     );
   }
   const consumer = (id: JobId, c: number, r: number, hub: [number, number], key: string) => {
     const j = snap.jobs[id];
-    const flow = snap.running && (j.powered > 0.01 && (j.on || JOBS_FIXED.includes(id)));
+    const flow = snap.running && j.powered > 0.01 && (j.on || JOBS_FIXED.includes(id));
+    const moving = flow && JOBS[id].kind === "flex";
     const [x, y] = cellCenter(c, r);
-    return <path key={key} d={`M${hub[0]} ${hub[1]} L${x} ${y}`} className={flow ? "st-flow" : undefined} stroke={flow ? COLORS.glow : "#fffef7"} strokeOpacity={flow ? 1 : 0.14} strokeWidth={flow ? 2.4 : 1} fill="none" strokeLinecap="round" style={style} />;
+    return <path key={key} d={`M${hub[0]} ${hub[1]} L${x} ${y}`} className={moving ? "st-flow" : undefined} stroke={flow ? COLORS.glow : "#fffef7"} strokeOpacity={flow ? 0.95 : 0.14} strokeWidth={flow ? 2 : 1} fill="none" strokeLinecap="round" style={style} />;
   };
   if (jobs.includes("pump")) lines.push(consumer("pump", BUILDINGS.pump.c, BUILDINGS.pump.r, HUB.village, "l-pump"));
   if (jobs.includes("fridge")) lines.push(consumer("fridge", BUILDINGS.clinic.c, BUILDINGS.clinic.r, HUB.village, "l-clinic"));
@@ -407,7 +379,7 @@ export function World(p: WorldProps) {
     const seed = s.c * 7 + s.r * 13 + 3;
     const flat = s.kind === "roof";
     const jr = rng(s.c * 31 + s.r * 7 + 9);
-    const jt = `translate(${((jr() - 0.5) * 10).toFixed(1)} ${((jr() - 0.5) * 6).toFixed(1)}) rotate(${((jr() - 0.5) * 5).toFixed(2)} 34 60) translate(34 60) scale(${(0.92 + jr() * 0.16).toFixed(3)}) translate(-34 -60)`;
+    const jt = `translate(${((jr() - 0.5) * 10).toFixed(1)} ${((jr() - 0.5) * 6).toFixed(1)}) rotate(${((jr() - 0.5) * 2).toFixed(2)} 34 60) translate(34 60) scale(${(0.92 + jr() * 0.16).toFixed(3)}) translate(-34 -60)`;
     const base =
       s.kind === "roof" ? (s.chapter === "city" ? <Tower seed={seed} lit={lit} delay={nextDelay()} night={snap.night} /> : <House seed={seed} lit={lit} delay={nextDelay()} night={snap.night} />) :
       s.kind === "ground" ? <Garden seed={seed} green={ch >= 0} /> : <FieldPlot seed={seed} />;
@@ -443,7 +415,7 @@ export function World(p: WorldProps) {
             {!p.reduced && nonce[s.id] ? <Dust /> : null}
           </g>
         )}
-        {!kind && buildMode && <Marker pulse={!p.reduced} />}
+        {!kind && buildMode && <Marker roof={flat} />}
         </g>
         <rect className="st-ring" width={CELL} height={CELL} rx={8} fill="transparent" stroke={sel ? COLORS.cream : "none"} strokeWidth={sel ? 3.5 : 0} />
         <rect width={CELL} height={CELL} fill="transparent" />
@@ -508,7 +480,7 @@ export function World(p: WorldProps) {
       {ch >= 2 && <Skyline lit={lit} night={snap.night} />}
       {decor(2, 2, <MangoTree seed={5} />, "mango")}
       {/* town decor */}
-      {decor(6, 4, <MarketStalls lit={lit} delay={nextDelay()} />, "market")}
+      {ch >= 1 && decor(6, 4, <MarketStalls lit={lit} delay={nextDelay()} />, "market")}
       {/* city extras */}
       {ch >= 2 && decor(6, 0, <Tower seed={9} lit={lit} delay={nextDelay()} />, "tower2")}
       {slots.map(renderSlot)}
@@ -516,21 +488,10 @@ export function World(p: WorldProps) {
       {flexBuilding("pump", BUILDINGS.pump.c, BUILDINGS.pump.r, <Pump level={snap.jobs.pump.progress / 8} running={snap.jobs.pump.on && snap.jobs.pump.powered > 0.02} ripple={snap.jobs.pump.done} lit={snap.jobs.pump.done} />, "Water pump")}
       {decor(BUILDINGS.clinic.c, BUILDINGS.clinic.r, <Clinic lit={fixedLit && !clinicWarm} delay={nextDelay()} warm={clinicWarm} pulse={snap.fridgeLate} night={snap.night} />, "clinic")}
       {decor(BUILDINGS.school.c, BUILDINGS.school.r, <School lit={snap.schoolLit || (fixedLit && p.day >= 3 && snap.hour < 21)} delay={nextDelay()} day={p.day} night={snap.night} />, "school")}
-      {flexBuilding("irrigation", BUILDINGS.irrigation.c, BUILDINGS.irrigation.r, <Fields progress={snap.jobs.irrigation.progress / 9} running={snap.jobs.irrigation.on && snap.jobs.irrigation.powered > 0.02} />, "Irrigation")}
+      {ch >= 1 && flexBuilding("irrigation", BUILDINGS.irrigation.c, BUILDINGS.irrigation.r, <Fields progress={snap.jobs.irrigation.progress / 9} running={snap.jobs.irrigation.on && snap.jobs.irrigation.powered > 0.02} />, "Irrigation")}
       {ch >= 2 && flexBuilding("bus", BUILDINGS.depot.c, BUILDINGS.depot.r, <Depot progress={snap.jobs.bus.progress / 12} running={snap.jobs.bus.on && snap.jobs.bus.powered > 0.02} />, "Bus depot")}
-      <Life ch={ch} jobsOn={false} />
+      <Life ch={ch} />
       <FlowLines ch={ch} placements={placements} snap={snap} jobs={jobs} />
-      {/* sand haze over the town until it is unlocked */}
-      <g style={{ opacity: ch >= 1 ? 0 : 1, transition: p.reduced ? "none" : "opacity 1.2s" }} pointerEvents="none">
-        <defs>
-          <linearGradient id="st-haze" gradientUnits="userSpaceOnUse" x1={cellX(4) - 30} y1="0" x2={cellX(4) - 30 + 360} y2="0">
-            <stop offset="0" stopColor="#e9d3a6" stopOpacity="0" />
-            <stop offset="0.3" stopColor="#e9d3a6" stopOpacity="0.95" />
-            <stop offset="1" stopColor="#e9d3a6" stopOpacity="0.95" />
-          </linearGradient>
-        </defs>
-        <rect x={cellX(4) - 30} y={262} width={1200} height={640} fill="url(#st-haze)" />
-      </g>
       <Foreground />
       {p.cloud && <Cloud cloud={p.cloud} hour={snap.hour} reduced={p.reduced} />}
     </svg>

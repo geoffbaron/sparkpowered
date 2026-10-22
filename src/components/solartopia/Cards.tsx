@@ -131,6 +131,52 @@ export function BuildStrip({ check }: { check: BuildCheck }) {
   );
 }
 
+function MiniSun({ day }: { day: Day }) {
+  const c = day.cloud;
+  const x = (h: number) => 2 + ((h - 6) / 24) * 56;
+  const pts = Array.from({ length: 25 }, (_, i) => {
+    const h = 6 + i;
+    const d = h % 24;
+    const s = d >= 6 && d <= 18 ? Math.sin((Math.PI * (d - 6)) / 12) : 0;
+    return `${x(h).toFixed(1)},${(14 - s * 11).toFixed(1)}`;
+  }).join(" ");
+  return (
+    <svg width={60} height={16} viewBox="0 0 60 16" aria-hidden="true" className="shrink-0">
+      <polyline points={pts} fill="none" stroke={COLORS.sun} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+      {c && <rect x={x(c.start)} y={1} width={x(c.end) - x(c.start)} height={14} rx={2} fill="#5b3a63" opacity={0.35} />}
+    </svg>
+  );
+}
+
+/** One compact card at the top of the stage: the goal, then (in Build) one status line and the forecast. */
+export function HudCard({ day, check, phase }: { day: Day; check: BuildCheck | null; phase: "build" | "play" }) {
+  const full = check ? Math.floor(check.nightHours) : 0;
+  return (
+    <div className="st-chip max-w-[22rem]" data-testid={phase === "build" ? "hud-card" : "goal"}>
+      <p data-testid={phase === "build" ? "build-goal" : undefined}>
+        <strong>Goal:</strong> {day.goal}
+      </p>
+      {phase === "build" && check && (
+        <>
+          <div className="mt-1 flex items-start gap-2" data-testid="build-check" data-status={check.status}>
+            <span className="mt-0.5 shrink-0 inline-block h-3 w-3 rounded-full border border-black/40" style={{ background: DOT[check.status] }} aria-hidden="true" />
+            <span>
+              <strong>{WORD[check.status]}.</strong> {check.text}
+              {check.showNight && <span data-testid="night-bar" data-hours={full}> The jar covers {full} of 12 night hours.</span>}
+            </span>
+          </div>
+          <div className="mt-1 flex items-center gap-2 text-[11.5px]" data-testid="forecast">
+            <MiniSun day={day} />
+            <span>
+              <strong>Forecast:</strong> {day.forecast}
+            </span>
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
 export function PauseCard({ onResume, onExit, focus }: { onResume: () => void; onExit?: () => void; focus: boolean }) {
   return (
     <div className="absolute inset-0 z-30 flex items-center justify-center p-3 bg-[#1e2a4a]/55" data-testid="pause-card">

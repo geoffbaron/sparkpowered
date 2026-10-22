@@ -52,6 +52,7 @@
 .st-bar-btn { padding: 0 10px; font-size: 14px; min-width: 56px; }
 .st-pick { flex-direction: column; width: 96px; height: 56px; line-height: 1.1; padding: 0 6px; background: #fffef7; }
 .st-pick small { font-weight: 500; font-size: 11px; opacity: 0.75; }
+.st-tag { position: absolute; transform: translate(-50%, -50%); background: rgba(255, 254, 247, 0.95); border: 1px solid rgba(58, 42, 51, 0.55); border-radius: 6px; padding: 0 5px; font-size: 11px; line-height: 15px; font-weight: 700; color: #1e2a4a; white-space: nowrap; z-index: 5; }
 .st-pop { animation: st-pop-in 140ms ease-out; filter: drop-shadow(0 3px 4px rgba(30, 42, 74, 0.35)); }
 @keyframes st-pop-in { from { opacity: 0; transform: translate(-50%, -100%) scale(0.9); } }
 
@@ -61,7 +62,7 @@
 .st-wash { transition: background 400ms linear; }
 
 /* glowing buildings */
-.st-glowring { animation: st-glow 1.6s ease-in-out infinite; }
+.st-glowring { opacity: 0.95; }
 @keyframes st-glow { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; filter: drop-shadow(0 0 5px #ffd27a); } }
 
 /* power lines: dash speed comes from --d */
