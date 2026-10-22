@@ -551,6 +551,17 @@ export const GOAL_LINKS: Record<Goal, { primary: { href: string; label: string }
 /* Share                                                               */
 /* ------------------------------------------------------------------ */
 
+/**
+ * Real groups doing in the world what the game does on screen. Plain links:
+ * no tracking, no commission. Donate pages checked 2026-10-22.
+ */
+export const DONATE: { name: string; href: string; what: string }[] = [
+  { name: "We Care Solar", href: "https://wecaresolar.org/donate/", what: "Solar Suitcases that light clinics and power the tools for safe births, in dozens of countries." },
+  { name: "GivePower", href: "https://givepower.org/join/make-an-individual-impact/", what: "Solar-powered clean water and clean energy for communities that lack both." },
+  { name: "Solar Electric Light Fund (SELF)", href: "https://www.self.org/ways-to-give/", what: "Solar power for health centers, schools, water and farms in places without electricity." },
+  { name: "Solar Sister", href: "https://solarsister.org/give-now/", what: "Helps women in rural Africa start businesses selling solar lights and clean cookstoves." },
+];
+
 export const SHARE_PATH = "/solartopia/r";
 export const MAX_STARS = 15;
 

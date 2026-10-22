@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Breadcrumbs, RelatedLinks } from "@/components/content";
 import Launcher from "@/components/solartopia/Launcher";
 import { DrivePick, OutagePick } from "@/components/solartopia/PickCards";
-import { ARTICLE, ARTICLE_FACT_ORDER, FACTS, PAGE } from "@/data/solartopia";
+import { ARTICLE, ARTICLE_FACT_ORDER, DONATE, FACTS, PAGE } from "@/data/solartopia";
 import { formatDate } from "@/lib/energy";
 import { JsonLd, SITE_NAME, pageMetadata, url } from "@/lib/seo";
 
@@ -77,6 +77,28 @@ export default function SolartopiaPage() {
             )}
           </section>
         ))}
+
+        <section id="donate" className="mt-12 scroll-mt-24">
+          <h2 className="text-2xl font-bold mb-3">Help light a real village</h2>
+          <p className="mb-3">
+            The game is make-believe; the need is not. These nonprofits put solar power where the grid never reached:
+            clinics, schools, water and small businesses. We earn nothing from these links and have no ties to these groups.
+          </p>
+          <ul className="space-y-2">
+            {DONATE.map((d) => (
+              <li key={d.href}>
+                <a href={d.href} className="font-semibold underline underline-offset-2 hover:text-spark-orange" rel="noopener">
+                  {d.name}
+                </a>
+                : {d.what}
+              </li>
+            ))}
+          </ul>
+          <p className="text-sm text-muted mt-3">
+            Before you give, you can look any of them up on{" "}
+            <a href="https://www.charitynavigator.org/" className="underline underline-offset-2" rel="noopener">Charity Navigator</a>.
+          </p>
+        </section>
 
         <section id="sources" className="mt-12 border-t border-black/8 pt-8">
           <h2 className="text-xl font-bold mb-3">Sources</h2>

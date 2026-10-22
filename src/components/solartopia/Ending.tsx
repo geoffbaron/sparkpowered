@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { CREDIT_ENDED, GOALS, GOAL_LINKS, type Goal } from "@/data/solartopia";
+import { CREDIT_ENDED, DONATE, GOALS, GOAL_LINKS, type Goal } from "@/data/solartopia";
 import { useChooseState, useVisitorState } from "@/hooks/useVisitorState";
 import type { EndingFigures } from "@/lib/solartopia/ending";
 import { achievementLine, sharePath, shareSentence, totalStars } from "@/lib/solartopia/share";
@@ -220,6 +220,21 @@ export default function Ending({ stars, jars, picks, onReplay }: { stars: number
                 What is available now
               </Link>
             </p>
+            <div className="mt-4 border-t border-black/10 pt-3" data-testid="donate">
+              <p className="text-sm font-bold">Help light a real village</p>
+              <p className="text-[12px] text-[#4a3a43] mt-0.5">
+                These groups do what you just did, for real. We earn nothing from these links.
+              </p>
+              <ul className="mt-1.5 space-y-1 text-[13px]">
+                {DONATE.map((d) => (
+                  <li key={d.href}>
+                    <a href={d.href} target="_blank" rel="noopener" className="underline font-semibold" onClick={() => track("st_donate", { org: d.name })}>
+                      {d.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
             <div className="flex gap-2 mt-3">
               <button type="button" className="st-btn flex-1" onClick={share} data-testid="share">
                 Share my result
