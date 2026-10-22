@@ -544,6 +544,7 @@ export default function PluginSolarPage() {
           { href: "/best-portable-power-stations", label: "Best portable power stations", desc: "Backup power that works in any state" },
           { href: "/states", label: "Your state's energy data", desc: "Electricity prices and solar output" },
           { href: "/incentives", label: "2026 incentives", desc: "What federal help remains" },
+          { href: "/solartopia", label: "Solartopia, the solar game", desc: "Five minutes, free, real facts" },
         ]}
       />
       <PhotoCredit name="plugin-solar" />

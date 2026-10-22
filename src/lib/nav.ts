@@ -41,6 +41,7 @@ export const NAV_GROUPS: NavGroup[] = [
     id: "learn",
     label: "Learn",
     links: [
+      { href: "/solartopia", label: "Solartopia (game)" },
       { href: "/myths", label: "Myths" },
       { href: "/states", label: "States" },
       { href: "/compare", label: "Compare" },

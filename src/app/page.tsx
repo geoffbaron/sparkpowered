@@ -242,6 +242,7 @@ export default function HomePage() {
                 ["/plug-in-solar", "Is plug-in balcony solar legal in your state?", "The 2025-2026 state laws, with links."],
                 ["/compare", "EcoFlow vs Anker vs Jackery vs Bluetti", "Power stations compared size for size."],
                 ["/myths", "EV, solar and heat pump myths", "Battery life, cold weather, cost and more."],
+                ["/solartopia", "Play Solartopia, the free solar game", "Light a village in five minutes with real facts."],
                 ["/incentives", "What happened to the tax credits?", "Exact end dates from the IRS, and what is left."],
                 ["/about", "About Spark Powered", "Independent; how we earn money is disclosed."],
               ].map(([href, t, d]) => (

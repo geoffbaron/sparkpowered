@@ -1,0 +1,134 @@
+[
+ {
+  "day": 1,
+  "placements": {
+   "v1": "panel",
+   "v4": "panel",
+   "v5": "panel",
+   "v6": "panel"
+  },
+  "toggles": [
+   {
+    "h": 6,
+    "job": "pump",
+    "on": true
+   }
+  ]
+ },
+ {
+  "day": 2,
+  "placements": {
+   "v1": "panel",
+   "v4": "panel",
+   "v5": "panel",
+   "v6": "panel",
+   "g1": "panel",
+   "g2": "panel",
+   "g3": "battery"
+  },
+  "toggles": [
+   {
+    "h": 7,
+    "job": "pump",
+    "on": true
+   }
+  ]
+ },
+ {
+  "day": 3,
+  "placements": {
+   "v1": "panel",
+   "v4": "panel",
+   "v5": "panel",
+   "v6": "panel",
+   "g1": "panel",
+   "g2": "panel",
+   "v2": "panel",
+   "v3": "panel",
+   "g3": "battery",
+   "g4": "battery"
+  },
+  "toggles": [
+   {
+    "h": 8,
+    "job": "pump",
+    "on": true
+   }
+  ]
+ },
+ {
+  "day": 4,
+  "placements": {
+   "v1": "panel",
+   "v4": "panel",
+   "v5": "panel",
+   "v6": "panel",
+   "g1": "panel",
+   "g2": "panel",
+   "v2": "panel",
+   "v3": "panel",
+   "g3": "battery",
+   "g4": "battery",
+   "t1": "panel",
+   "t2": "panel",
+   "t3": "panel",
+   "t4": "panel",
+   "t5": "battery"
+  },
+  "toggles": [
+   {
+    "h": 8,
+    "job": "pump",
+    "on": true
+   },
+   {
+    "h": 9,
+    "job": "irrigation",
+    "on": true
+   }
+  ]
+ },
+ {
+  "day": 5,
+  "placements": {
+   "v1": "panel",
+   "v4": "panel",
+   "v5": "panel",
+   "v6": "panel",
+   "g1": "panel",
+   "g2": "panel",
+   "v2": "panel",
+   "v3": "panel",
+   "g3": "battery",
+   "g4": "battery",
+   "t1": "panel",
+   "t2": "panel",
+   "t3": "panel",
+   "t4": "panel",
+   "t5": "battery",
+   "c1": "panel",
+   "c2": "panel",
+   "c3": "panel",
+   "c4": "panel",
+   "t6": "battery",
+   "t7": "battery"
+  },
+  "toggles": [
+   {
+    "h": 8,
+    "job": "pump",
+    "on": true
+   },
+   {
+    "h": 9,
+    "job": "irrigation",
+    "on": true
+   },
+   {
+    "h": 12,
+    "job": "bus",
+    "on": true
+   }
+  ]
+ }
+]

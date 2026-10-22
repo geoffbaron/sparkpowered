@@ -117,6 +117,7 @@ export const ROUTES: { path: string; lastModified: string }[] = [
   { path: "/states", lastModified: CONTENT_UPDATED },
   { path: "/incentives", lastModified: CONTENT_UPDATED },
   { path: "/myths", lastModified: CONTENT_UPDATED },
+  { path: "/solartopia", lastModified: "2026-10-22" },
   { path: "/about", lastModified: CONTENT_UPDATED },
   { path: "/methodology", lastModified: CONTENT_UPDATED },
   { path: "/disclaimer", lastModified: CONTENT_UPDATED },

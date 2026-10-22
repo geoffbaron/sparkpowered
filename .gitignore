@@ -45,3 +45,6 @@ next-env.d.ts
 
 # data build cache
 /scripts/.cache/
+
+# solartopia screenshots
+/.solartopia-shots/

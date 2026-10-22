@@ -99,6 +99,9 @@ export default function MythsPage() {
         <h2 className="text-2xl sm:text-3xl font-extrabold">Convinced? See what it&apos;s worth to you.</h2>
         <p className="text-white/85 mt-2">Pick your state and we&apos;ll rank every switch by what it saves you a year.</p>
         <Link href="/go-electric" className="btn btn-primary mt-5">See what you&apos;d save</Link>
+        <p className="mt-5 text-sm text-white/80">
+          Prefer to play? <Link href="/solartopia" className="underline font-semibold">Solartopia</Link> is a free five-minute solar game.
+        </p>
       </section>
       <Disclaimer />
     </div>

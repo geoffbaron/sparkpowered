@@ -28,6 +28,7 @@ const GUIDES = [
   { href: "/states", label: "Energy data by state" },
   { href: "/incentives", label: "2026 incentives" },
   { href: "/myths", label: "Myths, answered" },
+  { href: "/solartopia", label: "Solartopia, the solar game" },
   { href: "/news", label: "Latest headlines" },
 ];
 

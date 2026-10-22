@@ -141,5 +141,8 @@ ok(await page.locator("h1").innerText() === "Electricity, EV charging and solar 
 ok(errors.length === 0, "No console/page errors " + errors.join(" | "));
 await browser.close();
 
+// Solartopia: full headless playthrough (set SOLARTOPIA_1X=1 to add the real-time run).
+await import("./solartopia-e2e.mjs");
+
 // Every sitemap page: no NaN, undefined, [object Object] or raw error text.
 await import("./scan-html.mjs");

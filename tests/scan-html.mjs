@@ -40,3 +40,38 @@ async function worker() {
 await Promise.all(Array.from({ length: 8 }, worker));
 console.log(`${failures ? "FAIL" : "ok  "} scanned ${urls.length} sitemap pages, ${failures} with broken values`);
 if (failures) process.exitCode = 1;
+
+// Solartopia SEO page: title, description, canonical, one H1, enough server-rendered text, valid JSON-LD.
+{
+  const res = await fetch(base + "/solartopia");
+  const html = await res.text();
+  const checks = [];
+  const t = (c, m) => checks.push([c, m]);
+  const title = html.match(/<title>([^<]*)<\/title>/)?.[1];
+  const desc = html.match(/<meta name="description" content="([^"]*)"/)?.[1];
+  t(res.status === 200, "status 200");
+  t(title === "Solartopia: A Free 5-Minute Solar Power Game | Spark Powered", `title is "${title}"`);
+  t(desc === "Light a dark village with solar panels and batteries: clean water, a clinic, a school, food and electric buses. Real facts from WHO, UNICEF and IRENA, then see what sunshine could save your home.", "description matches the brief");
+  t(/<link rel="canonical" href="https:\/\/[^"]*\/solartopia"/.test(html), "canonical points at /solartopia");
+  t((html.match(/<h1[\s>]/g) ?? []).length === 1, "exactly one H1");
+  const article = html.match(/<article[\s\S]*<\/article>/)?.[0] ?? "";
+  const words = visible(article).replace(/<[^>]+>/g, " ").replace(/&[a-z#0-9]+;/g, " ").split(/\s+/).filter(Boolean).length;
+  t(words >= 600, `${words} words of server-rendered text (need 600+)`);
+  for (const h of ["Water", "Health", "School", "Food", "Getting around", "Why solar is now the cheapest power we&#x27;ve built", "What solar can&#x27;t do yet", "Bring it home", "How the game works and what we simplified", "Sources"]) t(html.includes(`>${h}</h2>`), `has section "${h}"`);
+  const blocks = [...html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((m) => m[1]);
+  let types = [];
+  for (const b of blocks) {
+    try {
+      const j = JSON.parse(b);
+      for (const n of j["@graph"] ?? [j]) types.push([].concat(n["@type"]).join("+"));
+    } catch {
+      t(false, "a JSON-LD block does not parse");
+    }
+  }
+  t(types.some((x) => /VideoGame/.test(x) && /WebApplication/.test(x)), `JSON-LD has VideoGame+WebApplication (${types.join(", ")})`);
+  t(types.includes("BreadcrumbList"), "JSON-LD has BreadcrumbList");
+  t(/href="\/states"/.test(html) && /href="\/solar-calculator"/.test(html), "article links /states and the calculators");
+  for (const [okc, m] of checks) if (!okc) { failures++; console.log("FAIL /solartopia:", m); }
+  console.log(`${checks.every((c) => c[0]) ? "ok  " : "FAIL"} /solartopia SEO checks (${checks.length})`);
+  if (!checks.every((c) => c[0])) process.exitCode = 1;
+}

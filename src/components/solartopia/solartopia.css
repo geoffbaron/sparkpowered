@@ -1,0 +1,123 @@
+/* Solartopia: paper-cut gouache look. Tokens: night #1E2A4A, plum #5B3A63, clay #C8734B, sand #E9D3A6, sun #F5B700, cream #FFFEF7. */
+
+.st-root {
+  background: #1e2a4a;
+  color: #1e2a4a;
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.st-card {
+  background: #fffef7;
+  border: 2px solid rgba(58, 42, 51, 0.7);
+  box-shadow: 3px 4px 0 rgba(30, 42, 74, 0.28);
+  color: #1e2a4a;
+}
+
+.st-chip {
+  background: rgba(255, 254, 247, 0.92);
+  border: 1.5px solid rgba(58, 42, 51, 0.55);
+  border-radius: 12px;
+  padding: 4px 9px;
+  font-size: 12.5px;
+  line-height: 1.25;
+  color: #1e2a4a;
+}
+
+.st-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  min-width: 48px;
+  padding: 0 14px;
+  border-radius: 14px;
+  border: 2px solid rgba(58, 42, 51, 0.7);
+  background: #f3e4c0;
+  color: #1e2a4a;
+  font-weight: 700;
+  font-size: 15px;
+  box-shadow: 0 2px 0 rgba(58, 42, 51, 0.35);
+  cursor: pointer;
+  transition: transform 80ms, background 120ms;
+}
+.st-btn:hover:not(:disabled) { background: #f8ecce; }
+.st-btn:active:not(:disabled) { transform: translateY(2px); box-shadow: none; }
+.st-btn:disabled { opacity: 0.5; cursor: default; }
+.st-btn:focus-visible, .st-hit:focus-visible { outline: 3px solid #f5b700; outline-offset: 2px; }
+.st-btn-primary { background: #f5b700; }
+.st-btn-primary:hover:not(:disabled) { background: #ffc61f; }
+.st-btn-dark { background: #2c3a63; color: #fffef7; border-color: rgba(255, 254, 247, 0.5); box-shadow: none; padding: 0 12px; }
+.st-bar-btn { padding: 0 10px; font-size: 14px; min-width: 56px; }
+.st-pick { flex-direction: column; width: 96px; height: 56px; line-height: 1.1; padding: 0 6px; background: #fffef7; }
+.st-pick small { font-weight: 500; font-size: 11px; opacity: 0.75; }
+.st-pop { animation: st-pop-in 140ms ease-out; filter: drop-shadow(0 3px 4px rgba(30, 42, 74, 0.35)); }
+@keyframes st-pop-in { from { opacity: 0; transform: translate(-50%, -100%) scale(0.9); } }
+
+.st-hit { outline: none; }
+.st-hit:focus-visible .st-ring { stroke: #f5b700; stroke-width: 4; }
+.st-win { transition: opacity 600ms ease-out; }
+.st-wash { transition: background 400ms linear; }
+
+/* glowing buildings */
+.st-glowring { animation: st-glow 1.6s ease-in-out infinite; }
+@keyframes st-glow { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; filter: drop-shadow(0 0 5px #ffd27a); } }
+
+/* power lines: dash speed comes from --d */
+.st-flow { stroke-dasharray: 5 7; animation: st-dash var(--d, 1.2s) linear infinite; }
+@keyframes st-dash { to { stroke-dashoffset: -24; } }
+
+/* dust puffs and wasted-sun motes */
+.st-dust circle { transform-box: fill-box; transform-origin: center; animation: st-dust 520ms ease-out forwards; }
+@keyframes st-dust { from { opacity: 0.9; transform: translate(0, 0) scale(0.6); } to { opacity: 0; transform: translate(var(--dx, 0), -8px) scale(1.8); } }
+.st-mote { animation: st-mote 0.9s ease-in infinite; }
+@keyframes st-mote { 0% { transform: translateY(-4px); opacity: 1; } 60% { transform: translateY(4px) translateX(5px); } 100% { transform: translateY(-14px) translateX(12px); opacity: 0; } }
+
+/* panel drop: squash 1.15 / 0.85 over 120 ms */
+.st-drop { animation: st-drop 120ms ease-out; }
+@keyframes st-drop { 0% { transform: translateY(-10px) scale(1, 1); opacity: 0.4; } 60% { transform: translateY(0) scale(1.15, 0.85); opacity: 1; } 100% { transform: scale(1, 1); } }
+
+.st-pulse { animation: st-pulse 1.4s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes st-pulse { 0%, 100% { opacity: 0.75; transform: scale(0.94); } 50% { opacity: 1; transform: scale(1.06); } }
+
+.st-strain { animation: st-strain 0.9s ease-in-out infinite; }
+@keyframes st-strain { 0%, 100% { opacity: 0.25; } 50% { opacity: 1; } }
+.st-hotpulse { animation: st-hot 0.8s ease-in-out infinite; }
+@keyframes st-hot { 50% { opacity: 0.45; } }
+
+.st-ripple { transform-box: fill-box; transform-origin: center; animation: st-ripple 1.6s ease-out infinite; }
+.st-ripple-b { animation-delay: 0.8s; }
+@keyframes st-ripple { from { transform: scale(0.6); opacity: 1; } to { transform: scale(3); opacity: 0; } }
+.st-drip { animation: st-drip 0.7s linear infinite; }
+@keyframes st-drip { from { transform: translateY(-4px); opacity: 1; } to { transform: translateY(5px); opacity: 0; } }
+.st-spray { animation: st-spray 0.7s ease-in-out infinite alternate; }
+@keyframes st-spray { from { opacity: 0.4; } to { opacity: 1; } }
+
+.st-birds { animation: st-birds 9s linear forwards; }
+@keyframes st-birds { from { transform: translateX(-80px); } to { transform: translateX(110vw); } }
+
+.st-fadein { animation: st-fadein 1.2s ease-out both; }
+@keyframes st-fadein { from { opacity: 0; } }
+
+.st-timer { animation: st-timer linear forwards; width: 0; }
+@keyframes st-timer { to { width: 100%; } }
+
+/* stars stamp in: 1.4 -> 1 */
+.st-stamp { transform-box: fill-box; transform-origin: center; animation: st-stamp 260ms cubic-bezier(0.2, 0.9, 0.3, 1) both; }
+@keyframes st-stamp { 0% { transform: scale(1.4); opacity: 0; } 25% { opacity: 1; } 55% { transform: scale(1); } 100% { transform: scale(1); } }
+
+/* brownout: flicker x3, dim, 4 px shake for 150 ms */
+.st-brownout .st-dim { background: rgba(10, 14, 30, 0.2); animation: st-flicker 0.7s steps(1) 1; }
+@keyframes st-flicker { 0% { opacity: 0; } 14% { opacity: 1; } 28% { opacity: 0; } 42% { opacity: 1; } 56% { opacity: 0; } 70%, 100% { opacity: 1; } }
+.st-brownout [data-testid="world"] { animation: st-shake 150ms linear 1; }
+@keyframes st-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+
+.st-toast { animation: st-fadein 200ms ease-out both; font-weight: 700; }
+
+@media (prefers-reduced-motion: reduce) {
+  .st-flow, .st-pulse, .st-glowring, .st-ripple, .st-spray, .st-drip, .st-strain, .st-hotpulse { animation: none; }
+  .st-dust circle, .st-mote, .st-drop, .st-stamp, .st-pop, .st-fadein, .st-birds, .st-toast { animation: none; }
+  .st-brownout .st-dim, .st-brownout [data-testid="world"] { animation: none; }
+  .st-win, .st-wash { transition: none; }
+}
