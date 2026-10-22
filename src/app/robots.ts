@@ -6,7 +6,9 @@ export default function robots(): MetadataRoute.Robots {
     rules: [
       {
         userAgent: "*",
-        allow: "/",
+        // /api/img was an old image proxy, now removed (404 + noindex). Letting
+        // Google re-crawl it is the only way it learns those URLs are gone.
+        allow: ["/", "/api/img"],
         // /admin is password-gated and /api returns JSON — neither belongs in an index.
         disallow: ["/admin", "/admin/", "/api/"],
       },
