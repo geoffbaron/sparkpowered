@@ -25,6 +25,8 @@ export const NAV_GROUPS: NavGroup[] = [
       { href: "/plug-in-solar", label: "Plug-in solar" },
       { href: "/home-battery-backup", label: "Home batteries" },
       { href: "/best-portable-power-stations", label: "Backup power" },
+      { href: "/space-heater-cost", label: "Space heater cost" },
+      { href: "/christmas-lights-cost", label: "Christmas lights cost" },
     ],
   },
   {

@@ -118,6 +118,8 @@ export const ROUTES: { path: string; lastModified: string }[] = [
   { path: "/incentives", lastModified: CONTENT_UPDATED },
   { path: "/myths", lastModified: CONTENT_UPDATED },
   { path: "/solartopia", lastModified: "2026-10-22" },
+  { path: "/christmas-lights-cost", lastModified: "2026-10-23" },
+  { path: "/space-heater-cost", lastModified: "2026-10-23" },
   { path: "/about", lastModified: CONTENT_UPDATED },
   { path: "/methodology", lastModified: CONTENT_UPDATED },
   { path: "/disclaimer", lastModified: CONTENT_UPDATED },
