@@ -13,6 +13,8 @@ Audience: US homeowners and drivers.
 - [Home battery sizer](https://sparkpowered.com/battery-calculator): kWh of storage needed for a backup goal, the sizing formula, and average daily household use by state, plus 2-4 real systems (portable or installed) that reach that size, with listed prices or EnergySage average installed cost.
 - [EV Finder](https://sparkpowered.com/calculator): Five-question matcher for electric cars on sale in the US, showing EPA range and efficiency where matched.
 - [Solar Finder](https://sparkpowered.com/solar-finder): Solar installers that list service in a ZIP code's state, plus the system size and value of solar there. Collects no contact details.
+- [Christmas lights cost calculator](https://sparkpowered.com/christmas-lights-cost): Season cost of holiday lights by state from EIA residential electricity prices, LED vs incandescent mini and C9 strings (0.07 W, 0.4 W, 7 W per bulb), with a 50-state + DC table for a 1,000-bulb display at 6 hours a night for 40 nights.
+- [Space heater cost calculator](https://sparkpowered.com/space-heater-cost): Cost per hour, day and month of a 1,500 W space heater in every state (EIA electricity prices), compared with the same heat from an 80% AFUE gas furnace (EIA residential gas prices) and a federal-minimum heat pump.
 
 ## Buying guides (dated manufacturer specs and prices; contain affiliate links)
 
