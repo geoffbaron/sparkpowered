@@ -179,9 +179,13 @@ export const TROLLING_EXTRA: DeepCycleBattery[] = [
   },
 ];
 
-/** Non-partner lithium batteries we compare against, from the makers' US stores. */
+const CHECKED_LITIME = "2026-10-23";
+
+/** Other makers' lithium batteries we compare against, from the makers' US stores. */
 export interface OtherBattery {
   id: string;
+  /** Set when the maker is an approved partner, so links go through <PartnerLink>. */
+  brand?: BrandId;
   name: string;
   url: string;
   retrieved: string;
@@ -196,8 +200,8 @@ export interface OtherBattery {
 
 export const OTHER_LITHIUM: OtherBattery[] = [
   {
-    id: "litime-12v-100ah", name: "LiTime 12V 100Ah LiFePO4", url: "https://www.litime.com/products/litime-12v-100ah-lithium-lifepo4-battery",
-    retrieved: CHECKED_TROLLING, energyWh: 1280, priceUsd: 335.99, listPriceUsd: 359.99, weightLb: 24.25, cycles: 4000, warrantyYears: 5,
+    id: "litime-12v-100ah", brand: "litime", name: "LiTime 12V 100Ah LiFePO4", url: "https://www.litime.com/products/litime-12v-100ah-lithium-lifepo4-battery",
+    retrieved: CHECKED_LITIME, energyWh: 1280, priceUsd: 335.99, listPriceUsd: 359.99, weightLb: 24.25, cycles: 4000, warrantyYears: 5,
     note: "Popular rival with the same 1,280 Wh and 4,000-cycle rating; it cost $93 more than Redodo's 12V 100Ah when we checked.",
   },
   {
@@ -206,6 +210,23 @@ export const OTHER_LITHIUM: OtherBattery[] = [
     note: "Assembled in the USA with a 10-year warranty, twice Redodo's. You pay about three times as much for the same energy.",
   },
 ];
+
+/**
+ * A larger LiTime 12 V battery for RVs and vans, from litime.com. Specs are
+ * LiTime's own figures from the product page's spec table.
+ */
+export const LITIME_RV = {
+  id: "litime-12v-230ah-plus",
+  brand: "litime" as const,
+  name: "LiTime 12V 230Ah Plus",
+  url: "https://www.litime.com/products/12v-230ah-plus-lifepo4-battery",
+  retrieved: CHECKED_LITIME,
+  energyWh: 2944,
+  continuousA: 200,
+  weightLb: 45.22,
+  priceUsd: 484.49,
+  listPriceUsd: 709.99,
+};
 
 /**
  * The lead-acid battery we compare against: a widely sold 12 V 100 Ah AGM

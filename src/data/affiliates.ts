@@ -33,6 +33,7 @@ export type BrandId =
   | "redodo"
   | "autel"
   | "piscifun"
+  | "litime"
   | "energysage";
 
 export interface BrandAffiliate {
@@ -130,6 +131,16 @@ export const AFFILIATES: Record<BrandId, BrandAffiliate> = {
     cookieDays: 30,
     links: { home: "https://www.awin1.com/cread.php?awinmid=89509&awinaffid=3125360&ued=https%3A%2F%2Fwww.piscifun.com%2F" },
     deepLink: "https://www.awin1.com/cread.php?awinmid=89509&awinaffid=3125360&ued={url}",
+  },
+  // Approved Oct 23 2026 on Awin (LiTime, MID 71451) for publisher 3125360. Programme
+  // rules: no bidding on the LiTime brand in ads, no false or misleading claims.
+  litime: {
+    name: "LiTime",
+    homeUrl: "https://www.litime.com/",
+    tracked: true,
+    network: "Awin",
+    links: { home: "https://www.awin1.com/cread.php?awinmid=71451&awinaffid=3125360&ued=https%3A%2F%2Fwww.litime.com%2F" },
+    deepLink: "https://www.awin1.com/cread.php?awinmid=71451&awinaffid=3125360&ued={url}",
   },
   // Applied, pending on Awin (plain links until approved): Jackery, EcoFlow, Oupes, Pecron,
   // and per-sale solar installers Momentum Solar, Solar Savings, Solar Simplified, Nautilus community solar.

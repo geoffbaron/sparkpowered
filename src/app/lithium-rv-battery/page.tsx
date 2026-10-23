@@ -4,7 +4,7 @@ import { AffiliateDisclosure, PartnerLink } from "@/components/affiliate";
 import { Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
 import { BeforeAfter, BigStat, HubHero, OurPick, PhotoCredit } from "@/components/ui";
 import RvBatteryPicker from "@/components/RvBatteryPicker";
-import { BATTERIES, BATTERY_FACTS, LEAD_ACID_REF, type DeepCycleBattery } from "@/data/batteries";
+import { BATTERIES, BATTERY_FACTS, LEAD_ACID_REF, LITIME_RV, OTHER_LITHIUM, type DeepCycleBattery } from "@/data/batteries";
 import { SOURCES, STATES, formatDate } from "@/lib/energy";
 import { money } from "@/lib/products";
 import { leadAcidUsableWh, lifetimeCost, lifetimeKwh } from "@/lib/rv-battery";
@@ -89,6 +89,7 @@ export default function LithiumRvBatteryPage() {
   const heated = byId("redodo-12v-100ah-self-heating");
   const big = byId("redodo-12v-300ah");
   const plus = byId("redodo-12v-200ah-plus");
+  const litimeStd = OTHER_LITHIUM.find((o) => o.id === "litime-12v-100ah")!;
   const troll = byId("redodo-24v-50ah-trolling");
   const home48 = byId("redodo-48v-100ah");
   const bt = byId("redodo-12v-100ah-group31-bluetooth");
@@ -285,6 +286,14 @@ export default function LithiumRvBatteryPage() {
             *Single-battery prices on Redodo&apos;s US site when we checked on {formatDate(li.retrieved)}; Redodo runs frequent
             sales. Want an app gauge on a 12 V battery? The {fullName(bt)} was {money(bt.priceUsd)}.
           </p>
+          <p className="text-xs text-muted">
+            Comparing brands? On {formatDate(LITIME_RV.retrieved)} LiTime&apos;s{" "}
+            <PartnerLink brand="litime" productId={LITIME_RV.id} productUrl={LITIME_RV.url}>{LITIME_RV.name}</PartnerLink> was{" "}
+            {money(LITIME_RV.priceUsd)} ({LITIME_RV.energyWh.toLocaleString("en-US")} Wh, {LITIME_RV.continuousA} A continuous,{" "}
+            {LITIME_RV.weightLb} lb, per LiTime), and its{" "}
+            <PartnerLink brand="litime" productId={litimeStd.id} productUrl={litimeStd.url}>12V 100Ah</PartnerLink> was{" "}
+            {money(litimeStd.priceUsd)}. LiTime links are sponsored too.
+          </p>
         </section>
 
         <Section title="Lithium vs lead-acid, year by year" id="cost">
@@ -396,6 +405,8 @@ export default function LithiumRvBatteryPage() {
         <Sources
           items={[
             ...BATTERIES.map((b) => ({ name: `${fullName(b)} product page`, url: b.sourceUrl, detail: `checked ${formatDate(b.retrieved)}` })),
+            { name: `${LITIME_RV.name} product page`, url: LITIME_RV.url, detail: `checked ${formatDate(LITIME_RV.retrieved)}` },
+            { name: `${litimeStd.name} product page`, url: litimeStd.url, detail: `checked ${formatDate(litimeStd.retrieved)}` },
             { name: `${LEAD_ACID_REF.name} product page`, url: LEAD_ACID_REF.url, detail: `checked ${formatDate(LEAD_ACID_REF.retrieved)}` },
             { name: BATTERY_FACTS.coldCharging.name, url: BATTERY_FACTS.coldCharging.url, detail: "No charging below 32°F (0°C)" },
             { name: BATTERY_FACTS.lfpSafety.name, url: BATTERY_FACTS.lfpSafety.url, detail: "LFP thermal stability and cycle life" },

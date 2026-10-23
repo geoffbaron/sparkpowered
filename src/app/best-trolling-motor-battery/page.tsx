@@ -244,8 +244,9 @@ export default function TrollingPage() {
           </div>
           <p className="text-xs text-muted mt-2 max-w-3xl">
             *Prices and specs from each maker&apos;s US product page, checked {formatDate(b24big.retrieved)} (Redodo 12V 100Ah, 24V 50Ah and
-            the Renogy AGM on {formatDate(b12.retrieved)}). Redodo links are sponsored; LiTime and Battle Born are plain links.{" "}
-            {litime.note} {battleBorn.note}
+            the Renogy AGM on {formatDate(b12.retrieved)}). Redodo and LiTime links are sponsored; Battle Born is a plain link.{" "}
+            <PartnerLink brand="litime" productId={litime.id} productUrl={litime.url}>{litime.name}</PartnerLink>:{" "}
+            {money(litime.priceUsd)} on {formatDate(litime.retrieved)}. {litime.note} {battleBorn.note}
           </p>
         </Section>
 

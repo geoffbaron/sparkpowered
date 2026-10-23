@@ -144,9 +144,10 @@ export default function LithiumVsAgmPage() {
           </div>
           <p className="text-xs text-muted mt-2 max-w-3xl">
             Prices and specs from Redodo&apos;s and Renogy&apos;s US product pages, checked {formatDate(li.retrieved)}. Redodo links are
-            sponsored; Renogy is a plain link. Other 100Ah lithium batteries we checked on {formatDate(litime.retrieved)}:{" "}
-            <PlainLink href={litime.url}>{litime.name}</PlainLink> {money(litime.priceUsd)},{" "}
-            <PlainLink href={battleBorn.url}>{battleBorn.name}</PlainLink> {money(battleBorn.priceUsd)}.
+            sponsored; Renogy is a plain link. Other 100Ah lithium batteries:{" "}
+            <PartnerLink brand="litime" productId={litime.id} productUrl={litime.url}>{litime.name}</PartnerLink> {money(litime.priceUsd)} (checked{" "}
+            {formatDate(litime.retrieved)}, sponsored link),{" "}
+            <PlainLink href={battleBorn.url}>{battleBorn.name}</PlainLink> {money(battleBorn.priceUsd)} (checked {formatDate(battleBorn.retrieved)}).
           </p>
         </Section>
 
