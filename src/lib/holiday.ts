@@ -8,6 +8,7 @@
  */
 
 import home from "@/data/home-energy.json";
+import { STATES } from "@/lib/energy";
 import { ASSUMPTIONS, MMBTU_PER_MCF } from "@/lib/go-electric";
 
 /** Heat in one kWh of electricity, in MMBtu. */
@@ -67,4 +68,36 @@ export function heatCostPerHour(centsPerKwh: number, gasPerMcf: number, watts = 
   const furnace = ((kwhHeat * MMBTU_PER_KWH) / ASSUMPTIONS.furnaceAfue.value / MMBTU_PER_MCF) * gasPerMcf;
   const heatPump = (kwhHeat / ASSUMPTIONS.heatPumpCop.value) * rate;
   return { heater, furnace, heatPump };
+}
+
+/** Example display used in the state tables: ten 100-bulb strings of mini lights. */
+export const DISPLAY_STRINGS = 10;
+
+const presetById = (id: string) => LIGHT_PRESETS.find((p) => p.id === id)!;
+
+/** Season cost of the example display in every state, most expensive first. */
+export function lightsByState() {
+  const ledW = DISPLAY_STRINGS * stringWatts(presetById("led-mini"));
+  const oldW = DISPLAY_STRINGS * stringWatts(presetById("inc-mini"));
+  return STATES.map((s) => {
+    const c = s.electricity.residentialCentsPerKwhYtd;
+    return { s, c, led: lightsCost(ledW, c).usd, old: lightsCost(oldW, c).usd };
+  }).sort((a, b) => b.c - a.c);
+}
+
+/** Space heater cost per hour in every state, with the same heat from a furnace and a heat pump. Most expensive first. */
+export function heaterByState() {
+  return STATES.map((s) => {
+    const c = s.electricity.residentialCentsPerKwhYtd;
+    return { s, c, gas: gasUsdPerMcf(s.abbr), h: heatCostPerHour(c, gasUsdPerMcf(s.abbr)) };
+  }).sort((a, b) => b.h.heater - a.h.heater);
+}
+
+/** Rows to CSV text, quoting any cell with a comma or quote. */
+export function toCsv(rows: (string | number)[][]) {
+  const cell = (v: string | number) => {
+    const t = String(v);
+    return /[",\n]/.test(t) ? `"${t.replace(/"/g, '""')}"` : t;
+  };
+  return rows.map((r) => r.map(cell).join(",")).join("\n") + "\n";
 }

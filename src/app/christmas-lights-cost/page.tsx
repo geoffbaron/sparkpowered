@@ -5,7 +5,8 @@ import { HubHero, PhotoCredit } from "@/components/ui";
 import { QuickAnswer } from "@/components/guide-ui";
 import { Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
 import { DATA_UPDATED, NATIONAL, SOURCES, STATES, cents, formatDate, usd, ytdWindow } from "@/lib/energy";
-import { HOURS_PER_NIGHT, LIGHT_PRESETS, SEASON_DAYS, lightsCost, stringWatts } from "@/lib/holiday";
+import { DISPLAY_STRINGS, HOURS_PER_NIGHT, LIGHT_PRESETS, SEASON_DAYS, lightsByState, lightsCost, stringWatts } from "@/lib/holiday";
+import { UseThisData } from "@/components/UseThisData";
 import { JsonLd, pageMetadata, url } from "@/lib/seo";
 
 const PATH = "/christmas-lights-cost";
@@ -16,8 +17,6 @@ const DESCRIPTION =
 export const metadata: Metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH, type: "article" });
 
 const preset = (id: string) => LIGHT_PRESETS.find((p) => p.id === id)!;
-/** Example display: ten 100-bulb strings of mini lights (1,000 bulbs). */
-const DISPLAY_STRINGS = 10;
 const ledW = DISPLAY_STRINGS * stringWatts(preset("led-mini"));
 const oldW = DISPLAY_STRINGS * stringWatts(preset("inc-mini"));
 /** 25,000 old-style mini bulbs, the size of a famous movie display. */
@@ -25,10 +24,7 @@ const BIG_W = 250 * stringWatts(preset("inc-mini"));
 
 export default function ChristmasLightsCostPage() {
   const us = NATIONAL.residentialCentsPerKwhYtd;
-  const rows = STATES.map((s) => {
-    const c = s.electricity.residentialCentsPerKwhYtd;
-    return { s, c, led: lightsCost(ledW, c).usd, old: lightsCost(oldW, c).usd };
-  }).sort((a, b) => b.c - a.c);
+  const rows = lightsByState();
   const priciest = rows[0];
   const cheapest = rows[rows.length - 1];
   const usLed = lightsCost(ledW, us).usd;
@@ -172,6 +168,8 @@ export default function ChristmasLightsCostPage() {
             <li>Want them free to run? A small <Link href="/plug-in-solar" className="underline">plug-in solar</Link> kit or a <Link href="/best-portable-power-stations" className="underline">power station</Link> charged by day can run an LED display at night.</li>
           </ul>
         </Section>
+
+        <UseThisData path={PATH} title="Christmas lights cost by state" csv={`${PATH}/data.csv`} />
 
         <Faq items={faqs} path={PATH} />
         <Disclaimer />

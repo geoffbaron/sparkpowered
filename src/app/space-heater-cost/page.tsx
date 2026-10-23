@@ -7,7 +7,8 @@ import { Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/comp
 import home from "@/data/home-energy.json";
 import { DATA_UPDATED, NATIONAL, SOURCES, STATES, cents, formatDate, usd, ytdWindow } from "@/lib/energy";
 import { ASSUMPTIONS } from "@/lib/go-electric";
-import { HEATER_HOURS_PER_DAY, HEATER_WATTS, gasUsdPerMcf, heatCostPerHour } from "@/lib/holiday";
+import { HEATER_HOURS_PER_DAY, HEATER_WATTS, gasUsdPerMcf, heatCostPerHour, heaterByState } from "@/lib/holiday";
+import { UseThisData } from "@/components/UseThisData";
 import { JsonLd, pageMetadata, url } from "@/lib/seo";
 
 const PATH = "/space-heater-cost";
@@ -22,10 +23,7 @@ export default function SpaceHeaterCostPage() {
   const usGas = home.national.gasUsdPerMcf;
   const us = heatCostPerHour(usCents, usGas);
   const month = (perHour: number) => perHour * HEATER_HOURS_PER_DAY * 30;
-  const rows = STATES.map((s) => {
-    const c = s.electricity.residentialCentsPerKwhYtd;
-    return { s, c, h: heatCostPerHour(c, gasUsdPerMcf(s.abbr)) };
-  }).sort((a, b) => b.h.heater - a.h.heater);
+  const rows = heaterByState();
   const priciest = rows[0];
   const cheapest = rows[rows.length - 1];
   const beatsFurnace = rows.filter((r) => r.h.heater < r.h.furnace).length;
@@ -171,6 +169,8 @@ export default function SpaceHeaterCostPage() {
             layers in one closed-off room. See <Link href="/best-portable-power-stations" className="underline">backup power for outages</Link>.
           </p>
         </Section>
+
+        <UseThisData path={PATH} title="Space heater cost by state" csv={`${PATH}/data.csv`} />
 
         <Faq items={faqs} path={PATH} />
         <Disclaimer />
