@@ -355,6 +355,13 @@ export default function LithiumRvBatteryPage() {
               <Link href="/best-portable-power-stations" className="text-spark-orange underline underline-offset-2">portable power station</Link>{" "}
               does the job without an inverter or charger.
             </p>
+            <p>
+              Doing the whole conversion yourself? Our sister site CamperVolts has a free{" "}
+              <a href="https://campervolts.com/planner" className="text-spark-orange underline underline-offset-2">van and RV electrical planner</a>{" "}
+              that sizes the battery, solar, inverter and wire, and a{" "}
+              <a href="https://campervolts.com/lithium-conversion" className="text-spark-orange underline underline-offset-2">lithium conversion guide</a>{" "}
+              covering the charger settings and what the swap really costs.
+            </p>
           </div>
         </Section>
 

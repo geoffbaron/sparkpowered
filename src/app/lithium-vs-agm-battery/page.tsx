@@ -197,6 +197,10 @@ export default function LithiumVsAgmPage() {
         <p className="text-sm text-muted mt-6">
           Pairing it with solar? See panel output for your area on your <Link href="/states" className="underline">state page</Link>.
         </p>
+        <p className="text-sm text-muted mt-2">
+          Switching an RV or van to lithium? Our sister site CamperVolts walks through the{" "}
+          <a href="https://campervolts.com/lithium-conversion" className="underline">lithium conversion</a>: charger settings, wiring and cost.
+        </p>
         <PhotoCredit name="power-station" />
       </div>
     </article>

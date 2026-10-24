@@ -125,6 +125,10 @@ export default function BoatingHub() {
               <strong>Charging.</strong> Filling a 12V 100Ah lithium costs about a quarter at the US average power price.{" "}
               <Link href="/charge-lithium-battery-on-boat" className="underline">How to charge on the boat</Link>.
             </Callout>
+            <Callout>
+              <strong>House battery.</strong> Running a fridge, lights and electronics off a cabin battery bank? Our sister site CamperVolts sizes a{" "}
+              <a href="https://campervolts.com/boat-house-battery" className="underline">boat house battery</a> and what it costs.
+            </Callout>
           </div>
         </Section>
 

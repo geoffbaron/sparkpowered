@@ -74,6 +74,13 @@ export default function Footer() {
         </div>
         <div className="mt-8 pt-8 border-t border-black/8 text-sm text-stone-600">
           &copy; {DATA_UPDATED.slice(0, 4)} Spark Powered. Estimates only — not financial or tax advice.
+          <p className="mt-2">
+            Wiring a van, RV or boat? Our sister site{" "}
+            <a href="https://campervolts.com" className="text-stone-700 underline hover:text-spark-orange">
+              CamperVolts
+            </a>{" "}
+            plans the whole electrical system.
+          </p>
         </div>
       </div>
     </footer>

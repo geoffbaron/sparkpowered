@@ -162,7 +162,9 @@ export default function ChargeOnBoatPage() {
             </Callout>
             <Callout>
               <strong>Wiring it straight to the outboard&apos;s charging lead.</strong> Put a DC-to-DC charger in between so the alternator isn&apos;t
-              run flat out for hours.
+              run flat out for hours. Our sister site CamperVolts shows{" "}
+              <a href="https://campervolts.com/dc-dc-charger-sizing" className="underline">what size DC-to-DC charger</a> you need and how to set up a{" "}
+              <a href="https://campervolts.com/boat-house-battery" className="underline">boat house battery</a>.
             </Callout>
           </div>
         </Section>

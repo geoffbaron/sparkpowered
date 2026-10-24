@@ -191,6 +191,10 @@ export default function BestPowerStationsPage() {
           <Link href="/lithium-rv-battery" className="text-spark-orange font-semibold underline underline-offset-2">
             See what a lithium RV battery saves
           </Link>
+          . Still deciding for a van or RV? Our sister site CamperVolts compares the cost of a{" "}
+          <a href="https://campervolts.com/power-station-vs-built-in" className="text-spark-orange font-semibold underline underline-offset-2">
+            power station vs a built-in system
+          </a>
           .
         </p>
       </aside>

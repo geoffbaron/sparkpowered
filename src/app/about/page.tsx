@@ -120,6 +120,15 @@ export default function AboutPage() {
         </div>
       </Section>
 
+      <Section title="Our sister site">
+        <p className="text-stone-700 leading-relaxed">
+          Geoff also runs{" "}
+          <a href="https://campervolts.com" className="underline text-spark-orange">CamperVolts</a>, free planners and
+          guides for wiring a camper van, RV or boat: battery, solar, inverter and wire sizes, with the same plain-numbers
+          approach.
+        </p>
+      </Section>
+
       <Section title="Corrections">
         <p className="text-stone-700 leading-relaxed">
           If you spot a number that is wrong or out of date, we want to fix it. Each data page shows when its
