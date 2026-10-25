@@ -77,7 +77,7 @@ export default function HomeBatteryBackupPage() {
   const faqs = [
     {
       q: "How much does a whole-home battery backup cost in 2026?",
-      a: `Installed home batteries averaged about ${money(INSTALLED_BATTERY_COST.medianPerKwh)} per kWh of capacity in EnergySage's marketplace in the first half of 2026, before incentives, so one ${POWERWALL_3_KWH} kWh battery runs roughly $13,000 to $16,000 installed depending on brand. Backing up a whole home for longer outages often takes two or more units. Plug-in systems cost less per kWh at listed prices but need an electrician to connect them to your home's circuits.`,
+      a: `EnergySage put home battery prices at about ${money(INSTALLED_BATTERY_COST.medianPerKwh)} per kWh of capacity in the first half of 2026, before incentives, so one ${POWERWALL_3_KWH} kWh battery comes to about ${money(INSTALLED_BATTERY_COST.medianPerKwh * POWERWALL_3_KWH)} at that price. Backing up a whole home for longer outages often takes two or more units. Plug-in systems cost less per kWh at listed prices but need an electrician to connect them to your home's circuits.`,
     },
     {
       q: "Can a portable power station back up my house?",
@@ -209,7 +209,7 @@ export default function HomeBatteryBackupPage() {
                 <th scope="row" className="p-3 font-medium">Cost (examples below)</th>
                 <td className="p-3">{cheapestPortable?.priceUsd ? `From ${money(cheapestPortable.priceUsd)}` : "—"} for 1 kWh+</td>
                 <td className="p-3">From {money(Math.min(...plugInHome.filter((p) => p.priceUsd).map((p) => p.priceUsd!)))} plus electrician</td>
-                <td className="p-3">About {money(INSTALLED_BATTERY_COST.medianPerKwh)} per kWh installed†</td>
+                <td className="p-3">About {money(INSTALLED_BATTERY_COST.medianPerKwh)} per kWh†</td>
               </tr>
               <tr className="border-t border-black/6">
                 <th scope="row" className="p-3 font-medium">Takes solar?</th>
@@ -240,7 +240,7 @@ export default function HomeBatteryBackupPage() {
         <p className="text-xs text-muted mt-2 max-w-3xl">
           †EnergySage brand averages, first half of 2026 (
           <a href={ES_COST_URL} className="underline" rel="noopener">source</a>); for brands without one we use
-          EnergySage&apos;s overall median of {money(INSTALLED_BATTERY_COST.medianPerKwh)}/kWh. EnergySage says
+          EnergySage&apos;s reported price of {money(INSTALLED_BATTERY_COST.medianPerKwh)}/kWh. EnergySage says
           whole-home backup with several batteries can run $34,000 or more. Specs are from each maker&apos;s US
           datasheet, checked {formatDate(installed[0].retrieved)}.
         </p>
@@ -312,7 +312,7 @@ export default function HomeBatteryBackupPage() {
       <Sources
         items={[
           { name: "EnergySage: how much do home batteries cost", url: ES_COST_URL, detail: "Installed cost by brand, first half of 2026" },
-          { name: "EnergySage: home energy market, first half 2026", url: INSTALLED_BATTERY_COST.url, detail: `Median ${money(INSTALLED_BATTERY_COST.medianPerKwh)}/kWh` },
+          { name: "EnergySage: home energy market, first half 2026", url: INSTALLED_BATTERY_COST.url, detail: `Home battery price ${money(INSTALLED_BATTERY_COST.medianPerKwh)}/kWh` },
           { name: SOURCES.usage.name, url: SOURCES.usage.url, detail: SOURCES.usage.period },
           ...[...installed, ...priced].map((p) => ({ name: `${fullName(p)} specifications`, url: p.sourceUrl, detail: `checked ${formatDate(p.retrieved)}` })),
           {
