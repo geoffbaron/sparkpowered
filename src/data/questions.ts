@@ -151,6 +151,11 @@ const S = {
   honda: { name: "Honda BF2.3 outboard, specifications", url: GAS_OUTBOARDS.hondaBf23.url },
   energyStarHp: { name: "ENERGY STAR: Air-source heat pumps", url: "https://www.energystar.gov/products/air_source_heat_pumps" },
   ecfr: { name: "Federal efficiency standards for home appliances, 10 CFR 430.32", url: ASSUMPTIONS.heatPumpCop.source.url },
+  bluetti30: { name: "Bluetti Elite 30 V2, product page (capacity and output)", url: productById("bluetti-elite-30-v2").sourceUrl },
+  bluetti100: { name: "Bluetti Elite 100 V2, product page (capacity and output)", url: productById("bluetti-elite-100-v2").sourceUrl },
+  bluetti200: { name: "Bluetti Elite 200 V2, product page (capacity and output)", url: productById("bluetti-elite-200-v2").sourceUrl },
+  bluetti300: { name: "Bluetti Elite 300, product page (capacity and output)", url: productById("bluetti-elite-300").sourceUrl },
+  ecoflowUltra: { name: "EcoFlow DELTA Pro Ultra, product page (Smart Home Panel 2 requirement)", url: productById("ecoflow-delta-pro-ultra").sourceUrl },
 } satisfies Record<string, Source>;
 
 // ---------------------------------------------------------------- figures read on QUESTIONS_UPDATED
@@ -302,10 +307,10 @@ export const TOPICS: Topic[] = [
       {
         id: "battery-with-solar",
         q: "Do I need a battery with solar panels?",
-        a: `No. A grid-tied system works without one: the panels supply your home while the sun is up, and where your utility offers net metering the extra earns a bill credit. A battery adds backup power in outages and lets you use daytime solar at night. It also adds cost: installed home batteries averaged about ${usd0(INSTALLED_BATTERY_COST.medianPerKwh)} per kWh on EnergySage in the first half of 2026, and the federal credit that covered battery storage ended after 2025.`,
+        a: `No. A grid-tied system works without one: the panels supply your home while the sun is up, and where your utility offers net metering the extra earns a bill credit. A battery adds backup power in outages and lets you use daytime solar at night. It also adds cost: EnergySage put home battery prices at about ${usd0(INSTALLED_BATTERY_COST.medianPerKwh)} per kWh in the first half of 2026, and the federal credit that covered battery storage ended after 2025.`,
         detail: [
           { p: "The Department of Energy describes storage as a way to use solar power when it is needed most, regardless of whether it's sunny at the time: at night, after dinner, or when the power goes out." },
-          { p: `At that price, one ${POWERWALL_3_KWH} kWh battery is about ${usd0(INSTALLED_BATTERY_COST.medianPerKwh * POWERWALL_3_KWH)} installed. The IRS's Residential Clean Energy Credit listed battery storage technology as a qualified expense, and is not available for property placed in service after December 31, 2025.` },
+          { p: `At that price, one ${POWERWALL_3_KWH} kWh battery is about ${usd0(INSTALLED_BATTERY_COST.medianPerKwh * POWERWALL_3_KWH)}. The IRS's Residential Clean Energy Credit listed battery storage technology of at least 3 kWh as a qualified expense, and is not available for property placed in service after December 31, 2025.` },
         ],
         sources: [S.doeSolarGuide, S.esH1, S.irs25d],
         tools: [{ href: "/battery-calculator", label: "Size a home battery" }],
@@ -411,7 +416,7 @@ export const TOPICS: Topic[] = [
       {
         id: "home-battery-without-solar",
         q: "Is a home battery worth it without solar?",
-        a: `As backup power, it can be: a home battery keeps your chosen circuits running in an outage without fuel. As a money-saver it is a harder case. Installed home batteries averaged about ${usd0(INSTALLED_BATTERY_COST.medianPerKwh)} per kWh on EnergySage in the first half of 2026, so one ${POWERWALL_3_KWH} kWh Tesla Powerwall 3 is about ${usd0(INSTALLED_BATTERY_COST.medianPerKwh * POWERWALL_3_KWH)} installed, and homeowners can no longer claim the 30% federal credit for one installed after 2025.`,
+        a: `As backup power, it can be: a home battery keeps your chosen circuits running in an outage without fuel. As a money-saver it is a harder case. EnergySage put home battery prices at about ${usd0(INSTALLED_BATTERY_COST.medianPerKwh)} per kWh in the first half of 2026, so one ${POWERWALL_3_KWH} kWh Tesla Powerwall 3 comes to about ${usd0(INSTALLED_BATTERY_COST.medianPerKwh * POWERWALL_3_KWH)} at that rate, and homeowners can no longer claim the 30% federal credit for one installed after 2025.`,
         detail: [
           { p: "EnergySage says resiliency, backup power in an outage, is the main reason people install home storage, and that most batteries cannot back up a whole home, so you choose the circuits." },
           { p: `If you mainly want the fridge, lights, internet and a medical device through an outage, a plug-in power station is far cheaper: the 2 kWh Bluetti ${e200.model} was listed at ${usd0(e200.priceUsd ?? 0)} when we checked on ${formatDate(e200.retrieved)}, and you plug appliances straight into it. See the next questions for run times.` },
@@ -464,7 +469,7 @@ export const TOPICS: Topic[] = [
           },
           { p: "Ready.gov also says a full freezer holds its temperature for about 48 hours, and to throw out food that has reached 40 degrees or higher. Our fridge calculator lets you enter your own fridge's yearly kWh instead of the average." },
         ],
-        sources: [S.eiaRecs, S.ready],
+        sources: [S.eiaRecs, S.ready, S.bluetti100, S.bluetti200, S.bluetti300],
         tools: [{ href: "/power-station-for-refrigerator", label: "Fridge run-time calculator" }],
         picks: [e100, e200, e300].map((p) => ({ brand: "bluetti" as const, label: `Bluetti ${p.model}`, url: p.url, productId: p.id, note: `${n0(p.capacityWh)} Wh, about ${Math.round(fridgeHours(p.capacityWh))} hours of an average fridge` })),
       },
@@ -486,7 +491,7 @@ export const TOPICS: Topic[] = [
         detail: [
           { p: "OSHA warns that a generator attached to a building without a properly installed transfer switch can energize wiring for great distances. Some larger power stations are built to connect to home circuits through the maker's own panel: EcoFlow, for example, says its DELTA Pro Ultra needs its Smart Home Panel 2, installed by an electrician." },
         ],
-        sources: [S.cpsc, S.osha],
+        sources: [S.cpsc, S.osha, S.ecoflowUltra],
         tools: [{ href: "/home-battery-backup", label: "Home backup options" }],
       },
       {
@@ -508,7 +513,7 @@ export const TOPICS: Topic[] = [
           },
           { p: "Run time is the station's capacity, less about 15% for inverter losses, divided by the heater's watts." },
         ],
-        sources: [S.eiaRecs],
+        sources: [S.bluetti30, S.bluetti100, S.bluetti200, S.bluetti300],
         tools: [{ href: "/space-heater-cost", label: "What a space heater costs to run" }],
       },
     ],
@@ -716,7 +721,7 @@ export const TOPICS: Topic[] = [
       {
         id: "electric-outboard-range",
         q: "Are electric outboards worth it, and how far can they go?",
-        a: `They make most sense on small boats at slow speed, where makers' ranges hold up, and they cost little to run. ePropulsion rates its 1 kW Spirit 1.0, with a ${n0(spirit.batteryWh)} Wh battery, at a 22-mile range. An hour at full power on a 1 kW motor uses about ${usd2(ELECTRIC_HOUR_USD)} of electricity at the US average price, against about ${usd2(GAS_HOUR_USD)} of gas for Honda's 2.3 hp outboard, whose 0.29-gallon tank lasts up to 60 minutes at full throttle.`,
+        a: `They make most sense on small boats at slow speed, where makers' ranges hold up, and they cost little to run. ePropulsion rates its 1 kW Spirit 1.0, with a ${n0(spirit.batteryWh)} Wh battery, at up to 22 miles at a steady 4.5 mph cruise; at full power the range is under 8 miles. An hour at full power on a 1 kW motor uses about ${usd2(ELECTRIC_HOUR_USD)} of electricity at the US average price, against about ${usd2(GAS_HOUR_USD)} of gas for Honda's 2.3 hp outboard, whose 0.29-gallon tank lasts up to 60 minutes at full throttle.`,
         detail: [
           { p: `ePropulsion's own run-time table for the Spirit shows how much speed costs: about 35 miles in 10 hours at 3.5 mph, 22 miles at 4.4 mph, and under 8 miles in 1.25 hours at full power (6.2 mph). Charging the Spirit's battery from empty costs about ${usd2((spirit.batteryWh / 1000) * (FUEL_PRICES.electricCentsPerKwh / 100))} at the US average price (EIA, ${FUEL_PRICES.electricMonth}).` },
           { p: "Our outboard guide compares Torqeedo, ePropulsion and Mercury models on price, range and running cost." },
@@ -771,9 +776,9 @@ export const TOPICS: Topic[] = [
       {
         id: "heat-pump-vs-gas-cost",
         q: "Does a heat pump save money compared with a gas furnace?",
-        a: `It depends on your prices, and at US averages it costs a little more to run than gas. Heating the average gas-heated home costs about ${usd0(gasHeatCost)} a year with an 80% efficient furnace at ${usd2(home.national.gasUsdPerMcf)} per thousand cubic feet of gas, and about ${usd0(hpCost)} with a heat pump at the federal minimum rating and ${c1(rateC)} per kWh. Against electric baseboard or furnace heat, the same heat pump uses about ${Math.round(hpVsResistance * 100)}% less electricity, and it also does your cooling.`,
+        a: `It depends on your prices, and at US averages a minimum-efficiency heat pump costs more to run than gas. Heating the average gas-heated home costs about ${usd0(gasHeatCost)} a year with an 80% efficient furnace at ${usd2(home.national.gasUsdPerMcf)} per thousand cubic feet of gas, and about ${usd0(hpCost)} with a heat pump at the federal minimum rating and ${c1(rateC)} per kWh. Against electric baseboard or furnace heat, the same heat pump uses about ${Math.round(hpVsResistance * 100)}% less electricity, and it also does your cooling.`,
         detail: [
-          { p: `We use the federal minimum heating rating for new heat pumps in the North (HSPF2 7.5, about ${n1(ASSUMPTIONS.heatPumpCop.value)} units of heat per unit of electricity over a season) and the 80% minimum furnace efficiency; a heat pump rated higher than the minimum costs less to run than shown. Gas price is EIA's 2025 residential average; household heating use is from EIA's 2020 Residential Energy Consumption Survey.` },
+          { p: `We use the federal minimum heating rating for new split-system heat pumps (HSPF2 7.5, about ${n1(ASSUMPTIONS.heatPumpCop.value)} units of heat per unit of electricity over a season) and the 80% minimum furnace efficiency; a heat pump rated higher than the minimum costs less to run than shown. Gas price is EIA's 2025 residential average; household heating use is from EIA's 2020 Residential Energy Consumption Survey.` },
           { p: "ENERGY STAR lists lower energy bills from switching from electric resistance, propane and oil to a heat pump, and says a heat pump added to an existing furnace (dual fuel) lets you use each system based on costs. Your state's prices change the answer, which the Go Electric planner works out." },
         ],
         sources: [S.ecfr, S.eiaNatGas, S.eiaRecs, S.eiaPrices, S.energyStarHp],

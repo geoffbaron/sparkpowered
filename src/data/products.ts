@@ -1007,7 +1007,7 @@ export const PLUGIN_KITS: PluginKit[] = [
  */
 export const INSTALLED_BATTERY_COST = {
   medianPerKwh: 1130,
-  source: "EnergySage's median installed price of $1,130 per kWh (first half of 2026)",
+  source: "EnergySage's home battery price of $1,130 per kWh (first half of 2026)",
   url: "https://www.energysage.com/news/home-energy-market-h1-2026-highlights/",
   retrieved: "2026-10-15",
 };

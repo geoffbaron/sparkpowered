@@ -31,7 +31,7 @@ export const ASSUMPTIONS = {
   },
   heatPumpCop: {
     value: 7.5 / 3.412,
-    text: "Heat pump delivers 2.2 units of heat per unit of electricity over a season (HSPF2 7.5, the federal minimum for new heat pumps in the North since 2023). Cold-climate models do better.",
+    text: "Heat pump delivers 2.2 units of heat per unit of electricity over a season (HSPF2 7.5, the federal minimum for new split-system heat pumps since 2023). Cold-climate models do better.",
     source: { label: "Federal efficiency standards for home appliances, 10 CFR 430.32", url: "https://www.ecfr.gov/current/title-10/chapter-II/subchapter-D/part-430/subpart-C/section-430.32" },
   },
   gasWaterHeaterUef: {
