@@ -239,6 +239,7 @@ export default function HomePage() {
             <ul className="space-y-3 text-sm">
               {[
                 ["/go-electric", "What would going electric save me?", "Every switch, ranked for your home."],
+                ["/questions", "Your going-electric questions, answered", "Solar, batteries, EV charging and credits, with sources."],
                 ["/plug-in-solar", "Is plug-in balcony solar legal in your state?", "The 2025-2026 state laws, with links."],
                 ["/compare", "EcoFlow vs Anker vs Jackery vs Bluetti", "Power stations compared size for size."],
                 ["/myths", "EV, solar and heat pump myths", "Battery life, cold weather, cost and more."],

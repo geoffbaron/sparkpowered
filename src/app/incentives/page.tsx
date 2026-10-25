@@ -203,6 +203,7 @@ export default function IncentivesPage() {
       <RelatedLinks
         links={[
           { href: "/ev-charging-cost", label: "EV charging cost calculator", desc: "What charging costs in your state" },
+          { href: "/questions/costs-and-incentives", label: "Tax credit and heat pump questions", desc: "Sourced answers on 2026 credits, prices and heat pumps" },
           { href: "/solar-calculator", label: "Solar panel calculator", desc: "Size a system and test a quote's price" },
         ]}
       />

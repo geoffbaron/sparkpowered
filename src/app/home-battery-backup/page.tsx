@@ -325,6 +325,7 @@ export default function HomeBatteryBackupPage() {
       <RelatedLinks
         links={[
           { href: "/battery-calculator", label: "Battery sizer", desc: "How many kWh you need, with matching systems" },
+          { href: "/questions/home-batteries-backup", label: "Backup power questions, answered", desc: "Run times, generators and safety, with sources" },
           { href: "/best-portable-power-stations", label: "Best portable power stations", desc: "Picks for camping, CPAP, RVs and apartments" },
           { href: "/compare", label: "Head-to-head comparisons", desc: "EcoFlow vs Anker vs Jackery vs Bluetti" },
           { href: "/plug-in-solar", label: "Plug-in solar", desc: "Small solar that plugs into an outlet" },

@@ -28,6 +28,7 @@ const GUIDES = [
   { href: "/24v-vs-36v-trolling-motor", icon: "arrow", title: "24V vs 36V trolling motor", desc: "More push, or one less battery to buy and carry." },
   { href: "/charge-lithium-battery-on-boat", icon: "plug", title: "Charging lithium on a boat", desc: "Plug-in, alternator and solar, and the mistakes to avoid." },
   { href: "/lithium-vs-agm-battery", icon: "dollar", title: "Lithium vs AGM", desc: "Which costs less per year, worked out with today's prices." },
+  { href: "/questions/electric-boating", icon: "check", title: "Boating questions, answered", desc: "Run times, battery size, chargers and outboard range, with sources." },
 ];
 
 export default function BoatingHub() {

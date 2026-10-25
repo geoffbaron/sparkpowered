@@ -88,6 +88,9 @@ export const OG_IMAGE = {
  */
 export const CONTENT_UPDATED = "2026-10-15";
 
+/** Content date of the /questions hubs (src/data/questions.ts). */
+export const QUESTIONS_UPDATED = "2026-10-25";
+
 export const ROUTES: { path: string; lastModified: string }[] = [
   { path: "/", lastModified: CONTENT_UPDATED },
   { path: "/go-electric", lastModified: CONTENT_UPDATED },
@@ -120,6 +123,12 @@ export const ROUTES: { path: string; lastModified: string }[] = [
   { path: "/solartopia", lastModified: "2026-10-22" },
   { path: "/christmas-lights-cost", lastModified: "2026-10-23" },
   { path: "/space-heater-cost", lastModified: "2026-10-23" },
+  { path: "/questions", lastModified: QUESTIONS_UPDATED },
+  { path: "/questions/home-solar", lastModified: QUESTIONS_UPDATED },
+  { path: "/questions/home-batteries-backup", lastModified: QUESTIONS_UPDATED },
+  { path: "/questions/ev-charging", lastModified: QUESTIONS_UPDATED },
+  { path: "/questions/electric-boating", lastModified: QUESTIONS_UPDATED },
+  { path: "/questions/costs-and-incentives", lastModified: QUESTIONS_UPDATED },
   { path: "/about", lastModified: CONTENT_UPDATED },
   { path: "/methodology", lastModified: CONTENT_UPDATED },
   { path: "/disclaimer", lastModified: CONTENT_UPDATED },

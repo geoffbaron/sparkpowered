@@ -216,6 +216,7 @@ export default function SolarCalculatorPage() {
       <RelatedLinks
         links={[
           { href: "/plug-in-solar", label: "Plug-in solar guide", desc: "Balcony solar kits, state rules and real payback" },
+          { href: "/questions/home-solar", label: "Home solar questions, answered", desc: "Outages, winter, payback and panel life, with sources" },
           { href: "/solar-finder", label: "Find solar installers", desc: "Installers that list service in your state" },
           { href: "/battery-calculator", label: "Home battery sizer", desc: "Pair panels with backup storage" },
           { href: "/states", label: "Energy data by state", desc: "Prices, solar output and charging by state" },

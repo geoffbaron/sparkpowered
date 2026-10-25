@@ -231,6 +231,7 @@ export default function BestPowerStationsPage() {
       <RelatedLinks
         links={[
           { href: "/battery-calculator", label: "Battery sizer", desc: "How many kWh you need for your outage" },
+          { href: "/questions/home-batteries-backup", label: "Backup power questions, answered", desc: "Fridges, space heaters, generators and safety" },
           { href: "/home-battery-backup", label: "Home battery backup", desc: "Whole-home vs portable, with real costs" },
           { href: "/plug-in-solar", label: "Plug-in solar", desc: "Small solar kits that plug into an outlet" },
           { href: "/compare", label: "All comparisons", desc: "EcoFlow, Anker, Jackery and Bluetti head to head" },
