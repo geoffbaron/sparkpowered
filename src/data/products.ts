@@ -514,7 +514,7 @@ const PORTABLE: Product[] = [
     category: "portable",
     url: "https://www.ankersolix.com/products/c1000-gen2",
     sourceUrl: "https://www.ankersolix.com/products/c1000-gen2",
-    retrieved: "2026-10-15",
+    retrieved: "2026-10-26",
     capacityWh: 1024,
     maxCapacityWh: null,
     notExpandable: true,
@@ -530,9 +530,10 @@ const PORTABLE: Product[] = [
     warrantyYears: null,
     volts: "120V",
     install: "diy",
-    priceUsd: 549.99,
+    priceUsd: 499.99,
     listPriceUsd: 699.99,
     notes: [
+      "Price is Anker's Halloween sale price on Oct 26 2026 (sale ends Nov 1 2026).",
       "Anker says a full AC recharge takes 49 minutes.",
       "Not expandable; Anker's US page does not state the battery chemistry."
     ]
@@ -544,7 +545,7 @@ const PORTABLE: Product[] = [
     category: "portable",
     url: "https://www.ankersolix.com/products/c2000-gen2",
     sourceUrl: "https://www.ankersolix.com/products/c2000-gen2",
-    retrieved: "2026-10-15",
+    retrieved: "2026-10-26",
     capacityWh: 2048,
     maxCapacityWh: 4096,
     acOutputW: 2400,
@@ -559,9 +560,10 @@ const PORTABLE: Product[] = [
     warrantyYears: null,
     volts: "120V",
     install: "diy",
-    priceUsd: 999.99,
+    priceUsd: 899.99,
     listPriceUsd: 1199.99,
     notes: [
+      "Price is Anker's Halloween sale price on Oct 26 2026 (sale ends Nov 1 2026).",
       "Doubles to 4 kWh with one BP2000 expansion battery.",
       "Replaces the SOLIX F2000 on Anker's US site."
     ],
@@ -582,7 +584,7 @@ const PORTABLE: Product[] = [
     category: "portable",
     url: "https://www.ankersolix.com/products/f3000",
     sourceUrl: "https://www.ankersolix.com/products/f3000",
-    retrieved: "2026-10-15",
+    retrieved: "2026-10-26",
     capacityWh: 3072,
     maxCapacityWh: 12288,
     acOutputW: 3600,
@@ -597,9 +599,10 @@ const PORTABLE: Product[] = [
     warrantyYears: null,
     volts: "120V",
     install: "diy",
-    priceUsd: 1499.99,
+    priceUsd: 1399.99,
     listPriceUsd: 1899.99,
     notes: [
+      "Price after Anker's auto-applied Halloween code, shown on its page Oct 26 2026 (offer ends about Nov 1 2026).",
       "120 V only on its own; 240 V needs two units and Anker's Double Voltage Hub.",
       "TT-30 RV outlet delivers the full 3,600 W.",
       "The BP3000 expansion battery was sold out when we checked."
@@ -621,7 +624,7 @@ const PORTABLE: Product[] = [
     category: "portable",
     url: "https://www.ankersolix.com/products/f3800-plus",
     sourceUrl: "https://www.ankersolix.com/products/f3800-plus",
-    retrieved: "2026-10-15",
+    retrieved: "2026-10-26",
     capacityWh: 3840,
     maxCapacityWh: 26880,
     acOutputW: 6000,
@@ -636,9 +639,10 @@ const PORTABLE: Product[] = [
     warrantyYears: 5,
     volts: "120/240V",
     install: "diy",
-    priceUsd: 2599.99,
+    priceUsd: 2399.99,
     listPriceUsd: 2999.99,
     notes: [
+      "Price after Anker's auto-applied Halloween code, shown on its page Oct 26 2026 (offer ends about Nov 1 2026).",
       "6,000 W at 120/240 V, the most of any power station we list.",
       "Up to 3,200 W of solar input.",
       "Anker quotes 53.8 kWh for two linked units; one unit reaches 26.9 kWh."

@@ -53,7 +53,7 @@ const PICKS: { id: string; label: string; why: string }[] = [
   {
     id: "anker-solix-f3800-plus",
     label: "Best for running home circuits",
-    why: "240-volt power for a well pump or a transfer switch, lots of solar input, and room to grow into whole-home backup. It was $199 cheaper than the EcoFlow DELTA Pro 3 with more output when we checked.",
+    why: "240-volt power for a well pump or a transfer switch, lots of solar input, and room to grow into whole-home backup. It was $399 cheaper than the EcoFlow DELTA Pro 3 with more output when we checked.",
   },
 ];
 
