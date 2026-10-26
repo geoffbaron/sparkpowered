@@ -8,6 +8,7 @@ import { BATTERIES, BATTERY_FACTS, LEAD_ACID_REF, LITIME_RV, OTHER_LITHIUM, type
 import { SOURCES, STATES, formatDate } from "@/lib/energy";
 import { money } from "@/lib/products";
 import { leadAcidUsableWh, lifetimeCost, lifetimeKwh } from "@/lib/rv-battery";
+import { HowToVideo, SOLAR_TO_BATTERY_VIDEO } from "@/components/HowToVideo";
 import { JsonLd, pageMetadata } from "@/lib/seo";
 import { productList, reviewedProduct } from "@/lib/structured-data";
 
@@ -346,6 +347,11 @@ export default function LithiumRvBatteryPage() {
               Lithium suits solar better than lead-acid: it takes a charge faster, doesn&apos;t mind sitting part-charged, and
               you can use nearly all of it. Use a solar charge controller with a lithium setting.
             </p>
+            <p>
+              Wiring it yourself? Panels charge the battery through the controller, never straight. Connect the battery side
+              first and the panels last, with a fuse on each positive cable:
+            </p>
+            <HowToVideo video={SOLAR_TO_BATTERY_VIDEO} />
             <p>
               At home, the same idea scales up: see{" "}
               <Link href="/plug-in-solar" className="text-spark-orange underline underline-offset-2">plug-in solar</Link>{" "}
