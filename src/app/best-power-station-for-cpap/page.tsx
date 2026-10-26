@@ -263,7 +263,7 @@ export default function CpapPage() {
           links={[
             { href: "/best-portable-power-stations", label: "Best portable power stations", desc: "Picks for outages, camping, RVs and apartments" },
             { href: "/power-station-for-refrigerator", label: "Power station for a fridge", desc: "How long each one keeps the food cold" },
-            { href: "/compare/bluetti-ac180-vs-elite-100-v2", label: "Bluetti AC180 vs Elite 100 V2", desc: "Which $499 Bluetti to buy" },
+            { href: "/compare/bluetti-ac180-vs-elite-100-v2", label: "Bluetti AC180 vs Elite 100 V2", desc: "Which 1 kWh Bluetti to buy" },
             { href: "/battery-calculator", label: "Home battery sizer", desc: "Size backup for the whole house" },
             { href: "/lithium-rv-battery", label: "Lithium RV batteries", desc: "Run a CPAP from the RV house battery" },
           ]}

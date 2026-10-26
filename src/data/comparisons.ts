@@ -90,10 +90,10 @@ export const COMPARISONS: Comparison[] = [
     intro:
       "Bluetti undercuts EcoFlow on price at most sizes and quotes higher cycle ratings; EcoFlow had better stock and more complete published specs when we checked.",
     verdict:
-      "Bluetti is cheaper per kWh: the Elite 100 V2 was $499 for 1 kWh and the Elite 200 V2 $899 for 2.07 kWh, with 6,000-cycle ratings on the larger models. Both Elite V2 units were back in stock on Bluetti's US site on Oct 19 2026, but neither expands. For home backup the Bluetti Apex 300 ($1,599 for 2.76 kWh, 3,840 W, 120/240 V) costs far less than the EcoFlow DELTA Pro 3 ($2,799 for 4.1 kWh, 4,000 W) and expands further per unit.",
+      "Bluetti is cheaper per kWh: the Elite 100 V2 was $489 for 1 kWh and the Elite 200 V2 $899 for 2.07 kWh, with 6,000-cycle ratings on the larger models. Both Elite V2 units were back in stock on Bluetti's US site on Oct 19 2026, but neither expands. For home backup the Bluetti Apex 300 ($1,599 for 2.76 kWh, 3,840 W, 120/240 V) costs far less than the EcoFlow DELTA Pro 3 ($2,799 for 4.1 kWh, 4,000 W) and expands further per unit.",
     chooseA: "Choose EcoFlow if you want a 1 kWh unit that expands later, or a warranty stated on every model (Bluetti's US page did not state one for the Apex 300).",
     chooseB: "Choose Bluetti for the lowest price per kWh and the highest cycle ratings, especially the Apex 300 for home backup.",
-    updated: "2026-10-19",
+    updated: "2026-10-26",
   },
   {
     slug: "bluetti-ac180-vs-jackery-explorer-1000-v2",
@@ -161,29 +161,29 @@ export const COMPARISONS: Comparison[] = [
   },
   {
     slug: "bluetti-ac180-vs-elite-100-v2",
-    title: "Bluetti AC180 vs Elite 100 V2: Which $499 Bluetti to Buy",
-    description: "Bluetti's two $499 power stations compared: how long each runs a fridge or CPAP, weight, solar charging, surge and switchover, from Bluetti's US specs.",
+    title: "Bluetti AC180 vs Elite 100 V2: $499 vs $489, Which to Buy",
+    description: "Bluetti's two 1 kWh power stations ($499 and $489) compared: how long each runs a fridge or CPAP, weight, solar charging, surge and switchover, from Bluetti's US specs.",
     pairs: [["bluetti-ac180", "bluetti-elite-100-v2"]],
     intro:
-      "The most-searched Bluetti matchup. Both cost $499 on Bluetti's US site, both hold about 1 kWh of long-life LFP battery and both put out 1,800 W. The newer Elite 100 V2 trades a little capacity for less weight and much faster solar charging.",
+      "The most-searched Bluetti matchup. Both cost about $500 on Bluetti's US site ($499 and $489), both hold about 1 kWh of long-life LFP battery and both put out 1,800 W. The newer Elite 100 V2 trades a little capacity for less weight and much faster solar charging.",
     verdict:
-      "For most people, the Elite 100 V2. At the same $499 it is 10.3 lb lighter (25 vs 35.3 lb), takes twice the solar (1,000 W vs 500 W), states a 3,600 W surge for motor starts (the AC180's 2,700 W is for heating-type loads only), switches over in 10 ms, and is rated for more cycles (4,000 vs 3,500, both to 80%). The AC180 holds 12% more (1,152 vs 1,024 Wh), about one more hour of running a typical fridge.",
+      "For most people, the Elite 100 V2. For $10 less ($489) it is 10.3 lb lighter (25 vs 35.3 lb), takes twice the solar (1,000 W vs 500 W), states a 3,600 W surge for motor starts (the AC180's 2,700 W is for heating-type loads only), switches over in 10 ms, and is rated for more cycles (4,000 vs 3,500, both to 80%). The AC180 holds 12% more (1,152 vs 1,024 Wh), about one more hour of running a typical fridge.",
     chooseA: "Choose the Bluetti AC180 if you want the most stored energy for $499 and weight doesn't matter.",
     chooseB: "Choose the Bluetti Elite 100 V2 for camping, solar charging, CPAP or UPS use: lighter, faster to refill, quicker switchover.",
-    updated: "2026-10-19",
+    updated: "2026-10-26",
   },
   {
     slug: "bluetti-elite-200-v2-vs-elite-300",
-    title: "Bluetti Elite 200 V2 vs Elite 300: Is the Bigger One Worth $300 More?",
+    title: "Bluetti Elite 200 V2 vs Elite 300: Is the Bigger One Worth $800 More?",
     description: "Bluetti's 2 kWh and 3 kWh power stations compared: how long each keeps a fridge cold in an outage, output, solar, RV outlet, weight and price per kWh.",
     pairs: [["bluetti-elite-200-v2", "bluetti-elite-300"]],
     intro:
-      "Two Bluetti boxes for outage and RV use. The Elite 300 costs $300 more and holds about 45% more energy, so the question is whether you need the extra night.",
+      "Two Bluetti boxes for outage and RV use. The Elite 300 costs $800 more and holds about 45% more energy, so the question is whether you need the extra night and the RV outlet.",
     verdict:
-      "The Elite 300 is the better buy per kWh: 3.01 kWh for $1,199 (about $398 per kWh) against 2.07 kWh for $899 (about $434), with more solar input (1,200 W vs 1,000 W), a stated 4,800 W surge, a 10 ms switchover and an RV (TT-30) outlet, for under 5 lb more weight. The Elite 200 V2 has more continuous output (2,600 W vs 2,400 W) and was in stock, while the Elite 300 was a pre-order when we checked. Both are rated 6,000 cycles to 80% with a 5-year warranty.",
-    chooseA: "Choose the Elite 200 V2 if a fridge and essentials through one night is enough, you need it now, or you run a single big appliance near 2,600 W.",
-    chooseB: "Choose the Elite 300 for two-day outages, RV hookups or lots of solar, if you can wait for the pre-order.",
-    updated: "2026-10-19",
+      "The Elite 200 V2 is now the better buy per kWh: 2.07 kWh for $899 (about $434 per kWh) against 3.01 kWh for $1,699 (about $564) for the Elite 300, whose earlier $1,199 advance-order price has ended. The Elite 300 still brings more solar input (1,200 W vs 1,000 W), a stated 4,800 W surge, a 10 ms switchover and an RV (TT-30) outlet, for under 5 lb more weight. The Elite 200 V2 has more continuous output (2,600 W vs 2,400 W). Both were in stock on Bluetti's US site on Oct 26 2026, and both are rated 6,000 cycles to 80% with a 5-year warranty.",
+    chooseA: "Choose the Elite 200 V2 for the most energy per dollar: a fridge and essentials through one night, or a single big appliance near 2,600 W.",
+    chooseB: "Choose the Elite 300 for two-day outages, RV hookups or lots of solar, if the extra night and the TT-30 outlet are worth $800 to you.",
+    updated: "2026-10-26",
   },
   {
     slug: "bluetti-elite-200-v2-vs-ac200l",

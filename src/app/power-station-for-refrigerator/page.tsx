@@ -101,7 +101,7 @@ export default function FridgePage() {
           <p>
             <strong>For a full day of fridge:</strong> the{" "}
             <PartnerLink brand="bluetti" productId={e300.id} productUrl={e300.url}>Bluetti Elite 300</PartnerLink> ({money(e300.priceUsd!)},
-            about {hText(hours(e300.capacityWh))} for a typical fridge). It was a pre-order when we checked.
+            about {hText(hours(e300.capacityWh))} for a typical fridge).
           </p>
           <p>
             <strong>In stock now, overnight and then some:</strong> the{" "}
