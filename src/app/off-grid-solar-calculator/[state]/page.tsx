@@ -189,6 +189,10 @@ export default async function OffGridStatePage({ params }: Props) {
             See <Link href="/off-grid-cabin-solar-kit" className="underline">which kits fit each size</Link>, or{" "}
             <Link href="/how-to-go-off-grid" className="underline">what going off grid costs</Link>.
           </p>
+          <p className="text-sm text-stone-700 mt-3 max-w-3xl">
+            These sizes assume panels at a 20 degree tilt. A steeper tilt, which also sheds snow, catches more low winter sun, and many
+            off-grid homes in the far north run a generator for the darkest weeks rather than buying panels for December alone.
+          </p>
           <Callout>
             For vans and RVs, see <a href={CAMPER_VOLTS_URL} className="underline" rel="noopener">Camper Volts</a>.
           </Callout>

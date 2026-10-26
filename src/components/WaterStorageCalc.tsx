@@ -178,7 +178,7 @@ export default function WaterStorageCalc() {
             )}
           </p>
           <p className="text-xs text-muted mt-1">
-            The {REFRESH_MONTHS}-month rule is for water you bottle yourself. Keep store-bought water sealed in its original bottles.
+            The {REFRESH_MONTHS}-month rule is for water you bottle yourself. Keep store-bought water sealed in its original bottles and use it by the date on the label.
           </p>
         </div>
       </div>

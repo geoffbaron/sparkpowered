@@ -100,7 +100,7 @@ export const WATER_PRODUCTS: PrepProduct[] = [
     claim: "Maker says it meets US EPA and NSF P231 drinking water standards for removing viruses, bacteria and parasites.",
     evidence: "maker-meets",
     standards: ["P231", "EPA Guide Standard"],
-    caveats: ["Not in NSF's public P231 listing when we checked; the claim is from the maker's own lab testing."],
+    caveats: ["Not in NSF's public P231 listing when we checked; the maker says it was independently lab-tested."],
     sourceUrl: "https://lifestraw.com/products/lifestraw-peak-series-gravity-purifier",
     checked: CHECKED,
     verifyUrl: NSF_P231_LISTING,

@@ -57,7 +57,7 @@ export default function OffGridSolarCalculatorPage() {
     },
     {
       q: "Why size for December instead of the yearly average?",
-      a: `An off-grid system has no grid to fall back on, so it must keep up in the darkest month. December is the lowest-output month in ${decIsWorst} of ${STATES.length} states and DC in our PVWatts model. In ${typical.name}, 1 kW of panels makes about ${decemberPerKwDay(typical).toFixed(2)} kWh a day in December, only ${pctOfBest}% of what it makes in ${tBest.name}. Size for the yearly average and the batteries run flat every winter.`,
+      a: `An off-grid system has no grid to fall back on, so it must keep up in the darkest month. December is the lowest-output month in our PVWatts model in ${decIsWorst === STATES.length ? "all 50 states and DC" : `${decIsWorst} of the 50 states and DC`} (in West Virginia January ties it). In ${typical.name}, 1 kW of panels makes about ${decemberPerKwDay(typical).toFixed(2)} kWh a day in December, only ${pctOfBest}% of what it makes in ${tBest.name}. Size for the yearly average and the batteries run flat every winter.`,
     },
     {
       q: "How many solar panels do I need to run a fridge off grid?",

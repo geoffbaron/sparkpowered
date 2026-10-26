@@ -8,6 +8,7 @@ import { Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/comp
 import { PriceFootnote } from "@/components/products";
 import { AFFILIATES } from "@/data/affiliates";
 import { DATA_UPDATED, STATES, formatDate } from "@/lib/energy";
+import { CPAP_NO_HUMIDIFIER_W, LOADS } from "@/lib/everyday";
 import {
   ESSENTIALS,
   RECHARGE_PANELS_W,
@@ -74,7 +75,7 @@ export default function OutageBackupPage() {
     },
     {
       q: "How much battery does a CPAP need in an outage?",
-      a: `About ${fmtWh(cpapNight)} a night with the heated humidifier on (28 W for 8 hours, ResMed), about 11 W without it. See our guide to the best power station for a CPAP for nights per dollar.`,
+      a: `About ${fmtWh(cpapNight)} a night with the heated humidifier on (28 W for 8 hours, ResMed), about ${fmtWh(CPAP_NO_HUMIDIFIER_W * LOADS.cpapNightHours)} a night (11 W) without it. See our guide to the best power station for a CPAP for nights per dollar.`,
     },
   ];
 
@@ -158,7 +159,7 @@ export default function OutageBackupPage() {
               sheet. We match stations on continuous output and, where the maker gives one, surge rating.
             </p>
             <Callout tone="warn">
-              If your well pump or furnace blower is wired into the house, power it only through a transfer switch or interlock installed
+              If your well pump or furnace blower is wired into the house, power it only through a properly rated transfer switch installed
               by an electrician.
             </Callout>
             <p>

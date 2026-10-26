@@ -30,7 +30,7 @@ export default function GeneratorRuntimePage() {
     },
     {
       q: "How far from the house should a generator be?",
-      a: "At least 20 feet from windows, doors and attached garages, outdoors (Ready.gov, CDC), with the exhaust pointed away from the house (NFPA). Never run one indoors (Ready.gov), and never in an attached garage, even with the door open (NFPA). Put battery-backed carbon monoxide alarms on every level.",
+      a: "At least 20 feet from windows, doors and attached garages, outdoors (Ready.gov, CDC; the older NFPA tip sheet we cite says 5 feet, and we use the stricter 20), with the exhaust pointed away from the house (NFPA). Never run one indoors (Ready.gov), and never in an attached garage, even with the door open (NFPA). Put battery-backed carbon monoxide alarms on every level.",
     },
     {
       q: "Do new generators shut off automatically if carbon monoxide builds up?",
@@ -38,7 +38,7 @@ export default function GeneratorRuntimePage() {
     },
     {
       q: "How do I connect a generator to my house?",
-      a: "Only through a transfer switch or interlock installed by a qualified electrician (NFPA). Otherwise, plug appliances straight into the generator, or use heavy-duty outdoor-rated extension cords with all three prongs.",
+      a: "Only through a properly rated transfer switch installed by a qualified electrician (NFPA). Otherwise, plug appliances straight into the generator, or use heavy-duty outdoor-rated extension cords with all three prongs.",
     },
   ];
 

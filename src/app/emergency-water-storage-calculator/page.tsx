@@ -46,7 +46,7 @@ export default function EmergencyWaterStoragePage() {
     },
     {
       q: "How often should I replace stored water?",
-      a: `Replace water you bottled yourself every ${REFRESH_MONTHS} months (CDC, Ready.gov). Keep store-bought water sealed in its original bottles. Store all of it somewhere cool, ${STORE_TEMP_F.low} to ${STORE_TEMP_F.high} F, out of direct sunlight.`,
+      a: `Replace water you bottled yourself every ${REFRESH_MONTHS} months (CDC, Ready.gov). Keep store-bought water sealed in its original bottles and use it by the date on the label (CDC, FEMA). Store all of it somewhere cool, ${STORE_TEMP_F.low} to ${STORE_TEMP_F.high} F, out of direct sunlight.`,
     },
     {
       q: "How much water do pets need in an emergency?",

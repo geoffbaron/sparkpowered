@@ -25,6 +25,8 @@ export interface AddOnBattery {
   url: string;
   /** Most add-on batteries one main unit accepts. */
   maxUnits: number;
+  /** True when the add-on was sold out at the last check; calculators then skip bundles that need it. */
+  soldOut?: boolean;
 }
 
 export interface Product {
@@ -614,7 +616,8 @@ const PORTABLE: Product[] = [
       priceUsd: 1199.99,
       listPriceUsd: 1299.99,
       url: "https://www.ankersolix.com/products/bp3000-expansion-battery-for-f3000",
-      maxUnits: 3
+      maxUnits: 3,
+      soldOut: true,
     }
   },
   {
