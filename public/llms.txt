@@ -40,6 +40,20 @@ Audience: US homeowners and drivers.
 - [Methodology](https://sparkpowered.com/methodology): Formulas, sources, dates and limitations.
 - [About and editorial standards](https://sparkpowered.com/about)
 
+## Off grid and emergency preparedness (government sources; some affiliate links)
+
+- [Off-grid solar calculator](https://sparkpowered.com/off-grid-solar-calculator): Panel watts and battery kWh for a home or cabin from daily loads, sized on each state's December PVWatts output (the worst month), with days of autonomy; 50-state + DC table and a page per state, e.g. https://sparkpowered.com/off-grid-solar-calculator/alaska.
+- [Off-grid cabin solar kit](https://sparkpowered.com/off-grid-cabin-solar-kit): Weekend, part-time and full-time cabin kit sizes by state, with dated kit prices.
+- [How to go off grid](https://sparkpowered.com/how-to-go-off-grid): Grid line extension cost (DOE: $15,000 to $50,000 per mile) versus solar plus battery, steps and permits.
+- [Power outage backup calculator](https://sparkpowered.com/power-outage-backup-calculator): Essentials (fridge, CPAP, well pump, furnace blower, router, lights) to kWh a day and battery size for 1 to 7 days, with winter solar recharge by state.
+- [Generator runtime calculator](https://sparkpowered.com/generator-runtime-calculator): Fuel to store from the generator's rated runtime; carbon monoxide safety (20 feet from the house, CO alarms; CDC, CPSC).
+- [Emergency water storage calculator](https://sparkpowered.com/emergency-water-storage-calculator): 1 gallon per person per day, 3-day minimum, 2-week goal (CDC, FEMA), containers and a 6-month refresh date.
+- [How to purify water](https://sparkpowered.com/how-to-purify-water): EPA bleach drops table by bleach strength (6% and 8.25%), CDC boil times by elevation.
+- [Best emergency water filters](https://sparkpowered.com/best-emergency-water-filters): Filters versus purifiers by certification (NSF/ANSI 42, 53, 58, P231, P248), how to check NSF listings; why Berkey is not listed (EPA order, May 2023).
+- [Emergency kit checklist](https://sparkpowered.com/emergency-kit-checklist): Ready.gov 72-hour and 2-week home kit list by household size, printable.
+- [Emergency food calculator](https://sparkpowered.com/emergency-food-calculator): Calories needed by household and days (Dietary Guidelines for Americans 2020-2025 table A2-2); compare kits on calories, not servings.
+- [NOAA Weather Radio](https://sparkpowered.com/noaa-weather-radio): The seven frequencies, SAME codes, official NWS station lists by state, what to look for in a radio.
+
 ## Notes for citation
 
 - Cite figures with their date and source as shown on the page (for example "EIA, January-July 2026 year-to-date average residential price"). Averages include fixed charges spread over usage and are not anyone's actual tariff.

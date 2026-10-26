@@ -41,11 +41,9 @@ export default function OutageCalc({ states, stations, fallbackAbbr }: { states:
   const whPerDay = dailyWh(picks);
   const needWh = outageBatteryWh(whPerDay, days);
   const peak = peakWatts(picks);
-  const matches = matchStations(
-    stations.filter((o) => (o.surgeW ?? o.acOutputW) >= peak.peak),
-    needWh,
-    { runningW: peak.running },
-  );
+  // Match on stored energy and steady output. Motor start figures are generator-sizing
+  // worst cases, so they are shown as a check, not used to rule stations out.
+  const matches = matchStations(stations, needWh, { runningW: peak.running });
   const solar = solarWhPerDay(panelW, st.dec);
   const share = whPerDay > 0 ? Math.min(100, Math.round((solar / whPerDay) * 100)) : 0;
   const fullPanels = st.dec > 0 ? whPerDay / st.dec : 0;
@@ -105,7 +103,7 @@ export default function OutageCalc({ states, stations, fallbackAbbr }: { states:
         <p className="text-sm text-stone-800">
           {fmtWh(whPerDay)} × {days} ÷ {Math.round(USABLE_FRACTION * 100)}% usable. It must also put out at least{" "}
           <strong>{fmtW(peak.running)}</strong> at once
-          {peak.start > 0 ? <>, and <strong>{fmtW(peak.peak)}</strong> for a moment when a motor starts</> : null}.
+          {peak.start > 0 ? <>, and up to <strong>{fmtW(peak.peak)}</strong> for a moment when a motor starts (a generator-sizing worst case; check the station&apos;s surge rating)</> : null}.
         </p>
 
         <p className="text-sm font-bold text-ink mt-5">Cheapest power stations that cover it</p>

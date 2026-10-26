@@ -40,6 +40,18 @@ export const NAV_GROUPS: NavGroup[] = [
     ],
   },
   {
+    id: "offgrid",
+    label: "Off Grid",
+    links: [
+      { href: "/off-grid-solar-calculator", label: "Off-grid solar" },
+      { href: "/off-grid-cabin-solar-kit", label: "Cabin solar kits" },
+      { href: "/power-outage-backup-calculator", label: "Outage backup" },
+      { href: "/emergency-water-storage-calculator", label: "Water storage" },
+      { href: "/best-emergency-water-filters", label: "Water filters" },
+      { href: "/emergency-kit-checklist", label: "Emergency kit" },
+    ],
+  },
+  {
     id: "learn",
     label: "Learn",
     links: [
