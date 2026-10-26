@@ -57,7 +57,19 @@ export interface BrandAffiliate {
 
 export const AFFILIATES: Record<BrandId, BrandAffiliate> = {
   ecoflow: { name: "EcoFlow", homeUrl: "https://us.ecoflow.com/", tracked: false },
-  anker: { name: "Anker SOLIX", homeUrl: "https://www.anker.com/", tracked: false },
+  // Approved Oct 19 2026 on Rakuten Advertising (Anker SOLIX, MID 53552) for publisher
+  // 4764556. The deeplink id is our encrypted Rakuten publisher id from the approval email.
+  // Program terms on application: 5% base, 3.5% on some SKUs, 30-day cookie.
+  anker: {
+    name: "Anker SOLIX",
+    homeUrl: "https://www.ankersolix.com/",
+    tracked: true,
+    network: "Rakuten",
+    commission: "5% (3.5% some SKUs)",
+    cookieDays: 30,
+    links: { home: "https://click.linksynergy.com/deeplink?id=2P5eyfaQKtI&mid=53552&murl=https%3A%2F%2Fwww.ankersolix.com%2F" },
+    deepLink: "https://click.linksynergy.com/deeplink?id=2P5eyfaQKtI&mid=53552&murl={url}",
+  },
   jackery: { name: "Jackery", homeUrl: "https://www.jackery.com/", tracked: false },
   // Approved Oct 16 2026 on Awin (BLUETTI US, MID 59271) for publisher 3125360.
   bluetti: {

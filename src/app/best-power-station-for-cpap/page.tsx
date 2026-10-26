@@ -3,6 +3,7 @@ import Link from "next/link";
 import { AffiliateDisclosure, PartnerLink } from "@/components/affiliate";
 import { Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
 import { PlainLink, QuickAnswer } from "@/components/guide-ui";
+import { AFFILIATES } from "@/data/affiliates";
 import { CpapPicker, type RuntimeOption } from "@/components/RuntimePicker";
 import { BigStat, HubHero, OurPick, PhotoCredit } from "@/components/ui";
 import { CPAP_PACK } from "@/data/buyer-guides";
@@ -27,7 +28,7 @@ const n1 = (x: number) => (Math.floor(x * 10) / 10).toString();
 const IDS = ["bluetti-elite-30-v2", "bluetti-elite-100-v2", "bluetti-ac180", "bluetti-elite-200-v2", "ecoflow-river-3-plus", "jackery-explorer-1000-v2", "anker-solix-c1000-gen-2"];
 
 function opt(p: Product): RuntimeOption {
-  return { id: p.id, name: fullName(p), brand: p.brand === "bluetti" ? "bluetti" : null, capacityWh: p.capacityWh, priceUsd: p.priceUsd!, url: p.url };
+  return { id: p.id, name: fullName(p), brand: AFFILIATES[p.brand].tracked ? p.brand : null, capacityWh: p.capacityWh, priceUsd: p.priceUsd!, url: p.url };
 }
 
 export default function CpapPage() {
@@ -220,7 +221,7 @@ export default function CpapPage() {
           <p className="text-xs text-muted mt-2 max-w-3xl">
             *Prices and specs from each maker&apos;s US product page on {formatDate(e100.retrieved)} (EcoFlow, Jackery and Anker on{" "}
             {formatDate(river.retrieved)}). Nights assume {LOADS.cpapNightHours} hours at {H} W or {D} W and {Math.round(USABLE_FRACTION * 100)}%
-            usable capacity. Bluetti links are sponsored; others are plain links.
+            usable capacity. Bluetti and Anker links are sponsored; others are plain links.
           </p>
         </Section>
 

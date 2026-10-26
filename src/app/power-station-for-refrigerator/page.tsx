@@ -4,6 +4,7 @@ import { AffiliateDisclosure, PartnerLink } from "@/components/affiliate";
 import { Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
 import { PriceFootnote, ProductListJsonLd } from "@/components/products";
 import { PlainLink, QuickAnswer } from "@/components/guide-ui";
+import { AFFILIATES } from "@/data/affiliates";
 import { FridgePicker, type RuntimeOption } from "@/components/RuntimePicker";
 import { BigStat, HubHero, OurPick, PhotoCredit } from "@/components/ui";
 import type { Product } from "@/data/products";
@@ -36,7 +37,7 @@ const preorder = (p: Product) => p.notes.some((n) => /pre-order/i.test(n));
 const outOfStock = (p: Product) => p.notes.some((n) => /out of stock/i.test(n) && !/back in stock|after being out/i.test(n));
 
 function opt(p: Product): RuntimeOption {
-  return { id: p.id, name: fullName(p), brand: p.brand === "bluetti" ? "bluetti" : null, capacityWh: p.capacityWh, priceUsd: p.priceUsd!, url: p.url };
+  return { id: p.id, name: fullName(p), brand: AFFILIATES[p.brand].tracked ? p.brand : null, capacityWh: p.capacityWh, priceUsd: p.priceUsd!, url: p.url };
 }
 
 export default function FridgePage() {
@@ -199,8 +200,8 @@ export default function FridgePage() {
                 {[...products].sort((a, b) => a.capacityWh - b.capacityWh).map((p) => (
                   <tr key={p.id} className="border-t border-black/6">
                     <th scope="row" className="p-3 font-medium">
-                      {p.brand === "bluetti" ? (
-                        <PartnerLink brand="bluetti" productId={p.id} productUrl={p.url}>{fullName(p)}</PartnerLink>
+                      {AFFILIATES[p.brand].tracked ? (
+                        <PartnerLink brand={p.brand} productId={p.id} productUrl={p.url}>{fullName(p)}</PartnerLink>
                       ) : (
                         <PlainLink href={p.url}>{fullName(p)}</PlainLink>
                       )}
@@ -216,7 +217,7 @@ export default function FridgePage() {
             </table>
           </div>
           <PriceFootnote products={products} />
-          <p className="text-xs text-muted mt-1">Bluetti links are sponsored; EcoFlow, Jackery and Anker are plain links.</p>
+          <p className="text-xs text-muted mt-1">Bluetti and Anker links are sponsored; EcoFlow and Jackery are plain links.</p>
         </Section>
 
         <Section title="Myths, answered" id="myths">
