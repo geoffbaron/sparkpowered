@@ -835,7 +835,7 @@ const PORTABLE: Product[] = [
     listPriceUsd: null,
     notes: [
       "3.84 kWh on wheels with a telescopic handle, for $1,399 (about $364 per kWh).",
-      "Listed as a pre-order on Bluetti's US site when we checked; Bluetti gives no cycle rating on the page."
+      "In stock on Bluetti's US site on Oct 26 2026; Bluetti gives no cycle rating on the page."
     ]
   },
   {
