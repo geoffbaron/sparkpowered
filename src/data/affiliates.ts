@@ -34,7 +34,25 @@ export type BrandId =
   | "autel"
   | "piscifun"
   | "litime"
-  | "energysage";
+  | "energysage"
+  | "sungold"
+  | "goalzero"
+  | "renogy"
+  | "signaturesolar"
+  | "grayl"
+  | "msr"
+  | "lifestraw"
+  | "sawyer"
+  | "katadyn"
+  | "survivorfilter"
+  | "epic"
+  | "aquatru"
+  | "mymedic"
+  | "amk"
+  | "valleyfood"
+  | "readywise"
+  | "mountainhouse"
+  | "midland";
 
 export interface BrandAffiliate {
   /** Display name. */
@@ -162,6 +180,26 @@ export const AFFILIATES: Record<BrandId, BrandAffiliate> = {
     tracked: false,
     links: { solar: "https://www.energysage.com/onboarding/start/" },
   },
+
+  // Off-grid and emergency prep brands (Oct 26 2026). Plain links until each program approves us.
+  sungold: { name: "SunGold Power", homeUrl: "https://sungoldpower.com/", tracked: false },
+  goalzero: { name: "Goal Zero", homeUrl: "https://www.goalzero.com/", tracked: false },
+  renogy: { name: "Renogy", homeUrl: "https://www.renogy.com/", tracked: false },
+  signaturesolar: { name: "Signature Solar", homeUrl: "https://signaturesolar.com/", tracked: false },
+  grayl: { name: "Grayl", homeUrl: "https://grayl.com/", tracked: false },
+  msr: { name: "MSR", homeUrl: "https://www.msrgear.com/", tracked: false },
+  lifestraw: { name: "LifeStraw", homeUrl: "https://lifestraw.com/", tracked: false },
+  sawyer: { name: "Sawyer", homeUrl: "https://www.sawyer.com/", tracked: false },
+  katadyn: { name: "Katadyn", homeUrl: "https://www.katadyngroup.com/us/en", tracked: false },
+  survivorfilter: { name: "Survivor Filter", homeUrl: "https://survivorfilter.com/", tracked: false },
+  epic: { name: "Epic Water Filters", homeUrl: "https://www.epicwaterfilters.com/", tracked: false },
+  aquatru: { name: "AquaTru", homeUrl: "https://aquatru.com/", tracked: false },
+  mymedic: { name: "MyMedic", homeUrl: "https://mymedic.com/", tracked: false },
+  amk: { name: "Adventure Medical Kits", homeUrl: "https://www.adventuremedicalkits.com/", tracked: false },
+  valleyfood: { name: "Valley Food Storage", homeUrl: "https://valleyfoodstorage.com/", tracked: false },
+  readywise: { name: "ReadyWise", homeUrl: "https://readywise.com/", tracked: false },
+  mountainhouse: { name: "Mountain House", homeUrl: "https://mountainhouse.com/", tracked: false },
+  midland: { name: "Midland", homeUrl: "https://midlandusa.com/", tracked: false },
 };
 
 export interface ResolvedLink {
