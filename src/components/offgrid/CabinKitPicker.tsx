@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import LocalNote from "@/components/LocalNote";
+import KitPicker from "@/components/offgrid/KitPicker";
 import StationList from "@/components/offgrid/StationList";
 import { pillClass } from "@/components/guide-ui";
 import { useChooseState, useVisitorState } from "@/hooks/useVisitorState";
@@ -17,6 +18,7 @@ import {
   fmtW,
   fmtWh,
   matchStations,
+  peakWatts,
   sizeOffGrid,
   type CabinTier,
   type StationOption,
@@ -38,6 +40,7 @@ export default function CabinKitPicker({ states, stations, fallbackAbbr }: { sta
   const matches = matchStations(stations, size.batteryWh, { panelW: size.panelW });
 
   return (
+    <>
     <div className="rounded-3xl border border-black/10 bg-white shadow-sm overflow-hidden grid lg:grid-cols-2" data-testid="cabin-picker">
       <div className="p-5 sm:p-6 border-b lg:border-b-0 lg:border-r border-black/8 space-y-5">
         <label className="block">
@@ -99,5 +102,11 @@ export default function CabinKitPicker({ states, stations, fallbackAbbr }: { sta
         <p className="text-xs text-muted mt-3">Prices are for the station and add-on batteries only. Panels are extra.</p>
       </div>
     </div>
+    <KitPicker
+      idPrefix="cabin"
+      heading={`Kits you can buy: ${tier.label.toLowerCase()} in ${st.name}`}
+      need={{ batteryWh: size.batteryWh, panelW: size.panelW, runningW: peakWatts(tier.picks).running, whPerDay: size.whPerDay }}
+    />
+    </>
   );
 }

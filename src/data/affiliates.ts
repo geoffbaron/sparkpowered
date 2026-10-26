@@ -39,6 +39,7 @@ export type BrandId =
   | "goalzero"
   | "renogy"
   | "signaturesolar"
+  | "shopsolar"
   | "grayl"
   | "msr"
   | "lifestraw"
@@ -71,10 +72,17 @@ export interface BrandAffiliate {
   deepLink?: string;
   /** Per-product tracked links, keyed by product id from src/data/products.ts. */
   productLinks?: Record<string, string>;
+  /**
+   * Shopify store origin that accepts cart permalinks (/cart/<variant>:<qty>,...).
+   * Set only after checking that a permalink on this origin opens the store's
+   * cart with every item in it.
+   */
+  cartOrigin?: string;
 }
 
 export const AFFILIATES: Record<BrandId, BrandAffiliate> = {
-  ecoflow: { name: "EcoFlow", homeUrl: "https://us.ecoflow.com/", tracked: false },
+  // Cart permalinks checked Oct 26 2026: us.ecoflow.com/cart/... lands on the cart with the items.
+  ecoflow: { name: "EcoFlow", homeUrl: "https://us.ecoflow.com/", tracked: false, cartOrigin: "https://us.ecoflow.com" },
   // Approved Oct 19 2026 on Rakuten Advertising (Anker SOLIX, MID 53552) for publisher
   // 4764556. The deeplink id is our encrypted Rakuten publisher id from the approval email.
   // Program terms on application: 5% base, 3.5% on some SKUs, 30-day cookie.
@@ -88,7 +96,8 @@ export const AFFILIATES: Record<BrandId, BrandAffiliate> = {
     links: { home: "https://click.linksynergy.com/deeplink?id=2P5eyfaQKtI&mid=53552&murl=https%3A%2F%2Fwww.ankersolix.com%2F" },
     deepLink: "https://click.linksynergy.com/deeplink?id=2P5eyfaQKtI&mid=53552&murl={url}",
   },
-  jackery: { name: "Jackery", homeUrl: "https://www.jackery.com/", tracked: false },
+  // Cart permalinks checked Oct 26 2026: www.jackery.com/cart/... lands on the cart with the items.
+  jackery: { name: "Jackery", homeUrl: "https://www.jackery.com/", tracked: false, cartOrigin: "https://www.jackery.com" },
   // Approved Oct 16 2026 on Awin (BLUETTI US, MID 59271) for publisher 3125360.
   bluetti: {
     name: "Bluetti",
@@ -99,6 +108,8 @@ export const AFFILIATES: Record<BrandId, BrandAffiliate> = {
     cookieDays: 30,
     links: { home: "https://www.awin1.com/cread.php?awinmid=59271&awinaffid=3125360&ued=https%3A%2F%2Fwww.bluettipower.com%2F" },
     deepLink: "https://www.awin1.com/cread.php?awinmid=59271&awinaffid=3125360&ued={url}",
+    // Cart permalinks checked Oct 26 2026: www.bluettipower.com/cart/... lands on the cart with the items.
+    cartOrigin: "https://www.bluettipower.com",
   },
   dji: { name: "DJI", homeUrl: "https://store.dji.com/", tracked: false },
   tesla: { name: "Tesla", homeUrl: "https://www.tesla.com/powerwall", tracked: false },
@@ -186,6 +197,9 @@ export const AFFILIATES: Record<BrandId, BrandAffiliate> = {
   goalzero: { name: "Goal Zero", homeUrl: "https://www.goalzero.com/", tracked: false },
   renogy: { name: "Renogy", homeUrl: "https://www.renogy.com/", tracked: false },
   signaturesolar: { name: "Signature Solar", homeUrl: "https://signaturesolar.com/", tracked: false },
+  // Component systems (separate panels, inverter, battery bank) for loads too big for a
+  // plug-and-play kit. Awin application pending (Oct 26 2026): plain link until approved.
+  shopsolar: { name: "Shop Solar Kits", homeUrl: "https://shopsolarkits.com/", tracked: false },
   grayl: { name: "Grayl", homeUrl: "https://grayl.com/", tracked: false },
   msr: { name: "MSR", homeUrl: "https://www.msrgear.com/", tracked: false },
   lifestraw: { name: "LifeStraw", homeUrl: "https://lifestraw.com/", tracked: false },
@@ -232,6 +246,36 @@ export function partnerUrl(
   }
   if (productUrl) return { href: productUrl, tracked: false };
   return { href: categoryLink ?? a.homeUrl, tracked: false };
+}
+
+/** One line of a store cart: a Shopify variant id and how many. */
+export interface CartItem {
+  variantId: number;
+  qty: number;
+}
+
+/**
+ * A link that opens the brand's own store cart with every item already in it
+ * (a Shopify cart permalink). `?storefront=true` lands on the cart page rather
+ * than jumping straight to checkout, so the reader sees the items and prices
+ * first. Repeated variants are merged; zero quantities are dropped. When the
+ * brand is approved, the permalink is wrapped in its deep-link template so the
+ * sale is tracked, exactly as partnerUrl does for product pages.
+ */
+export function cartUrl(brand: BrandId, items: CartItem[]): ResolvedLink {
+  const a = AFFILIATES[brand];
+  if (!a.cartOrigin) throw new Error(`${brand} has no cart permalink origin`);
+  const merged = new Map<number, number>();
+  for (const i of items) {
+    const qty = Math.floor(i.qty);
+    if (!Number.isSafeInteger(i.variantId) || i.variantId <= 0 || qty <= 0) continue;
+    merged.set(i.variantId, (merged.get(i.variantId) ?? 0) + qty);
+  }
+  if (merged.size === 0) throw new Error(`cart for ${brand} has no items`);
+  const lines = [...merged].map(([id, qty]) => `${id}:${qty}`).join(",");
+  const permalink = `${a.cartOrigin}/cart/${lines}?storefront=true`;
+  if (a.tracked && a.deepLink) return { href: a.deepLink.replace("{url}", encodeURIComponent(permalink)), tracked: true };
+  return { href: permalink, tracked: false };
 }
 
 /** EnergySage "compare solar quotes" link (tracked once approved). */

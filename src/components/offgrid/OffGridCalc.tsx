@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import LocalNote from "@/components/LocalNote";
+import KitPicker from "@/components/offgrid/KitPicker";
 import LoadList from "@/components/offgrid/LoadList";
 import { pillClass } from "@/components/guide-ui";
 import { useChooseState, useVisitorState } from "@/hooks/useVisitorState";
@@ -13,6 +14,7 @@ import {
   OFFGRID_START,
   PANEL_WATTS,
   dailyWh,
+  peakWatts,
   fmtKwh,
   fmtW,
   fmtWh,
@@ -55,8 +57,11 @@ export default function OffGridCalc({ states, fixedAbbr, fallbackAbbr }: { state
 
   const whPerDay = mode === "pick" ? dailyWh(picks) : entered;
   const size = sizeOffGrid({ whPerDay, perKwDay: st.dec, days, usable: BATTERY_TYPES[battery].usable });
+  // Running watts are only known when the reader picked appliances.
+  const runningW = mode === "pick" ? peakWatts(picks).running : 0;
 
   return (
+    <>
     <div className="rounded-3xl border border-black/10 bg-white shadow-sm overflow-hidden grid lg:grid-cols-[3fr_2fr]" data-testid="offgrid-calc">
       <div className="p-5 sm:p-6 border-b lg:border-b-0 lg:border-r border-black/8 space-y-5">
         <label className="block">
@@ -155,5 +160,11 @@ export default function OffGridCalc({ states, fixedAbbr, fallbackAbbr }: { state
         )}
       </div>
     </div>
+    <KitPicker
+      idPrefix="og"
+      heading={`Kits you can buy for this${fixedAbbr ? ` in ${st.name}` : ""}`}
+      need={{ batteryWh: size.batteryWh, panelW: size.panelW, runningW, whPerDay: size.whPerDay, usable: BATTERY_TYPES[battery].usable }}
+    />
+    </>
   );
 }

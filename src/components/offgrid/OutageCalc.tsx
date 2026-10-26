@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import LocalNote from "@/components/LocalNote";
 import LoadList from "@/components/offgrid/LoadList";
+import KitPicker from "@/components/offgrid/KitPicker";
 import StationList from "@/components/offgrid/StationList";
 import { pillClass } from "@/components/guide-ui";
 import { useChooseState, useVisitorState } from "@/hooks/useVisitorState";
@@ -49,6 +50,7 @@ export default function OutageCalc({ states, stations, fallbackAbbr }: { states:
   const fullPanels = st.dec > 0 ? whPerDay / st.dec : 0;
 
   return (
+    <>
     <div className="rounded-3xl border border-black/10 bg-white shadow-sm overflow-hidden grid lg:grid-cols-[3fr_2fr]" data-testid="outage-calc">
       <div className="p-5 sm:p-6 border-b lg:border-b-0 lg:border-r border-black/8 space-y-5">
         <fieldset>
@@ -118,5 +120,11 @@ export default function OutageCalc({ states, stations, fallbackAbbr }: { states:
         </p>
       </div>
     </div>
+    <KitPicker
+      idPrefix="outage"
+      heading={`Kits you can buy for a ${days}-day outage`}
+      need={{ batteryWh: needWh, panelW: 0, runningW: peak.running, whPerDay }}
+    />
+    </>
   );
 }

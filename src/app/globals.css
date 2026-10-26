@@ -178,3 +178,20 @@ body {
   .btn:hover { transform: none; }
   .card-glow:hover { transform: none; }
 }
+
+/* "Print" on a kit picker: print only that picker (selected kit, item list, cart link). */
+@media print {
+  body.print-kits * {
+    visibility: hidden;
+  }
+  body.print-kits [data-kit-print],
+  body.print-kits [data-kit-print] * {
+    visibility: visible;
+  }
+  body.print-kits [data-kit-print] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+  }
+}
