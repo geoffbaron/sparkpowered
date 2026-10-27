@@ -18,7 +18,7 @@ export const SOLAR_TO_BATTERY_VIDEO: HowToVideoInfo = {
   description:
     "Solar panels to a battery through a charge controller: connect the battery side first, let the controller start up, then connect the panels last, with a fuse on the battery cable and another between the panels and the controller.",
   durationSec: 43,
-  uploadDate: "2026-10-26",
+  uploadDate: "2026-10-26T19:00:00+00:00",
 };
 
 export function videoLd(v: HowToVideoInfo) {
