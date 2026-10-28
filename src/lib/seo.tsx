@@ -91,6 +91,9 @@ export const CONTENT_UPDATED = "2026-10-15";
 /** Content date of the /questions hubs (src/data/questions.ts). */
 export const QUESTIONS_UPDATED = "2026-10-25";
 
+/** The same date as a full timestamp with timezone, for JSON-LD date fields. */
+export const QUESTIONS_UPDATED_AT = `${QUESTIONS_UPDATED}T12:00:00+00:00`;
+
 export const ROUTES: { path: string; lastModified: string }[] = [
   { path: "/", lastModified: CONTENT_UPDATED },
   { path: "/go-electric", lastModified: CONTENT_UPDATED },

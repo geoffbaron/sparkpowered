@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs, PageIntro } from "@/components/content";
-import { QUESTION_COUNT, TOPICS } from "@/data/questions";
-import { JsonLd, QUESTIONS_UPDATED, pageMetadata, url } from "@/lib/seo";
+import { QUESTION_COUNT, TOPICS, questionPath } from "@/data/questions";
+import { JsonLd, QUESTIONS_UPDATED_AT, pageMetadata, url } from "@/lib/seo";
 
 const PATH = "/questions";
 const TITLE = "Going Electric at Home: Questions Answered With Sources";
@@ -22,7 +22,7 @@ export default function QuestionsIndex() {
           name: TITLE,
           description: DESCRIPTION,
           url: url(PATH),
-          dateModified: QUESTIONS_UPDATED,
+          dateModified: QUESTIONS_UPDATED_AT,
           publisher: { "@id": url("/#organization") },
           isPartOf: { "@id": url("/#website") },
           hasPart: TOPICS.map((t) => ({ "@type": "WebPage", name: t.title, url: url(t.path) })),
@@ -52,7 +52,7 @@ export default function QuestionsIndex() {
             <ul className="space-y-1.5 text-sm">
               {t.questions.map((q) => (
                 <li key={q.id}>
-                  <Link href={`${t.path}#${q.id}`} className="underline underline-offset-2 hover:text-spark-orange">
+                  <Link href={questionPath(t, q)} className="underline underline-offset-2 hover:text-spark-orange">
                     {q.q}
                   </Link>
                 </li>

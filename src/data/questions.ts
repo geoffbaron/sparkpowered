@@ -850,3 +850,59 @@ export function topicBySlug(slug: string): Topic {
 }
 
 export const QUESTION_COUNT = TOPICS.reduce((n, t) => n + t.questions.length, 0);
+
+// ---------------------------------------------------------------- single-question pages
+
+/** Each answer also has its own page, at the hub path plus the anchor id. */
+export function questionPath(t: Topic, q: Question): string {
+  return `${t.path}/${q.id}`;
+}
+
+/** Every question with its hub, in hub order. */
+export const ALL_QUESTIONS: { topic: Topic; question: Question }[] = TOPICS.flatMap((topic) =>
+  topic.questions.map((question) => ({ topic, question })),
+);
+
+/** The next few questions in the same hub (wrapping round), for "related questions". */
+export function relatedQuestions(t: Topic, q: Question, n = 4): Question[] {
+  const i = t.questions.findIndex((x) => x.id === q.id);
+  const out: Question[] = [];
+  for (let k = 1; k < t.questions.length && out.length < n; k++) out.push(t.questions[(i + k) % t.questions.length]);
+  return out;
+}
+
+/**
+ * The existing guide page that fits a question best: the first of its own tool
+ * links that is one of the hub's guides, else its first on-site tool link, else
+ * the hub's first guide.
+ */
+export function guideFor(t: Topic, q: Question): { href: string; label: string; desc?: string } {
+  const own = (q.tools ?? []).filter((x) => x.href.startsWith("/"));
+  for (const x of own) {
+    const g = t.related.find((r) => r.href === x.href);
+    if (g) return g;
+  }
+  return own[0] ?? t.related[0];
+}
+
+/**
+ * Meta description from the short answer: as many whole leading sentences as
+ * fit in 155 characters; if that is too thin (a one-word "No." opener, say),
+ * the short answer cut at a word boundary instead.
+ */
+export function questionDescription(q: Question, max = 155): string {
+  if (q.a.length <= max) return q.a;
+  const sentences = q.a.split(/(?<=[.!?])\s+(?=[A-Z0-9])/);
+  let out = "";
+  for (const s of sentences) {
+    const next = out ? `${out} ${s}` : s;
+    if (next.length > max) break;
+    out = next;
+  }
+  if (out.length >= 100) return out;
+  let cut = q.a.slice(0, max);
+  cut = cut.slice(0, cut.lastIndexOf(" "));
+  // Never end inside an unclosed bracket, e.g. "(EIA…".
+  if (cut.lastIndexOf("(") > cut.lastIndexOf(")")) cut = cut.slice(0, cut.lastIndexOf("("));
+  return `${cut.replace(/[\s,;:(\u2013\u2014-]+$/, "")}\u2026`;
+}

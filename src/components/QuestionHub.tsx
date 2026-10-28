@@ -3,11 +3,11 @@ import { AffiliateDisclosure, PartnerLink } from "@/components/affiliate";
 import { Breadcrumbs, Callout, Disclaimer, RelatedLinks } from "@/components/content";
 import { QuickAnswer } from "@/components/guide-ui";
 import { RedodoDeal } from "@/components/RedodoDeal";
-import { TOPICS, type Block, type Topic } from "@/data/questions";
+import { TOPICS, questionPath, type Block, type Question, type Topic } from "@/data/questions";
 import { formatDate } from "@/lib/energy";
-import { JsonLd, QUESTIONS_UPDATED, url } from "@/lib/seo";
+import { JsonLd, QUESTIONS_UPDATED, QUESTIONS_UPDATED_AT, url } from "@/lib/seo";
 
-function DetailBlock({ b }: { b: Block }) {
+export function DetailBlock({ b }: { b: Block }) {
   if ("p" in b) return <p>{b.p}</p>;
   if ("ul" in b)
     return (
@@ -52,7 +52,7 @@ function DetailBlock({ b }: { b: Block }) {
   );
 }
 
-function ToolLink({ href, label }: { href: string; label: string }) {
+export function ToolLink({ href, label }: { href: string; label: string }) {
   if (href.startsWith("/"))
     return (
       <Link href={href} className="underline underline-offset-2 text-spark-orange hover:text-spark-amber">
@@ -64,6 +64,62 @@ function ToolLink({ href, label }: { href: string; label: string }) {
       {label}
       <span className="sr-only"> (opens in a new tab)</span>
     </a>
+  );
+}
+
+/**
+ * Everything under a question's heading: short answer, detail, partner picks,
+ * tools and sources. Shared by the hub and the single-question page so the two
+ * always show the same fact-checked text, links and rel attributes.
+ */
+export function QuestionAnswer({ q, redodo }: { q: Question; redodo: boolean }) {
+  return (
+    <>
+      <QuickAnswer>
+        <p>{q.a}</p>
+      </QuickAnswer>
+      <div className="prose-sp text-stone-700 leading-relaxed space-y-4 mt-5">
+        {q.detail.map((b, i) => (
+          <DetailBlock key={i} b={b} />
+        ))}
+      </div>
+      {redodo && <RedodoDeal className="mt-5" />}
+      {q.picks && q.picks.length > 0 && (
+        <ul className="mt-5 grid sm:grid-cols-2 gap-3">
+          {q.picks.map((p) => (
+            <li key={p.label} className="rounded-xl border border-black/8 bg-surface p-4">
+              <PartnerLink brand={p.brand} productId={p.productId} productUrl={p.url} className="font-semibold underline underline-offset-2 text-spark-orange hover:text-spark-amber">
+                {p.label}
+              </PartnerLink>
+              <span className="block text-sm text-muted mt-1">{p.note}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+      {q.tools && q.tools.length > 0 && (
+        <p className="mt-5 text-sm">
+          <strong>Run your own numbers:</strong>{" "}
+          {q.tools.map((t, i) => (
+            <span key={t.href}>
+              {i > 0 && " · "}
+              <ToolLink href={t.href} label={t.label} />
+            </span>
+          ))}
+        </p>
+      )}
+      <div className="mt-4 text-sm">
+        <p className="font-semibold mb-1">Sources</p>
+        <ul className="list-disc pl-5 space-y-1 text-stone-600">
+          {q.sources.map((s) => (
+            <li key={s.url}>
+              <a href={s.url} rel="noopener" target="_blank" className="underline underline-offset-2 hover:text-spark-orange">
+                {s.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </>
   );
 }
 
@@ -81,7 +137,7 @@ export default function QuestionHub({ topic }: { topic: Topic }) {
           "@id": `${url(topic.path)}#faq`,
           name: topic.title,
           url: url(topic.path),
-          dateModified: QUESTIONS_UPDATED,
+          dateModified: QUESTIONS_UPDATED_AT,
           inLanguage: "en-US",
           publisher: { "@id": url("/#organization") },
           isPartOf: { "@id": url("/#website") },
@@ -135,52 +191,11 @@ export default function QuestionHub({ topic }: { topic: Topic }) {
       {topic.questions.map((q) => (
         <section key={q.id} aria-labelledby={q.id} className="mt-12">
           <h2 id={q.id} className="text-2xl font-bold mb-4 scroll-mt-24">
-            {q.q}
+            <Link href={questionPath(topic, q)} className="hover:text-spark-orange">
+              {q.q}
+            </Link>
           </h2>
-          <QuickAnswer>
-            <p>{q.a}</p>
-          </QuickAnswer>
-          <div className="prose-sp text-stone-700 leading-relaxed space-y-4 mt-5">
-            {q.detail.map((b, i) => (
-              <DetailBlock key={i} b={b} />
-            ))}
-          </div>
-          {q.id === redodoQ && <RedodoDeal className="mt-5" />}
-          {q.picks && q.picks.length > 0 && (
-            <ul className="mt-5 grid sm:grid-cols-2 gap-3">
-              {q.picks.map((p) => (
-                <li key={p.label} className="rounded-xl border border-black/8 bg-surface p-4">
-                  <PartnerLink brand={p.brand} productId={p.productId} productUrl={p.url} className="font-semibold underline underline-offset-2 text-spark-orange hover:text-spark-amber">
-                    {p.label}
-                  </PartnerLink>
-                  <span className="block text-sm text-muted mt-1">{p.note}</span>
-                </li>
-              ))}
-            </ul>
-          )}
-          {q.tools && q.tools.length > 0 && (
-            <p className="mt-5 text-sm">
-              <strong>Run your own numbers:</strong>{" "}
-              {q.tools.map((t, i) => (
-                <span key={t.href}>
-                  {i > 0 && " · "}
-                  <ToolLink href={t.href} label={t.label} />
-                </span>
-              ))}
-            </p>
-          )}
-          <div className="mt-4 text-sm">
-            <p className="font-semibold mb-1">Sources</p>
-            <ul className="list-disc pl-5 space-y-1 text-stone-600">
-              {q.sources.map((s) => (
-                <li key={s.url}>
-                  <a href={s.url} rel="noopener" target="_blank" className="underline underline-offset-2 hover:text-spark-orange">
-                    {s.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <QuestionAnswer q={q} redodo={q.id === redodoQ} />
         </section>
       ))}
 

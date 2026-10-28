@@ -34,12 +34,64 @@ Audience: US homeowners and drivers.
 
 - [Energy data by state](https://sparkpowered.com/states): Index of 51 state pages (50 states + DC), e.g. https://sparkpowered.com/states/texas. Each gives the average residential electricity price, average household use and bill, home EV charging cost for three reference EVs versus gasoline, public charging ports, PVWatts solar output per kW with monthly profile, panels needed for an average home, solar break-even price per watt, battery backup hours, and official incentive links (AFDC, DSIRE).
 - [2026 incentives](https://sparkpowered.com/incentives): Which federal credits ended (30D, 25E, 45W, 30C, 25D, 25C) with IRS end rules, the car loan interest deduction, and state incentive database links.
-- [Questions answered](https://sparkpowered.com/questions): 34 frequently searched questions with sourced short answers (FAQPage markup), in five hubs: [home solar](https://sparkpowered.com/questions/home-solar) (2026 payback by state without the 25D credit, outages, winter output, panel degradation, net metering, panels to charge an EV, plug-in solar laws), [home batteries and backup](https://sparkpowered.com/questions/home-batteries-backup) (outage hours, warranties, fridge and space-heater run times, generators vs power stations, backfeeding), [EV charging at home](https://sparkpowered.com/questions/ev-charging) (monthly cost, vs gas, Level 1 vs 2, breaker sizing and the 125% rule, NEMA 14-50 vs hardwired, dryer outlets, permits), [electric boating](https://sparkpowered.com/questions/electric-boating) (trolling motor run time and battery size, lithium charging, lithium vs AGM, electric outboard range) and [costs, credits and heat pumps](https://sparkpowered.com/questions/costs-and-incentives) (2026 federal credit end dates, heat pump vs gas running cost, cold-climate heat pumps, electricity prices by state, rebate databases). Sources read 2026-10-25.
+- [Questions answered](https://sparkpowered.com/questions): 34 frequently searched questions with sourced short answers (FAQPage markup), in five hubs: [home solar](https://sparkpowered.com/questions/home-solar) (2026 payback by state without the 25D credit, outages, winter output, panel degradation, net metering, panels to charge an EV, plug-in solar laws), [home batteries and backup](https://sparkpowered.com/questions/home-batteries-backup) (outage hours, warranties, fridge and space-heater run times, generators vs power stations, backfeeding), [EV charging at home](https://sparkpowered.com/questions/ev-charging) (monthly cost, vs gas, Level 1 vs 2, breaker sizing and the 125% rule, NEMA 14-50 vs hardwired, dryer outlets, permits), [electric boating](https://sparkpowered.com/questions/electric-boating) (trolling motor run time and battery size, lithium charging, lithium vs AGM, electric outboard range) and [costs, credits and heat pumps](https://sparkpowered.com/questions/costs-and-incentives) (2026 federal credit end dates, heat pump vs gas running cost, cold-climate heat pumps, electricity prices by state, rebate databases). Sources read 2026-10-25. Each answer also has its own page, listed in the next section.
 - [Go electric myths, answered](https://sparkpowered.com/myths): Sourced answers to the doubts people have about EVs, solar, batteries, heat pumps and induction: cost, battery life, fires, chargers, the grid, cold weather, cloudy climates, roofs and more.
 - [Go Electric savings calculator](https://sparkpowered.com/go-electric): Yearly savings for an EV, heat pump, heat pump water heater, induction, rooftop and plug-in solar, by state, from EIA and EPA data.
 - [Methodology](https://sparkpowered.com/methodology): Formulas, sources, dates and limitations.
 - [About and editorial standards](https://sparkpowered.com/about)
 
+## Questions answered, one page per answer
+
+Each answer below has its own page: the question, the short answer, the detail and the sources it was read from (FAQPage markup). The same answers appear together on each hub page.
+
+### [Home solar](https://sparkpowered.com/questions/home-solar)
+
+- [Is solar worth it in 2026 now that the tax credit is gone?](https://sparkpowered.com/questions/home-solar/is-solar-worth-it-2026)
+- [Do solar panels work during a power outage?](https://sparkpowered.com/questions/home-solar/solar-power-outage)
+- [Do I need a battery with solar panels?](https://sparkpowered.com/questions/home-solar/battery-with-solar)
+- [Do solar panels work on cloudy days and in winter?](https://sparkpowered.com/questions/home-solar/cloudy-days-winter)
+- [How long do solar panels last?](https://sparkpowered.com/questions/home-solar/how-long-solar-panels-last)
+- [What is net metering?](https://sparkpowered.com/questions/home-solar/what-is-net-metering)
+- [How many solar panels does it take to charge an EV?](https://sparkpowered.com/questions/home-solar/solar-panels-to-charge-ev)
+- [Is plug-in balcony solar legal in my state?](https://sparkpowered.com/questions/home-solar/plug-in-solar-legal)
+
+### [Home batteries & backup](https://sparkpowered.com/questions/home-batteries-backup)
+
+- [Is a home battery worth it without solar?](https://sparkpowered.com/questions/home-batteries-backup/home-battery-without-solar)
+- [How long will a home battery power my house in an outage?](https://sparkpowered.com/questions/home-batteries-backup/home-battery-outage-hours)
+- [How many years does a home battery last?](https://sparkpowered.com/questions/home-batteries-backup/home-battery-lifespan)
+- [How long will a portable power station run a refrigerator?](https://sparkpowered.com/questions/home-batteries-backup/power-station-refrigerator)
+- [Should I get a power station or a gas generator for outages?](https://sparkpowered.com/questions/home-batteries-backup/power-station-vs-generator)
+- [Can I plug a generator or power station into a wall outlet to power my house?](https://sparkpowered.com/questions/home-batteries-backup/plug-into-wall-outlet)
+- [Can a power station run a space heater?](https://sparkpowered.com/questions/home-batteries-backup/power-station-space-heater)
+
+### [EV charging at home](https://sparkpowered.com/questions/ev-charging)
+
+- [How much does it cost to charge an EV at home?](https://sparkpowered.com/questions/ev-charging/cost-to-charge-ev-at-home)
+- [Is charging an EV at home cheaper than buying gas?](https://sparkpowered.com/questions/ev-charging/home-charging-vs-gas)
+- [Do I need a Level 2 charger, or is a regular outlet enough?](https://sparkpowered.com/questions/ev-charging/level-1-or-level-2)
+- [What size breaker and how many amps do I need for a home EV charger?](https://sparkpowered.com/questions/ev-charging/breaker-size-ev-charger)
+- [Should I use a NEMA 14-50 outlet or hardwire my EV charger?](https://sparkpowered.com/questions/ev-charging/nema-14-50-or-hardwired)
+- [Can I charge my EV from my dryer outlet?](https://sparkpowered.com/questions/ev-charging/dryer-outlet-ev)
+- [Can I install a home EV charger myself, and do I need a permit?](https://sparkpowered.com/questions/ev-charging/install-ev-charger-yourself)
+
+### [Electric boating](https://sparkpowered.com/questions/electric-boating)
+
+- [How long will a trolling motor battery last?](https://sparkpowered.com/questions/electric-boating/trolling-motor-battery-life)
+- [What size battery do I need for my trolling motor?](https://sparkpowered.com/questions/electric-boating/trolling-motor-battery-size)
+- [Can I charge a lithium trolling battery with a regular charger?](https://sparkpowered.com/questions/electric-boating/charge-lithium-regular-charger)
+- [Is lithium worth it over AGM for a trolling motor?](https://sparkpowered.com/questions/electric-boating/lithium-vs-agm-trolling)
+- [Are electric outboards worth it, and how far can they go?](https://sparkpowered.com/questions/electric-boating/electric-outboard-range)
+
+### [Costs, credits & heat pumps](https://sparkpowered.com/questions/costs-and-incentives)
+
+- [Is there still a federal tax credit for solar panels or a home battery?](https://sparkpowered.com/questions/costs-and-incentives/solar-battery-tax-credit-2026)
+- [Is there a federal tax credit for an EV or a home charger in 2026?](https://sparkpowered.com/questions/costs-and-incentives/ev-charger-tax-credit-2026)
+- [Does a heat pump save money compared with a gas furnace?](https://sparkpowered.com/questions/costs-and-incentives/heat-pump-vs-gas-cost)
+- [Do heat pumps work in cold weather?](https://sparkpowered.com/questions/costs-and-incentives/heat-pumps-cold-weather)
+- [How much does electricity cost per kWh in my state?](https://sparkpowered.com/questions/costs-and-incentives/electricity-price-by-state)
+- [Why is my electric bill so high?](https://sparkpowered.com/questions/costs-and-incentives/why-electric-bill-high)
+- [Where can I find state rebates for solar, EVs and heat pumps?](https://sparkpowered.com/questions/costs-and-incentives/state-rebates)
 ## Off grid and emergency preparedness (government sources; some affiliate links)
 
 - [Off-grid solar calculator](https://sparkpowered.com/off-grid-solar-calculator): Panel watts and battery kWh for a home or cabin from daily loads, sized on each state's December PVWatts output (the worst month), with days of autonomy; 50-state + DC table and a page per state, e.g. https://sparkpowered.com/off-grid-solar-calculator/alaska.

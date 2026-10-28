@@ -39,3 +39,30 @@ test("short answers are 2 to 5 sentences", () => {
     assert.ok(n >= 2 && n <= 5, `${t.slug}#${q.id}: ${n} sentences`);
   }
 });
+
+test("every question has its own page in the sitemap, with a short description and a guide link", async () => {
+  const { ALL_QUESTIONS, questionPath, questionDescription, guideFor } = await import("../src/data/questions");
+  const { default: sitemap } = await import("../src/app/sitemap");
+  const urls = new Set(sitemap().map((e) => new URL(e.url).pathname));
+  const paths = new Set<string>();
+  for (const { topic, question } of ALL_QUESTIONS) {
+    const p = questionPath(topic, question);
+    assert.ok(!paths.has(p), `duplicate page ${p}`);
+    paths.add(p);
+    assert.ok(urls.has(p), `${p} missing from sitemap`);
+    const d = questionDescription(question);
+    assert.ok(d.length > 40 && d.length <= 155, `${p}: description is ${d.length} chars`);
+    assert.match(guideFor(topic, question).href, /^\//, `${p}: guide link is not on site`);
+  }
+  assert.equal(paths.size, all.length);
+});
+
+test("llms.txt lists every question page", async () => {
+  const { readFileSync } = await import("node:fs");
+  const { ALL_QUESTIONS, questionPath } = await import("../src/data/questions");
+  const llms = readFileSync("public/llms.txt", "utf8");
+  for (const { topic, question } of ALL_QUESTIONS) {
+    const p = `https://sparkpowered.com${questionPath(topic, question)})`;
+    assert.ok(llms.includes(p), `${p} missing from llms.txt`);
+  }
+});
