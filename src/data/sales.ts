@@ -63,4 +63,37 @@ export function isSaleLive(sale: Pick<BrandSale, "startsAt" | "endsAt">, now: nu
 /** Same check against the current clock; call only at request time (after connection()). */
 export const isSaleLiveNow = (sale: Pick<BrandSale, "startsAt" | "endsAt">) => isSaleLive(sale, Date.now());
 
+/** The current clock in milliseconds; call only at request time (after connection()). */
+export const requestTimeMs = () => Date.now();
+
 export const saleSavingUsd = (i: SaleItem) => Math.round((i.regularPriceUsd - i.salePriceUsd) * 100) / 100;
+
+/**
+ * A brand discount code: no prices (they change), only the code, the last day and
+ * a tracked link to the brand's home page.
+ */
+export interface BrandCode {
+  id: string;
+  brand: "redodo";
+  code: string;
+  /** First moment shown, ISO with offset. */
+  startsAt: string;
+  /** First moment NOT shown, ISO with offset (end of the last day, US Pacific). */
+  endsAt: string;
+  /** Last day as readers see it. */
+  endsLabel: string;
+}
+
+// From Redodo's Awin publisher email (MID 97969): extra 10% off with code AW10 on
+// redodopower.com through Nov 1. Approved for our pages on Oct 28 2026.
+export const REDODO_AW10_2026: BrandCode = {
+  id: "redodo-aw10-2026",
+  brand: "redodo",
+  code: "AW10",
+  startsAt: "2026-10-28T00:00:00-07:00",
+  endsAt: "2026-11-02T00:00:00-08:00",
+  endsLabel: "Nov 1",
+};
+
+/** The line readers see, kept in one text node so it reads the same in the HTML. */
+export const brandCodeLine = (c: BrandCode) => `Redodo sale: extra 10% off with code ${c.code}, through ${c.endsLabel}.`;

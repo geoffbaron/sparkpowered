@@ -11,6 +11,7 @@ import { USABLE_FRACTION } from "@/lib/everyday";
 import { money, productById } from "@/lib/products";
 import { chargeCostUsd } from "@/lib/boating";
 import { pageMetadata } from "@/lib/seo";
+import { RedodoDeal } from "@/components/RedodoDeal";
 
 const PATH = "/charge-lithium-battery-on-boat";
 const TITLE = "How to Charge a Lithium Battery on a Boat: Chargers, Alternator and Solar";
@@ -90,6 +91,8 @@ export default function ChargeOnBoatPage() {
             which also takes a solar panel. Never wire a lithium battery straight to the alternator.
           </p>
         </QuickAnswer>
+
+        <RedodoDeal className="mt-4" />
 
         <section aria-label="Charging at a glance" className="grid sm:grid-cols-3 gap-3 mt-8">
           <BigStat tone="leaf" value={money(Math.round(fullCharge * 100) / 100)} label="To fill a 12V 100Ah lithium" note="At 18.31¢ a kWh, the US average" />

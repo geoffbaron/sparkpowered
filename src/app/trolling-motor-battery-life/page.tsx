@@ -20,6 +20,7 @@ import {
   runtimeFor,
 } from "@/lib/boating";
 import { JsonLd, pageMetadata, url } from "@/lib/seo";
+import { RedodoDeal } from "@/components/RedodoDeal";
 
 const PATH = "/trolling-motor-battery-life";
 const TITLE = "How Long Will a Trolling Motor Battery Last? Runtime Calculator";
@@ -112,6 +113,7 @@ export default function TrollingRuntimePage() {
         </QuickAnswer>
 
         <RedodoSaleCallout className="mt-4" />
+        <RedodoDeal className="mt-3" />
 
         <section aria-label="Lithium vs AGM on the water" className="grid sm:grid-cols-3 gap-3 mt-8">
           <BigStat tone="leaf" value="2x" label="The hours of a same-size AGM" note="Lithium runs to empty; AGM should stop at half" />

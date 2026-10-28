@@ -19,6 +19,7 @@ import { money } from "@/lib/products";
 import { ELECTRIC_HOUR_USD, GAS_HOUR_USD, chargeCostUsd, seasonFuel } from "@/lib/boating";
 import { JsonLd, pageMetadata } from "@/lib/seo";
 import { productList, reviewedProduct } from "@/lib/structured-data";
+import { RedodoDeal } from "@/components/RedodoDeal";
 
 const PATH = "/electric-outboard-motor";
 const TITLE = "Electric Outboard Motors (2026): Prices, Range and Cost vs Gas";
@@ -222,6 +223,7 @@ export default function ElectricOutboardPage() {
             {redodo48.energyWh.toLocaleString("en-US")} Wh) is a solar and home battery, so check your motor maker approves third-party batteries
             first; most portable outboards only take their own.
           </p>
+          <RedodoDeal className="mt-4 max-w-3xl" />
         </Section>
 
         <Section title="Myths, answered" id="myths">

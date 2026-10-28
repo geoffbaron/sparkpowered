@@ -10,6 +10,7 @@ import { formatDate } from "@/lib/energy";
 import { money } from "@/lib/products";
 import { leadAcidUsableWh, lifetimeCost, lifetimeKwh } from "@/lib/rv-battery";
 import { pageMetadata } from "@/lib/seo";
+import { RedodoDeal } from "@/components/RedodoDeal";
 
 const PATH = "/lithium-vs-agm-battery";
 const TITLE = "100Ah Lithium vs AGM: Which Costs Less per Year? (2026 Prices)";
@@ -98,6 +99,8 @@ export default function LithiumVsAgmPage() {
             {money(li.priceUsd - la.priceUsd)} cheaper up front and charges in the cold, if half of its 100Ah is enough for you.
           </p>
         </QuickAnswer>
+
+        <RedodoDeal className="mt-4" />
 
         <section aria-label="Key numbers" className="grid sm:grid-cols-3 gap-3 mt-8">
           <BigStat tone="leaf" value="2x" label="The power you can use" note={`${li.energyWh.toLocaleString("en-US")} Wh vs ${laUsable} Wh`} />

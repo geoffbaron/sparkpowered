@@ -2,6 +2,7 @@ import Link from "next/link";
 import { AffiliateDisclosure, PartnerLink } from "@/components/affiliate";
 import { Breadcrumbs, Callout, Disclaimer, RelatedLinks } from "@/components/content";
 import { QuickAnswer } from "@/components/guide-ui";
+import { RedodoDeal } from "@/components/RedodoDeal";
 import { TOPICS, type Block, type Topic } from "@/data/questions";
 import { formatDate } from "@/lib/energy";
 import { JsonLd, QUESTIONS_UPDATED, url } from "@/lib/seo";
@@ -68,6 +69,8 @@ function ToolLink({ href, label }: { href: string; label: string }) {
 
 export default function QuestionHub({ topic }: { topic: Topic }) {
   const hasPicks = topic.questions.some((q) => q.picks?.length);
+  // The Redodo code note goes with the first answer that picks a Redodo product.
+  const redodoQ = topic.questions.find((q) => q.picks?.some((p) => p.brand === "redodo"))?.id;
   const others = TOPICS.filter((t) => t.slug !== topic.slug);
   return (
     <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -142,6 +145,7 @@ export default function QuestionHub({ topic }: { topic: Topic }) {
               <DetailBlock key={i} b={b} />
             ))}
           </div>
+          {q.id === redodoQ && <RedodoDeal className="mt-5" />}
           {q.picks && q.picks.length > 0 && (
             <ul className="mt-5 grid sm:grid-cols-2 gap-3">
               {q.picks.map((p) => (

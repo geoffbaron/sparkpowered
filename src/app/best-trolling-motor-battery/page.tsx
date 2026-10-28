@@ -12,6 +12,7 @@ import { money } from "@/lib/products";
 import { lifetimeCost } from "@/lib/rv-battery";
 import { JsonLd, pageMetadata } from "@/lib/seo";
 import { batteryProduct, productList } from "@/lib/structured-data";
+import { RedodoDeal } from "@/components/RedodoDeal";
 
 const PATH = "/best-trolling-motor-battery";
 const TITLE = "Best Trolling Motor Battery (2026): Lithium That Lasts All Day";
@@ -121,6 +122,7 @@ export default function TrollingPage() {
         </QuickAnswer>
 
         <RedodoSaleCallout className="mt-4" />
+        <RedodoDeal className="mt-3" />
 
         <section aria-label="What switching saves" className="grid sm:grid-cols-3 gap-3 mt-8">
           <BigStat tone="leaf" value={`${Math.round(agmPairLb - b24.weightLb)} lb`} label="Lighter on a 24 V boat" note={`${b24.weightLb} lb vs two AGMs at ${agmPairLb} lb`} />

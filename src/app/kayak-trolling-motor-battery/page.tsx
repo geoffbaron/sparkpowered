@@ -11,6 +11,7 @@ import { money } from "@/lib/products";
 import { MINN_KOTA_MANUAL, NEWPORT_RUNTIME_GUIDE, hoursLabel, motorById, runtimeHours } from "@/lib/boating";
 import { JsonLd, pageMetadata } from "@/lib/seo";
 import { batteryProduct, productList, reviewedProduct } from "@/lib/structured-data";
+import { RedodoDeal } from "@/components/RedodoDeal";
 
 const PATH = "/kayak-trolling-motor-battery";
 const TITLE = "Best Kayak Trolling Motor Battery (2026): Light Lithium for All-Day Fishing";
@@ -116,6 +117,8 @@ export default function KayakBatteryPage() {
             {mini.weightLb} lb), twice the hours in a case small enough for a tank well.
           </p>
         </QuickAnswer>
+
+        <RedodoDeal className="mt-4" />
 
         <section aria-label="What lithium changes" className="grid sm:grid-cols-3 gap-3 mt-8">
           <BigStat tone="leaf" value={`${Math.round(LEAD_ACID_REF.weightLb - (k50.weightLb ?? 0))} lb`} label="Lighter than a 100Ah AGM" note={`Same usable power: ${k50.weightLb} lb vs ${LEAD_ACID_REF.weightLb} lb`} />

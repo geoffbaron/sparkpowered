@@ -21,6 +21,7 @@ import {
 } from "@/lib/boating";
 import { TROLLING_CHOICE } from "@/lib/trolling";
 import { pageMetadata } from "@/lib/seo";
+import { RedodoDeal } from "@/components/RedodoDeal";
 
 const PATH = "/24v-vs-36v-trolling-motor";
 const TITLE = "24V vs 36V Trolling Motor: Run Time, Cost and Which to Buy";
@@ -113,6 +114,7 @@ export default function VoltageComparePage() {
         </QuickAnswer>
 
         <RedodoSaleCallout className="mt-4" />
+        <RedodoDeal className="mt-3" />
 
         <section aria-label="24V vs 36V at a glance" className="grid sm:grid-cols-3 gap-3 mt-8">
           <BigStat value={`+${m112.thrustLb - m80.thrustLb} lb`} label="More thrust at 36 V" note={`${m112.thrustLb} lb vs ${m80.thrustLb} lb (Minn Kota)`} />

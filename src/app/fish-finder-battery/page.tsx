@@ -11,6 +11,7 @@ import { money, productById } from "@/lib/products";
 import { ELECTRONICS, electronicsById, electronicsHours, hoursLabel } from "@/lib/boating";
 import { JsonLd, pageMetadata } from "@/lib/seo";
 import { batteryProduct, productList } from "@/lib/structured-data";
+import { RedodoDeal } from "@/components/RedodoDeal";
 
 const PATH = "/fish-finder-battery";
 const TITLE = "Best Fish Finder Battery (2026): What Size, and How Long It Lasts";
@@ -105,6 +106,8 @@ export default function FishFinderBatteryPage() {
             <PartnerLink brand="redodo" productId={k50.id} productUrl={k50.url}>Redodo 12V 50Ah</PartnerLink> ({money(k50.priceUsd)}).
           </p>
         </QuickAnswer>
+
+        <RedodoDeal className="mt-4" />
 
         <section aria-label="Fish finder battery at a glance" className="grid sm:grid-cols-3 gap-3 mt-8">
           <BigStat tone="leaf" value={hoursLabel(electronicsHours(DAKOTA_10AH.energyWh, striker.amps)).replace("about ", "")} label="A 1 A fish finder on 10Ah" note="Garmin STRIKER rated current" />

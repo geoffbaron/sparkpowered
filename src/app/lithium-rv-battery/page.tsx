@@ -11,6 +11,7 @@ import { leadAcidUsableWh, lifetimeCost, lifetimeKwh } from "@/lib/rv-battery";
 import { HowToVideo, SOLAR_TO_BATTERY_VIDEO } from "@/components/HowToVideo";
 import { JsonLd, pageMetadata } from "@/lib/seo";
 import { productList, reviewedProduct } from "@/lib/structured-data";
+import { RedodoDeal } from "@/components/RedodoDeal";
 
 const PATH = "/lithium-rv-battery";
 const TITLE = "Lithium RV Battery: What Switching From Lead-Acid Saves (2026)";
@@ -224,6 +225,7 @@ export default function LithiumRvBatteryPage() {
 
         <section id="picks" className="mt-12 grid gap-4 scroll-mt-24" aria-labelledby="picks-heading">
           <h2 id="picks-heading" className="text-2xl font-extrabold text-ink">Our Redodo picks</h2>
+          <RedodoDeal />
           <OurPick
             label="Best value for most RVs and vans"
             name={fullName(li)}
