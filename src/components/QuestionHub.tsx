@@ -83,6 +83,20 @@ export function QuestionAnswer({ q, redodo }: { q: Question; redodo: boolean }) 
           <DetailBlock key={i} b={b} />
         ))}
       </div>
+      {q.example && (
+        <div className="mt-5 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm leading-relaxed">
+          <p className="font-semibold text-ink mb-1">Worked example</p>
+          <p className="text-stone-800">{q.example.text}</p>
+          <p className="mt-2 text-muted">
+            Source:{" "}
+            <a href={q.example.source.url} rel="noopener" target="_blank" className="underline underline-offset-2 hover:text-spark-orange">
+              {q.example.source.name}
+            </a>
+            {" · "}
+            <ToolLink href={q.example.tool.href} label={q.example.tool.label} />
+          </p>
+        </div>
+      )}
       {redodo && <RedodoDeal className="mt-5" />}
       {q.picks && q.picks.length > 0 && (
         <ul className="mt-5 grid sm:grid-cols-2 gap-3">

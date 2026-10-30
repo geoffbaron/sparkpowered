@@ -34,3 +34,17 @@ Re-check before changing a figure; drop a program once its own page says it has 
 - /solar-calculator: "Solar Panel Savings Calculator: Panels You Need and What They Save". Page already shows value per year and break-even price per watt.
 - /ev-charging-cost: "Cost to Charge an Electric Car at Home, by State (2026 Calculator)".
 - /compare/ecoflow-vs-bluetti and /compare/anker-solix-vs-ecoflow: retitled to lead with "EcoFlow vs ..."; each now links to the other so the "how Anker SOLIX / Bluetti compares" line in the description is true.
+
+## Question pages: worked examples (src/data/questions.ts, EXAMPLES)
+
+All 34 examples are arithmetic on figures the site already sources and dates (see the header of
+src/data/questions.ts and ~/Grant/marketing/sparkpowered-questions/fact-check.md): EIA prices and
+usage, PVWatts output, EPA efficiency, EnergySage solar and battery prices, makers' spec sheets
+(Tesla, Enphase, Bluetti, Minn Kota, Redodo, Renogy, ePropulsion, Lectron), ChargePoint's circuit
+table, the IRS 25D/30C/30D FAQ and federal efficiency standards. The numbers are computed in code
+from those datasets, so the page and the data cannot drift. Each example names its one source and
+links the matching calculator. A test (tests/questions.test.ts) checks that every question has one.
+
+New external fact used in an example: the Illinois EPA EV rebate (state-rebates), sourced above.
+Stated assumptions, labelled as such on the page: 10 hours of Level 1 charging a night; a 6 kW
+Ohio system; 300 kWh a month exported (net metering); 8-hour overnight charging windows.

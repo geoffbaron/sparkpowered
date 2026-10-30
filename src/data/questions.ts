@@ -43,6 +43,8 @@ import {
 import { ESSENTIALS_WH_DAY, FRIDGE_AVG_W, USABLE_FRACTION } from "@/lib/everyday";
 import { ASSUMPTIONS, MMBTU_PER_MCF } from "@/lib/go-electric";
 import { productById } from "@/lib/products";
+import { pluginFigures, REFERENCE_KIT_W } from "@/lib/plugin-solar";
+import { STATE_LOCAL } from "@/data/state-local";
 
 export type Block =
   | { p: string }
@@ -74,6 +76,14 @@ export interface Question {
   /** Links that help the reader run the numbers for their own home. External ones open in a new tab. */
   tools?: { href: string; label: string }[];
   picks?: Pick[];
+  /** One worked example with real numbers, its source, and the calculator to run your own (added 2026-10-30). */
+  example?: Example;
+}
+
+export interface Example {
+  text: string;
+  source: Source;
+  tool: { href: string; label: string };
 }
 
 export interface Topic {
@@ -859,6 +869,202 @@ export function questionPath(t: Topic, q: Question): string {
 }
 
 /** Every question with its hub, in hub order. */
+
+// ---------------------------------------------------------------- worked examples (2026-10-30)
+// Same datasets and constants as the answers above; each names one source and one calculator.
+
+const oh = st("OH");
+const ohPay = solarPayback("OH");
+const OH_KW = 6;
+const ohCost = ohPay.perW * OH_KW * 1000;
+const ohKwhYr = OH_KW * oh.solar.kwhPerKwYear;
+const ohRate = oh.electricity.residentialCentsPerKwhYtd;
+const ohValueYr = ohKwhYr * (ohRate / 100);
+const plugS = st(lawInForce[0].abbr);
+const plug = pluginFigures(plugS, REFERENCE_KIT_W);
+const usMonthBill = NATIONAL.avgMonthlyBillUsd;
+const evKwhMonth = (typical.kwhPer100mi * MONTHLY_MILES) / 100;
+const gallonsMonth = MONTHLY_MILES / NATIONAL.gasMpg;
+const halfAmps = m55.maxAmps / 2;
+const ilEv = STATE_LOCAL.IL.facts.find((f) => f.label === "EV rebate")!;
+const cop = ASSUMPTIONS.heatPumpCop.value;
+const spiritHours = 22 / 4.5;
+
+const EXAMPLES: Record<string, Example> = {
+  "is-solar-worth-it-2026": {
+    text: `A ${OH_KW} kW system in Ohio at EnergySage's ${usd2(ohPay.perW)} a watt costs about ${usd0(ohCost)}. It makes about ${n0(ohKwhYr)} kWh a year (PVWatts, ${oh.solar.city}), worth about ${usd0(ohValueYr)} at Ohio's average ${c1(ohRate)} per kWh. ${usd0(ohCost)} ÷ ${usd0(ohValueYr)} a year = about ${Math.round(ohCost / ohValueYr)} years to pay back.`,
+    source: S.esSolarCost,
+    tool: { href: "/solar-calculator?state=OH", label: "Solar savings calculator for Ohio" },
+  },
+  "solar-power-outage": {
+    text: `During an outage, panels with no battery supply 0 kWh. Add one ${POWERWALL_3_KWH} kWh battery and the essentials (a fridge, Wi-Fi, four LED bulbs and two phone charges, about ${essentialsKwh.toFixed(2)} kWh a day) run for about ${n1(POWERWALL_3_KWH / essentialsKwh)} days before any recharge from the panels: ${POWERWALL_3_KWH} ÷ ${essentialsKwh.toFixed(2)}.`,
+    source: S.powerwall,
+    tool: { href: "/battery-calculator", label: "Home battery sizer" },
+  },
+  "battery-with-solar": {
+    text: `${POWERWALL_3_KWH} kWh × ${usd0(INSTALLED_BATTERY_COST.medianPerKwh)} per kWh = about ${usd0(POWERWALL_3_KWH * INSTALLED_BATTERY_COST.medianPerKwh)} for one battery. That is about ${n1((POWERWALL_3_KWH * INSTALLED_BATTERY_COST.medianPerKwh) / (usMonthBill * 12))} years of the average US electric bill (${usd2(usMonthBill)} a month, EIA 2024), which is why most people buy a battery for backup rather than savings.`,
+    source: S.esH1,
+    tool: { href: "/battery-calculator", label: "Home battery sizer" },
+  },
+  "cloudy-days-winter": {
+    text: `A 6 kW system near ${mi.solar.city}, Michigan: 6 × ${n1(kwhJan(mi))} = about ${n0(6 * kwhJan(mi))} kWh in January, and 6 × ${n1(kwhJun(mi))} = about ${n0(6 * kwhJun(mi))} kWh in June. Over the whole year it makes about ${n0(6 * mi.solar.kwhPerKwYear)} kWh, the figure to size it on.`,
+    source: S.pvwatts,
+    tool: { href: "/solar-calculator?state=MI", label: "Solar calculator for Michigan" },
+  },
+  "how-long-solar-panels-last": {
+    text: `A ${OH_KW} kW Ohio system making ${n0(ohKwhYr)} kWh in its first year, losing 0.75% a year, still makes about ${n0(ohKwhYr * Math.pow(1 - FLEET_LOSS, 25))} kWh in year 25: ${n0(ohKwhYr)} × 0.9925 to the 25th power, about ${Math.round(Math.pow(1 - FLEET_LOSS, 25) * 100)}%.`,
+    source: S.doeFleet,
+    tool: { href: "/solar-calculator?state=OH", label: "Solar calculator" },
+  },
+  "what-is-net-metering": {
+    text: `Say your panels send 300 kWh to the grid in a month. If your utility credits each at Ohio's average home price of ${c1(ohRate)}, that is ${usd2(300 * (ohRate / 100))}. If it credits half that, it is ${usd2(150 * (ohRate / 100))}. Same panels; the crediting rule changes the savings.`,
+    source: S.eiaPrices,
+    tool: { href: "/solar-calculator", label: "Solar savings calculator" },
+  },
+  "solar-panels-to-charge-ev": {
+    text: `${n0(MONTHLY_MILES)} miles a month × 12 × ${typical.kwhPer100mi} kWh per 100 miles = ${n0(evYearKwh)} kWh a year. Near ${oh.solar.city}, Ohio, 1 kW of panels makes ${n0(oh.solar.kwhPerKwYear)} kWh a year, so that takes ${n1(evYearKwh / oh.solar.kwhPerKwYear)} kW, or ${Math.ceil((evYearKwh / oh.solar.kwhPerKwYear) * 1000 / PANEL_WATTS)} panels of ${PANEL_WATTS} W.`,
+    source: S.pvwatts,
+    tool: { href: "/solar-calculator?state=OH", label: "Solar calculator" },
+  },
+  "plug-in-solar-legal": {
+    text: `An ${REFERENCE_KIT_W} W plug-in kit, tilted toward the sun in ${plugS.name}, makes about ${n0(plug.kwhYear)} kWh a year in our PVWatts model, worth up to ${usd0(plug.valueYear)} at ${plugS.name}'s average ${c1(plugS.electricity.residentialCentsPerKwhYtd)} per kWh if your home uses every kWh as it is made.`,
+    source: S.pvwatts,
+    tool: { href: "/plug-in-solar", label: "Plug-in solar calculator by state" },
+  },
+  "home-battery-without-solar": {
+    text: `A ${POWERWALL_3_KWH} kWh battery at ${usd0(INSTALLED_BATTERY_COST.medianPerKwh)} per kWh is about ${usd0(POWERWALL_3_KWH * INSTALLED_BATTERY_COST.medianPerKwh)}. Charged from the grid, it holds about ${Math.round((POWERWALL_3_KWH / usDailyKwh) * 24)} hours of the average home's use (${n0(usDailyKwh)} kWh a day), or about ${n1(POWERWALL_3_KWH / essentialsKwh)} days of essentials only.`,
+    source: S.esH1,
+    tool: { href: "/battery-calculator", label: "Home battery sizer" },
+  },
+  "home-battery-outage-hours": {
+    text: `${POWERWALL_3_KWH} kWh ÷ ${n1(usDailyKwh)} kWh a day × 24 = about ${Math.round((POWERWALL_3_KWH / usDailyKwh) * 24)} hours of normal use. Cut to essentials (${essentialsKwh.toFixed(2)} kWh a day) and the same battery lasts about ${n1(POWERWALL_3_KWH / essentialsKwh)} days.`,
+    source: S.eiaUsage,
+    tool: { href: "/battery-calculator", label: "Home battery sizer" },
+  },
+  "home-battery-lifespan": {
+    text: "Enphase warrants the IQ Battery 10C for 15 years or 6,000 cycles. At one full cycle a day, 6,000 cycles ÷ 365 = about 16.4 years, so for daily cycling the 15-year limit comes first.",
+    source: S.enphase10c,
+    tool: { href: "/battery-calculator", label: "Home battery sizer" },
+  },
+  "power-station-refrigerator": {
+    text: `Bluetti ${e200.model}: ${n0(e200.capacityWh)} Wh × ${Math.round(USABLE_FRACTION * 100)}% usable = ${n0(e200.capacityWh * USABLE_FRACTION)} Wh. An average fridge draws about ${n0(FRIDGE_AVG_W)} W over a day, so ${n0(e200.capacityWh * USABLE_FRACTION)} ÷ ${n0(FRIDGE_AVG_W)} = about ${Math.round(fridgeHours(e200.capacityWh))} hours.`,
+    source: S.bluetti200,
+    tool: { href: "/power-station-for-refrigerator", label: "Fridge run-time calculator" },
+  },
+  "power-station-vs-generator": {
+    text: `A ${n0(e200.capacityWh)} Wh Bluetti ${e200.model} runs the essentials (${n0(ESSENTIALS_WH_DAY)} Wh a day) for about ${Math.round(((e200.capacityWh * USABLE_FRACTION) / ESSENTIALS_WH_DAY) * 24)} hours: ${n0(e200.capacityWh * USABLE_FRACTION)} usable Wh ÷ ${n0(ESSENTIALS_WH_DAY)} × 24. A generator keeps going as long as you have fuel, but it must run outdoors.`,
+    source: S.bluetti200,
+    tool: { href: "/power-outage-backup-calculator", label: "Power outage backup calculator" },
+  },
+  "plug-into-wall-outlet": {
+    text: `The safe way is an extension cord to each appliance. An average fridge draws about ${n0(FRIDGE_AVG_W)} W over a day, so the ${n0(e100.acOutputW)} W Bluetti ${e100.model} can run it through a cord, with no connection to your home's wiring.`,
+    source: S.bluetti100,
+    tool: { href: "/power-outage-backup-calculator", label: "Power outage backup calculator" },
+  },
+  "power-station-space-heater": {
+    text: `On its 750 W low setting, a heater on the Bluetti ${e200.model} runs about ${n1((e200.capacityWh * USABLE_FRACTION) / 750)} hours: ${n0(e200.capacityWh)} Wh × ${Math.round(USABLE_FRACTION * 100)}% ÷ 750 W. On 1,500 W it is half that, about ${n1((e200.capacityWh * USABLE_FRACTION) / 1500)} hours.`,
+    source: S.bluetti200,
+    tool: { href: "/space-heater-cost", label: "Space heater cost calculator" },
+  },
+  "cost-to-charge-ev-at-home": {
+    text: `${n0(MONTHLY_MILES)} miles × ${typical.kwhPer100mi} kWh per 100 miles (${typical.make} ${typical.model}, EPA) = ${n0(evKwhMonth)} kWh. At ${c1(rateC)} per kWh that is ${usd0(evMonth(typical.kwhPer100mi))} a month. In Ohio, at ${c1(ohRate)}, it is ${usd0(evMonth(typical.kwhPer100mi, ohRate / 100))}.`,
+    source: S.eiaPrices,
+    tool: { href: "/ev-charging-cost?state=OH", label: "EV charging cost calculator" },
+  },
+  "home-charging-vs-gas": {
+    text: `Gas: ${n0(MONTHLY_MILES)} miles ÷ ${NATIONAL.gasMpg} mpg = ${n0(gallonsMonth)} gallons × ${usd2(NATIONAL.gasolineUsdPerGallon)} = ${usd0(gasMonth)} a month. Electric: ${n0(evKwhMonth)} kWh × ${c1(rateC)} = ${usd0(evMonth(typical.kwhPer100mi))}. That is ${usd0(gasMonth - evMonth(typical.kwhPer100mi))} a month less, at US averages.`,
+    source: S.eiaGas,
+    tool: { href: "/ev-charging-cost", label: "EV vs gas in your state" },
+  },
+  "level-1-or-level-2": {
+    text: `Level 1 at about 5 miles of range an hour, plugged in 10 hours a night, adds about 50 miles a day, or about 1,500 miles in a 30-day month. That covers ${n0(MONTHLY_MILES)} miles a month if you charge most nights.`,
+    source: S.afdcStations,
+    tool: { href: "/ev-charging-cost", label: "EV charging cost calculator" },
+  },
+  "breaker-size-ev-charger": {
+    text: "A charger set to 40 amps × 125% = a 50-amp circuit. ChargePoint estimates 40 amps adds about 30 miles of range an hour, so 8 hours overnight adds about 240 miles.",
+    source: S.chargepoint,
+    tool: { href: "/ev-charger-installation-cost", label: "Charger installation cost by state" },
+  },
+  "nema-14-50-or-hardwired": {
+    text: "On a NEMA 14-50 (50-amp circuit): 50 ÷ 1.25 = 40 amps maximum, about 30 miles of range an hour (ChargePoint). A hardwired 48-amp charger needs a 60-amp circuit (48 × 1.25) and adds about 36 miles an hour.",
+    source: S.chargepoint,
+    tool: { href: "/ev-charger-installation-cost", label: "Charger installation cost by state" },
+  },
+  "dryer-outlet-ev": {
+    text: "A 30-amp dryer circuit ÷ 1.25 = 24 amps of charging. ChargePoint puts 24 amps at about 18 miles of range an hour, so an 8-hour night adds about 144 miles.",
+    source: S.chargepoint,
+    tool: { href: "/ev-charger-installation-cost", label: "Cost to add a charging circuit" },
+  },
+  "install-ev-charger-yourself": {
+    text: `EnergySage's US average for installing a home charger is ${usd0(INSTALL_COST.usAverage)}, with a permit adding ${usd0(INSTALL_COST.permit[0])} to ${usd0(INSTALL_COST.permit[1])} depending on where you live. A ${usd2(lectron.priceUsd)} plug-in Lectron NEXUS on an existing 14-50 outlet skips the circuit work.`,
+    source: S.installCost,
+    tool: { href: "/ev-charger-installation-cost", label: "Installation cost by state" },
+  },
+  "trolling-motor-battery-life": {
+    text: `A ${m55.thrustLb} lb Minn Kota draws up to ${m55.maxAmps} amps. 100 usable amp-hours ÷ ${m55.maxAmps} amps = about ${n1(runtimeHours(m55, 1, 100))} hours at full speed. At half speed, about ${n1(runtimeHours(m55, 0.5, 100))} hours.`,
+    source: S.minnKota,
+    tool: { href: "/trolling-motor-battery-life", label: "Trolling motor runtime calculator" },
+  },
+  "trolling-motor-battery-size": {
+    text: `For 6 hours at about half speed on a ${m55.thrustLb} lb motor (about ${n0(halfAmps)} amps): ${n0(halfAmps)} × 6 = ${n0(halfAmps * 6)} amp-hours used. A 100Ah lithium covers that; an AGM, at about ${n0(agmUsableAh)} usable amp-hours per 100Ah, needs about ${Math.ceil((halfAmps * 6) / agmUsableAh)} batteries in parallel.`,
+    source: S.minnKota,
+    tool: { href: "/trolling-motor-battery-life", label: "Trolling motor runtime calculator" },
+  },
+  "charge-lithium-regular-charger": {
+    text: "A Redodo 12V 100Ah on a 20-amp LiFePO4 charger: 100 amp-hours ÷ 20 amps = about 5 hours from empty, which is the figure Redodo gives.",
+    source: S.redodo100,
+    tool: { href: "/trolling-motor-battery-life", label: "Trolling motor runtime calculator" },
+  },
+  "lithium-vs-agm-trolling": {
+    text: `Price per usable amp-hour on October 25, 2026: Redodo lithium ${usd2(REDODO_100_PRICE_TODAY)} ÷ 100 = ${usd2(REDODO_100_PRICE_TODAY / 100)}; Renogy AGM ${usd2(RENOGY_AGM_PRICE_TODAY)} ÷ ${n0(agmUsableAh)} = ${usd2(RENOGY_AGM_PRICE_TODAY / agmUsableAh)}.`,
+    source: S.renogyAgm,
+    tool: { href: "/lithium-vs-agm-battery", label: "Lithium vs AGM calculator" },
+  },
+  "electric-outboard-range": {
+    text: `22 miles at a steady 4.5 mph is about ${n1(spiritHours)} hours on the Spirit 1.0's ${n0(spirit.batteryWh)} Wh battery. Recharging ${n1(spirit.batteryWh / 1000)} kWh at ${c1(rateC)} per kWh costs about ${usd2((spirit.batteryWh / 1000) * rate)}.`,
+    source: S.eprop,
+    tool: { href: "/electric-outboard-motor", label: "Electric outboard running cost" },
+  },
+  "solar-battery-tax-credit-2026": {
+    text: `The ${usd0(ohCost)}, ${OH_KW} kW Ohio system from above: installed by December 31, 2025, the 30% credit was worth ${usd0(ohCost * 0.3)}. Installed in 2026, the homeowner credit is $0, so the full ${usd0(ohCost)} counts toward payback.`,
+    source: S.irsFaq,
+    tool: { href: "/solar-calculator?state=OH", label: "Solar savings calculator" },
+  },
+  "ev-charger-tax-credit-2026": {
+    text: `With no federal credit after June 30, 2026, a home charger is the full price: for example a ${usd2(lectron.priceUsd)} Lectron NEXUS plus EnergySage's US average installation of ${usd0(INSTALL_COST.usAverage)} is about ${usd0(lectron.priceUsd + INSTALL_COST.usAverage)}. State and utility rebates are what's left.`,
+    source: S.installCost,
+    tool: { href: "/ev-charger-installation-cost", label: "Installation cost by state" },
+  },
+  "heat-pump-vs-gas-cost": {
+    text: `Gas: ${n1(home.national.gasSpaceHeatMmbtu)} MMBtu ÷ ${MMBTU_PER_MCF.toFixed(3)} MMBtu per Mcf × ${usd2(home.national.gasUsdPerMcf)} = ${usd0(gasHeatCost)} a year. Heat pump: the heat an ${Math.round(ASSUMPTIONS.furnaceAfue.value * 100)}% furnace gets from that gas, delivered at an efficiency of ${n1(cop)}, takes about ${n0(hpKwh)} kWh × ${c1(rateC)} = ${usd0(hpCost)} a year.`,
+    source: S.eiaNatGas,
+    tool: { href: "/go-electric", label: "Heat pump savings in your state" },
+  },
+  "heat-pumps-cold-weather": {
+    text: `1 kWh in an electric resistance heater gives 1 kWh of heat. At the efficiency of ${n1(cop)} we use for a minimum-standard heat pump over a season, 1 kWh gives about ${n1(cop)} kWh of heat, about ${Math.round(hpVsResistance * 100)}% less electricity for the same warmth. Efficiency falls on the coldest days, which is why ENERGY STAR tests cold-climate models down to 5°F.`,
+    source: S.ecfr,
+    tool: { href: "/go-electric", label: "Heat pump savings in your state" },
+  },
+  "electricity-price-by-state": {
+    text: `The average home's ${n0(NATIONAL.avgMonthlyKwh)} kWh a month costs about ${usd0(NATIONAL.avgMonthlyKwh * (cheapest.electricity.residentialCentsPerKwhYtd / 100))} at ${cheapest.name}'s ${c1(cheapest.electricity.residentialCentsPerKwhYtd)} and about ${usd0(NATIONAL.avgMonthlyKwh * (dearest.electricity.residentialCentsPerKwhYtd / 100))} at ${dearest.name}'s ${c1(dearest.electricity.residentialCentsPerKwhYtd)}.`,
+    source: S.eiaPrices,
+    tool: { href: "/go-electric", label: "Go Electric savings calculator" },
+  },
+  "why-electric-bill-high": {
+    text: `Same ${n0(NATIONAL.avgMonthlyKwh)} kWh, two prices: at ${c1(NATIONAL.residentialCentsPerKwhYtdPrevYear)} it is ${usd2(NATIONAL.avgMonthlyKwh * (NATIONAL.residentialCentsPerKwhYtdPrevYear / 100))}; at ${c1(NATIONAL.residentialCentsPerKwhYtd)} it is ${usd2(NATIONAL.avgMonthlyKwh * (NATIONAL.residentialCentsPerKwhYtd / 100))}, ${usd2(NATIONAL.avgMonthlyKwh * ((NATIONAL.residentialCentsPerKwhYtd - NATIONAL.residentialCentsPerKwhYtdPrevYear) / 100))} more a month for the same use.`,
+    source: S.eiaPrices,
+    tool: { href: "/go-electric", label: "What would save you most" },
+  },
+  "state-rebates": {
+    text: "Illinois, for example: the Illinois EPA EV rebate pays $2,000 toward an all-electric car ($4,000 for low-income applicants) in its cycle from August 1 to December 31, 2026, for cars bought from an Illinois dealer at $80,000 or less, while funds last.",
+    source: ilEv.source,
+    tool: { href: "/incentives", label: "State-by-state incentive links" },
+  },
+};
+
+for (const t of TOPICS) for (const q of t.questions) q.example = EXAMPLES[q.id];
+
 export const ALL_QUESTIONS: { topic: Topic; question: Question }[] = TOPICS.flatMap((topic) =>
   topic.questions.map((question) => ({ topic, question })),
 );

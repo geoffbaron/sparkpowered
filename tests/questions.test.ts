@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { TOPICS } from "../src/data/questions";
+import { ALL_QUESTIONS, TOPICS } from "../src/data/questions";
 import { ROUTES } from "../src/lib/seo";
 
 const all = TOPICS.flatMap((t) => t.questions.map((q) => ({ t, q })));
@@ -64,5 +64,15 @@ test("llms.txt lists every question page", async () => {
   for (const { topic, question } of ALL_QUESTIONS) {
     const p = `https://sparkpowered.com${questionPath(topic, question)})`;
     assert.ok(llms.includes(p), `${p} missing from llms.txt`);
+  }
+});
+
+test("every question has a worked example with a source and a calculator link", () => {
+  for (const { question: q } of ALL_QUESTIONS) {
+    assert.ok(q.example, `${q.id} has no worked example`);
+    assert.match(q.example.text, /\d/, `${q.id} example has no numbers`);
+    assert.match(q.example.source.url, /^https:\/\//, `${q.id} example source`);
+    assert.match(q.example.tool.href, /^\//, `${q.id} example tool`);
+    assert.doesNotMatch(q.example.text, /NaN|undefined|Infinity/, `${q.id} example text`);
   }
 });
