@@ -31,9 +31,8 @@ export const metadata: Metadata = {
   creator: SITE_NAME,
   publisher: SITE_NAME,
   category: "Clean Energy",
-  alternates: {
-    canonical: "/",
-  },
+  // No site-wide canonical here: each page sets its own via pageMetadata().
+  // A default of "/" made pages without one (like the 404 page) point at the home page.
   openGraph: {
     type: "website",
     siteName: SITE_NAME,
