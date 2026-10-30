@@ -188,7 +188,7 @@ export default function OutageBackupPage() {
                 {recharge.map(({ s, wh }) => (
                   <tr key={s.abbr} className="border-t border-black/6">
                     <th scope="row" className="p-3 font-medium">
-                      <Link href={`/off-grid-solar-calculator/${s.slug}`} className="text-spark-orange hover:underline">{s.name}</Link>
+                      <Link href={`/off-grid-solar-calculator?state=${s.abbr}#calculator`} className="text-spark-orange hover:underline">{s.name}</Link>
                     </th>
                     <td className="p-3 text-right tabular-nums">{fmtWh(wh)}</td>
                     <td className="p-3 text-right tabular-nums">{Math.round((wh / essWh) * 100)}%</td>

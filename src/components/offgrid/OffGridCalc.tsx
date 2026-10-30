@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import LocalNote from "@/components/LocalNote";
 import KitPicker from "@/components/offgrid/KitPicker";
 import LoadList from "@/components/offgrid/LoadList";
@@ -36,13 +36,22 @@ export interface OffGridState {
  * Daily loads + state -> panel watts and battery size, sized on the state's
  * December solar output.
  */
-export default function OffGridCalc({ states, fixedAbbr, fallbackAbbr }: { states: OffGridState[]; fixedAbbr?: string; fallbackAbbr: string }) {
+type Props = { states: OffGridState[]; fallbackAbbr: string };
+
+/** Reads ?state=XX (or a state slug, from the old per-state URLs) so links can open the calculator on a state. */
+export function OffGridCalcFromParams(props: Props) {
+  const q = useSearchParams().get("state")?.toLowerCase() ?? "";
+  const hit = props.states.find((s) => s.abbr.toLowerCase() === q || s.slug === q);
+  return <OffGridCalc key={hit?.abbr ?? "none"} {...props} initialAbbr={hit?.abbr} />;
+}
+
+export default function OffGridCalc({ states, fallbackAbbr, initialAbbr }: Props & { initialAbbr?: string }) {
   const valid = useMemo(() => states.map((s) => s.abbr), [states]);
-  const located = useVisitorState(valid, !fixedAbbr);
+  const located = useVisitorState(valid, !initialAbbr);
   const choose = useChooseState();
   const [picked, setPicked] = useState<string | null>(null);
-  const abbr = picked ?? fixedAbbr ?? located.abbr ?? fallbackAbbr;
-  const local = picked != null || fixedAbbr != null || located.abbr != null;
+  const abbr = picked ?? initialAbbr ?? located.abbr ?? fallbackAbbr;
+  const local = picked != null || initialAbbr != null || located.abbr != null;
   const setAbbr = (a: string) => {
     setPicked(a);
     choose(a || NATIONAL_CHOICE);
@@ -153,16 +162,11 @@ export default function OffGridCalc({ states, fixedAbbr, fallbackAbbr }: { state
           Sized for December, the darkest month. The rest of the year you will have spare power. The US Department of Energy also advises a
           backup generator for long cloudy spells.
         </p>
-        {!fixedAbbr && (
-          <p className="text-sm mt-3">
-            <Link href={`/off-grid-solar-calculator/${st.slug}`} className="underline text-spark-orange">Off-grid solar in {st.name}</Link>
-          </p>
-        )}
       </div>
     </div>
     <KitPicker
       idPrefix="og"
-      heading={`Kits you can buy for this${fixedAbbr ? ` in ${st.name}` : ""}`}
+      heading={`Kits you can buy for this${local ? ` in ${st.name}` : ""}`}
       need={{ batteryWh: size.batteryWh, panelW: size.panelW, runningW, whPerDay: size.whPerDay, usable: BATTERY_TYPES[battery].usable }}
     />
     </>

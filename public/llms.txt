@@ -95,7 +95,7 @@ Each answer below has its own page: the question, the short answer, the detail a
 - [Where can I find state rebates for solar, EVs and heat pumps?](https://sparkpowered.com/questions/costs-and-incentives/state-rebates)
 ## Off grid and emergency preparedness (government sources; some affiliate links)
 
-- [Off-grid solar calculator](https://sparkpowered.com/off-grid-solar-calculator): Panel watts and battery kWh for a home or cabin from daily loads, sized on each state's December PVWatts output (the worst month), with days of autonomy; 50-state + DC table and a page per state, e.g. https://sparkpowered.com/off-grid-solar-calculator/alaska.
+- [Off-grid solar calculator](https://sparkpowered.com/off-grid-solar-calculator): Panel watts and battery kWh for a home or cabin from daily loads, sized on each state's December PVWatts output (the worst month), with days of autonomy; 50-state + DC table; open it on a state with ?state=AK.
 - [Off-grid cabin solar kit](https://sparkpowered.com/off-grid-cabin-solar-kit): Weekend, part-time and full-time cabin kit sizes by state, with dated kit prices.
 - [How to go off grid](https://sparkpowered.com/how-to-go-off-grid): Grid line extension cost (DOE: $15,000 to $50,000 per mile) versus solar plus battery, steps and permits.
 - [Power outage backup calculator](https://sparkpowered.com/power-outage-backup-calculator): Essentials (fridge, CPAP, well pump, furnace blower, router, lights) to kWh a day and battery size for 1 to 7 days, with winter solar recharge by state.

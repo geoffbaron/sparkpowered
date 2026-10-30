@@ -7,7 +7,11 @@ const nextConfig: NextConfig = {
   experimental: { inlineCss: true },
 
   async redirects() {
-    return [{ source: "/objections", destination: "/myths", permanent: true }];
+    return [
+      { source: "/objections", destination: "/myths", permanent: true },
+      // The 51 per-state off-grid pages were near-duplicates; one hub now serves every state.
+      { source: "/off-grid-solar-calculator/:state", destination: "/off-grid-solar-calculator?state=:state", permanent: true },
+    ];
   },
 
   async headers() {

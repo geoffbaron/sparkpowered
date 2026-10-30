@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import OffGridCalc from "@/components/offgrid/OffGridCalc";
+import { Suspense } from "react";
+import OffGridCalc, { OffGridCalcFromParams } from "@/components/offgrid/OffGridCalc";
 import { HubHero, PhotoCredit } from "@/components/ui";
 import { QuickAnswer } from "@/components/guide-ui";
 import { Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
@@ -122,7 +123,9 @@ export default function OffGridSolarCalculatorPage() {
         </QuickAnswer>
 
         <h2 id="calculator" className="text-2xl font-extrabold text-ink mt-10 mb-4 scroll-mt-24">Your loads, your state</h2>
-        <OffGridCalc states={offGridStates()} fallbackAbbr={typical.abbr} />
+        <Suspense fallback={<OffGridCalc states={offGridStates()} fallbackAbbr={typical.abbr} />}>
+          <OffGridCalcFromParams states={offGridStates()} fallbackAbbr={typical.abbr} />
+        </Suspense>
 
         <Section title="How the calculation works" id="how">
           <div className="text-stone-700 leading-relaxed space-y-4 max-w-3xl">
@@ -172,7 +175,7 @@ export default function OffGridSolarCalculatorPage() {
                 {rows.map(({ s, perKwDay, size }) => (
                   <tr key={s.abbr} className="border-t border-black/6">
                     <th scope="row" className="p-3 font-medium">
-                      <Link href={`${PATH}/${s.slug}`} className="text-spark-orange hover:underline">{s.name}</Link>
+                      <Link href={`${PATH}?state=${s.abbr}#calculator`} className="text-spark-orange hover:underline">{s.name}</Link>
                     </th>
                     <td className="p-3 text-stone-700">{s.solar.city}</td>
                     <td className="p-3 text-right tabular-nums">{perKwDay.toFixed(2)}</td>
