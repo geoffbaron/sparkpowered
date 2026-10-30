@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import LocalStateLinks from "@/components/LocalStateLinks";
 import Link from "next/link";
 import { Breadcrumbs, Disclaimer, PageIntro, RelatedLinks, Sources } from "@/components/content";
 import {
@@ -117,6 +118,7 @@ export default function StatesIndex() {
           { name: SOURCES.vehicles.name, url: SOURCES.vehicles.url, detail: SOURCES.vehicles.period },
         ]}
       />
+      <LocalStateLinks heading="States with local utility, price and program details" />
       <RelatedLinks
         links={[
           { href: "/ev-charging-cost", label: "EV charging cost calculator", desc: "Your car, your state, your miles" },

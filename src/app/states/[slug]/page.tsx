@@ -45,6 +45,7 @@ import {
 } from "@/lib/energy";
 import { JsonLd, pageMetadata, url } from "@/lib/seo";
 import { stateSources } from "@/lib/state-sources";
+import { EIA_LATEST, LOCAL_CHECKED, STATE_LOCAL } from "@/data/state-local";
 
 export function generateStaticParams() {
   return STATES.map((s) => ({ slug: s.slug }));
@@ -104,6 +105,7 @@ export default async function StatePage({ params }: Props) {
     s.gasoline.level === "state" ? `${s.name} average` : `${s.gasoline.area} regional average`;
   const n = STATES.length;
   const links = stateSources(s);
+  const local = STATE_LOCAL[s.abbr];
   const plan = typicalPlan(s.abbr);
   const evRow = plan.all.find((x) => x.id === "ev");
   const solarRow = plan.all.find((x) => x.id === "solar");
@@ -211,6 +213,30 @@ export default async function StatePage({ params }: Props) {
           },
         ]}
       />
+
+      {local && (
+        <Section title={`${s.name} at a glance: utilities, prices and programs`} id="local">
+          <ul className="space-y-3 max-w-3xl text-stone-700 leading-relaxed">
+            <li>
+              <strong className="text-ink">Latest monthly price: </strong>
+              {s.name} homes paid an average of {local.eiaLatest[0].toFixed(2)} cents per kWh in {EIA_LATEST.month}, up from{" "}
+              {local.eiaLatest[1].toFixed(2)} cents in {EIA_LATEST.prevMonth} (US: {EIA_LATEST.us[0].toFixed(2)} cents).{" "}
+              <a href={EIA_LATEST.source.url} className="underline underline-offset-2 text-sm text-muted" rel="noopener">EIA</a>
+            </li>
+            {local.facts.map((f) => (
+              <li key={f.label}>
+                <strong className="text-ink">{f.label}: </strong>
+                {f.text}{" "}
+                <a href={f.source.url} className="underline underline-offset-2 text-sm text-muted" rel="noopener">Source</a>
+              </li>
+            ))}
+          </ul>
+          <p className="text-xs text-muted mt-3">
+            Checked against each official source on <time dateTime={LOCAL_CHECKED}>{formatDate(LOCAL_CHECKED)}</time>. Programs change; confirm on
+            the program&apos;s own page before you buy.
+          </p>
+        </Section>
+      )}
 
       <Section title={`What it costs to charge an EV in ${s.name}`} id="ev-charging">
         <p className="text-stone-700 leading-relaxed max-w-3xl mb-5">
@@ -395,6 +421,7 @@ export default async function StatePage({ params }: Props) {
 
       <Sources
         items={[
+          ...(local ? [EIA_LATEST.source, ...local.facts.map((f) => f.source)].filter((x, i, a) => a.findIndex((y) => y.url === x.url) === i).map((x) => ({ name: x.name, url: x.url })) : []),
           {
             name: SOURCES.electricityPrice.name,
             url: SOURCES.electricityPrice.url,

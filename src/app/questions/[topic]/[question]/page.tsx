@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { AffiliateDisclosure } from "@/components/affiliate";
 import { Breadcrumbs, Callout, Disclaimer } from "@/components/content";
 import { QuestionAnswer } from "@/components/QuestionHub";
+import LocalStateLinks from "@/components/LocalStateLinks";
 import { ALL_QUESTIONS, guideFor, questionDescription, questionPath, relatedQuestions } from "@/data/questions";
 import { formatDate } from "@/lib/energy";
 import { JsonLd, QUESTIONS_UPDATED, QUESTIONS_UPDATED_AT, pageMetadata, url } from "@/lib/seo";
@@ -40,6 +41,8 @@ export default async function QuestionPage({ params }: Props) {
   const related = relatedQuestions(topic, q);
   const guide = guideFor(topic, q);
   const hasPicks = Boolean(q.picks?.length);
+  // Questions whose answer depends on the state: link the state pages with checked local details.
+  const stateBound = topic.slug === "costs-and-incentives" || Boolean(q.tools?.some((t) => t.href.startsWith("/states") || t.href === "/incentives" || t.href.startsWith("/solar-calculator") || t.href.startsWith("/ev-charging-cost")));
   return (
     <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <JsonLd
@@ -94,6 +97,8 @@ export default async function QuestionPage({ params }: Props) {
       )}
 
       <QuestionAnswer q={q} redodo={Boolean(q.picks?.some((p) => p.brand === "redodo"))} />
+
+      {stateBound && <LocalStateLinks />}
 
       <section aria-labelledby="related-questions" className="mt-14">
         <h2 id="related-questions" className="text-xl font-bold mb-3">

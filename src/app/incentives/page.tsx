@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { LOCAL_CHECKED, STATE_LOCAL } from "@/data/state-local";
 import {
   Breadcrumbs,
   Callout,
@@ -11,7 +12,7 @@ import {
   Sources,
 } from "@/components/content";
 import IncentivesForState from "@/components/IncentivesForState";
-import { STATES } from "@/lib/energy";
+import { STATES, formatDate } from "@/lib/energy";
 import { stateSources } from "@/lib/state-sources";
 import { JsonLd, pageMetadata, url } from "@/lib/seo";
 
@@ -142,6 +143,28 @@ export default function IncentivesPage() {
             with a tax professional before making a purchase decision based on a credit or deduction.
           </Callout>
         </div>
+      </Section>
+
+      <Section title="State programs open now: three examples" id="state-examples">
+        <p className="text-stone-700 leading-relaxed mb-4">
+          With the federal credits gone, state money is the main help left. Three we checked on the official pages on{" "}
+          <time dateTime={LOCAL_CHECKED}>{formatDate(LOCAL_CHECKED)}</time>:
+        </p>
+        <ul className="space-y-3 text-stone-700 leading-relaxed">
+          {[
+            { slug: "illinois", name: "Illinois", f: STATE_LOCAL.IL.facts.find((x) => x.label === "EV rebate")! },
+            { slug: "hawaii", name: "Hawaii", f: STATE_LOCAL.HI.facts.find((x) => x.label === "Solar tax credit")! },
+            { slug: "colorado", name: "Colorado", f: STATE_LOCAL.CO.facts.find((x) => x.label === "EV tax credit")! },
+          ].map(({ slug, name, f }) => (
+            <li key={slug}>
+              <strong className="text-ink">{name}: </strong>
+              {f.text}{" "}
+              <a href={f.source.url} className="underline text-sm text-muted" rel="noopener">Source</a>
+              {" · "}
+              <Link href={`/states/${slug}#local`} className="underline text-sm text-spark-orange">{name} energy data</Link>
+            </li>
+          ))}
+        </ul>
       </Section>
 
       <Section title="State and utility incentives" id="states">

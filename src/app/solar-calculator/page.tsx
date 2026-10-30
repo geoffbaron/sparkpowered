@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import LocalStateLinks from "@/components/LocalStateLinks";
 import Link from "next/link";
 import { Suspense } from "react";
 import SolarCalculator, { SolarCalculatorFromParams } from "@/components/SolarCalculator";
@@ -32,9 +33,9 @@ import {
 import { JsonLd, pageMetadata, url } from "@/lib/seo";
 
 const PATH = "/solar-calculator";
-const TITLE = "How Many Solar Panels Do I Need? Calculator by State";
+const TITLE = "Solar Panel Savings Calculator: Panels You Need and What They Save";
 const DESCRIPTION =
-  "How many solar panels your home needs, from your bill or kWh and modeled solar output for your state. See system size, yearly output, value and break-even price per watt.";
+  "Free solar panel savings calculator: enter your state and bill to see how many panels you need, what they make each year, what that power is worth at your state's electricity price, and the break-even price per watt.";
 
 export const metadata: Metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH });
 
@@ -199,6 +200,7 @@ export default function SolarCalculatorPage() {
         </div>
       </Section>
 
+      <LocalStateLinks />
       <Faq items={faqs} path={PATH} />
       <Disclaimer />
       <Sources

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import LocalStateLinks from "@/components/LocalStateLinks";
 import Link from "next/link";
 import { Suspense } from "react";
 import ChargingCalculator, { ChargingCalculatorFromParams } from "@/components/ChargingCalculator";
@@ -35,9 +36,9 @@ import {
 import { JsonLd, pageMetadata, url } from "@/lib/seo";
 
 const PATH = "/ev-charging-cost";
-const TITLE = "EV Charging Cost Calculator by State (2026 Rates)";
+const TITLE = "Cost to Charge an Electric Car at Home, by State (2026 Calculator)";
 const DESCRIPTION =
-  "What it costs to charge an electric car at home in your state, from EIA electricity prices and EPA ratings for every 2026 EV, compared with gasoline. All 50 states.";
+  "How much it costs to charge an electric car at home in your state, from EIA electricity prices and EPA efficiency ratings for every 2026 EV, compared with filling up on gas. All 50 states and DC.";
 
 export const metadata: Metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH });
 
@@ -210,6 +211,7 @@ export default function EvChargingCostPage() {
         </div>
       </Section>
 
+      <LocalStateLinks />
       <Faq items={faqs} path={PATH} />
       <Disclaimer />
       <Sources

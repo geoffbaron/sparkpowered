@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import LocalStateLinks from "@/components/LocalStateLinks";
 import Link from "next/link";
 import { Suspense } from "react";
 import GoElectricPlanner, { GoElectricPlannerFromParams } from "@/components/GoElectricPlanner";
@@ -164,6 +165,7 @@ export default function GoElectricPage() {
           ))}
         </section>
 
+        <LocalStateLinks />
         <Faq items={faqs} path={PATH} />
         <p className="text-sm text-muted mt-8">
           Data updated <time dateTime={DATA_UPDATED}>{formatDate(DATA_UPDATED)}</time>.{" "}
