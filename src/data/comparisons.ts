@@ -22,6 +22,8 @@ export interface Comparison {
   /** "Choose A if ..." / "Choose B if ..." */
   chooseA: string;
   chooseB: string;
+  /** A sister comparison to link from the short answer, e.g. the third brand people weigh up. */
+  see?: { slug: string; label: string };
   updated: string;
 }
 
@@ -61,8 +63,8 @@ export const COMPARISONS: Comparison[] = [
   },
   {
     slug: "anker-solix-vs-ecoflow",
-    title: "Anker SOLIX vs EcoFlow: Power Stations Compared Size for Size",
-    description: "Anker SOLIX and EcoFlow at 1 kWh, 2 kWh and home-backup sizes: capacity, output, solar input, expansion and price.",
+    title: "EcoFlow vs Anker SOLIX (2026): Power Stations Compared Size for Size",
+    description: "EcoFlow or Anker SOLIX? Matched at 1 kWh, 2 kWh and home-backup sizes: capacity, output, solar input, expansion and price from both makers' US sites, plus a link to how Bluetti compares.",
     pairs: [
       ["anker-solix-c1000-gen-2", "ecoflow-delta-3"],
       ["anker-solix-c2000-gen-2", "ecoflow-delta-3-max"],
@@ -75,12 +77,13 @@ export const COMPARISONS: Comparison[] = [
       "It splits by size. At 1 kWh the Anker C1000 Gen 2 is cheaper ($499.99 vs $629) and has more output (2,000 W vs 1,800 W), but only the EcoFlow DELTA 3 can expand. At 2 kWh the two were priced about the same when we checked ($899 for the EcoFlow DELTA 3 Max vs $899.99 for the Anker C2000 Gen 2) with similar output, but the Anker C2000 Gen 2 accepts an expansion battery. For home backup the Anker F3800 Plus has more output (6,000 W vs 4,000 W), more solar input and far more expansion (26.9 kWh vs 12.3 kWh) at a lower price, though the EcoFlow DELTA Pro 3 holds a bit more (4.1 vs 3.84 kWh).",
     chooseA: "Choose Anker SOLIX for the cheapest 1 kWh unit here, an expandable 2 kWh unit at about the same price as the EcoFlow, or the most powerful home-backup unit (F3800 Plus).",
     chooseB: "Choose EcoFlow for a 1 kWh unit you can expand later, and stated LFP chemistry and warranty across the range.",
+    see: { slug: "ecoflow-vs-bluetti", label: "Weighing up Bluetti too? See EcoFlow vs Bluetti" },
     updated: "2026-10-26",
   },
   {
     slug: "ecoflow-vs-bluetti",
-    title: "EcoFlow vs Bluetti: Power Stations Compared Size for Size",
-    description: "EcoFlow and Bluetti at 1 kWh, 2 kWh and home-backup sizes, from both makers' US product pages.",
+    title: "EcoFlow vs Bluetti (2026): Prices and Specs Compared Size for Size",
+    description: "EcoFlow or Bluetti? Matched at 1 kWh, 2 kWh and home-backup sizes with price per kWh, output, cycle ratings and expansion from both makers' US sites, plus a link to how Anker SOLIX compares.",
     pairs: [
       ["ecoflow-delta-3-plus", "bluetti-elite-100-v2"],
       ["ecoflow-delta-3-max", "bluetti-elite-200-v2"],
@@ -93,6 +96,7 @@ export const COMPARISONS: Comparison[] = [
       "Bluetti is cheaper per kWh: the Elite 100 V2 was $489 for 1 kWh and the Elite 200 V2 $899 for 2.07 kWh, with 6,000-cycle ratings on the larger models. Both Elite V2 units were back in stock on Bluetti's US site on Oct 19 2026, but neither expands. For home backup the Bluetti Apex 300 ($1,599 for 2.76 kWh, 3,840 W, 120/240 V) costs far less than the EcoFlow DELTA Pro 3 ($2,799 for 4.1 kWh, 4,000 W) and expands further per unit.",
     chooseA: "Choose EcoFlow if you want a 1 kWh unit that expands later, or a warranty stated on every model (Bluetti's US page did not state one for the Apex 300).",
     chooseB: "Choose Bluetti for the lowest price per kWh and the highest cycle ratings, especially the Apex 300 for home backup.",
+    see: { slug: "anker-solix-vs-ecoflow", label: "Weighing up Anker SOLIX too? See EcoFlow vs Anker SOLIX" },
     updated: "2026-10-26",
   },
   {

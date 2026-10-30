@@ -219,7 +219,7 @@ export default async function StatePage({ params }: Props) {
           <ul className="space-y-3 max-w-3xl text-stone-700 leading-relaxed">
             <li>
               <strong className="text-ink">Latest monthly price: </strong>
-              {s.name} homes paid an average of {local.eiaLatest[0].toFixed(2)} cents per kWh in {EIA_LATEST.month}, up from{" "}
+              {s.name} homes paid an average of {local.eiaLatest[0].toFixed(2)} cents per kWh in {EIA_LATEST.month}, {local.eiaLatest[0] >= local.eiaLatest[1] ? "up" : "down"} from{" "}
               {local.eiaLatest[1].toFixed(2)} cents in {EIA_LATEST.prevMonth} (US: {EIA_LATEST.us[0].toFixed(2)} cents).{" "}
               <a href={EIA_LATEST.source.url} className="underline underline-offset-2 text-sm text-muted" rel="noopener">EIA</a>
             </li>

@@ -145,6 +145,11 @@ export default async function ComparisonPage({ params }: Props) {
           <p className="bg-white/70 rounded-xl p-4 border border-black/6">{c.chooseA}</p>
           <p className="bg-white/70 rounded-xl p-4 border border-black/6">{c.chooseB}</p>
         </div>
+        {c.see && (
+          <p className="mt-4 text-sm">
+            <Link href={`/compare/${c.see.slug}`} className="underline underline-offset-2 text-spark-orange font-medium">{c.see.label}</Link>
+          </p>
+        )}
       </section>
 
       {pairs.map(([a, b], i) => (

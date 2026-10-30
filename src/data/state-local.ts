@@ -57,7 +57,7 @@ export const STATE_LOCAL: Record<string, StateLocal> = {
     facts: [
       {
         label: "Utilities",
-        text: "ComEd and Ameren Illinois are the state's two big investor-owned electric utilities, regulated by the Illinois Commerce Commission. MidAmerican and Mt. Carmel serve smaller areas.",
+        text: "ComEd and Ameren Illinois are the state's two big investor-owned electric utilities, regulated by the Illinois Commerce Commission. The commission also lists MidAmerican and Mt. Carmel.",
         source: ICC,
       },
       {
