@@ -127,6 +127,13 @@ export default function EvChargingCostPage() {
         <MythCallout m={lite("chargers")} />
         <MythCallout m={lite("cold-range")} />
       </div>
+      <p className="mt-4 text-sm text-stone-700">
+        Not sure you want a fully electric car?{" "}
+        <Link href="/ev-or-plug-in-hybrid" className="underline text-spark-orange">
+          See whether an EV or a plug-in hybrid fits how you drive
+        </Link>
+        .
+      </p>
 
       <AffiliateDisclosure className="mt-10" />
       <HomeChargerGuide />
@@ -219,6 +226,7 @@ export default function EvChargingCostPage() {
           { href: "/questions/ev-charging", label: "Home charging questions, answered", desc: "Breakers, dryer outlets, Level 1 vs 2 and permits" },
           { href: "/ev-charger-installation-cost", label: "Charger installation cost", desc: "Average price to install in your state" },
           { href: "/calculator", label: "EV Finder", desc: "Match an electric car to your budget and driving" },
+          { href: "/ev-or-plug-in-hybrid", label: "EV or plug-in hybrid?", desc: "Which fits your charging, commute and road trips" },
           { href: "/states", label: "Energy data by state", desc: "Prices, chargers and solar output for every state" },
           { href: "/incentives", label: "EV incentives in 2026", desc: "What federal help is left, and where to find state rebates" },
           { href: "/myths", label: "EV questions, answered", desc: "Range, battery life, cold weather and more" },

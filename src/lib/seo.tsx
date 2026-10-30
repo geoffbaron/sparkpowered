@@ -119,6 +119,7 @@ export const ROUTES: { path: string; lastModified: string }[] = [
   { path: "/power-station-for-refrigerator", lastModified: "2026-10-19" },
   { path: "/best-home-ev-charger", lastModified: "2026-10-19" },
   { path: "/ev-charger-installation-cost", lastModified: "2026-10-19" },
+  { path: "/ev-or-plug-in-hybrid", lastModified: "2026-10-30" },
   { path: "/compare", lastModified: CONTENT_UPDATED },
   { path: "/states", lastModified: CONTENT_UPDATED },
   { path: "/incentives", lastModified: CONTENT_UPDATED },

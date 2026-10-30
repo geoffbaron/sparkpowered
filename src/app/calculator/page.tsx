@@ -93,6 +93,11 @@ export default function CalculatorPage() {
               <strong>Start with where you will charge.</strong> The Department of Energy says about 80% of EV
               charging happens at home. If you can plug in overnight, almost any modern EV covers daily
               driving; if you rely on public chargers, favor a car with longer range and fast DC charging.
+              {" "}Torn between an EV and a plug-in hybrid?{" "}
+              <Link href="/ev-or-plug-in-hybrid" className="underline text-spark-orange">
+                Find which fits how you drive
+              </Link>
+              .
             </p>
             <p>
               <strong>Check efficiency, not just range.</strong> Two cars with similar range can cost very
@@ -138,6 +143,7 @@ export default function CalculatorPage() {
         <RelatedLinks
           links={[
             { href: "/ev-charging-cost", label: "EV charging cost calculator", desc: "What your chosen EV costs to run in your state" },
+            { href: "/ev-or-plug-in-hybrid", label: "EV or plug-in hybrid?", desc: "A straight answer from your charging and driving" },
             { href: "/myths", label: "Myths, answered", desc: "Straight answers with sources" },
           ]}
         />
