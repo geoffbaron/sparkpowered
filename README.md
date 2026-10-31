@@ -45,5 +45,10 @@ formulas are documented on `/methodology`.
 ## Environment variables (Railway)
 
 - `ANTHROPIC_API_KEY` — daily refresh of the EV Finder list (falls back to a built-in list)
+- `ASK_SPARK_API_KEY` — Ask Spark chat at `/ask` (its own key, with a $20 monthly limit set in the Anthropic Console).
+  Unset = the chat shows its resting message and makes no API calls. In-app caps: $20 a month, $2 a day,
+  15 questions an hour and 40 a day per visitor. Spend and 30-day anonymous logs live in `ASK_SPARK_DATA_DIR`
+  (default: the Railway volume if one is attached, else `.data/ask-spark`, which resets on each deploy).
+  Review at `/admin/ask-spark`; first live check in `docs/ask-spark-eval.md`.
 - `ADMIN_PASSWORD` — `/admin` dashboard
 - `UMAMI_API_KEY` — analytics on the admin dashboard

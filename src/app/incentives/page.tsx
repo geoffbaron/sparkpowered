@@ -15,6 +15,8 @@ import IncentivesForState from "@/components/IncentivesForState";
 import { STATES, formatDate } from "@/lib/energy";
 import { stateSources } from "@/lib/state-sources";
 import { JsonLd, pageMetadata, url } from "@/lib/seo";
+import { ENDED_CREDITS as ENDED } from "@/data/incentives";
+import AskSparkCta from "@/components/AskSparkCta";
 
 const PATH = "/incentives";
 const REVIEWED = "2026-10-15";
@@ -28,15 +30,6 @@ const IRS_CAR_LOAN =
   "https://www.irs.gov/newsroom/working-families-tax-cuts-tax-deductions-for-working-americans-and-seniors";
 
 export const metadata: Metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH, type: "article" });
-
-const ENDED = [
-  { credit: "New clean vehicle credit (up to $7,500)", section: "30D", end: "Not allowed for vehicles acquired after 30 September 2025" },
-  { credit: "Used clean vehicle credit (up to $4,000)", section: "25E", end: "Not allowed for vehicles acquired after 30 September 2025" },
-  { credit: "Commercial clean vehicle credit (includes many EV leases)", section: "45W", end: "Not allowed for vehicles acquired after 30 September 2025" },
-  { credit: "EV charger / refueling property credit", section: "30C", end: "Not allowed for property placed in service after 30 June 2026" },
-  { credit: "Residential Clean Energy Credit, 30% (solar, batteries, geothermal)", section: "25D", end: "Not allowed for expenditures made after 31 December 2025" },
-  { credit: "Energy Efficient Home Improvement Credit (heat pumps, insulation, windows)", section: "25C", end: "Not allowed for property placed in service after 31 December 2025" },
-];
 
 export default function IncentivesPage() {
   const faqs = [
@@ -166,6 +159,8 @@ export default function IncentivesPage() {
           ))}
         </ul>
       </Section>
+
+      <AskSparkCta className="mb-10" />
 
       <Section title="State and utility incentives" id="states">
         <p className="text-stone-700 leading-relaxed mb-4">

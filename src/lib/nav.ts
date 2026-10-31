@@ -62,6 +62,7 @@ export const NAV_GROUPS: NavGroup[] = [
       { href: "/compare", label: "Compare" },
       { href: "/incentives", label: "Incentives" },
       { href: "/questions", label: "Questions answered" },
+      { href: "/ask", label: "Ask Spark" },
     ],
   },
 ];

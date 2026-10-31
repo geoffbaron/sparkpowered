@@ -16,6 +16,7 @@ import { lifeSummary } from "@/lib/everyday";
 import { PLANNER_STATES, TYPICAL_TOTALS, typicalPlan } from "@/lib/planner-data";
 import { fullName, productById } from "@/lib/products";
 import { GAS_CARS, homeFigures, MMBTU_PER_MCF } from "@/lib/go-electric";
+import AskSparkCta from "@/components/AskSparkCta";
 
 const TITLE = "Go Electric and Save: EV, Solar & Battery Savings by State";
 const DESCRIPTION =
@@ -175,6 +176,8 @@ export default function HomePage() {
             <p className="text-xs text-muted mt-2">*Price on the maker&apos;s US site when we checked on {formatDate(outage.retrieved)}; prices change often.</p>
           </div>
         </section>
+
+        <AskSparkCta className="mt-16" />
 
         <section aria-labelledby="myths-heading" className="mt-16">
           <h2 id="myths-heading" className="text-3xl font-extrabold text-ink">&ldquo;But I heard...&rdquo;</h2>

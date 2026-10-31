@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Breadcrumbs, PageIntro } from "@/components/content";
 import { QUESTION_COUNT, TOPICS, questionPath } from "@/data/questions";
 import { JsonLd, QUESTIONS_UPDATED_AT, pageMetadata, url } from "@/lib/seo";
+import AskSparkCta from "@/components/AskSparkCta";
 
 const PATH = "/questions";
 const TITLE = "Going Electric at Home: Questions Answered With Sources";
@@ -61,6 +62,7 @@ export default function QuestionsIndex() {
           </section>
         ))}
       </div>
+      <AskSparkCta className="mt-8" />
       <p className="mt-8 text-sm text-stone-600">
         Want your own numbers? The{" "}
         <Link href="/go-electric" className="underline underline-offset-2 hover:text-spark-orange">

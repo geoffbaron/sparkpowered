@@ -38,6 +38,13 @@ export default function PrivacyPage() {
           your browser&apos;s local storage so it persists between pages. You can clear it at any time in your
           browser settings.
         </p>
+        <p id="ask-spark">
+          <strong>Ask Spark (AI questions).</strong> When you use Ask Spark, your messages are sent to Anthropic, the company that
+          makes the AI, only to answer them. They are not used to identify you and are not sold. We keep anonymous logs of questions
+          and answers (no IP address, no names; email addresses and phone numbers are removed) for up to 30 days to improve answers,
+          then delete them. To limit misuse we count messages per visitor using a scrambled (hashed) form of your IP address that is
+          held in memory only and never stored. Please don&apos;t type personal details.
+        </p>
         <p>
           <strong>Links to other sites.</strong> When you follow a link to a publisher, manufacturer or
           installer, their privacy policy applies.
@@ -46,7 +53,7 @@ export default function PrivacyPage() {
           <strong>Changes.</strong> If we start collecting anything else, such as an email address for a
           newsletter, we will update this page first and ask for your consent where required.
         </p>
-        <p className="text-sm text-muted">Last updated 20 October 2026.</p>
+        <p className="text-sm text-muted">Last updated 31 October 2026.</p>
       </div>
     </article>
   );
