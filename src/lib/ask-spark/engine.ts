@@ -20,8 +20,12 @@ import { SITE_PAGES, catalogById } from "./knowledge";
 import { SYSTEM_PROMPT } from "./prompt";
 import { AskStore } from "./store";
 
-/** Ask Spark uses its own key (with its own spend limit in the Anthropic Console), never the site's other key. */
+/**
+ * Ask Spark prefers its own key (so it can carry its own Console spend limit) and
+ * falls back to the site's ANTHROPIC_API_KEY; the in-app caps in config.ts apply either way.
+ */
 export const KEY_ENV = "ASK_SPARK_API_KEY";
+export const FALLBACK_KEY_ENV = "ANTHROPIC_API_KEY";
 
 export type CreateMessage = (params: Anthropic.MessageCreateParamsNonStreaming) => Promise<Anthropic.Message>;
 
@@ -140,7 +144,7 @@ let liveClient: Anthropic | null = null;
 export function liveDeps(): Deps {
   liveStore ??= new AskStore();
   liveLimiter ??= new RateLimiter();
-  const key = process.env[KEY_ENV];
+  const key = process.env[KEY_ENV] || process.env[FALLBACK_KEY_ENV];
   if (!key) return { create: null, store: liveStore, limiter: liveLimiter };
   liveClient ??= new Anthropic({ apiKey: key, maxRetries: 1, timeout: 30_000 });
   const client = liveClient;

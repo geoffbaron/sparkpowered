@@ -247,11 +247,14 @@ test("with no key the chat rests and nothing is called", async () => {
   assert.equal(await status({ create: null, store }), "resting");
   const { liveDeps } = await import("../src/lib/ask-spark/engine");
   const saved = process.env.ASK_SPARK_API_KEY;
+  const savedSite = process.env.ANTHROPIC_API_KEY;
   delete process.env.ASK_SPARK_API_KEY;
+  delete process.env.ANTHROPIC_API_KEY;
   try {
     assert.equal(liveDeps().create, null);
   } finally {
     if (saved !== undefined) process.env.ASK_SPARK_API_KEY = saved;
+    if (savedSite !== undefined) process.env.ANTHROPIC_API_KEY = savedSite;
   }
 });
 
