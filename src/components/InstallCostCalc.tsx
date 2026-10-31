@@ -134,7 +134,7 @@ export default function InstallCostCalc({
         </ul>
         {charger.brand && (
           <div className="mt-4">
-            <PartnerLink brand={charger.brand} productId={charger.id} productUrl={charger.url} className="btn btn-primary btn-sm">
+            <PartnerLink brand={charger.brand} productId={charger.id} productUrl={charger.url} className="btn btn-primary btn-sm" disclose>
               Check the charger price
             </PartnerLink>
           </div>

@@ -12,6 +12,9 @@ import { DISCLOSURE_TEXT, partnerUrl, solarQuotesUrl, type BrandId } from "@/dat
 
 export const PARTNER_REL = "sponsored nofollow noopener";
 
+/** Short note shown right next to a product link (`disclose` on PartnerLink). */
+export const LINK_DISCLOSURE = "We earn a commission if you buy through this link.";
+
 export function PartnerLink({
   brand,
   productId,
@@ -20,6 +23,7 @@ export function PartnerLink({
   children,
   className,
   variant = "text",
+  disclose = false,
 }: {
   brand: BrandId;
   productId?: string;
@@ -28,13 +32,15 @@ export function PartnerLink({
   children: React.ReactNode;
   className?: string;
   variant?: "text" | "button";
+  /** Also render the commission note right after the link. */
+  disclose?: boolean;
 }) {
   const link = partnerUrl(brand, { productId, productUrl, category });
   const cls =
     variant === "button"
       ? "inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-spark-yellow to-spark-orange text-white text-sm font-bold shadow hover:shadow-md transition-shadow"
       : "underline underline-offset-2 text-spark-orange hover:text-spark-amber";
-  return (
+  const anchor = (
     <a
       href={link.href}
       target="_blank"
@@ -51,6 +57,15 @@ export function PartnerLink({
       )}
       <span className="sr-only"> (opens in a new tab)</span>
     </a>
+  );
+  if (!disclose) return anchor;
+  return (
+    <>
+      {anchor}{" "}
+      <span className="text-xs text-muted font-normal" data-testid="product-disclosure">
+        {LINK_DISCLOSURE}
+      </span>
+    </>
   );
 }
 

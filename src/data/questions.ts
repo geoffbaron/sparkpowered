@@ -58,7 +58,7 @@ export interface Source {
 
 /** A product we link to as a partner (rendered with PartnerLink + disclosure). */
 export interface Pick {
-  brand: "bluetti" | "lectron" | "autel" | "redodo" | "litime";
+  brand: "bluetti" | "lectron" | "autel" | "eviqo" | "redodo" | "litime";
   label: string;
   url: string;
   productId?: string;
@@ -145,6 +145,7 @@ const S = {
   lectron: { name: "Lectron NEXUS Level 2 J1772 charger, product page", url: chargerById("lectron-nexus-j1772").url },
   lectronPortable: { name: "Lectron portable Level 1 & 2 charger (Tesla / NACS), product page", url: chargerById("lectron-portable-nacs").url },
   autel40: { name: "Autel MaxiCharger AC Elite Home 40A, product page", url: chargerById("autel-elite-home-40a").url },
+  eviqo: { name: "EVIQO Level 2 J1772 charger (plug-in 40A or hardwired 48A), product page", url: chargerById("eviqo-l2-j1772").url },
   installCost: { name: "EnergySage: How much does an EV charger installation cost?", url: INSTALL_COST.url },
   cpsc: { name: "U.S. Consumer Product Safety Commission: Portable generator hazards safety alert (PDF)", url: "https://www.cpsc.gov/s3fs-public/5123_SafetyAlert_PortableGenerators_102021_0.pdf?VersionId=PK4zcSnKUJE8ovzbCGV09MM5.RBIG_E5" },
   osha: { name: "OSHA: Using portable generators safely (PDF)", url: "https://www.osha.gov/sites/default/files/publications/OSHA3286.pdf" },
@@ -234,6 +235,7 @@ const HEATER_W = 1500;
 
 const lectron = chargerById("lectron-nexus-j1772");
 const autel40 = chargerById("autel-elite-home-40a");
+const eviqo = chargerById("eviqo-l2-j1772");
 
 const m55 = MOTORS.find((m) => m.id === "55-12")!;
 const redodo100 = BATTERIES.find((b) => b.id === "redodo-12v-100ah")!;
@@ -629,11 +631,12 @@ export const TOPICS: Topic[] = [
           { p: "ChargePoint allows plug-in installs only on 40-amp and 50-amp circuits (32 or 40 amps of charging) and does not recommend a GFCI breaker with its Home Flex, because the charger has its own charging circuit interrupting device." },
           { p: `Both Lectron's NEXUS (${usd2(lectron.priceUsd)}) and Autel's MaxiCharger AC Elite Home 40A (${usd0(autel40.priceUsd)}), both on the makers' sites on October 25, 2026, plug into a 14-50; Autel's 50-amp version is hardwired.` },
         ],
-        sources: [S.chargepoint, S.chargepointTips, S.autel40, S.installCost, S.lectron],
+        sources: [S.chargepoint, S.chargepointTips, S.autel40, S.installCost, S.lectron, S.eviqo],
         tools: [{ href: "/ev-charger-picker", label: "Which charger do I need? 1-minute picker" }, { href: "/best-home-ev-charger", label: "Plug-in and hardwired chargers compared" }],
         picks: [
           { brand: "lectron", label: "Lectron NEXUS 40A", url: lectron.url, note: "NEMA 14-50 plug-in, J1772 or Tesla plug" },
           { brand: "autel", label: "Autel MaxiCharger 40A", url: autel40.url, note: "NEMA 14-50 plug-in with app scheduling" },
+          { brand: "eviqo", label: `EVIQO Level 2 (${usd0(eviqo.priceUsd)} on October 31, 2026)`, url: eviqo.url, note: "Either way: NEMA 14-50 plug-in at 40 A, or hardwired at 48 A; app scheduling" },
         ],
       },
       {

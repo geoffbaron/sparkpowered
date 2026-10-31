@@ -223,7 +223,7 @@ export default function EvOrPhevPage() {
         <RelatedLinks
           links={[
             { href: "/ev-charging-cost", label: "EV charging cost calculator", desc: "What any EV costs to charge at home in your state" },
-            { href: "/best-home-ev-charger", label: "Best home EV charger", desc: "Lectron, Autel, Tesla and more compared" },
+            { href: "/best-home-ev-charger", label: "Best home EV charger", desc: "EVIQO, Lectron, Autel, Tesla and more compared" },
             { href: "/calculator", label: "EV Finder", desc: "Match an electric car to your budget and driving" },
             { href: "/myths", label: "EV questions, answered", desc: "Range, battery life, cold weather and more" },
             { href: "/incentives", label: "EV incentives in 2026", desc: "What federal help is left, and where to find state rebates" },

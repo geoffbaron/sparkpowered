@@ -4,7 +4,7 @@ import { AffiliateDisclosure } from "@/components/affiliate";
 import { Breadcrumbs, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
 import EvChargerPicker from "@/components/EvChargerPicker";
 import { INSTALL_COST } from "@/data/buyer-guides";
-import { HOME_CHARGERS, chargerById } from "@/data/chargers";
+import { HOME_CHARGERS, brandName, chargerById } from "@/data/chargers";
 import { formatDate, referenceEv } from "@/lib/energy";
 import { circuitFor, kwAt, LEVEL1_KW, milesPerHour, OVERNIGHT_HOURS } from "@/lib/ev-charger-picker";
 import { pickerData } from "@/lib/ev-charger-picker-data";
@@ -32,6 +32,8 @@ export default function EvChargerPickerPage() {
   const mph40 = Math.round(milesPerHour(kwAt(40), typical.kwhPer100mi));
   const lj = chargerById("lectron-nexus-j1772");
   const a40 = chargerById("autel-elite-home-40a");
+  const ej = chargerById("eviqo-l2-j1772");
+  const en = chargerById("eviqo-nacs-40a");
 
   const faqs = [
     {
@@ -89,13 +91,14 @@ export default function EvChargerPickerPage() {
             </p>
             <p>
               <strong>Which charger:</strong> we only link chargers from brands we have checked and partner with ({HOME_CHARGERS.length} models
-              from Lectron and Autel, prices read from their US sites on {formatDate(lj.retrieved)}). When none of them fits your answers, the
+              from Lectron, Autel and EVIQO, prices read from their US sites on {formatDate(lj.retrieved)}). When none of them fits your answers, the
               picker tells you the spec to look for and links nothing. For more brands, including Grizzl-E, Emporia, ChargePoint and Tesla, see
               the <Link href="/best-home-ev-charger#compare" className="underline underline-offset-2 text-spark-orange">full comparison</Link>.
             </p>
             <p>
-              <strong>Smart scheduling:</strong> the Autel ({money(a40.priceUsd)}) has an app that charges only in your utility&apos;s cheaper
-              hours. <Link href="/ev-charging-cost" className="underline underline-offset-2 text-spark-orange">See what home charging costs in your state</Link>.
+              <strong>Smart scheduling:</strong> EVIQO&apos;s chargers (J1772 {money(ej.priceUsd)}, Tesla / NACS {money(en.priceUsd)}) and the
+              Autel ({money(a40.priceUsd)}) have an app that charges only in your utility&apos;s cheaper hours. We rank them by price and
+              spec; which brand pays us more never changes the order. <Link href="/ev-charging-cost" className="underline underline-offset-2 text-spark-orange">See what home charging costs in your state</Link>.
             </p>
           </div>
         </Section>
@@ -115,7 +118,7 @@ export default function EvChargerPickerPage() {
             { name: "Joint Office of Energy and Transportation: J3400 (NACS) charging connector", url: "https://driveelectric.gov/charging-connector" },
             { name: INSTALL_COST.source, url: INSTALL_COST.url, detail: `checked ${formatDate(INSTALL_COST.retrieved)}` },
             { name: "IRS: FAQs on modification of sections 25C, 25D, 25E, 30C, 30D, 45L, 45W and 179D (Public Law 119-21)", url: IRS_FAQ_URL, detail: "30C not allowed for property placed in service after June 30, 2026" },
-            ...HOME_CHARGERS.map((c) => ({ name: `${c.brand === "lectron" ? "Lectron" : "Autel"} ${c.name} product page`, url: c.sourceUrl, detail: `checked ${formatDate(c.retrieved)}` })),
+            ...HOME_CHARGERS.map((c) => ({ name: `${brandName(c)} ${c.name} product page`, url: c.sourceUrl, detail: `checked ${formatDate(c.retrieved)}` })),
           ]}
         />
         <RelatedLinks

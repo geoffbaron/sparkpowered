@@ -32,6 +32,7 @@ export type BrandId =
   | "lectron"
   | "redodo"
   | "autel"
+  | "eviqo"
   | "piscifun"
   | "litime"
   | "energysage"
@@ -70,6 +71,11 @@ export interface BrandAffiliate {
   links?: { home?: string; battery?: string; solar?: string };
   /** Deep-link template containing `{url}`; wraps any product page URL. */
   deepLink?: string;
+  /**
+   * Query parameter the brand's own affiliate script reads (e.g. GoAffPro's
+   * "ref=CODE"). Appended to any product URL on the brand's own site.
+   */
+  refParam?: string;
   /** Per-product tracked links, keyed by product id from src/data/products.ts. */
   productLinks?: Record<string, string>;
   /**
@@ -160,6 +166,20 @@ export const AFFILIATES: Record<BrandId, BrandAffiliate> = {
     links: { home: "https://www.awin1.com/cread.php?awinmid=72577&awinaffid=3125360&ued=https%3A%2F%2Fautelenergy.us%2F" },
     deepLink: "https://www.awin1.com/cread.php?awinmid=72577&awinaffid=3125360&ued={url}",
   },
+  // Approved Oct 31 2026 on GoAffPro (EVIQO, portal partners.eviqo.io), ref code zycwdczj.
+  // Program terms: 10% (12% at 50+ sales a month, 14% at 101+), 60-day cookie, PayPal payouts.
+  // Tracking is the store's own GoAffPro script reading ?ref= on any eviqo.io page
+  // (checked Oct 31 2026: product pages load with the parameter and the GoAffPro loader).
+  eviqo: {
+    name: "EVIQO",
+    homeUrl: "https://eviqo.io/",
+    tracked: true,
+    network: "GoAffPro",
+    commission: "10% (12% at 50+ sales a month, 14% at 101+)",
+    cookieDays: 60,
+    links: { home: "https://eviqo.io/?ref=zycwdczj" },
+    refParam: "ref=zycwdczj",
+  },
   // Joined Oct 20 2026 on Awin (Piscifun, MID 89509, from the Awin invitation email) for
   // publisher 3125360. Invitation states 10% commission and a 30-day cookie. Fishing
   // gear; used only for a short "rounding out the boat" note on the trolling page.
@@ -237,6 +257,7 @@ export function partnerUrl(
   if (a.tracked) {
     // Best: a tracked link straight to the product.
     if (productId && a.productLinks?.[productId]) return { href: a.productLinks[productId], tracked: true };
+    if (productUrl && a.refParam) return { href: `${productUrl}${productUrl.includes("?") ? "&" : "?"}${a.refParam}`, tracked: true };
     if (productUrl && a.deepLink) return { href: a.deepLink.replace("{url}", encodeURIComponent(productUrl)), tracked: true };
     // Next: the tracked category page (e.g. the brand's power station range).
     if (categoryLink) return { href: categoryLink, tracked: true };

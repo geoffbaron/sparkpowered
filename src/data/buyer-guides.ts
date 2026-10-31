@@ -12,7 +12,7 @@ export const GUIDES_CHECKED = "2026-10-19";
 
 /**
  * Home chargers from brands that are not our partners. They get plain links
- * (no tracking). Partner chargers (Lectron, Autel) live in src/data/chargers.ts.
+ * (no tracking). Partner chargers (Lectron, Autel, EVIQO) live in src/data/chargers.ts.
  */
 export interface OtherCharger {
   id: string;

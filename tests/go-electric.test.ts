@@ -60,11 +60,21 @@ test("every myth has a short answer, a verdict and https sources", () => {
   }
 });
 
-test("home chargers are sourced, dated and use tracked Lectron and Autel links", () => {
+test("home chargers are sourced, dated and use tracked Lectron, Autel and EVIQO links", () => {
   for (const c of HOME_CHARGERS) {
     assert.ok(isHttps(c.url) && isHttps(c.sourceUrl) && /^\d{4}-\d{2}-\d{2}$/.test(c.retrieved), c.id);
     const link = partnerUrl(c.brand, { productId: c.id, productUrl: c.url });
-    assert.ok(link.tracked && link.href.startsWith("https://www.awin1.com/"), c.id);
+    if (c.brand === "eviqo") assert.ok(link.tracked && link.href === `${c.url}?ref=zycwdczj`, c.id);
+    else assert.ok(link.tracked && link.href.startsWith("https://www.awin1.com/"), c.id);
+  }
+  // EVIQO: GoAffPro ref code on the brand's own product pages, home link too.
+  assert.equal(AFFILIATES.eviqo.tracked, true);
+  assert.equal(AFFILIATES.eviqo.links?.home, "https://eviqo.io/?ref=zycwdczj");
+  const eviqo = HOME_CHARGERS.filter((c) => c.brand === "eviqo");
+  assert.ok(eviqo.some((c) => c.plug === "J1772") && eviqo.some((c) => c.plug === "NACS"));
+  for (const c of eviqo) {
+    assert.ok(c.url.startsWith("https://eviqo.io/products/") && !c.url.includes("?"), c.id);
+    assert.ok(c.priceUsd > 0 && c.cableFt === 25 && c.warrantyYears === 3 && c.scheduling, c.id);
   }
   assert.equal(AFFILIATES.lectron.tracked, true);
   assert.equal(AFFILIATES.autel.tracked, true);

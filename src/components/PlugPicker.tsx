@@ -54,7 +54,7 @@ export default function PlugPicker({ recs, notes }: { recs: Record<Car, PlugRec[
               <p className="text-sm text-stone-700">{r.why}</p>
               <div className="mt-2">
                 {r.brand ? (
-                  <PartnerLink brand={r.brand} productId={r.id} productUrl={r.url} className={i === 0 ? "btn btn-primary btn-sm" : "btn btn-outline btn-sm"}>
+                  <PartnerLink brand={r.brand} productId={r.id} productUrl={r.url} className={i === 0 ? "btn btn-primary btn-sm" : "btn btn-outline btn-sm"} disclose>
                     Check price
                   </PartnerLink>
                 ) : (

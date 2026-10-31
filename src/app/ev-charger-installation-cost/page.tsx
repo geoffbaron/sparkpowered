@@ -6,7 +6,7 @@ import { PlainLink, QuickAnswer } from "@/components/guide-ui";
 import InstallCostCalc, { type ChargerChoice } from "@/components/InstallCostCalc";
 import { BigStat, HubHero, PhotoCredit } from "@/components/ui";
 import { INSTALL_COST, OTHER_CHARGERS } from "@/data/buyer-guides";
-import { chargerById } from "@/data/chargers";
+import { brandName, chargerById } from "@/data/chargers";
 import { MONTHLY_MILES, NATIONAL, STATES, evCostPer100, formatDate, gasCostPer100, nationalRateUsd, referenceEv } from "@/lib/energy";
 import { money } from "@/lib/products";
 import { pageMetadata } from "@/lib/seo";
@@ -23,6 +23,9 @@ export default function InstallCostPage() {
   const lj = chargerById("lectron-nexus-j1772");
   const ln = chargerById("lectron-nexus-nacs");
   const a40 = chargerById("autel-elite-home-40a");
+  // Our pick: the lowest-priced charger we found (see /best-home-ev-charger).
+  const ej = chargerById("eviqo-l2-j1772");
+  const en = chargerById("eviqo-nacs-40a");
   const grizzle = OTHER_CHARGERS.find((x) => x.id === "grizzle-classic-40a")!;
   const tesla = OTHER_CHARGERS.find((x) => x.id === "tesla-wall-connector")!;
 
@@ -33,12 +36,15 @@ export default function InstallCostPage() {
 
   const typical = referenceEv("typical");
   const yearSaving = ((gasCostPer100(NATIONAL.gasolineUsdPerGallon) - evCostPer100(nationalRateUsd(), typical.kwhPer100mi)) * MONTHLY_MILES * 12) / 100;
-  const allIn = c.usAverage + lj.priceUsd;
+  const allIn = c.usAverage + ej.priceUsd;
+  const cheapestCharger = Math.min(ej.priceUsd, grizzle.priceUsd);
   const payback = allIn / yearSaving;
 
   const chargers: ChargerChoice[] = [
+    { id: ej.id, label: "EVIQO Level 2 40A plug-in / 48A hardwired (J1772), app scheduling", priceUsd: ej.priceUsd, brand: "eviqo", url: ej.url },
     { id: lj.id, label: "Lectron NEXUS 40A (J1772)", priceUsd: lj.priceUsd, brand: "lectron", url: lj.url },
     { id: ln.id, label: "Lectron NEXUS 40A (Tesla / NACS)", priceUsd: ln.priceUsd, brand: "lectron", url: ln.url },
+    { id: en.id, label: "EVIQO NACS 40A (Tesla / NACS), app scheduling", priceUsd: en.priceUsd, brand: "eviqo", url: en.url },
     { id: a40.id, label: "Autel MaxiCharger 40A, app scheduling", priceUsd: a40.priceUsd, brand: "autel", url: a40.url },
     { id: grizzle.id, label: "Grizzl-E Classic 40A, no app", priceUsd: grizzle.priceUsd, brand: null, url: grizzle.url },
     { id: tesla.id, label: "Tesla Wall Connector 48A", priceUsd: tesla.priceUsd, brand: null, url: tesla.url },
@@ -47,7 +53,7 @@ export default function InstallCostPage() {
   const faqs = [
     {
       q: "How much does it cost to install a home EV charger?",
-      a: `Qmerit's 2026 data, published by EnergySage, puts the US average installation price at ${money(c.usAverage)} for labor and materials, not counting the charger, and the typical range at ${money(c.typicalRange[0])} to ${money(c.typicalRange[1])}. Add ${money(grizzle.priceUsd)} to about ${money(tesla.priceUsd)} for a Level 2 charger. If you already have a 240-volt outlet where you park, a plug-in charger costs nothing to install.`,
+      a: `Qmerit's 2026 data, published by EnergySage, puts the US average installation price at ${money(c.usAverage)} for labor and materials, not counting the charger, and the typical range at ${money(c.typicalRange[0])} to ${money(c.typicalRange[1])}. Add ${money(cheapestCharger)} to about ${money(tesla.priceUsd)} for a Level 2 charger. If you already have a 240-volt outlet where you park, a plug-in charger costs nothing to install.`,
     },
     {
       q: "What makes EV charger installation expensive?",
@@ -79,7 +85,7 @@ export default function InstallCostPage() {
         title={<>About {money(allIn)} all in. <span className="text-amber-300">Paid back in about {Math.round(payback * 2) / 2} years of skipped gas.</span></>}
         sub={
           <>
-            The average home charger installation costs {money(c.usAverage)} in 2026, plus about {money(lj.priceUsd)} for the charger.
+            The average home charger installation costs {money(c.usAverage)} in 2026, plus about {money(ej.priceUsd)} for the charger.
             Charging at home instead of buying gas saves about {money(Math.round(yearSaving))} a year. Here is your state&apos;s number.
           </>
         }
@@ -96,7 +102,9 @@ export default function InstallCostPage() {
           <p>
             <strong>Average: {money(c.usAverage)} to install</strong> (labor and materials, Qmerit 2026 via EnergySage), from{" "}
             {money(cheapest.avg)} in {cheapest.name} to {money(dearest.avg)} in {dearest.name}. Plus the charger: our pick, the{" "}
-            <PartnerLink brand="lectron" productId={lj.id} productUrl={lj.url}>Lectron NEXUS</PartnerLink>, was {money(lj.priceUsd)}.
+            <PartnerLink brand="eviqo" productId={ej.id} productUrl={ej.url} disclose>EVIQO Level 2</PartnerLink>, was {money(ej.priceUsd)}{" "}
+            when we checked. For a Tesla, the{" "}
+            <PartnerLink brand="lectron" productId={ln.id} productUrl={ln.url} disclose>Lectron NEXUS NACS</PartnerLink> was {money(ln.priceUsd)}.
           </p>
           <p>
             <strong>Already have a 240-volt outlet in the garage?</strong> A plug-in charger installs for $0.{" "}
@@ -137,7 +145,7 @@ export default function InstallCostPage() {
               </thead>
               <tbody>
                 {[
-                  ["Level 2 charger", `${money(grizzle.priceUsd)} to ${money(tesla.priceUsd)} (our table)`],
+                  ["Level 2 charger", `${money(cheapestCharger)} to ${money(tesla.priceUsd)} (our table)`],
                   ["Installation, standard job", `${money(c.typicalRange[0])} to ${money(c.typicalRange[1])}`],
                   ["New 240-volt circuit (parts)", `${money(c.newCircuit[0])} to ${money(c.newCircuit[1])}`],
                   ["Permit", `${money(c.permit[0])} to ${money(c.permit[1])}`],
@@ -167,7 +175,7 @@ export default function InstallCostPage() {
                 <tr>
                   <th scope="col" className="p-3 font-semibold">State</th>
                   <th scope="col" className="p-3 font-semibold text-right">Average installation</th>
-                  <th scope="col" className="p-3 font-semibold text-right">With a {money(lj.priceUsd)} charger</th>
+                  <th scope="col" className="p-3 font-semibold text-right">With a {money(ej.priceUsd)} charger</th>
                 </tr>
               </thead>
               <tbody>
@@ -177,7 +185,7 @@ export default function InstallCostPage() {
                       <Link href={`/states/${s.slug}`} className="underline underline-offset-2 hover:text-spark-orange">{s.name}</Link>
                     </th>
                     <td className="p-3 text-right tabular-nums">{money(s.avg)}</td>
-                    <td className="p-3 text-right tabular-nums">{money(s.avg + lj.priceUsd)}</td>
+                    <td className="p-3 text-right tabular-nums">{money(s.avg + ej.priceUsd)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -217,7 +225,7 @@ export default function InstallCostPage() {
           items={[
             { name: c.source, url: c.url, detail: `checked ${formatDate(c.retrieved)}` },
             { name: "IRS: FAQs on modification of sections 25C, 25D, 25E, 30C, 30D, 45L, 45W and 179D (Public Law 119-21)", url: "https://www.irs.gov/newsroom/faqs-for-modification-of-sections-25c-25d-25e-30c-30d-45l-45w-and-179d-under-public-law-119-21-139-stat-72-july-4-2025-commonly-known-as-the-one-big-beautiful-bill-act-obbb", detail: "not allowed for property placed in service after June 30, 2026" },
-            { name: `Lectron ${lj.name} product page`, url: lj.sourceUrl, detail: `checked ${formatDate(lj.retrieved)}` },
+            ...[ej, en, lj, ln].map((x) => ({ name: `${brandName(x)} ${x.name} product page`, url: x.sourceUrl, detail: `checked ${formatDate(x.retrieved)}` })),
             { name: `Autel ${a40.name} product page`, url: a40.sourceUrl, detail: `checked ${formatDate(a40.retrieved)}` },
             { name: `${grizzle.name} product page`, url: grizzle.url, detail: `checked ${formatDate(grizzle.retrieved)}` },
             { name: `${tesla.name} product page`, url: tesla.url, detail: `checked ${formatDate(tesla.retrieved)}` },
@@ -225,7 +233,7 @@ export default function InstallCostPage() {
         />
         <RelatedLinks
           links={[
-            { href: "/best-home-ev-charger", label: "Best home EV charger", desc: "Lectron, Autel, Tesla and more compared" },
+            { href: "/best-home-ev-charger", label: "Best home EV charger", desc: "EVIQO, Lectron, Autel, Tesla and more compared" },
             { href: "/ev-charging-cost", label: "EV charging cost calculator", desc: "What charging costs in your state vs gas" },
             { href: "/incentives", label: "2026 incentives", desc: "What federal help is left and where to find rebates" },
             { href: "/states", label: "All state data", desc: "Electricity prices and charging costs by state" },

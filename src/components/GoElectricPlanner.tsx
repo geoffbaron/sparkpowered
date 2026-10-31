@@ -422,11 +422,11 @@ function SwitchCard({
                 <Link href="/calculator" className="btn btn-primary btn-sm">
                   Find an EV that fits
                 </Link>
-                <PartnerLink brand={chargerPick.brand} productId={chargerPick.id} productUrl={chargerPick.url} className="btn btn-outline btn-sm">
-                  Home charger, {money(chargerPick.priceUsd)} (sponsored)
+                <PartnerLink brand={chargerPick.brand} productId={chargerPick.id} productUrl={chargerPick.url} className="btn btn-outline btn-sm" disclose>
+                  Home charger with off-peak scheduling, {money(chargerPick.priceUsd)} (sponsored)
                 </PartnerLink>
-                <PartnerLink brand={smartChargerPick.brand} productId={smartChargerPick.id} productUrl={smartChargerPick.url} className="btn btn-outline btn-sm">
-                  Smart charger for off-peak rates, {money(smartChargerPick.priceUsd)} (sponsored)
+                <PartnerLink brand={smartChargerPick.brand} productId={smartChargerPick.id} productUrl={smartChargerPick.url} className="btn btn-outline btn-sm" disclose>
+                  Tesla / NACS charger, {money(smartChargerPick.priceUsd)} (sponsored)
                 </PartnerLink>
                 <Link href="/ev-charger-picker" className="font-semibold text-spark-orange underline underline-offset-2">
                   Which charger do I need?

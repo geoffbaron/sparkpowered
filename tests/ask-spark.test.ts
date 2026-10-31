@@ -187,12 +187,18 @@ test("product list is only tracked partner links from the site's own data, never
   assert.ok(CATALOG.length >= 8);
   for (const p of CATALOG) {
     assert.doesNotMatch(p.href, /amazon|amzn/i);
-    assert.match(p.href, /awin1\.com|linksynergy\.com/, `${p.id} link is not tracked`);
+    assert.match(p.href, /awin1\.com|linksynergy\.com|^https:\/\/eviqo\.io\/products\/[^?]+\?ref=zycwdczj$/, `${p.id} link is not tracked`);
     assert.ok(SITE_PAGES.has(p.page), p.page);
     if (p.priceText) assert.match(p.priceText, /^\$[\d,]+(\.\d{2})? on .+'s US site \(checked [A-Z][a-z]{2} \d{1,2}, \d{4}\)$/);
   }
   assert.ok(catalogById("bluetti-elite-100-v2"));
   assert.ok(catalogById("lectron-nexus-j1772"));
+  for (const id of ["eviqo-l2-j1772", "eviqo-nacs-40a", "eviqo-nacs-hardwired-48a"]) {
+    const e = catalogById(id);
+    assert.ok(e, id);
+    assert.match(e!.href, /\?ref=zycwdczj$/, id);
+    assert.equal(e!.page, "/best-home-ev-charger");
+  }
   assert.ok(catalogById("redodo-12v-100ah"));
   assert.equal(catalogById("jackery-explorer-1000-v2"), undefined, "untracked brands are not offered");
 });

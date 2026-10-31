@@ -8,7 +8,7 @@ import { Breadcrumbs, Disclaimer, Faq } from "@/components/content";
 import { Photo } from "@/components/ui";
 import { solarQuotesUrl } from "@/data/affiliates";
 import { lite } from "@/data/myths";
-import { chargerById } from "@/data/chargers";
+import { brandName, chargerById } from "@/data/chargers";
 import { DATA_UPDATED, SOURCES, formatDate } from "@/lib/energy";
 import { lifeSummary } from "@/lib/everyday";
 import { ASSUMPTIONS } from "@/lib/go-electric";
@@ -27,8 +27,9 @@ export const metadata: Metadata = pageMetadata({ title: TITLE, description: DESC
 
 export default function GoElectricPage() {
   const outage = productById("ecoflow-delta-3-max");
-  const charger = chargerById("lectron-nexus-j1772");
-  const smartCharger = chargerById("autel-elite-home-40a");
+  // Lowest-priced charger we carry (J1772, with app scheduling), and the lowest-priced NACS one.
+  const charger = chargerById("eviqo-l2-j1772");
+  const smartCharger = chargerById("lectron-nexus-nacs");
   const life = lifeSummary(outage.capacityWh);
   const oh = typicalPlan("OH");
   const totals = Object.values(TYPICAL_TOTALS);
@@ -72,7 +73,7 @@ export default function GoElectricPage() {
     chargerPick: {
             id: charger.id,
             brand: charger.brand,
-            name: `Lectron ${charger.name}`,
+            name: `${brandName(charger)} ${charger.name}`,
             url: charger.url,
             priceUsd: charger.priceUsd,
             life: "",
@@ -80,7 +81,7 @@ export default function GoElectricPage() {
     smartChargerPick: {
             id: smartCharger.id,
             brand: smartCharger.brand,
-            name: `Autel ${smartCharger.name}`,
+            name: `${brandName(smartCharger)} ${smartCharger.name}`,
             url: smartCharger.url,
             priceUsd: smartCharger.priceUsd,
             life: "",

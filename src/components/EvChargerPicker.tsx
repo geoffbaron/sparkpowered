@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { PartnerLink } from "@/components/affiliate";
 import { pillClass } from "@/components/guide-ui";
+import { brandName } from "@/data/chargers";
 import { useChooseState, useVisitorState } from "@/hooks/useVisitorState";
 import { NATIONAL_CHOICE } from "@/lib/visitor-state";
 import {
@@ -275,15 +276,15 @@ export default function EvChargerPicker({ data }: { data: PickerData }) {
                 {res.products.map(({ charger: c, why, setTo }, i) => (
                   <li key={c.id} className={`rounded-2xl border p-4 ${i === 0 ? "border-amber-300 bg-gradient-to-br from-amber-50 to-orange-50" : "border-black/10"}`}>
                     <p className="font-extrabold text-ink">
-                      {c.brand === "lectron" ? "Lectron" : "Autel"} {c.name}{" "}
-                      <span className="text-sm font-semibold text-muted whitespace-nowrap">{money(c.priceUsd)} on {c.brand === "lectron" ? "Lectron's" : "Autel's"} site, {shortDate(c.retrieved)}</span>
+                      {brandName(c)} {c.name}{" "}
+                      <span className="text-sm font-semibold text-muted whitespace-nowrap">{money(c.priceUsd)} on {brandName(c)}&apos;s site, {shortDate(c.retrieved)}</span>
                     </p>
                     <p className="text-sm text-stone-700 mt-1">{why}</p>
                     {setTo && <p className="text-sm text-stone-700 mt-1">Have the electrician set it to {setTo} amps.</p>}
                     <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1">
                       <span onClick={() => track("ev_picker_product_click", { product: c.id })}>
                         <PartnerLink brand={c.brand} productId={c.id} productUrl={c.url} className={i === 0 ? "btn btn-primary btn-sm" : "btn btn-outline btn-sm"}>
-                          Check price at {c.brand === "lectron" ? "Lectron" : "Autel"}
+                          Check price at {brandName(c)}
                         </PartnerLink>
                       </span>
                       <span className="text-xs text-muted" data-testid="product-disclosure">We earn a commission if you buy through this link.</span>

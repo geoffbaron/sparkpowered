@@ -63,6 +63,7 @@ export function OurPick({
   cta = "Check price",
   moreHref,
   moreLabel,
+  disclose = false,
 }: {
   label: string;
   name: string;
@@ -79,6 +80,8 @@ export function OurPick({
   cta?: string;
   moreHref?: string;
   moreLabel?: string;
+  /** Show the commission note right next to the button. */
+  disclose?: boolean;
 }) {
   return (
     <article className="rounded-3xl bg-white border border-black/10 shadow-sm overflow-hidden grid sm:grid-cols-[10rem_1fr]">
@@ -108,7 +111,7 @@ export function OurPick({
           ) : (
             priceNote && <span className="text-sm text-muted">{priceNote}</span>
           )}
-          <PartnerLink brand={brand} productId={productId} productUrl={productUrl} category={category} className="btn btn-primary">
+          <PartnerLink brand={brand} productId={productId} productUrl={productUrl} category={category} className="btn btn-primary" disclose={disclose}>
             {cta}
           </PartnerLink>
           {moreHref && (

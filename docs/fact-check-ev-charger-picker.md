@@ -30,3 +30,5 @@ Code: src/lib/ev-charger-picker.ts (logic), src/lib/ev-charger-picker-data.ts (d
 
 Not claimed (deliberately): specific NACS car models, wiring steps, utility rebate amounts, any brand we have no checked page for.
 Disclosure: "We earn a commission if you buy through this link." sits next to every product link (unit test + e2e check), plus the site-wide disclosure box above the picker.
+
+Update Oct 31 2026: EVIQO added as a third brand (J1772 and NACS, plug-in and hardwired). Specs, prices, sources and how it is ranked: docs/fact-check-eviqo.md. The "hardwired NACS -> spec only" answer now links the EVIQO NACS 48 A hardwired charger.

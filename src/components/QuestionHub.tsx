@@ -102,7 +102,7 @@ export function QuestionAnswer({ q, redodo }: { q: Question; redodo: boolean }) 
         <ul className="mt-5 grid sm:grid-cols-2 gap-3">
           {q.picks.map((p) => (
             <li key={p.label} className="rounded-xl border border-black/8 bg-surface p-4">
-              <PartnerLink brand={p.brand} productId={p.productId} productUrl={p.url} className="font-semibold underline underline-offset-2 text-spark-orange hover:text-spark-amber">
+              <PartnerLink brand={p.brand} productId={p.productId} productUrl={p.url} className="font-semibold underline underline-offset-2 text-spark-orange hover:text-spark-amber" disclose>
                 {p.label}
               </PartnerLink>
               <span className="block text-sm text-muted mt-1">{p.note}</span>

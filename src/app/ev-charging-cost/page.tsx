@@ -224,7 +224,7 @@ export default function EvChargingCostPage() {
       />
       <RelatedLinks
         links={[
-          { href: "/best-home-ev-charger", label: "Best home EV charger", desc: "Lectron, Autel, Tesla and more compared" },
+          { href: "/best-home-ev-charger", label: "Best home EV charger", desc: "EVIQO, Lectron, Autel, Tesla and more compared" },
           { href: "/questions/ev-charging", label: "Home charging questions, answered", desc: "Breakers, dryer outlets, Level 1 vs 2 and permits" },
           { href: "/ev-charger-installation-cost", label: "Charger installation cost", desc: "Average price to install in your state" },
           { href: "/calculator", label: "EV Finder", desc: "Match an electric car to your budget and driving" },

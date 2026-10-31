@@ -15,27 +15,41 @@ test("125% rule: breaker sizes", () => {
   assert.deepEqual([24, 32, 40, 48].map(circuitFor), [30, 40, 50, 60]);
 });
 
-test("Tesla with an existing 14-50: 40 A plug-in NACS, Lectron, $0 install", () => {
+test("Tesla with an existing 14-50: 40 A plug-in NACS, cheaper Lectron first, EVIQO (app) second, $0 install", () => {
   const r = run({ plug: "tesla", power: "outlet1450", dailyMiles: 40 });
   assert.equal(r.connector, "NACS");
   assert.equal(r.amps, 40);
   assert.equal(r.circuitAmps, 50);
   assert.equal(r.connection, "plug-in");
-  assert.deepEqual(ids(r), ["lectron-nexus-nacs"]);
+  assert.deepEqual(ids(r), ["lectron-nexus-nacs", "eviqo-nacs-40a"]);
   assert.equal(r.install.zero, true);
   assert.equal(r.install.low, 0);
 });
 
-test("J1772, new 50 A circuit, wants off-peak scheduling: Autel first, state install average", () => {
+test("J1772, new 50 A circuit, wants off-peak scheduling: EVIQO (cheapest with an app) then Autel, state install average", () => {
   const r = run({ plug: "j1772", power: "new50", smart: true, state: "CA" });
   assert.equal(r.amps, 40);
-  assert.deepEqual(ids(r), ["autel-elite-home-40a", "lectron-nexus-j1772"]);
+  assert.deepEqual(ids(r), ["eviqo-l2-j1772", "autel-elite-home-40a"]);
   assert.equal(r.install.low, INSTALL_COST.byState.CA);
   assert.equal(r.newCircuit, true);
 });
 
-test("No scheduling wanted: cheaper Lectron first", () => {
-  assert.deepEqual(ids(run({ plug: "j1772", power: "new50", smart: false })), ["lectron-nexus-j1772", "autel-elite-home-40a"]);
+test("No scheduling wanted: EVIQO still first on price, Lectron second", () => {
+  assert.deepEqual(ids(run({ plug: "j1772", power: "new50", smart: false })), ["eviqo-l2-j1772", "lectron-nexus-j1772"]);
+});
+
+test("NACS plug-in: Lectron first on price; wanting the app puts EVIQO first", () => {
+  assert.deepEqual(ids(run({ plug: "nacs", power: "new50", smart: false })), ["lectron-nexus-nacs", "eviqo-nacs-40a"]);
+  assert.deepEqual(ids(run({ plug: "tesla", power: "outlet1450", smart: true })), ["eviqo-nacs-40a", "lectron-nexus-nacs"]);
+  assert.ok(!run({ plug: "tesla", power: "outlet1450", smart: true }).notes.some((n) => /no app scheduling/.test(n)));
+});
+
+test("Ranking is by price: the first J1772 pick is the cheapest matching charger", () => {
+  for (const smart of [true, false]) {
+    const r = run({ plug: "j1772", power: "new50", smart });
+    const [first, ...rest] = r.products.map((p) => p.charger.priceUsd);
+    assert.ok(rest.every((p) => p >= first));
+  }
 });
 
 test("Most drivers need 32-40 A, even a pickup at 150 miles", () => {
@@ -59,21 +73,31 @@ test("Tight panel: 32 A on a 40 A circuit, adjustable charger set to 32, upgrade
   const r = run({ plug: "j1772", power: "tight" });
   assert.equal(r.amps, 32);
   assert.equal(r.circuitAmps, 40);
-  assert.deepEqual(ids(r), ["autel-elite-home-40a"]);
+  assert.deepEqual(ids(r), ["eviqo-l2-j1772", "autel-elite-home-40a"]);
   assert.equal(r.products[0].setTo, 32);
+  assert.equal(r.products[1].setTo, 32);
   assert.equal(r.install.high, INSTALL_COST.usAverage + INSTALL_COST.serviceUpgrade[1]);
   const n = run({ plug: "tesla", power: "tight" });
-  assert.deepEqual(ids(n), ["lectron-portable-nacs"]);
+  assert.deepEqual(ids(n), ["lectron-portable-nacs", "eviqo-nacs-40a"]);
+  assert.equal(n.products[1].setTo, 32);
+  assert.deepEqual(ids(run({ plug: "tesla", power: "tight", smart: true })), ["eviqo-nacs-40a", "lectron-portable-nacs"]);
 });
 
-test("Hardwired: Autel 50 A for J1772; spec only for NACS", () => {
+test("Hardwired: EVIQO 48 A then Autel 50 A for J1772; EVIQO hardwired NACS for Teslas", () => {
   const j = run({ plug: "j1772", mount: "hardwired", power: "new50" });
   assert.equal(j.connection, "hardwired");
-  assert.deepEqual(ids(j), ["autel-elite-home-50a"]);
+  assert.deepEqual(ids(j), ["eviqo-l2-j1772", "autel-elite-home-50a"]);
   assert.equal(j.products[0].setTo, 40);
+  assert.equal(j.products[1].setTo, 40);
+  const big = run({ plug: "j1772", mount: "hardwired", power: "big", dailyMiles: 150, car: "large" });
+  assert.equal(big.amps, 40); // the day still fits in 40 A, so no need for 48
   const n = run({ plug: "nacs", mount: "hardwired", power: "new50" });
-  assert.equal(n.products.length, 0);
-  assert.match(n.noMatch ?? "", /hardwired NACS/);
+  assert.deepEqual(ids(n), ["eviqo-nacs-hardwired-48a"]);
+  assert.equal(n.products[0].setTo, 40);
+  assert.equal(n.noMatch, null);
+  const t = run({ plug: "tesla", spot: "outside", mount: "either", power: "big" });
+  assert.equal(t.connection, "hardwired");
+  assert.deepEqual(ids(t), ["eviqo-nacs-hardwired-48a"]);
 });
 
 test("Parking outside with no preference leans hardwired", () => {
@@ -103,13 +127,17 @@ test("Every combination: only approved brands, max 2, products or a spec, prices
                 assert.ok(r.products.length > 0 || r.noMatch, tag);
                 assert.ok(r.amps >= 24 && r.amps <= 48, tag);
                 for (const p of r.products) {
-                  assert.ok(["lectron", "autel"].includes(p.charger.brand), tag);
+                  assert.ok(["lectron", "autel", "eviqo"].includes(p.charger.brand), tag);
                   assert.ok(AFFILIATES[p.charger.brand].tracked, tag);
                   assert.ok(HOME_CHARGERS.includes(p.charger), tag);
                   // Connector must match the car.
                   assert.equal(p.charger.plug, r.connector, tag);
                   // Plug-in chargers never recommended above 40 A or on a hardwired-only result.
-                  if (r.connection === "hardwired") assert.match(p.charger.outlet, /Hardwired/, tag);
+                  if (r.connection === "hardwired") assert.match(p.charger.outlet, /hardwired/i, tag);
+                  else assert.match(p.charger.outlet, /NEMA 14-50/, tag);
+                  // Never above what the charger can deliver in the chosen setup.
+                  const max = r.connection === "hardwired" ? p.charger.hardwiredAmps ?? p.charger.amps : p.charger.amps;
+                  assert.ok(r.amps <= max, tag);
                 }
                 assert.ok(Number.isFinite(r.install.low) && r.install.high >= r.install.low, tag);
               }

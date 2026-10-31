@@ -71,7 +71,10 @@ ok(/40-amp Level 2 NACS charger/.test(await page.locator("[data-testid=ev-picker
 const lx = page.locator("[data-testid=ev-picker-products] a[data-partner=lectron]");
 ok((await lx.count()) === 1 && /awinmid=91891&awinaffid=3125360/.test(await lx.first().getAttribute("href")), "Picker links the Lectron NACS charger with Awin IDs");
 ok((await lx.first().getAttribute("rel")) === "sponsored nofollow noopener", "Picker product link is sponsored");
-ok((await page.locator("[data-testid=product-disclosure]").count()) === 1, "Picker shows the disclosure next to the product");
+const ex = page.locator("[data-testid=ev-picker-products] a[data-partner=eviqo]");
+ok((await ex.count()) === 1 && /^https:\/\/eviqo\.io\/products\/eviqo-level-2-ev-charger-nacs-charger-compatible-with-tesla\?ref=zycwdczj$/.test(await ex.first().getAttribute("href")), "Picker: EVIQO NACS second, with the ref code");
+ok((await ex.first().getAttribute("rel")) === "sponsored nofollow noopener", "EVIQO picker link is sponsored");
+ok((await page.locator("[data-testid=product-disclosure]").count()) === (await page.locator("[data-testid=ev-picker-products] a[data-partner]").count()), "Picker shows the disclosure next to every product");
 ok(/^\$0$/.test(await page.locator("[data-testid=ev-picker-install]").innerText()), "Picker: existing outlet installs for $0");
 ok((await page.evaluate(() => document.documentElement.scrollWidth)) <= 390, "Picker fits a phone screen");
 await page.getByRole("button", { name: "Back" }).tap();
@@ -81,6 +84,16 @@ await page.locator("[data-answer=power-dryer]").tap();
 await page.getByRole("button", { name: "Next" }).tap();
 await page.locator("[data-answer=smart-no]").tap();
 ok((await page.locator("[data-testid=ev-picker-nomatch]").count()) === 1 && (await page.locator("[data-testid=ev-picker-products]").count()) === 0, "Picker: dryer outlet -> spec, no product link");
+
+// EVIQO on the guide and the installation cost page: ref code, sponsored, commission note beside every link
+for (const path of ["/best-home-ev-charger", "/ev-charger-installation-cost"]) {
+  await page.goto(base + path, { waitUntil: "networkidle" });
+  const ev = page.locator("main a[data-partner=eviqo]");
+  ok((await ev.count()) >= 1 && /^https:\/\/eviqo\.io\/products\/[^?]+\?ref=zycwdczj$/.test(await ev.first().getAttribute("href")), `${path} links EVIQO with the ref code`);
+  ok((await ev.first().getAttribute("rel")) === "sponsored nofollow noopener", `${path} EVIQO links are sponsored`);
+  const notes = await ev.evaluateAll((as) => as.every((a) => /We earn a commission/.test(a.nextElementSibling?.textContent ?? "")));
+  ok(notes, `${path} every EVIQO link has the commission note beside it`);
+}
 
 // Buyer's guides: each page renders, has a quick answer, a disclosure, and tracked partner links
 for (const [path, partner, mid] of [
