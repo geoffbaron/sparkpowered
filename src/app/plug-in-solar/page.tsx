@@ -10,6 +10,7 @@ import { PLUGIN_KITS, ROOFTOP_SOLAR_COST, type PluginKit } from "@/data/products
 import { NATIONAL, SOURCES, STATES, formatDate, num, stateByAbbr, usd } from "@/lib/energy";
 import { MOUNTING_LABEL, REFERENCE_KIT_W, pluginFigures, pluginModel } from "@/lib/plugin-solar";
 import { AFFILIATES } from "@/data/affiliates";
+import { KITS_CHECKED, kitById } from "@/data/kits";
 import { JsonLd, pageMetadata, url } from "@/lib/seo";
 import { productList, reviewedProduct } from "@/lib/structured-data";
 
@@ -26,6 +27,8 @@ const kitName = (k: PluginKit) => `${AFFILIATES[k.brand].name} ${k.name}`;
 /** A real 800 W kit used as the payback example everywhere on this page. */
 const EXAMPLE_KIT = PLUGIN_KITS.find((k) => k.id === "pluggedsolar-800w-kit")!;
 const BUDGET_KIT = PLUGIN_KITS.find((k) => k.id === "brightsaver-360w-kit")!;
+/** For states with no plug-in law yet, and for blackouts: panels that charge a battery, not the home's wiring. */
+const STATION_KIT = kitById("bluetti-ac180-200w");
 
 /** Average plug-in output per kW across the states, valued at the US average price: a "typical US home" figure for kit cards. */
 const US_PLUGIN_KWH_PER_KW = STATES.reduce((n, s) => n + pluginModel(s.abbr).tilted.kwhPerKwYear, 0) / STATES.length;
@@ -240,8 +243,21 @@ export default function PluginSolarPage() {
           moreHref="#kits"
           moreLabel="Compare every kit"
         />
+        <OurPick
+          label="No plug-in law in your state yet, or want power in a blackout"
+          name={STATION_KIT.name}
+          icon="battery"
+          why={`A different kind of solar: the panel charges a ${num(STATION_KIT.batteryWh)} Wh power station and you plug things into the station, so nothing connects to your home's wiring and no utility approval is needed in any state. It keeps running in an outage, which a plug-in kit without a battery does not. It trims your bill less than a plug-in kit, because only what you plug into it runs on sun.`}
+          life={["Allowed in every state", "Works in a blackout", "Phones, lights, Wi-Fi and a fridge for hours", "Moves with you"]}
+          priceUsd={STATION_KIT.priceUsd}
+          brand={STATION_KIT.brand}
+          productUrl={STATION_KIT.lines[0].url}
+          category="solar"
+          moreHref="/best-portable-power-stations"
+          moreLabel="Compare power stations"
+        />
       </div>
-      <p className="text-xs text-muted mt-2">*Price on the seller&apos;s site when we checked on {formatDate(EXAMPLE_KIT.retrieved)}.</p>
+      <p className="text-xs text-muted mt-2">*Price on the seller&apos;s site when we checked on {formatDate(EXAMPLE_KIT.retrieved)} ({STATION_KIT.name}: {formatDate(KITS_CHECKED)}).</p>
 
       <div className="mt-8 grid gap-3">
         <MythCallout m={lite("need-whole-system")} />

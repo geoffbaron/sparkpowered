@@ -2,7 +2,10 @@
 
 import { useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 import LocalNote from "@/components/LocalNote";
+import { AffiliateDisclosure, PartnerLink } from "@/components/affiliate";
+import { brandName, chargerById } from "@/data/chargers";
 import { useChooseState, useVisitorState } from "@/hooks/useVisitorState";
 import {
   DC_FAST,
@@ -26,6 +29,9 @@ interface Props {
   defaultPhevId: number;
   gasCarMpg: number;
 }
+
+/** Home chargers we recommend, cheapest first, for the "charge at home" next step. */
+const HOME_PICKS = ["eviqo-l2-j1772", "lectron-nexus-j1772", "autel-elite-home-40a"].map(chargerById);
 
 const fmt = (n: number) =>
   n.toLocaleString("en-US", { style: "currency", currency: "USD", minimumFractionDigits: 0, maximumFractionDigits: 0 });
@@ -258,6 +264,42 @@ export default function EvOrPhevPicker({
             {Math.round(r.gas.miles).toLocaleString("en-US")} miles at {gasCarMpg} mpg and ${place.gasUsd.toFixed(2)}/gal
           </div>
         </div>
+      </div>
+
+      <div className="mt-4 rounded-xl border border-black/10 bg-surface p-4 sm:p-5" data-testid="phev-next-step">
+        <p className="font-semibold text-ink">Your next step</p>
+        {charging === "home" && r.verdict.kind !== "hybrid" ? (
+          <>
+            <p className="text-sm text-stone-700 mt-1">
+              Home charging is what makes these numbers work. A Level 2 charger on a 240-volt outlet refills most cars
+              overnight; our <Link href="/ev-charger-picker" className="underline underline-offset-2">1-minute charger picker</Link> matches one to your car and outlet,
+              and the <Link href="/ev-charger-installation-cost" className="underline underline-offset-2">installation cost page</Link> shows what an electrician charges in your state.
+            </p>
+            <AffiliateDisclosure className="mt-3" />
+            <ul className="mt-3 grid sm:grid-cols-3 gap-2 text-sm">
+              {HOME_PICKS.map((c) => (
+                <li key={c.id} className="rounded-lg border border-black/8 bg-white p-3">
+                  <PartnerLink brand={c.brand} productId={c.id} productUrl={c.url} className="font-semibold underline underline-offset-2 text-spark-orange hover:text-spark-amber">
+                    {brandName(c)} {c.name}
+                  </PartnerLink>
+                  <span className="block text-muted mt-0.5">
+                    ${c.priceUsd.toLocaleString("en-US", { maximumFractionDigits: 0 })} when we checked, {c.amps} A, {c.plug} plug
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </>
+        ) : charging === "rarely" ? (
+          <p className="text-sm text-stone-700 mt-1">
+            Could you plug in where you park, even a regular outlet? That changes the answer. See{" "}
+            <Link href="/ev-charger-installation-cost" className="underline underline-offset-2">what adding an outlet or charger costs in your state</Link>. If you can,
+            set charging to &ldquo;home&rdquo; above and the answer updates.
+          </p>
+        ) : (
+          <p className="text-sm text-stone-700 mt-1">
+            See <Link href="/ev-charging-cost" className="underline underline-offset-2">what charging costs in your state</Link>, at home, at work and on fast chargers.
+          </p>
+        )}
       </div>
 
       <div className="mt-4 text-xs text-muted space-y-1.5">

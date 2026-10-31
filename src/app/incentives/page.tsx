@@ -89,6 +89,31 @@ export default function IncentivesPage() {
         Last reviewed <time dateTime={REVIEWED}>15 October 2026</time> by the Spark Powered editor.
       </p>
 
+      <div className="mb-10" id="still-saves">
+      <Callout>
+        <strong>What still saves you money without a federal credit:</strong>
+        <ul className="list-disc pl-5 mt-2 space-y-1">
+          <li>
+            Your state and utility: the <a href="#states" className="underline">programs for your state</a> are below, and many are still open.
+          </li>
+          <li>
+            Charging an EV at home instead of buying gas: <Link href="/ev-charging-cost" className="underline">what it costs in your state</Link>, and the{" "}
+            <Link href="/ev-charger-picker" className="underline">1-minute charger picker</Link> for the right Level 2 charger.
+          </li>
+          <li>
+            Solar that pays for itself on its own: the <Link href="/solar-calculator" className="underline">solar calculator</Link> works out payback at your
+            state&apos;s prices, and <Link href="/plug-in-solar" className="underline">plug-in solar</Link> starts at a few hundred dollars where it&apos;s allowed.
+          </li>
+          <li>
+            Backup power for less than an installed battery: <Link href="/home-battery-backup" className="underline">home battery or power station?</Link>
+          </li>
+          <li>
+            Everything at once: the <Link href="/go-electric" className="underline">Go Electric planner</Link> shows what each switch saves in your state.
+          </li>
+        </ul>
+      </Callout>
+      </div>
+
       <Section title="Federal credits that have ended" id="ended">
         <div className="overflow-x-auto rounded-xl border border-black/8 bg-surface">
           <table className="w-full text-sm">

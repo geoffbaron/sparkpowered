@@ -21,7 +21,7 @@ import { ELECTRIC_OUTBOARDS, FUEL_PRICES, GAS_OUTBOARDS } from "@/data/boating";
 import { INSTALL_COST } from "@/data/buyer-guides";
 import { chargerById } from "@/data/chargers";
 import { STATE_LAWS, LAW_REVIEWED } from "@/data/plugin-solar-law";
-import { INSTALLED_BATTERY_COST } from "@/data/products";
+import { INSTALLED_BATTERY_COST, PLUGIN_KITS } from "@/data/products";
 import { ELECTRIC_HOUR_USD, GAS_HOUR_USD, MOTORS, runtimeHours } from "@/lib/boating";
 import {
   MONTHLY_MILES,
@@ -227,6 +227,10 @@ const listNames = (xs: { abbr: string }[]) => {
 
 const essentialsKwh = ESSENTIALS_WH_DAY / 1000;
 const fridgeHours = (wh: number) => (wh * USABLE_FRACTION) / FRIDGE_AVG_W;
+const ilEv = STATE_LOCAL.IL.facts.find((f) => f.label === "EV rebate")!;
+const ilSolar = STATE_LOCAL.IL.facts.find((f) => f.label === "Solar")!;
+const hiSolar = STATE_LOCAL.HI.facts.find((f) => f.label === "Solar tax credit")!;
+const coEv = STATE_LOCAL.CO.facts.find((f) => f.label === "EV tax credit")!;
 const e100 = productById("bluetti-elite-100-v2");
 const e200 = productById("bluetti-elite-200-v2");
 const e300 = productById("bluetti-elite-300");
@@ -353,6 +357,7 @@ export const TOPICS: Topic[] = [
           { p: `For the arithmetic: losing 0.75% a year compounds to about ${Math.round(Math.pow(1 - FLEET_LOSS, 10) * 100)}% of the original output after 10 years and about ${Math.round(Math.pow(1 - FLEET_LOSS, 30) * 100)}% after 30. The study measured larger, non-home systems; home systems were not part of it.` },
         ],
         sources: [S.doeFleet],
+        tools: [{ href: "/solar-calculator", label: "Solar payback in your state" }],
       },
       {
         id: "what-is-net-metering",
@@ -363,7 +368,7 @@ export const TOPICS: Topic[] = [
           { p: "DSIRE lists net metering and other solar policies by state." },
         ],
         sources: [S.doeSolarGuide, S.dsire],
-        tools: [{ href: "/states", label: "Your state's energy data and incentive links" }],
+        tools: [{ href: "/states", label: "Your state's energy data and incentive links" }, { href: "/solar-calculator", label: "Solar payback in your state" }],
       },
       {
         id: "solar-panels-to-charge-ev",
@@ -466,6 +471,7 @@ export const TOPICS: Topic[] = [
           { p: "Read the warranty for the exact terms: what counts as a cycle, the capacity it guarantees and whether it transfers if you sell the house." },
         ],
         sources: [S.enphase10c, S.franklin],
+        tools: [{ href: "/home-battery-backup", label: "Home battery or power station?" }, { href: "/battery-calculator", label: "What size battery do I need?" }],
       },
       {
         id: "power-station-refrigerator",
@@ -494,7 +500,8 @@ export const TOPICS: Topic[] = [
           { p: "Whichever you pick, power appliances by plugging them into the unit with suitable cords, never by connecting it to a wall outlet (next question)." },
         ],
         sources: [S.cpsc, S.ready],
-        tools: [{ href: "/best-portable-power-stations", label: "Best portable power stations" }],
+        tools: [{ href: "/best-portable-power-stations", label: "Best portable power stations" }, { href: "/generator-runtime-calculator", label: "Generator runtime and fuel cost" }],
+        picks: [e100, e200, e300].map((p) => ({ brand: "bluetti" as const, label: `Bluetti ${p.model}`, url: p.url, productId: p.id, note: `${n0(p.capacityWh)} Wh, about ${Math.round(fridgeHours(p.capacityWh))} hours of an average fridge, no fuel or fumes` })),
       },
       {
         id: "plug-into-wall-outlet",
@@ -569,7 +576,7 @@ export const TOPICS: Topic[] = [
           },
         ],
         sources: [S.eiaPrices, S.fueleconomy, S.afdcHome],
-        tools: [{ href: "/ev-charging-cost", label: "EV charging cost calculator" }],
+        tools: [{ href: "/ev-charging-cost", label: "EV charging cost calculator" }, { href: "/ev-charger-picker", label: "Which charger do I need? 1-minute picker" }],
       },
       {
         id: "home-charging-vs-gas",
@@ -582,6 +589,7 @@ export const TOPICS: Topic[] = [
         tools: [
           { href: "/ev-charging-cost", label: "EV vs gas in your state" },
           { href: "/go-electric", label: "Go Electric savings calculator" },
+          { href: "/ev-charger-picker", label: "Which charger do I need? 1-minute picker" },
         ],
       },
       {
@@ -695,7 +703,8 @@ export const TOPICS: Topic[] = [
           { p: "Half speed uses half the maximum draw, Newport's rule of thumb. Wind, current and a heavy boat raise the draw; slow trolling lowers it. Renogy advises not running its AGM below 50%." },
         ],
         sources: [S.minnKota, S.newport, S.renogyAgm],
-        tools: [{ href: "/trolling-motor-battery-life", label: "Runtime calculator for your motor" }],
+        tools: [{ href: "/trolling-motor-battery-life", label: "Runtime calculator for your motor" }, { href: "/best-trolling-motor-battery", label: "Best trolling motor batteries" }],
+        picks: [{ brand: "redodo", label: "Redodo 12V 100Ah", url: redodo100.url, productId: redodo100.id, note: `About 100 usable amp-hours for 30 to 70 lb thrust motors (Redodo); ${usd2(REDODO_100_PRICE_TODAY)} on October 25, 2026` }],
       },
       {
         id: "trolling-motor-battery-size",
@@ -769,24 +778,40 @@ export const TOPICS: Topic[] = [
       {
         id: "solar-battery-tax-credit-2026",
         q: "Is there still a federal tax credit for solar panels or a home battery?",
-        a: "Not for homeowners. The IRS says the 30% Residential Clean Energy Credit (section 25D), which covered solar panels and battery storage, is not allowed for expenditures made after December 31, 2025, and an expenditure counts as made when installation is completed. So a system finished in 2026 does not qualify, even if you paid in 2025.",
+        a: `Not from the federal government for homeowners, but solar can still pay for itself without one, and there are cheaper ways in. At each state's own average price, a home system pays back in about ${Math.round(fastPay.years)} years in ${fastPay.s.name} and ${Math.round(slowPay.years)} years in ${slowPay.s.name} with no credit, and some states add their own, such as Hawaii's state solar tax credit of up to $5,000 and the Illinois Shines incentive. A plug-in solar kit starts at about ${usd0(Math.min(...PLUGIN_KITS.map((k) => k.priceUsd)))} where your state allows it, and a plug-in power station covers outage backup for a fraction of an installed home battery. The IRS says the 30% Residential Clean Energy Credit (section 25D), which covered solar panels and battery storage, is not allowed for systems installed after December 31, 2025, even if you paid in 2025.`,
         detail: [
-          { p: "The Energy Efficient Home Improvement Credit (25C), which covered qualified heat pumps, water heaters, exterior doors, windows and insulation, is not allowed for property placed in service after December 31, 2025. ENERGY STAR's heat pump page still describes a credit through 2032; the IRS's later guidance ends it after 2025." },
+          { p: `For backup, an installed home battery runs about ${usd0(INSTALLED_BATTERY_COST.medianPerKwh)} per kWh before incentives (EnergySage). A power station is a fraction of that: the 2 kWh Bluetti ${e200.model} was listed at ${usd0(e200.priceUsd ?? 0)} when we checked on ${formatDate(e200.retrieved)}, enough for about ${Math.round(fridgeHours(e200.capacityWh))} hours of an average fridge. It does not power the whole house: you plug the fridge, lights and Wi-Fi straight into it.` },
+          { p: "The IRS counts an expenditure as made when installation is completed. The Energy Efficient Home Improvement Credit (25C), which covered qualified heat pumps, water heaters, exterior doors, windows and insulation, is also not allowed for property placed in service after December 31, 2025. ENERGY STAR's heat pump page still describes a credit through 2032; the IRS's later guidance ends it after 2025." },
           { p: "If you lease solar or sign a power purchase agreement, the Department of Energy notes you are not entitled to the tax benefits, because you do not own the system." },
         ],
-        sources: [S.irsFaq, S.irs25d, S.doeSolarGuide],
-        tools: [{ href: "/incentives", label: "All 2026 federal end dates" }],
+        sources: [S.irsFaq, S.irs25d, S.doeSolarGuide, hiSolar.source, ilSolar.source, { name: INSTALLED_BATTERY_COST.source, url: INSTALLED_BATTERY_COST.url }],
+        tools: [
+          { href: "/solar-calculator", label: "Solar payback in your state" },
+          { href: "/plug-in-solar", label: "Plug-in solar kits and state laws" },
+          { href: "/home-battery-backup", label: "Home battery or power station?" },
+          { href: "/incentives", label: "State incentive links" },
+        ],
+        picks: [e100, e200].map((p) => ({ brand: "bluetti" as const, label: `Bluetti ${p.model}`, url: p.url, productId: p.id, note: `${n0(p.capacityWh)} Wh for outage backup, about ${Math.round(fridgeHours(p.capacityWh))} hours of an average fridge` })),
       },
       {
         id: "ev-charger-tax-credit-2026",
         q: "Is there a federal tax credit for an EV or a home charger in 2026?",
-        a: "No. The IRS says the new clean vehicle credit (30D) and the used one (25E) are not allowed for vehicles acquired after September 30, 2025, and the charger credit (30C) is not allowed for property placed in service after June 30, 2026. A car counts as acquired once a written binding contract is signed and a payment, even a small down payment or a trade-in, has been made.",
+        a: `Not from the federal government any more, but some states pay their own and charging at home still saves the most. Illinois has a $2,000 EV rebate through December 31, 2026, Colorado a $750 state tax credit (up to $3,250 for a car under $35,000), and the Department of Energy's database lists state and utility EV and charger programs for every state. A Level 2 home charger starts at about ${usd0(eviqo.priceUsd)}, and at the US average electricity price a typical EV costs about ${usd0(evMonth(typical.kwhPer100mi))} a month to charge at home for ${n0(MONTHLY_MILES)} miles, against ${usd0(gasMonth)} for gas. The IRS says the new and used clean vehicle credits (30D and 25E) ended for vehicles acquired after September 30, 2025, and the charger credit (30C) for chargers placed in service after June 30, 2026.`,
         detail: [
-          { p: "If you signed and paid before October 1, 2025, the IRS says you can still claim the credit when you take delivery, even after that date." },
-          { p: "States and utilities still run their own EV and charger programs; see the rebate question below." },
+          { p: "A car counts as acquired once a written binding contract is signed and a payment, even a small down payment or a trade-in, has been made. If you signed and paid before October 1, 2025, the IRS says you can still claim the credit when you take delivery, even after that date." },
+          { p: "Program amounts and deadlines change often, so check the program's own page before you buy. Your utility may also offer a cheaper overnight rate for EV charging, which lowers the monthly cost further." },
         ],
-        sources: [S.irsFaq],
-        tools: [{ href: "/incentives", label: "Incentives and state links" }],
+        sources: [S.irsFaq, ilEv.source, coEv.source, S.afdcLaws, S.eiaPrices],
+        tools: [
+          { href: "/ev-charger-picker", label: "Which charger do I need? 1-minute picker" },
+          { href: "/ev-charging-cost", label: "What charging costs in your state" },
+          { href: "/incentives", label: "State incentive links" },
+        ],
+        picks: [
+          { brand: "eviqo", label: `EVIQO Level 2 (${usd0(eviqo.priceUsd)} on October 31, 2026)`, url: eviqo.url, note: "The lowest-priced charger we recommend: NEMA 14-50 plug-in at 40 A, or hardwired at 48 A" },
+          { brand: "lectron", label: "Lectron NEXUS 40A", url: lectron.url, note: `Plugs into a NEMA 14-50; up to ${lectron.milesPerHour} miles of range an hour (Lectron)` },
+          { brand: "autel", label: "Autel MaxiCharger 40A", url: autel40.url, note: "NEMA 14-50 plug-in with app scheduling for off-peak hours" },
+        ],
       },
       {
         id: "heat-pump-vs-gas-cost",
@@ -807,7 +832,7 @@ export const TOPICS: Topic[] = [
           { p: "ENERGY STAR says many new certified heat pumps excel even in the coldest climates thanks to advanced compressors and refrigerants, and that a system that is too big or too small will struggle to keep you comfortable." },
         ],
         sources: [S.energyStarHp],
-        tools: [{ href: "/myths", label: "Heat pump myths, answered" }],
+        tools: [{ href: "/myths", label: "Heat pump myths, answered" }, { href: "/go-electric", label: "Heat pump savings in your state" }],
       },
       {
         id: "electricity-price-by-state",
@@ -828,7 +853,7 @@ export const TOPICS: Topic[] = [
           { p: "EIA's figure is the average revenue per kWh across all residential customers, so it includes fixed charges spread over usage. Every state's figure is on its state page." },
         ],
         sources: [S.eiaPrices],
-        tools: [{ href: "/states", label: "Your state's electricity price" }],
+        tools: [{ href: "/states", label: "Your state's electricity price" }, { href: "/go-electric", label: "What would cut your bill" }, { href: "/solar-calculator", label: "What solar would save" }],
       },
       {
         id: "why-electric-bill-high",
@@ -852,7 +877,7 @@ export const TOPICS: Topic[] = [
           { p: "Federal credits for homeowners have ended (see above), so state and utility programs are most of what is left. They change often; check the program's own page for current amounts and deadlines before you buy." },
         ],
         sources: [S.dsire, S.afdcLaws, S.energyStarHp, S.afdcHome],
-        tools: [{ href: "/incentives", label: "State-by-state incentive links" }],
+        tools: [{ href: "/incentives", label: "State-by-state incentive links" }, { href: "/go-electric", label: "What each switch saves in your state" }, { href: "/ev-charger-picker", label: "Which EV charger do I need?" }],
       },
     ],
   },
@@ -891,7 +916,6 @@ const usMonthBill = NATIONAL.avgMonthlyBillUsd;
 const evKwhMonth = (typical.kwhPer100mi * MONTHLY_MILES) / 100;
 const gallonsMonth = MONTHLY_MILES / NATIONAL.gasMpg;
 const halfAmps = m55.maxAmps / 2;
-const ilEv = STATE_LOCAL.IL.facts.find((f) => f.label === "EV rebate")!;
 const cop = ASSUMPTIONS.heatPumpCop.value;
 const spiritHours = 22 / 4.5;
 
