@@ -40,9 +40,10 @@ const APPROVED: Partial<Record<BrandId, Rule>> = {
   anker: { rakuten: 53552 },
   eviqo: { param: "ref=zycwdczj" },
   epoch: { param: "rfsn=9396856.73d8c8" },
+  vatrer: { awin: 119703 },
 };
 /** Approved on Awin but not used on this site yet: any link to them must still be wrapped. */
-const APPROVED_UNUSED: Record<string, number> = { "vatrer.com": 119703, "vatrerpower.com": 119703, "kingbullbike.com": 124136 };
+const APPROVED_UNUSED: Record<string, number> = { "vatrer.com": 119703, "kingbullbike.com": 124136 };
 
 const approvedHosts = new Map<string, Rule>([
   ...Object.entries(APPROVED).map(([b, r]) => [bareHost(AFFILIATES[b as BrandId].homeUrl), r] as [string, Rule]),

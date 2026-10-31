@@ -36,6 +36,7 @@ export type BrandId =
   | "piscifun"
   | "litime"
   | "epoch"
+  | "vatrer"
   | "energysage"
   | "sungold"
   | "goalzero"
@@ -219,6 +220,18 @@ export const AFFILIATES: Record<BrandId, BrandAffiliate> = {
     cookieDays: 30,
     links: { home: "https://www.epochbatteries.com/?rfsn=9396856.73d8c8" },
     refParam: "rfsn=9396856.73d8c8",
+  },
+  // Approved Oct 31 2026 on Awin (Vatrer Power, MID 119703) for publisher 3125360. 3% commission,
+  // 30-day cookie. US store: www.vatrerpower.com.
+  vatrer: {
+    name: "Vatrer",
+    homeUrl: "https://www.vatrerpower.com/",
+    tracked: true,
+    network: "Awin",
+    commission: "3%",
+    cookieDays: 30,
+    links: { home: "https://www.awin1.com/cread.php?awinmid=119703&awinaffid=3125360&ued=https%3A%2F%2Fwww.vatrerpower.com%2F" },
+    deepLink: "https://www.awin1.com/cread.php?awinmid=119703&awinaffid=3125360&ued={url}",
   },
   // Applied, pending on Awin (plain links until approved): Jackery, EcoFlow, Oupes, Pecron,
   // and per-sale solar installers Momentum Solar, Solar Savings, Solar Simplified, Nautilus community solar.

@@ -4,7 +4,7 @@ import { AffiliateDisclosure, PartnerLink } from "@/components/affiliate";
 import { Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
 import { BeforeAfter, BigStat, HubHero, OurPick, PhotoCredit } from "@/components/ui";
 import RvBatteryPicker from "@/components/RvBatteryPicker";
-import { BATTERIES, BATTERY_FACTS, EPOCH_RV, LEAD_ACID_REF, LITIME_RV, OTHER_LITHIUM, type DeepCycleBattery } from "@/data/batteries";
+import { BATTERIES, BATTERY_FACTS, EPOCH_RV, LEAD_ACID_REF, LITIME_RV, OTHER_LITHIUM, VATRER_RV, type DeepCycleBattery } from "@/data/batteries";
 import { SOURCES, STATES, formatDate } from "@/lib/energy";
 import { money } from "@/lib/products";
 import { leadAcidUsableWh, lifetimeCost, lifetimeKwh } from "@/lib/rv-battery";
@@ -298,6 +298,13 @@ export default function LithiumRvBatteryPage() {
             {money(litimeStd.priceUsd)}. LiTime links are sponsored too.
           </p>
           <p className="text-xs text-muted">
+            Boondocking where it freezes? On {formatDate(VATRER_RV.retrieved)} the{" "}
+            <PartnerLink brand="vatrer" productId={VATRER_RV.id} productUrl={VATRER_RV.url}>{VATRER_RV.name}</PartnerLink> was{" "}
+            {money(VATRER_RV.priceUsd)}, {money(VATRER_RV.priceUsd - big.priceUsd)} more than the Redodo {big.short} above (price checked {formatDate(big.retrieved)}), for the same{" "}
+            {VATRER_RV.energyWh.toLocaleString("en-US")} Wh and {VATRER_RV.continuousA} A plus a built-in heater and Bluetooth ({VATRER_RV.weightLb} lb,{" "}
+            {VATRER_RV.warrantyYears}-year warranty, per Vatrer). Vatrer links are sponsored too.
+          </p>
+          <p className="text-xs text-muted">
             Want a longer warranty and cold-weather charging in a small case? On {formatDate(EPOCH_RV.retrieved)} the{" "}
             <PartnerLink brand="epoch" productId={EPOCH_RV.id} productUrl={EPOCH_RV.url}>{EPOCH_RV.name}</PartnerLink> was{" "}
             {money(EPOCH_RV.priceUsd)}: {EPOCH_RV.energyWh.toLocaleString("en-US")} Wh, {EPOCH_RV.continuousA} A continuous, {EPOCH_RV.weightLb} lb,
@@ -430,6 +437,8 @@ export default function LithiumRvBatteryPage() {
             { name: `${LITIME_RV.name} product page`, url: LITIME_RV.url, detail: `checked ${formatDate(LITIME_RV.retrieved)}` },
             { name: `${litimeStd.name} product page`, url: litimeStd.url, detail: `checked ${formatDate(litimeStd.retrieved)}` },
             { name: `${EPOCH_RV.name} product page`, url: EPOCH_RV.url, detail: `checked ${formatDate(EPOCH_RV.retrieved)}` },
+            { name: `${VATRER_RV.name} product page`, url: VATRER_RV.url, detail: `checked ${formatDate(VATRER_RV.retrieved)}` },
+            { name: "Vatrer warranty policy", url: VATRER_RV.warrantyUrl, detail: "5 years on 12V 100Ah-600Ah RV batteries, updated July 1, 2026" },
             { name: `${LEAD_ACID_REF.name} product page`, url: LEAD_ACID_REF.url, detail: `checked ${formatDate(LEAD_ACID_REF.retrieved)}` },
             { name: BATTERY_FACTS.coldCharging.name, url: BATTERY_FACTS.coldCharging.url, detail: "No charging below 32°F (0°C)" },
             { name: BATTERY_FACTS.lfpSafety.name, url: BATTERY_FACTS.lfpSafety.url, detail: "LFP thermal stability and cycle life" },

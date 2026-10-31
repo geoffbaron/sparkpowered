@@ -254,6 +254,30 @@ export const EPOCH_RV = {
 };
 
 /**
+ * A self-heating 12 V 300Ah battery from Vatrer (approved partner, Awin), read from
+ * vatrerpower.com on Oct 31 2026: price and spec table from the product page (3,840 Wh,
+ * 200 A continuous, 54.67 lb, heats below 32°F and charges again above 41°F, Bluetooth app),
+ * warranty from Vatrer's warranty policy (5 years on 12V 100Ah-600Ah RV batteries, updated
+ * July 1 2026).
+ */
+export const VATRER_RV = {
+  id: "vatrer-12v-300ah-heated",
+  brand: "vatrer" as const,
+  name: "Vatrer 12V 300Ah Self-Heating",
+  url: "https://www.vatrerpower.com/products/vatrer-12v-300ah-bluetooth-lifepo4-lithium-battery-with-self-heating-200a-bms-supports-low-temp-charging-4-f-5000-cycles-2560w-power",
+  warrantyUrl: "https://www.vatrerpower.com/pages/warranty-policy",
+  retrieved: "2026-10-31",
+  energyWh: 3840,
+  continuousA: 200,
+  weightLb: 54.67,
+  priceUsd: 629.99,
+  listPriceUsd: 999.99,
+  warrantyYears: 5,
+  selfHeating: true,
+  bluetooth: true,
+};
+
+/**
  * The lead-acid battery we compare against: a widely sold 12 V 100 Ah AGM
  * deep-cycle battery, specs and price from the maker's US store.
  */
