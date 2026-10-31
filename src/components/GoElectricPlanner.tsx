@@ -428,6 +428,9 @@ function SwitchCard({
                 <PartnerLink brand={smartChargerPick.brand} productId={smartChargerPick.id} productUrl={smartChargerPick.url} className="btn btn-outline btn-sm">
                   Smart charger for off-peak rates, {money(smartChargerPick.priceUsd)} (sponsored)
                 </PartnerLink>
+                <Link href="/ev-charger-picker" className="font-semibold text-spark-orange underline underline-offset-2">
+                  Which charger do I need?
+                </Link>
               </>
             )}
             {ENERGY_STAR[r.id] && (

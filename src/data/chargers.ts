@@ -46,10 +46,10 @@ export const HOME_CHARGERS: HomeCharger[] = [
     certifications: ["ETL listed to UL 2594, UL 2231, UL 2251", "ENERGY STAR"],
     warrantyYears: 3,
     priceUsd: 419.99,
-    listPriceUsd: 469.99,
+    listPriceUsd: 479.99,
     url: "https://ev-lectron.com/products/lectron-nexus-level-2-j1772-ev-charging-station-240v-40-amp-23ft-cable-wall-mount-j-hook-plug-holder-nema-14-50",
     sourceUrl: "https://ev-lectron.com/products/lectron-nexus-level-2-j1772-ev-charging-station-240v-40-amp-23ft-cable-wall-mount-j-hook-plug-holder-nema-14-50",
-    retrieved: "2026-10-15",
+    retrieved: "2026-10-31",
     notes: [
       "Fits most non-Tesla EVs, such as the Chevrolet Equinox EV, Ford Mustang Mach-E and Volkswagen ID.4 (Lectron's list).",
       "Plugs into a 240-volt NEMA 14-50 outlet, the kind used for electric ranges and RVs; if you don't have one, an electrician adds it.",
@@ -69,10 +69,10 @@ export const HOME_CHARGERS: HomeCharger[] = [
     certifications: ["ETL listed to UL 2594, UL 2231, UL 2251, UL 817", "ENERGY STAR"],
     warrantyYears: 3,
     priceUsd: 419.99,
-    listPriceUsd: 469.99,
+    listPriceUsd: 479.99,
     url: "https://ev-lectron.com/products/lectron-nexus-level-2-nacs-tesla-ev-charging-station-240v-40-amp-23ft-cable-wall-mount-j-hook-plug-holder-nema-14-50",
     sourceUrl: "https://ev-lectron.com/products/lectron-nexus-level-2-nacs-tesla-ev-charging-station-240v-40-amp-23ft-cable-wall-mount-j-hook-plug-holder-nema-14-50",
-    retrieved: "2026-10-15",
+    retrieved: "2026-10-31",
     notes: [
       "For Teslas and newer EVs with the NACS (Tesla-style) port.",
       "Same 40-amp, 240-volt NEMA 14-50 setup as the J1772 version.",
@@ -94,7 +94,7 @@ export const HOME_CHARGERS: HomeCharger[] = [
     listPriceUsd: 369.99,
     url: "https://ev-lectron.com/products/lectron-portable-level-1-2-tesla-nacs-ev-charger-120v-240v-adjustable-current-8-40a-nema-5-15-14-50",
     sourceUrl: "https://ev-lectron.com/products/lectron-portable-level-1-2-tesla-nacs-ev-charger-120v-240v-adjustable-current-8-40a-nema-5-15-14-50",
-    retrieved: "2026-10-15",
+    retrieved: "2026-10-31",
     notes: [
       "Comes with plugs for both an ordinary outlet and a 240-volt NEMA 14-50, adjustable from 8 to 40 amps.",
       "Good for renters or a second home; Lectron listed it as shipping in mid-November when we checked.",
@@ -118,7 +118,7 @@ export const HOME_CHARGERS: HomeCharger[] = [
     listPriceUsd: null,
     url: "https://autelenergy.us/products/maxicharger-ac-wallbox-home-40a-nema-14-50-ev-charger-with-separate-holster",
     sourceUrl: "https://autelenergy.us/products/maxicharger-ac-wallbox-home-40a-nema-14-50-ev-charger-with-separate-holster",
-    retrieved: "2026-10-19",
+    retrieved: "2026-10-31",
     notes: [
       "Smart charger: the Autel Charge app starts, stops and schedules charging, so you can set it to charge only in your utility's cheaper overnight hours.",
       "Fits every EV and plug-in hybrid with a J1772 port; Teslas need a J1772 adapter.",
@@ -143,7 +143,7 @@ export const HOME_CHARGERS: HomeCharger[] = [
     listPriceUsd: null,
     url: "https://autelenergy.us/products/maxicharger-ac-hardwired-wallbox-with-side-holster",
     sourceUrl: "https://autelenergy.us/products/maxicharger-ac-hardwired-wallbox-with-side-holster",
-    retrieved: "2026-10-19",
+    retrieved: "2026-10-31",
     notes: [
       "The fastest home option here: up to 12 kW, about a quarter faster than a 40-amp plug-in charger, for cars that can take it.",
       "Wired straight into your panel, which Autel recommends for outdoor installs.",

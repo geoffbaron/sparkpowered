@@ -152,6 +152,7 @@ export default function BestHomeEvChargerPage() {
       >
         <a href="#picker" className="btn btn-primary">Which one fits my car?</a>
         <a href="#compare" className="btn btn-light">Compare all</a>
+        <Link href="/ev-charger-picker" className="btn btn-light">Amps, panel, plug: 1-minute picker</Link>
       </HubHero>
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">

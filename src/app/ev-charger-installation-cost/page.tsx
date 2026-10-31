@@ -86,6 +86,7 @@ export default function InstallCostPage() {
       >
         <a href="#calc" className="btn btn-primary">Estimate my cost</a>
         <a href="#states" className="btn btn-light">Cost by state</a>
+        <Link href="/ev-charger-picker" className="btn btn-light">Which charger do I need?</Link>
       </HubHero>
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">

@@ -58,6 +58,30 @@ ok((await au.count()) >= 2, "EV charging page links Autel chargers");
 ok(/awinmid=72577&awinaffid=3125360/.test(await au.first().getAttribute("href")), "Autel links carry the Awin IDs");
 ok((await au.first().getAttribute("rel")) === "sponsored nofollow noopener", "Autel links are sponsored");
 
+// EV charger picker: Tesla + existing 14-50 -> Lectron NACS with the disclosure beside it; dryer -> spec only
+await page.goto(base + "/ev-charger-picker", { waitUntil: "networkidle" });
+await page.locator("[data-answer=plug-tesla]").tap();
+await page.locator("[data-answer=miles-40]").tap();
+await page.getByRole("button", { name: "Next" }).tap();
+await page.locator("[data-answer=power-outlet1450]").tap();
+await page.getByRole("button", { name: "Next" }).tap();
+await page.locator("[data-answer=smart-no]").tap();
+await page.waitForSelector("[data-testid=ev-picker-result]");
+ok(/40-amp Level 2 NACS charger/.test(await page.locator("[data-testid=ev-picker-spec]").innerText()), "Picker: Tesla + 14-50 -> 40 A NACS plug-in");
+const lx = page.locator("[data-testid=ev-picker-products] a[data-partner=lectron]");
+ok((await lx.count()) === 1 && /awinmid=91891&awinaffid=3125360/.test(await lx.first().getAttribute("href")), "Picker links the Lectron NACS charger with Awin IDs");
+ok((await lx.first().getAttribute("rel")) === "sponsored nofollow noopener", "Picker product link is sponsored");
+ok((await page.locator("[data-testid=product-disclosure]").count()) === 1, "Picker shows the disclosure next to the product");
+ok(/^\$0$/.test(await page.locator("[data-testid=ev-picker-install]").innerText()), "Picker: existing outlet installs for $0");
+ok((await page.evaluate(() => document.documentElement.scrollWidth)) <= 390, "Picker fits a phone screen");
+await page.getByRole("button", { name: "Back" }).tap();
+await page.getByRole("button", { name: "Back" }).tap();
+await page.getByRole("button", { name: "Back" }).tap();
+await page.locator("[data-answer=power-dryer]").tap();
+await page.getByRole("button", { name: "Next" }).tap();
+await page.locator("[data-answer=smart-no]").tap();
+ok((await page.locator("[data-testid=ev-picker-nomatch]").count()) === 1 && (await page.locator("[data-testid=ev-picker-products]").count()) === 0, "Picker: dryer outlet -> spec, no product link");
+
 // Buyer's guides: each page renders, has a quick answer, a disclosure, and tracked partner links
 for (const [path, partner, mid] of [
   ["/best-power-station-for-cpap", "bluetti", "59271"],

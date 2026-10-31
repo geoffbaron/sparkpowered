@@ -85,6 +85,9 @@ export function ChargerPick({ compact = false }: { compact?: boolean }) {
             <PartnerLink brand={n.brand} productId={n.id} productUrl={n.url} className="btn btn-outline btn-sm">
               Tesla / NACS version
             </PartnerLink>
+            <Link href="/ev-charger-picker" className="font-semibold text-spark-orange underline underline-offset-2">
+              Not sure which? 1-minute charger picker
+            </Link>
             {compact && (
               <Link href="/ev-charging-cost#home-charger" className="font-semibold text-spark-orange underline underline-offset-2">
                 Do I need one?

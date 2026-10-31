@@ -23,6 +23,7 @@ const GUIDES = [
   { href: "/best-power-station-for-cpap", label: "Power station for CPAP" },
   { href: "/power-station-for-refrigerator", label: "Power station for a fridge" },
   { href: "/best-home-ev-charger", label: "Best home EV charger" },
+  { href: "/ev-charger-picker", label: "EV charger picker" },
   { href: "/ev-charger-installation-cost", label: "EV charger installation cost" },
   { href: "/compare", label: "Power station comparisons" },
   { href: "/states", label: "Energy data by state" },

@@ -541,6 +541,7 @@ export const TOPICS: Topic[] = [
     wiring: true,
     related: [
       { href: "/ev-charging-cost", label: "EV charging cost calculator", desc: "Your car, your state, your miles." },
+      { href: "/ev-charger-picker", label: "EV charger picker", desc: "The amps, plug and setup you actually need." },
       { href: "/best-home-ev-charger", label: "Best home EV charger", desc: "Our picks at every price." },
       { href: "/ev-charger-installation-cost", label: "Charger installation cost", desc: "State averages and what adds to the bill." },
       { href: "/calculator", label: "EV Finder", desc: "Which EV fits how you drive." },
@@ -591,6 +592,7 @@ export const TOPICS: Topic[] = [
         ],
         sources: [S.afdcStations, S.afdcHome, S.lectron],
         tools: [
+          { href: "/ev-charger-picker", label: "Which charger do I need? 1-minute picker" },
           { href: "/best-home-ev-charger", label: "Best home EV chargers" },
           { href: "/ev-charger-installation-cost", label: "What installation costs in your state" },
         ],
@@ -617,7 +619,7 @@ export const TOPICS: Topic[] = [
           { p: "The Department of Energy notes most residential Level 2 chargers run at up to 30 amps and need a dedicated 40-amp circuit to meet NEC Article 625. If your panel has limited capacity, ChargePoint says a licensed electrician should pick the highest amperage it has room for; even 24 amps adds about 18 miles an hour, roughly 140 miles over 8 hours." },
         ],
         sources: [S.chargepoint, S.chargepointTips, S.afdcStations, S.afdcHome],
-        tools: [{ href: "/ev-charger-installation-cost", label: "Charger installation cost" }],
+        tools: [{ href: "/ev-charger-picker", label: "Which charger do I need? 1-minute picker" }, { href: "/ev-charger-installation-cost", label: "Charger installation cost" }],
       },
       {
         id: "nema-14-50-or-hardwired",
@@ -628,7 +630,7 @@ export const TOPICS: Topic[] = [
           { p: `Both Lectron's NEXUS (${usd2(lectron.priceUsd)}) and Autel's MaxiCharger AC Elite Home 40A (${usd0(autel40.priceUsd)}), both on the makers' sites on October 25, 2026, plug into a 14-50; Autel's 50-amp version is hardwired.` },
         ],
         sources: [S.chargepoint, S.chargepointTips, S.autel40, S.installCost, S.lectron],
-        tools: [{ href: "/best-home-ev-charger", label: "Plug-in and hardwired chargers compared" }],
+        tools: [{ href: "/ev-charger-picker", label: "Which charger do I need? 1-minute picker" }, { href: "/best-home-ev-charger", label: "Plug-in and hardwired chargers compared" }],
         picks: [
           { brand: "lectron", label: "Lectron NEXUS 40A", url: lectron.url, note: "NEMA 14-50 plug-in, J1772 or Tesla plug" },
           { brand: "autel", label: "Autel MaxiCharger 40A", url: autel40.url, note: "NEMA 14-50 plug-in with app scheduling" },
@@ -643,7 +645,7 @@ export const TOPICS: Topic[] = [
           { p: "Lectron's portable charger adjusts from 8 to 40 amps and comes with plugs for an ordinary outlet and a NEMA 14-50; check that any adapter you use is rated for your outlet." },
         ],
         sources: [S.chargepoint, S.chargepointTips, S.afdcHome, S.lectronPortable],
-        tools: [{ href: "/ev-charger-installation-cost", label: "Cost to add a charging circuit" }],
+        tools: [{ href: "/ev-charger-picker", label: "Which charger do I need? 1-minute picker" }, { href: "/ev-charger-installation-cost", label: "Cost to add a charging circuit" }],
       },
       {
         id: "install-ev-charger-yourself",
@@ -654,7 +656,7 @@ export const TOPICS: Topic[] = [
           { p: `The average home charger installation cost ${usd0(INSTALL_COST.usAverage)} in Qmerit's 2026 data published by EnergySage, before the charger itself.` },
         ],
         sources: [S.lectron, S.afdcHome, S.installCost],
-        tools: [{ href: "/ev-charger-installation-cost", label: "Installation cost by state" }],
+        tools: [{ href: "/ev-charger-picker", label: "Which charger do I need? 1-minute picker" }, { href: "/ev-charger-installation-cost", label: "Installation cost by state" }],
       },
     ],
   },

@@ -14,6 +14,7 @@ export const NAV_GROUPS: NavGroup[] = [
       { href: "/calculator", label: "Electric cars" },
       { href: "/ev-or-plug-in-hybrid", label: "EV or plug-in hybrid?" },
       { href: "/best-home-ev-charger", label: "EV chargers" },
+      { href: "/ev-charger-picker", label: "Which charger do I need?" },
       { href: "/ev-charging-cost", label: "EV charging cost" },
       { href: "/ev-charger-installation-cost", label: "Charger install cost" },
     ],
