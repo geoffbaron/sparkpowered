@@ -101,6 +101,13 @@ export async function getDailyEVs(): Promise<EVResult[]> {
     return FALLBACK_EVS;
   }
 
+  // Never research during `next build`: a web-search run can outlast the
+  // prerender cache timeout and fail the whole deploy (Oct 31 2026). The
+  // build ships the fallback list; the cache refreshes it after it expires.
+  if (process.env.NEXT_PHASE === "phase-production-build") {
+    return FALLBACK_EVS;
+  }
+
   try {
     const today = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long" });
     const text = await runResearch(
