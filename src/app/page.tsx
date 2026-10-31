@@ -85,13 +85,13 @@ export default function HomePage() {
         <Photo name="hero" priority className="absolute inset-0 -z-10 h-full w-full object-cover object-[70%_30%]" sizes="(max-width: 767px) 360px, 100vw" />
         <div className="absolute inset-0 -z-10 hero-shade" />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-24">
-          <p className="text-amber-300 font-bold uppercase tracking-wide text-sm">Spark Powered</p>
+          <p className="text-amber-300 font-bold uppercase tracking-wide text-sm">Free, no sign-up</p>
           <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold leading-[1.02] mt-3 max-w-3xl">
-            Lower bills. Lights that stay on. <span className="text-amber-300">Go electric.</span>
+            What would going electric save <span className="text-amber-300">you?</span>
           </h1>
-          <p className="mt-5 text-lg sm:text-xl text-white/90 max-w-2xl leading-relaxed">
-            Charging a car at home is like paying {usd(eGallon, 2)} a gallon. Solar trims your bill for decades. A battery
-            keeps the fridge and Wi-Fi running in an outage. See what it adds up to where you live.
+          <p className="mt-4 text-lg sm:text-xl text-white/90 max-w-2xl leading-relaxed">
+            Pick your state. We run an EV, solar, a heat pump and backup power on your state&apos;s real prices, one switch at a
+            time, so you can skip the ones that don&apos;t pay.
           </p>
           <StatePicker states={PLANNER_STATES.map((s) => ({ abbr: s.abbr, name: s.name }))} totals={TYPICAL_TOTALS} initial={medianAbbr} />
           <p className="text-xs text-white/75 mt-3 max-w-xl">

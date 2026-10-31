@@ -47,16 +47,16 @@ export default function StatePicker({
             </option>
           ))}
         </select>
-        <Link href={`/go-electric?state=${abbr}`} className="btn btn-primary">
-          See what you&apos;d save
-        </Link>
       </div>
       <LocalNote name={name} local={picked !== null || located.abbr !== null} selectId="hero-state" />
       <p className="mt-3 text-stone-700" aria-live="polite">
         A typical {name} home could save about{" "}
         <strong className="text-leaf text-xl tabular-nums">${total.toLocaleString("en-US")} a year</strong> by going
-        electric.
+        electric. Yours depends on your home and car.
       </p>
+      <Link href={`/go-electric?state=${abbr}`} className="btn btn-primary w-full mt-4" data-testid="hero-cta" data-umami-event="home_hero_cta">
+        Show my savings, switch by switch
+      </Link>
     </div>
   );
 }

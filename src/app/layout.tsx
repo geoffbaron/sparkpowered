@@ -4,6 +4,7 @@ import Script from "next/script";
 import "./globals.css";
 import Header from "@/components/Header";
 import AskSparkLauncher from "@/components/AskSparkLauncher";
+import PartnerClickTracker from "@/components/PartnerClickTracker";
 import Footer from "@/components/Footer";
 import {
   JsonLd,
@@ -173,6 +174,7 @@ export default function RootLayout({
         </main>
         <Footer />
         <AskSparkLauncher />
+        <PartnerClickTracker />
       </body>
     </html>
   );
