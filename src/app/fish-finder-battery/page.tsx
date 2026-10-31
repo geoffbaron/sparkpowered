@@ -107,7 +107,7 @@ export default function FishFinderBatteryPage() {
           </p>
         </QuickAnswer>
 
-        <RedodoDeal className="mt-4" />
+        <RedodoDeal className="mt-4" product={{ name: "Redodo 16V 30Ah Fish Finder Battery", url: ff.url }} />
 
         <section aria-label="Fish finder battery at a glance" className="grid sm:grid-cols-3 gap-3 mt-8">
           <BigStat tone="leaf" value={hoursLabel(electronicsHours(DAKOTA_10AH.energyWh, striker.amps)).replace("about ", "")} label="A 1 A fish finder on 10Ah" note="Garmin STRIKER rated current" />

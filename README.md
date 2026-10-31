@@ -39,6 +39,17 @@ Products, plug-in kits, state plug-in solar laws and comparisons are typed, hand
 source URL and date (enforced by `tests/products.test.ts`). Affiliate links live only in
 `src/data/affiliates.ts`.
 
+### Affiliate link checks
+
+- `npm test` runs `tests/affiliate-links.test.ts` (no network): every approved program keeps its exact
+  tracking format, every product URL on an approved store renders tracked, no buy link for an approved
+  brand lands on a home page, and no page hand-writes a raw link to an approved store. Spec citations in
+  Sources lists stay plain on purpose.
+- Live crawl, by hand: `node scripts/check-affiliate-links.mjs` (or pass `https://campervolts.com`, or a
+  local `http://localhost:3000`). Add `--dead` to also open every partner landing page (stores that block
+  checkers show as BLOCKED; open those by hand). It reads the sitemap and lists UNTRACKED, BAD-IDS,
+  HOME-PAGE and DEAD links, and exits 1 if there are any.
+
 Refresh monthly after EIA publishes the Electric Power Monthly, then commit the JSON. Sources and
 formulas are documented on `/methodology`.
 

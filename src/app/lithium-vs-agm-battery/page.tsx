@@ -100,7 +100,7 @@ export default function LithiumVsAgmPage() {
           </p>
         </QuickAnswer>
 
-        <RedodoDeal className="mt-4" />
+        <RedodoDeal className="mt-4" product={{ name: "Redodo 12V 100Ah", url: li.url }} />
 
         <section aria-label="Key numbers" className="grid sm:grid-cols-3 gap-3 mt-8">
           <BigStat tone="leaf" value="2x" label="The power you can use" note={`${li.energyWh.toLocaleString("en-US")} Wh vs ${laUsable} Wh`} />

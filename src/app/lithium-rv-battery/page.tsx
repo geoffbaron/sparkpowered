@@ -4,7 +4,7 @@ import { AffiliateDisclosure, PartnerLink } from "@/components/affiliate";
 import { Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
 import { BeforeAfter, BigStat, HubHero, OurPick, PhotoCredit } from "@/components/ui";
 import RvBatteryPicker from "@/components/RvBatteryPicker";
-import { BATTERIES, BATTERY_FACTS, LEAD_ACID_REF, LITIME_RV, OTHER_LITHIUM, type DeepCycleBattery } from "@/data/batteries";
+import { BATTERIES, BATTERY_FACTS, EPOCH_RV, LEAD_ACID_REF, LITIME_RV, OTHER_LITHIUM, type DeepCycleBattery } from "@/data/batteries";
 import { SOURCES, STATES, formatDate } from "@/lib/energy";
 import { money } from "@/lib/products";
 import { leadAcidUsableWh, lifetimeCost, lifetimeKwh } from "@/lib/rv-battery";
@@ -225,7 +225,7 @@ export default function LithiumRvBatteryPage() {
 
         <section id="picks" className="mt-12 grid gap-4 scroll-mt-24" aria-labelledby="picks-heading">
           <h2 id="picks-heading" className="text-2xl font-extrabold text-ink">Our Redodo picks</h2>
-          <RedodoDeal />
+          <RedodoDeal product={{ name: "Redodo 12V 100Ah", url: li.url }} />
           <OurPick
             label="Best value for most RVs and vans"
             name={fullName(li)}
@@ -296,6 +296,13 @@ export default function LithiumRvBatteryPage() {
             {LITIME_RV.weightLb} lb, per LiTime), and its{" "}
             <PartnerLink brand="litime" productId={litimeStd.id} productUrl={litimeStd.url}>12V 100Ah</PartnerLink> was{" "}
             {money(litimeStd.priceUsd)}. LiTime links are sponsored too.
+          </p>
+          <p className="text-xs text-muted">
+            Want a longer warranty and cold-weather charging in a small case? On {formatDate(EPOCH_RV.retrieved)} the{" "}
+            <PartnerLink brand="epoch" productId={EPOCH_RV.id} productUrl={EPOCH_RV.url}>{EPOCH_RV.name}</PartnerLink> was{" "}
+            {money(EPOCH_RV.priceUsd)}: {EPOCH_RV.energyWh.toLocaleString("en-US")} Wh, {EPOCH_RV.continuousA} A continuous, {EPOCH_RV.weightLb} lb,
+            self-heating and Bluetooth, with an {EPOCH_RV.warrantyYears}-year limited warranty ({EPOCH_RV.freeReplacementYears} years free
+            replacement), per Epoch. That is {(EPOCH_RV.priceUsd / heated.priceUsd).toFixed(1)} times the price of the Redodo {heated.short}. Epoch links are sponsored too.
           </p>
         </section>
 
@@ -422,6 +429,7 @@ export default function LithiumRvBatteryPage() {
             ...BATTERIES.map((b) => ({ name: `${fullName(b)} product page`, url: b.sourceUrl, detail: `checked ${formatDate(b.retrieved)}` })),
             { name: `${LITIME_RV.name} product page`, url: LITIME_RV.url, detail: `checked ${formatDate(LITIME_RV.retrieved)}` },
             { name: `${litimeStd.name} product page`, url: litimeStd.url, detail: `checked ${formatDate(litimeStd.retrieved)}` },
+            { name: `${EPOCH_RV.name} product page`, url: EPOCH_RV.url, detail: `checked ${formatDate(EPOCH_RV.retrieved)}` },
             { name: `${LEAD_ACID_REF.name} product page`, url: LEAD_ACID_REF.url, detail: `checked ${formatDate(LEAD_ACID_REF.retrieved)}` },
             { name: BATTERY_FACTS.coldCharging.name, url: BATTERY_FACTS.coldCharging.url, detail: "No charging below 32°F (0°C)" },
             { name: BATTERY_FACTS.lfpSafety.name, url: BATTERY_FACTS.lfpSafety.url, detail: "LFP thermal stability and cycle life" },

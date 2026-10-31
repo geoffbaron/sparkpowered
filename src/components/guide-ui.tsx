@@ -4,6 +4,8 @@
  */
 
 import { Icon } from "@/components/icons";
+import { PartnerLink } from "@/components/affiliate";
+import { AFFILIATES, brandForUrl } from "@/data/affiliates";
 
 /** The pick, up front, before any detail. */
 export function QuickAnswer({ title = "The short answer", children }: { title?: string; children: React.ReactNode }) {
@@ -22,8 +24,20 @@ export function QuickAnswer({ title = "The short answer", children }: { title?: 
   );
 }
 
-/** A link to a brand we have no affiliate deal with: no tracking, not sponsored. */
+/**
+ * A link to a brand we have no affiliate deal with: no tracking, not sponsored.
+ * If the URL turns out to be on an approved partner's store, it is rendered as a
+ * tracked <PartnerLink> instead, so a buy link can never slip out untagged.
+ */
 export function PlainLink({ href, children, className }: { href: string; children: React.ReactNode; className?: string }) {
+  const brand = brandForUrl(href);
+  if (brand && AFFILIATES[brand].tracked) {
+    return (
+      <PartnerLink brand={brand} productUrl={href} className={className}>
+        {children}
+      </PartnerLink>
+    );
+  }
   return (
     <a href={href} target="_blank" rel="noopener" data-partner="none" className={className ?? "underline underline-offset-2 text-stone-800 hover:text-spark-orange"}>
       {children}

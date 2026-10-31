@@ -118,7 +118,7 @@ export default function KayakBatteryPage() {
           </p>
         </QuickAnswer>
 
-        <RedodoDeal className="mt-4" />
+        <RedodoDeal className="mt-4" product={{ name: "Redodo 12V 50Ah Bluetooth", url: k50.url }} />
 
         <section aria-label="What lithium changes" className="grid sm:grid-cols-3 gap-3 mt-8">
           <BigStat tone="leaf" value={`${Math.round(LEAD_ACID_REF.weightLb - (k50.weightLb ?? 0))} lb`} label="Lighter than a 100Ah AGM" note={`Same usable power: ${k50.weightLb} lb vs ${LEAD_ACID_REF.weightLb} lb`} />

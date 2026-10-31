@@ -70,7 +70,8 @@ export const saleSavingUsd = (i: SaleItem) => Math.round((i.regularPriceUsd - i.
 
 /**
  * A brand discount code: no prices (they change), only the code, the last day and
- * a tracked link to the brand's home page.
+ * a tracked link to a product the page recommends (never the brand's bare home page,
+ * which loses the reader). `product` is the fallback when a page passes none.
  */
 export interface BrandCode {
   id: string;
@@ -82,6 +83,8 @@ export interface BrandCode {
   endsAt: string;
   /** Last day as readers see it. */
   endsLabel: string;
+  /** Default landing product for the link. */
+  product: { name: string; url: string };
 }
 
 // From Redodo's Awin publisher email (MID 97969): extra 10% off with code AW10 on
@@ -93,6 +96,7 @@ export const REDODO_AW10_2026: BrandCode = {
   startsAt: "2026-10-28T00:00:00-07:00",
   endsAt: "2026-11-02T00:00:00-08:00",
   endsLabel: "Nov 1",
+  product: { name: "Redodo 12V 100Ah", url: "https://www.redodopower.com/products/12v-100ah-lithium-battery" },
 };
 
 /** The line readers see, kept in one text node so it reads the same in the HTML. */

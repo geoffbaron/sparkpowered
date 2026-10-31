@@ -15,7 +15,18 @@ import { DISCLOSURE_TEXT } from "@/data/affiliates";
 import { REDODO_AW10_2026, brandCodeLine, isSaleLive, requestTimeMs, type BrandCode } from "@/data/sales";
 
 /** The note itself, or nothing outside the offer window. `now` is milliseconds since epoch. */
-export function RedodoDealBox({ now, deal = REDODO_AW10_2026, className = "" }: { now: number; deal?: BrandCode; className?: string }) {
+export function RedodoDealBox({
+  now,
+  deal = REDODO_AW10_2026,
+  product = deal.product,
+  className = "",
+}: {
+  now: number;
+  deal?: BrandCode;
+  /** The Redodo product this page recommends; the link lands on it, not the home page. */
+  product?: { name: string; url: string };
+  className?: string;
+}) {
   if (!isSaleLive(deal, now)) return null;
   return (
     <aside
@@ -29,20 +40,24 @@ export function RedodoDealBox({ now, deal = REDODO_AW10_2026, className = "" }: 
         <strong>{brandCodeLine(deal)}</strong>
         <span className="block text-xs text-amber-900/80">{DISCLOSURE_TEXT}</span>
       </p>
-      <PartnerLink brand={deal.brand} variant="button">Shop Redodo</PartnerLink>
+      <PartnerLink brand={deal.brand} productUrl={product.url} variant="button">
+        Shop the {product.name}
+      </PartnerLink>
     </aside>
   );
 }
 
-async function LiveDeal({ className }: { className: string }) {
+type Product = { name: string; url: string };
+
+async function LiveDeal({ className, product }: { className: string; product?: Product }) {
   await connection();
-  return <RedodoDealBox now={requestTimeMs()} className={className} />;
+  return <RedodoDealBox now={requestTimeMs()} className={className} product={product} />;
 }
 
-export function RedodoDeal({ className = "" }: { className?: string }) {
+export function RedodoDeal({ className = "", product }: { className?: string; product?: Product }) {
   return (
     <Suspense fallback={null}>
-      <LiveDeal className={className} />
+      <LiveDeal className={className} product={product} />
     </Suspense>
   );
 }

@@ -36,12 +36,16 @@ const DESCRIPTION =
 
 export const metadata: Metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH });
 
-/** Off-grid kit makers we link without a price (their kits vary too much to list one). */
-const KIT_BRANDS: { brand: BrandId; what: string }[] = [
-  { brand: "sungold", what: "Off-grid solar kits, inverters and batteries" },
-  { brand: "signaturesolar", what: "Off-grid solar kits and components" },
-  { brand: "renogy", what: "Panels, charge controllers, inverters and batteries" },
-  { brand: "goalzero", what: "Portable power stations and solar panels" },
+/**
+ * Off-grid kit makers we link without a price (their kits vary too much to list one).
+ * Each link lands on the maker's own off-grid kit range, never its bare home page;
+ * every URL was opened and checked on Oct 31 2026.
+ */
+const KIT_BRANDS: { brand: BrandId; what: string; url: string }[] = [
+  { brand: "sungold", what: "Cabin and tiny-home solar kits, inverters and batteries", url: "https://sungoldpower.com/collections/cabine-tiny-home-kits" },
+  { brand: "signaturesolar", what: "Off-grid solar kits and components", url: "https://signaturesolar.com/kits-bundles/off-grid-solar-kits/" },
+  { brand: "renogy", what: "Off-grid solar kits: panels, charge controllers, inverters and batteries", url: "https://www.renogy.com/collections/off-grid" },
+  { brand: "goalzero", what: "Off-grid solar generators: power stations paired with solar panels", url: "https://goalzero.com/collections/off-grid-solar-systems-power" },
 ];
 
 export default function CabinSolarKitPage() {
@@ -234,7 +238,7 @@ export default function CabinSolarKitPage() {
           <ul className="grid sm:grid-cols-2 gap-3">
             {KIT_BRANDS.map((k) => (
               <li key={k.brand} className="bg-surface rounded-xl border border-black/8 p-4">
-                <PartnerLink brand={k.brand} productUrl={AFFILIATES[k.brand].homeUrl}>{AFFILIATES[k.brand].name}</PartnerLink>
+                <PartnerLink brand={k.brand} productUrl={k.url}>{AFFILIATES[k.brand].name}</PartnerLink>
                 <span className="block text-sm text-muted mt-1">{k.what}</span>
               </li>
             ))}

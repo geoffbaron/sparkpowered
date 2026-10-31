@@ -19,8 +19,8 @@ test("Redodo AW10 code shows through Nov 1 Pacific and is gone on Nov 2", () => 
 test("the code note renders before the end with a tracked, sponsored Redodo link and no prices", () => {
   const html = render("2026-10-30T12:00:00Z");
   assert.match(html, /Redodo sale: extra 10% off with code AW10, through Nov 1\./);
-  assert.match(html, /Shop Redodo/);
-  assert.match(html, /href="https:\/\/www\.awin1\.com\/cread\.php\?awinmid=97969&amp;awinaffid=3125360&amp;ued=https%3A%2F%2Fwww\.redodopower\.com%2F"/);
+  assert.match(html, /Shop the Redodo 12V 100Ah/);
+  assert.match(html, /href="https:\/\/www\.awin1\.com\/cread\.php\?awinmid=97969&amp;awinaffid=3125360&amp;ued=https%3A%2F%2Fwww\.redodopower\.com%2Fproducts%2F12v-100ah-lithium-battery"/);
   assert.match(html, /rel="sponsored nofollow noopener"/);
   assert.match(html, /We may earn a commission/);
   assert.doesNotMatch(html, /\$\d/);

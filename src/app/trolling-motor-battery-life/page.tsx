@@ -113,7 +113,7 @@ export default function TrollingRuntimePage() {
         </QuickAnswer>
 
         <RedodoSaleCallout className="mt-4" />
-        <RedodoDeal className="mt-3" />
+        <RedodoDeal className="mt-3" product={li120.url ? { name: "Redodo 12V 120Ah", url: li120.url } : undefined} />
 
         <section aria-label="Lithium vs AGM on the water" className="grid sm:grid-cols-3 gap-3 mt-8">
           <BigStat tone="leaf" value="2x" label="The hours of a same-size AGM" note="Lithium runs to empty; AGM should stop at half" />

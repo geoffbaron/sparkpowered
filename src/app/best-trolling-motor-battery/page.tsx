@@ -122,7 +122,7 @@ export default function TrollingPage() {
         </QuickAnswer>
 
         <RedodoSaleCallout className="mt-4" />
-        <RedodoDeal className="mt-3" />
+        <RedodoDeal className="mt-3" product={{ name: "Redodo 12V 100Ah", url: b12.url }} />
 
         <section aria-label="What switching saves" className="grid sm:grid-cols-3 gap-3 mt-8">
           <BigStat tone="leaf" value={`${Math.round(agmPairLb - b24.weightLb)} lb`} label="Lighter on a 24 V boat" note={`${b24.weightLb} lb vs two AGMs at ${agmPairLb} lb`} />

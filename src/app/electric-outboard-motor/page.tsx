@@ -223,7 +223,7 @@ export default function ElectricOutboardPage() {
             {redodo48.energyWh.toLocaleString("en-US")} Wh) is a solar and home battery, so check your motor maker approves third-party batteries
             first; most portable outboards only take their own.
           </p>
-          <RedodoDeal className="mt-4 max-w-3xl" />
+          <RedodoDeal className="mt-4 max-w-3xl" product={{ name: "Redodo 48V 100Ah", url: redodo48.url }} />
         </Section>
 
         <Section title="Myths, answered" id="myths">

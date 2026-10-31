@@ -114,7 +114,7 @@ export default function VoltageComparePage() {
         </QuickAnswer>
 
         <RedodoSaleCallout className="mt-4" />
-        <RedodoDeal className="mt-3" />
+        <RedodoDeal className="mt-3" product={li24_100.url ? { name: "Redodo 24V 100Ah", url: li24_100.url } : undefined} />
 
         <section aria-label="24V vs 36V at a glance" className="grid sm:grid-cols-3 gap-3 mt-8">
           <BigStat value={`+${m112.thrustLb - m80.thrustLb} lb`} label="More thrust at 36 V" note={`${m112.thrustLb} lb vs ${m80.thrustLb} lb (Minn Kota)`} />

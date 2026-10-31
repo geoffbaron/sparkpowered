@@ -229,6 +229,31 @@ export const LITIME_RV = {
 };
 
 /**
+ * A premium heated 12 V battery from Epoch Batteries (approved partner, Refersion),
+ * read from epochbatteries.com on Oct 31 2026. Every figure is Epoch's own from the
+ * product page: price, 1.34 kWh, 105 A continuous (200 A peak for 10 s), 22.1 lb,
+ * internal heating, Bluetooth, 4,000 cycles to 80% capacity, and an 11-year limited
+ * warranty of which the first 3 years are free replacement.
+ */
+export const EPOCH_RV = {
+  id: "epoch-12v-105ah-essential",
+  brand: "epoch" as const,
+  name: "Epoch 12V 105Ah Essential Series",
+  url: "https://www.epochbatteries.com/products/12v-105ah-heated-bluetooth-lifepo4",
+  retrieved: "2026-10-31",
+  energyWh: 1340,
+  continuousA: 105,
+  weightLb: 22.1,
+  priceUsd: 549,
+  listPriceUsd: null,
+  warrantyYears: 11,
+  freeReplacementYears: 3,
+  cycles: 4000,
+  selfHeating: true,
+  bluetooth: true,
+};
+
+/**
  * The lead-acid battery we compare against: a widely sold 12 V 100 Ah AGM
  * deep-cycle battery, specs and price from the maker's US store.
  */

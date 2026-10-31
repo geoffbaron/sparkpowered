@@ -35,6 +35,7 @@ export type BrandId =
   | "eviqo"
   | "piscifun"
   | "litime"
+  | "epoch"
   | "energysage"
   | "sungold"
   | "goalzero"
@@ -134,6 +135,8 @@ export const AFFILIATES: Record<BrandId, BrandAffiliate> = {
     commission: "5%",
     cookieDays: 30,
     links: { home: "https://www.awin1.com/cread.php?awinmid=91891&awinaffid=3125360&ued=https%3A%2F%2Fev-lectron.com%2F" },
+    // Any Lectron product page, so a link without a productId below is still tracked.
+    deepLink: "https://www.awin1.com/cread.php?awinmid=91891&awinaffid=3125360&ued={url}",
     productLinks: {
       "lectron-nexus-j1772": "https://www.awin1.com/cread.php?awinmid=91891&awinaffid=3125360&ued=https%3A%2F%2Fev-lectron.com%2Fproducts%2Flectron-nexus-level-2-j1772-ev-charging-station-240v-40-amp-23ft-cable-wall-mount-j-hook-plug-holder-nema-14-50",
       "lectron-nexus-nacs": "https://www.awin1.com/cread.php?awinmid=91891&awinaffid=3125360&ued=https%3A%2F%2Fev-lectron.com%2Fproducts%2Flectron-nexus-level-2-nacs-tesla-ev-charging-station-240v-40-amp-23ft-cable-wall-mount-j-hook-plug-holder-nema-14-50",
@@ -203,6 +206,20 @@ export const AFFILIATES: Record<BrandId, BrandAffiliate> = {
     links: { home: "https://www.awin1.com/cread.php?awinmid=71451&awinaffid=3125360&ued=https%3A%2F%2Fwww.litime.com%2F" },
     deepLink: "https://www.awin1.com/cread.php?awinmid=71451&awinaffid=3125360&ued={url}",
   },
+  // Approved Oct 31 2026 on Refersion (Epoch Batteries, epochbatteries.refersion.com).
+  // Tracking is Refersion's ?rfsn= parameter on any epochbatteries.com page (checked Oct 31
+  // 2026: product pages load with it). Program terms: 10% base, 30-day window, no paid ads,
+  // disclose the commission.
+  epoch: {
+    name: "Epoch Batteries",
+    homeUrl: "https://www.epochbatteries.com/",
+    tracked: true,
+    network: "Refersion",
+    commission: "10%",
+    cookieDays: 30,
+    links: { home: "https://www.epochbatteries.com/?rfsn=9396856.73d8c8" },
+    refParam: "rfsn=9396856.73d8c8",
+  },
   // Applied, pending on Awin (plain links until approved): Jackery, EcoFlow, Oupes, Pecron,
   // and per-sale solar installers Momentum Solar, Solar Savings, Solar Simplified, Nautilus community solar.
   energysage: {
@@ -235,6 +252,37 @@ export const AFFILIATES: Record<BrandId, BrandAffiliate> = {
   mountainhouse: { name: "Mountain House", homeUrl: "https://mountainhouse.com/", tracked: false },
   midland: { name: "Midland", homeUrl: "https://midlandusa.com/", tracked: false },
 };
+
+/** Host without a leading "www.", lower case. */
+export const bareHost = (url: string) => new URL(url).hostname.toLowerCase().replace(/^www\./, "");
+
+/**
+ * The brand whose own store a URL points at (matched on the brand's homeUrl
+ * host, with or without "www."), or null. Lets plain links to an approved
+ * brand be caught and tracked instead of slipping out untagged.
+ */
+export function brandForUrl(url: string): BrandId | null {
+  let host: string;
+  try {
+    host = bareHost(url);
+  } catch {
+    return null;
+  }
+  for (const [id, a] of Object.entries(AFFILIATES) as [BrandId, BrandAffiliate][]) {
+    if (bareHost(a.homeUrl) === host) return id;
+  }
+  return null;
+}
+
+/** True when a URL is a store's bare home page (no product or category path). */
+export function isHomePage(url: string): boolean {
+  try {
+    const u = new URL(url);
+    return u.pathname === "/" || u.pathname === "";
+  } catch {
+    return false;
+  }
+}
 
 export interface ResolvedLink {
   href: string;

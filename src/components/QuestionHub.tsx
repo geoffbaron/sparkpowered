@@ -73,6 +73,7 @@ export function ToolLink({ href, label }: { href: string; label: string }) {
  * always show the same fact-checked text, links and rel attributes.
  */
 export function QuestionAnswer({ q, redodo }: { q: Question; redodo: boolean }) {
+  const redodoPick = q.picks?.find((p) => p.brand === "redodo");
   return (
     <>
       <QuickAnswer>
@@ -97,7 +98,7 @@ export function QuestionAnswer({ q, redodo }: { q: Question; redodo: boolean }) 
           </p>
         </div>
       )}
-      {redodo && <RedodoDeal className="mt-5" />}
+      {redodo && <RedodoDeal className="mt-5" product={redodoPick ? { name: redodoPick.label, url: redodoPick.url } : undefined} />}
       {q.picks && q.picks.length > 0 && (
         <ul className="mt-5 grid sm:grid-cols-2 gap-3">
           {q.picks.map((p) => (

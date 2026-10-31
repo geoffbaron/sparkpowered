@@ -92,7 +92,7 @@ export default function ChargeOnBoatPage() {
           </p>
         </QuickAnswer>
 
-        <RedodoDeal className="mt-4" />
+        <RedodoDeal className="mt-4" product={{ name: "Redodo 12V 40A DC-to-DC Charger", url: dcdc.url }} />
 
         <section aria-label="Charging at a glance" className="grid sm:grid-cols-3 gap-3 mt-8">
           <BigStat tone="leaf" value={money(Math.round(fullCharge * 100) / 100)} label="To fill a 12V 100Ah lithium" note="At 18.31¢ a kWh, the US average" />
