@@ -17,6 +17,7 @@ import { PLANNER_STATES, TYPICAL_TOTALS, typicalPlan } from "@/lib/planner-data"
 import { fullName, productById } from "@/lib/products";
 import { GAS_CARS, homeFigures, MMBTU_PER_MCF } from "@/lib/go-electric";
 import AskSparkCta from "@/components/AskSparkCta";
+import IWantTo from "@/components/IWantTo";
 
 const TITLE = "Go Electric and Save: EV, Solar & Battery Savings by State";
 const DESCRIPTION =
@@ -81,20 +82,32 @@ export default function HomePage() {
         }}
       />
 
-      <section className="relative isolate overflow-hidden bg-ink text-white">
+      <section className="relative isolate bg-ink text-white">
         <Photo name="hero" priority className="absolute inset-0 -z-10 h-full w-full object-cover object-[70%_30%]" sizes="(max-width: 767px) 360px, 100vw" />
         <div className="absolute inset-0 -z-10 hero-shade" />
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-24">
-          <p className="text-amber-300 font-bold uppercase tracking-wide text-sm">Free, no sign-up</p>
-          <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold leading-[1.02] mt-3 max-w-3xl">
-            What would going electric save <span className="text-amber-300">you?</span>
+          <p className="text-amber-300 font-bold uppercase tracking-wide text-sm">Free tools, no sign-up</p>
+          <h1 className="text-4xl sm:text-6xl font-extrabold leading-[1.05] mt-3 max-w-3xl">
+            Real numbers for going electric, <span className="text-amber-300">for your home.</span>
           </h1>
           <p className="mt-4 text-lg sm:text-xl text-white/90 max-w-2xl leading-relaxed">
+            Tell us what you&apos;re after. We&apos;ll take you straight to the tool that answers it, on your state&apos;s real prices.
+          </p>
+          <IWantTo />
+        </div>
+      </section>
+
+      <section aria-labelledby="savings-heading" className="bg-surface-light border-b border-black/8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+          <h2 id="savings-heading" className="text-2xl sm:text-3xl font-extrabold text-ink">Or see what going electric saves you</h2>
+          <p className="text-stone-700 mt-2 max-w-2xl">
             Pick your state. We run an EV, solar, a heat pump and backup power on your state&apos;s real prices, one switch at a
             time, so you can skip the ones that don&apos;t pay.
           </p>
-          <StatePicker states={PLANNER_STATES.map((s) => ({ abbr: s.abbr, name: s.name }))} totals={TYPICAL_TOTALS} initial={medianAbbr} />
-          <p className="text-xs text-white/75 mt-3 max-w-xl">
+          <div className="text-ink">
+            <StatePicker states={PLANNER_STATES.map((s) => ({ abbr: s.abbr, name: s.name }))} totals={TYPICAL_TOTALS} initial={medianAbbr} />
+          </div>
+          <p className="text-xs text-muted mt-3 max-w-xl">
             Typical home: the state&apos;s average electric bill, gas heat, hot water and stove, and a 25.5 mpg car driven
             12,000 miles a year. Built on EIA and EPA data, updated {formatDate(DATA_UPDATED)}.
           </p>
