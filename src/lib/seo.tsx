@@ -96,6 +96,11 @@ export const QUESTIONS_UPDATED_AT = `${QUESTIONS_UPDATED}T12:00:00+00:00`;
 
 export const ROUTES: { path: string; lastModified: string }[] = [
   { path: "/", lastModified: CONTENT_UPDATED },
+  { path: "/electric-vehicles", lastModified: "2026-11-02" },
+  { path: "/home-energy", lastModified: "2026-11-02" },
+  { path: "/outdoor-power", lastModified: "2026-11-02" },
+  { path: "/off-grid", lastModified: "2026-11-02" },
+  { path: "/learn", lastModified: "2026-11-02" },
   { path: "/go-electric", lastModified: CONTENT_UPDATED },
   { path: "/ev-charging-cost", lastModified: CONTENT_UPDATED },
   { path: "/solar-calculator", lastModified: CONTENT_UPDATED },

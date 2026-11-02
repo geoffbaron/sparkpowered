@@ -164,6 +164,15 @@ function DesktopGroup({
               </Link>
             </li>
           ))}
+          <li className="mt-1 border-t border-black/8 pt-1">
+            <Link
+              href={group.hub.href}
+              onClick={() => onClose()}
+              className="block whitespace-nowrap rounded-xl px-3 py-2 text-sm font-bold text-spark-orange transition-colors hover:bg-surface-light focus-visible:bg-surface-light focus-visible:outline-none"
+            >
+              {group.hub.label} &rarr;
+            </Link>
+          </li>
         </ul>
       </div>
     </li>
@@ -235,7 +244,7 @@ export default function Header() {
                   key={group.id}
                   group={group}
                   open={openGroup === group.id}
-                  active={group.links.some((l) => isActive(pathname, l.href))}
+                  active={isActive(pathname, group.hub.href) || group.links.some((l) => isActive(pathname, l.href))}
                   onOpen={openMenu}
                   onClose={closeMenu}
                 />
@@ -284,7 +293,13 @@ export default function Header() {
           <div className="grid gap-x-6 sm:grid-cols-2 px-4 sm:px-6">
             {NAV_GROUPS.map((group) => (
               <div key={group.id} className="pt-4">
-                <p className="px-2 pb-1 text-xs font-bold uppercase tracking-wider text-muted">{group.label}</p>
+                <Link
+                  href={group.hub.href}
+                  className="block px-2 pb-1 text-xs font-bold uppercase tracking-wider text-muted hover:text-spark-orange"
+                  onClick={() => setMobileOpen(false)}
+                >
+                  {group.label} &rarr;
+                </Link>
                 <ul>
                   {group.links.map((link) => (
                     <li key={link.href}>

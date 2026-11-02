@@ -6,6 +6,14 @@ Site: https://sparkpowered.com
 Language: English (US)
 Audience: US homeowners and drivers.
 
+## Section guides (start here)
+
+- [Electric cars & e-bikes](https://sparkpowered.com/electric-vehicles): Every tool for choosing an EV or plug-in hybrid, home charging cost, chargers and install cost, and e-bikes, grouped by goal.
+- [Home energy](https://sparkpowered.com/home-energy): Solar, plug-in solar, home batteries, outage backup and the cost of running heaters and holiday lights, by state.
+- [RV, boat & camping power](https://sparkpowered.com/outdoor-power): Lithium RV and boat batteries, trolling motor and fish finder run times, electric outboards and power stations for CPAP and camping.
+- [Off grid & emergency prep](https://sparkpowered.com/off-grid): Off-grid solar sizing for winter, power line vs solar, cabin kits, generator fuel, emergency water, filters, purification, food and a 72-hour kit.
+- [Learn](https://sparkpowered.com/learn): Questions answered, myths, 2026 tax credits, state data and methodology.
+
 ## Tools
 
 - [EV charging cost calculator](https://sparkpowered.com/ev-charging-cost): Home EV charging cost per 100 miles, per month and per year for any state and any 2026-2027 EV (EPA kWh/100 mi), compared with gasoline. Includes a 50-state + DC table.

@@ -2,13 +2,15 @@
 // client Header and any server page can import it safely.
 
 export type NavLink = { href: string; label: string };
-export type NavGroup = { id: string; label: string; links: NavLink[] };
+/** `hub` is the section's own landing page, linked from the menu heading. */
+export type NavGroup = { id: string; label: string; hub: NavLink; links: NavLink[] };
 
 export const NAV_CTA: NavLink = { href: "/go-electric", label: "See what you'd save" };
 
 export const NAV_GROUPS: NavGroup[] = [
   {
     id: "cars",
+    hub: { href: "/electric-vehicles", label: "All electric car & e-bike guides" },
     label: "Cars & bikes",
     links: [
       { href: "/calculator", label: "Electric cars" },
@@ -22,6 +24,7 @@ export const NAV_GROUPS: NavGroup[] = [
   },
   {
     id: "home",
+    hub: { href: "/home-energy", label: "All home energy guides" },
     label: "Home Energy",
     links: [
       { href: "/solar-calculator", label: "Solar" },
@@ -34,6 +37,7 @@ export const NAV_GROUPS: NavGroup[] = [
   },
   {
     id: "outdoors",
+    hub: { href: "/outdoor-power", label: "All RV, boat & camping guides" },
     label: "Outdoors",
     links: [
       { href: "/lithium-rv-battery", label: "RV batteries" },
@@ -44,6 +48,7 @@ export const NAV_GROUPS: NavGroup[] = [
   },
   {
     id: "offgrid",
+    hub: { href: "/off-grid", label: "All off-grid & prep guides" },
     label: "Off Grid",
     links: [
       { href: "/off-grid-solar-calculator", label: "Off-grid solar" },
@@ -56,6 +61,7 @@ export const NAV_GROUPS: NavGroup[] = [
   },
   {
     id: "learn",
+    hub: { href: "/learn", label: "Everything in Learn" },
     label: "Learn",
     links: [
       { href: "/solartopia", label: "Solartopia (game)" },
