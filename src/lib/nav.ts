@@ -9,7 +9,7 @@ export const NAV_CTA: NavLink = { href: "/go-electric", label: "See what you'd s
 export const NAV_GROUPS: NavGroup[] = [
   {
     id: "cars",
-    label: "Cars",
+    label: "Cars & bikes",
     links: [
       { href: "/calculator", label: "Electric cars" },
       { href: "/ev-or-plug-in-hybrid", label: "EV or plug-in hybrid?" },
@@ -17,6 +17,7 @@ export const NAV_GROUPS: NavGroup[] = [
       { href: "/ev-charger-picker", label: "Which charger do I need?" },
       { href: "/ev-charging-cost", label: "EV charging cost" },
       { href: "/ev-charger-installation-cost", label: "Charger install cost" },
+      { href: "/e-bikes", label: "E-bikes" },
     ],
   },
   {
