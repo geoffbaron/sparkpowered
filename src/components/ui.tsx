@@ -212,8 +212,11 @@ export function HubHero({
   sub,
   crumbs,
   children,
+  after,
 }: {
   crumbs?: Crumb[];
+  /** Full-width content under the buttons, such as the goal picker. */
+  after?: React.ReactNode;
   image: ImageKey;
   eyebrow: string;
   title: React.ReactNode;
@@ -221,8 +224,10 @@ export function HubHero({
   children?: React.ReactNode;
 }) {
   return (
-    <section className="relative isolate overflow-hidden bg-ink text-white">
-      <Photo name={image} priority className="absolute inset-0 -z-10 h-full w-full object-cover" sizes="(max-width: 767px) 360px, 100vw" />
+    <section className="relative isolate bg-ink text-white">
+      <div className="absolute inset-0 -z-10 overflow-hidden">
+        <Photo name={image} priority className="absolute inset-0 h-full w-full object-cover" sizes="(max-width: 767px) 360px, 100vw" />
+      </div>
       <div className="absolute inset-0 -z-10 hero-shade" />
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 pb-12 sm:pb-16">
         {crumbs && <Breadcrumbs items={crumbs} tone="dark" />}
@@ -230,6 +235,7 @@ export function HubHero({
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.05] mt-2 max-w-3xl">{title}</h1>
         <div className="mt-4 text-lg sm:text-xl text-white/90 max-w-2xl leading-relaxed">{sub}</div>
         {children && <div className="mt-6 flex flex-wrap gap-3 items-center">{children}</div>}
+        {after}
       </div>
     </section>
   );

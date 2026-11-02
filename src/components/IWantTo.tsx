@@ -55,7 +55,14 @@ const GOALS: { group: string; goals: Goal[] }[] = [
   },
 ];
 
-export default function IWantTo() {
+/** `first` lists group names to show before the rest, so a section page leads with its own goals. */
+function rank(group: string, first: string[]) {
+  const i = first.indexOf(group);
+  return i === -1 ? first.length : i;
+}
+
+export default function IWantTo({ first = [] }: { first?: string[] }) {
+  const groups = [...GOALS].sort((a, b) => rank(a.group, first) - rank(b.group, first));
   const [open, setOpen] = useState(false);
   const wrap = useRef<HTMLDivElement>(null);
   const button = useRef<HTMLButtonElement>(null);
@@ -106,7 +113,7 @@ export default function IWantTo() {
         className="absolute left-0 right-0 top-full z-40 mt-2 max-h-[70vh] overflow-y-auto rounded-2xl bg-white p-4 sm:p-6 text-ink shadow-2xl shadow-black/30"
       >
         <div className="grid gap-x-8 gap-y-5 sm:grid-cols-2">
-          {GOALS.map((g) => (
+          {groups.map((g) => (
             <div key={g.group}>
               <p className="text-xs font-bold uppercase tracking-wider text-muted mb-1">{g.group}</p>
               <ul>
