@@ -42,6 +42,8 @@ const APPROVED: Partial<Record<BrandId, Rule>> = {
   epoch: { param: "rfsn=9396856.73d8c8" },
   vatrer: { awin: 119703 },
   kingbull: { awin: 124136 },
+  himiway: { awin: 128329 },
+  engwe: { awin: 65774 },
 };
 /** Approved on Awin but not used on this site yet: any link to them must still be wrapped. */
 const APPROVED_UNUSED: Record<string, number> = { "vatrer.com": 119703 };

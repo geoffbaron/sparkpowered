@@ -238,8 +238,23 @@ export const AFFILIATES: Record<BrandId, BrandAffiliate> = {
   },
   // E-bikes (Nov 2 2026): approved on Awin; tracking switched on once each MID is read from the
   // Awin dashboard. Until then plain links to the brand's own US store.
-  himiway: { name: "Himiway", homeUrl: "https://himiwaybike.com/", tracked: false },
-  engwe: { name: "ENGWE", homeUrl: "https://us.engwe.com/", tracked: false },
+  // Himiway (MID 128329) and ENGWE (MID 65774): joined on Awin, tracked since Nov 2 2026.
+  himiway: {
+    name: "Himiway",
+    homeUrl: "https://himiwaybike.com/",
+    tracked: true,
+    network: "Awin",
+    links: { home: "https://www.awin1.com/cread.php?awinmid=128329&awinaffid=3125360&ued=https%3A%2F%2Fhimiwaybike.com%2F" },
+    deepLink: "https://www.awin1.com/cread.php?awinmid=128329&awinaffid=3125360&ued={url}",
+  },
+  engwe: {
+    name: "ENGWE",
+    homeUrl: "https://us.engwe.com/",
+    tracked: true,
+    network: "Awin",
+    links: { home: "https://www.awin1.com/cread.php?awinmid=65774&awinaffid=3125360&ued=https%3A%2F%2Fus.engwe.com%2F" },
+    deepLink: "https://www.awin1.com/cread.php?awinmid=65774&awinaffid=3125360&ued={url}",
+  },
   // Kingbull: approved on Awin (MID 124136), tracked since Nov 2 2026.
   kingbull: {
     name: "Kingbull",
