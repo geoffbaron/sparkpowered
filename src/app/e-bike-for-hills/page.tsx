@@ -73,28 +73,17 @@ export default function HillsEbikePage() {
 
         <QuickAnswer>
           <p>
-            <strong>Long, steep climbs:</strong> the <PartnerLink brand="himiway" productUrl={a7pro.url}>{ebikeName(a7pro)}</PartnerLink> ({money(a7pro.price)}) has a
-            mid-drive rated {a7pro.torqueNm} Nm with a torque sensor, the most torque of any single-motor bike here.
-          </p>
-          <p>
             <strong>Hilly town on a budget:</strong> the <PartnerLink brand="kingbull" productUrl={jumper.url}>{ebikeName(jumper)}</PartnerLink> ({money(jumper.price)}) pairs a{" "}
             {jumper.torqueNm} Nm hub motor ({jumper.peakW} W peak) with a torque sensor and full suspension.
+          </p>
+          <p>
+            <strong>Long, steep climbs:</strong> the <PartnerLink brand="himiway" productUrl={a7pro.url}>{ebikeName(a7pro)}</PartnerLink> ({money(a7pro.price)}) has a
+            mid-drive rated {a7pro.torqueNm} Nm with a torque sensor, the most torque of any single-motor bike here.
           </p>
         </QuickAnswer>
 
         <section id="picks" className="mt-12 grid gap-4 scroll-mt-24" aria-labelledby="picks-heading">
           <h2 id="picks-heading" className="text-2xl font-extrabold text-ink">Bikes that climb</h2>
-          <OurPick
-            label="Most torque from one motor"
-            name={ebikeName(a7pro)}
-            icon="bike"
-            why={`A ${a7pro.motorType} rated ${a7pro.torqueNm} Nm, driving through the gears, with a torque sensor and full suspension. Himiway rates it for ${a7pro.payloadLb} lb of rider and cargo, lower than the fat-tire bikes, and its spec table doesn't list a throttle.`}
-            life={[`${a7pro.torqueNm} Nm mid-drive`, "Torque sensor", `${a7pro.batteryWh} Wh battery`, `${a7pro.weightLb} lb bike`]}
-            priceUsd={a7pro.price}
-            brand="himiway"
-            productUrl={a7pro.url}
-            category="home"
-          />
           <OurPick
             label="Best value for hilly towns"
             name={ebikeName(jumper)}
@@ -104,6 +93,17 @@ export default function HillsEbikePage() {
             priceUsd={jumper.price}
             brand="kingbull"
             productUrl={jumper.url}
+            category="home"
+          />
+          <OurPick
+            label="Most torque from one motor"
+            name={ebikeName(a7pro)}
+            icon="bike"
+            why={`A ${a7pro.motorType} rated ${a7pro.torqueNm} Nm, driving through the gears, with a torque sensor and full suspension. Himiway rates it for ${a7pro.payloadLb} lb of rider and cargo, lower than the fat-tire bikes, and its spec table doesn't list a throttle.`}
+            life={[`${a7pro.torqueNm} Nm mid-drive`, "Torque sensor", `${a7pro.batteryWh} Wh battery`, `${a7pro.weightLb} lb bike`]}
+            priceUsd={a7pro.price}
+            brand="himiway"
+            productUrl={a7pro.url}
             category="home"
           />
           <OurPick
