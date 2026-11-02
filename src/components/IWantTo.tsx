@@ -3,74 +3,26 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
-type Goal = { href: string; label: string };
+export type Goal = { href: string; label: string; hint?: string };
 
-// Every goal a visitor can come with, each sent to the one tool that answers it.
-// The list is always in the HTML (only hidden), so crawlers see every link.
-const GOALS: { group: string; goals: Goal[] }[] = [
-  {
-    group: "Save money",
-    goals: [
-      { href: "/go-electric", label: "save money going electric" },
-      { href: "/solar-calculator", label: "see if solar pays off" },
-      { href: "/plug-in-solar", label: "try plug-in balcony solar" },
-      { href: "/space-heater-cost", label: "see what a space heater costs" },
-    ],
-  },
-  {
-    group: "Drive electric",
-    goals: [
-      { href: "/calculator", label: "pick an electric car" },
-      { href: "/ev-or-plug-in-hybrid", label: "choose EV or plug-in hybrid" },
-      { href: "/ev-charger-picker", label: "pick a home EV charger" },
-      { href: "/ev-charging-cost", label: "know what charging costs" },
-      { href: "/e-bikes", label: "pick an e-bike" },
-    ],
-  },
-  {
-    group: "Backup power",
-    goals: [
-      { href: "/power-outage-backup-calculator", label: "keep the power on in an outage" },
-      { href: "/battery-calculator", label: "pick a home battery" },
-      { href: "/best-portable-power-stations", label: "pick a portable power station" },
-      { href: "/best-power-station-for-cpap", label: "power my CPAP" },
-    ],
-  },
-  {
-    group: "Off grid and prep",
-    goals: [
-      { href: "/off-grid-solar-calculator", label: "go off grid" },
-      { href: "/off-grid-cabin-solar-kit", label: "power a cabin" },
-      { href: "/emergency-kit-checklist", label: "get ready for an emergency" },
-      { href: "/emergency-water-storage-calculator", label: "store emergency water" },
-    ],
-  },
-  {
-    group: "RV, boat and camping",
-    goals: [
-      { href: "/lithium-rv-battery", label: "upgrade my RV battery" },
-      { href: "/trolling-motor-battery-life", label: "fish all day on one battery" },
-      { href: "/electric-outboard-motor", label: "go electric on my boat" },
-    ],
-  },
+// The homepage's few big choices. Each opens a section page whose own picker
+// branches into that section's tools, so no list is ever long.
+// Lists are always in the HTML (only hidden), so crawlers see every link.
+const TOP_GOALS: Goal[] = [
+  { href: "/go-electric", label: "save money going electric", hint: "Every switch priced for your state" },
+  { href: "/electric-vehicles", label: "drive electric", hint: "Pick a car, a charger, see charging costs" },
+  { href: "/e-bikes", label: "ride an e-bike", hint: "Commuting, hills, heavier riders, folding" },
+  { href: "/home-energy", label: "go solar or add a battery", hint: "Rooftop, balcony solar, home batteries" },
+  { href: "/power-outage-backup-calculator", label: "keep the power on in an outage", hint: "Size backup for the fridge, CPAP, well pump" },
+  { href: "/off-grid", label: "go off grid or get prepared", hint: "Off-grid solar, water, food, emergency kit" },
+  { href: "/outdoor-power", label: "power my RV, boat or campsite", hint: "Lithium batteries, trolling motors, CPAP" },
 ];
 
-function rank(group: string, first: string[]) {
-  const i = first.indexOf(group);
-  return i === -1 ? first.length : i;
-}
-
 /**
- * `first` lists group names to show before the rest, so a section page leads with its own goals.
- * `lead` is a page's own group, shown at the top; a goal it repeats, or one that links to `here`, is dropped from the rest.
+ * The "I want to..." picker. With no `goals` it shows the homepage's big choices; a section page
+ * passes its own next steps, and `more` adds a way back to the big choices.
  */
-export default function IWantTo({ first = [], lead, here }: { first?: string[]; lead?: { group: string; goals: Goal[] }; here?: string }) {
-  const own = new Set([...(lead?.goals.map((g) => g.href) ?? []), ...(here ? [here] : [])]);
-  const rest = [...GOALS]
-    .sort((a, b) => rank(a.group, first) - rank(b.group, first))
-    .map((g) => ({ ...g, goals: g.goals.filter((x) => !own.has(x.href)) }))
-    .filter((g) => g.goals.length > 0);
-  const groups = lead ? [lead, ...rest] : rest;
+export default function IWantTo({ goals = TOP_GOALS, more = false }: { goals?: Goal[]; more?: boolean }) {
   const [open, setOpen] = useState(false);
   const wrap = useRef<HTMLDivElement>(null);
   const button = useRef<HTMLButtonElement>(null);
@@ -96,7 +48,7 @@ export default function IWantTo({ first = [], lead, here }: { first?: string[]; 
   }, [open]);
 
   return (
-    <div ref={wrap} className="relative mt-6 max-w-3xl">
+    <div ref={wrap} className="relative mt-6 max-w-2xl">
       <button
         ref={button}
         type="button"
@@ -118,30 +70,38 @@ export default function IWantTo({ first = [], lead, here }: { first?: string[]; 
       <div
         id="i-want-to-list"
         hidden={!open}
-        className="absolute left-0 right-0 top-full z-40 mt-2 max-h-[70vh] overflow-y-auto rounded-2xl bg-white p-4 sm:p-6 text-ink shadow-2xl shadow-black/30"
+        className="absolute left-0 right-0 top-full z-40 mt-2 max-h-[70vh] overflow-y-auto rounded-2xl bg-white p-2 sm:p-3 text-ink shadow-2xl shadow-black/30"
       >
-        <div className="grid gap-x-8 gap-y-5 sm:grid-cols-2">
-          {groups.map((g) => (
-            <div key={g.group}>
-              <p className="text-xs font-bold uppercase tracking-wider text-muted mb-1">{g.group}</p>
-              <ul>
-                {g.goals.map((goal) => (
-                  <li key={goal.href + goal.label}>
-                    <Link
-                      href={goal.href}
-                      onClick={() => setOpen(false)}
-                      data-umami-event="i_want_to_pick"
-                      data-umami-event-goal={goal.label}
-                      className="block rounded-lg px-2 py-2 text-[17px] font-semibold text-stone-800 hover:bg-amber-50 hover:text-spark-orange focus-visible:bg-amber-50 focus-visible:text-spark-orange focus-visible:outline-none"
-                    >
-                      &hellip;{goal.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+        <ul>
+          {goals.map((goal) => (
+            <li key={goal.href + goal.label}>
+              <Link
+                href={goal.href}
+                onClick={() => setOpen(false)}
+                data-umami-event="i_want_to_pick"
+                data-umami-event-goal={goal.label}
+                className="group flex items-center justify-between gap-3 rounded-xl px-4 py-3 hover:bg-amber-50 focus-visible:bg-amber-50 focus-visible:outline-none"
+              >
+                <span>
+                  <span className="block text-lg sm:text-xl font-bold text-stone-800 group-hover:text-spark-orange group-focus-visible:text-spark-orange">
+                    &hellip;{goal.label}
+                  </span>
+                  {goal.hint && <span className="block text-sm text-muted mt-0.5">{goal.hint}</span>}
+                </span>
+                <span aria-hidden="true" className="text-spark-orange text-xl opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100">&rarr;</span>
+              </Link>
+            </li>
           ))}
-        </div>
+        </ul>
+        {more && (
+          <Link
+            href="/"
+            onClick={() => setOpen(false)}
+            className="mt-1 block border-t border-black/8 px-4 pt-3 pb-2 text-sm font-semibold text-muted hover:text-spark-orange"
+          >
+            Something else? See every choice
+          </Link>
+        )}
       </div>
     </div>
   );

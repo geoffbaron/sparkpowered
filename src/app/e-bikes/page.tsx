@@ -77,18 +77,14 @@ export default function EbikesHubPage() {
         sub={<>How to pick one that fits your ride, what it costs per mile against a car, and which rebates are open where you live.</>}
         after={
           <IWantTo
-            first={["Drive electric"]}
-            here={PATH}
-            lead={{
-              group: "E-bikes",
-              goals: [
-                { href: "/commuter-e-bike-under-1500", label: "find a commuter e-bike under $1,500" },
-                { href: "/e-bike-for-hills", label: "find an e-bike for hills" },
-                { href: "/e-bike-for-heavy-riders", label: "find an e-bike for a heavier rider" },
-                { href: "/folding-e-bike", label: "find a folding e-bike" },
-                { href: "#rebates", label: "check 2026 e-bike rebates" },
-              ],
-            }}
+            more
+            goals={[
+              { href: "/commuter-e-bike-under-1500", label: "find a commuter e-bike under $1,500", hint: "Racks, lights and fenders in the box" },
+              { href: "/e-bike-for-hills", label: "find an e-bike for hills", hint: "Torque, mid-drives and torque sensors" },
+              { href: "/e-bike-for-heavy-riders", label: "find an e-bike for a heavier rider", hint: "Bikes rated for 400 lb and up" },
+              { href: "/folding-e-bike", label: "find a folding e-bike", hint: "For apartments, RVs and car trunks" },
+              { href: "#rebates", label: "check 2026 e-bike rebates", hint: "State and city programs open now" },
+            ]}
           />
         }
       />

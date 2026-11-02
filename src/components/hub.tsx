@@ -2,18 +2,9 @@ import Link from "next/link";
 import { Prose, Section } from "@/components/content";
 import IWantTo from "@/components/IWantTo";
 import { HubHero, PhotoCredit } from "@/components/ui";
-import { HUBS, type Hub, type HubId } from "@/data/hubs";
+import { HUBS, type Hub } from "@/data/hubs";
 import { TOPICS } from "@/data/questions";
 import { JsonLd, url } from "@/lib/seo";
-
-/** Which "I want to..." groups each section shows first. */
-const GOAL_GROUPS: Record<HubId, string[]> = {
-  cars: ["Drive electric"],
-  home: ["Save money", "Backup power"],
-  outdoors: ["RV, boat and camping", "Backup power"],
-  offgrid: ["Off grid and prep", "Backup power"],
-  learn: [],
-};
 
 /** Opening of a short answer, for a teaser that sends the reader to the full one. A clipped "No." says too little, so take a second sentence then. */
 function firstSentence(text: string) {
@@ -67,7 +58,7 @@ export function HubLanding({ hub }: { hub: Hub }) {
         eyebrow={hub.eyebrow}
         title={<>{hub.h1} <span className="text-amber-300">{hub.h1Accent}</span></>}
         sub={hub.sub}
-        after={<IWantTo first={GOAL_GROUPS[hub.id]} />}
+        after={<IWantTo goals={hub.goals} more />}
       />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">

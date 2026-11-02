@@ -2,6 +2,7 @@
 // you trying to do?" and sends the reader to the guide or calculator that does it.
 // Copy here states no new facts or figures; numbers live on the pages linked to.
 
+import type { Goal } from "@/components/IWantTo";
 import type { ImageKey } from "@/data/images";
 
 export type HubId = "cars" | "home" | "outdoors" | "offgrid" | "learn";
@@ -31,6 +32,8 @@ export interface Hub {
   h1: string;
   h1Accent: string;
   sub: string;
+  /** Next steps shown in this section's "I want to..." picker: a few, each to one tool. */
+  goals: Goal[];
   /** The one tool most visitors should start with. */
   start: { href: string; label: string; why: string };
   intro: string[];
@@ -59,6 +62,13 @@ export const HUBS: Hub[] = [
     h1: "Thinking about an electric car?",
     h1Accent: "Start with what you drive and where you'd charge.",
     sub: "Free tools to pick a car, check it fits your driving, price home charging in your state and choose the right charger. No sign-up.",
+    goals: [
+      { href: "/calculator", label: "pick an electric car", hint: "Matched to your budget, body style and miles" },
+      { href: "/ev-or-plug-in-hybrid", label: "choose EV or plug-in hybrid", hint: "Which fits your driving and charging" },
+      { href: "/ev-charger-picker", label: "pick a home charger", hint: "Plug, amps, plug-in or hardwired" },
+      { href: "/ev-charging-cost", label: "see what charging costs", hint: "Per charge and per mile in your state" },
+      { href: "/e-bikes", label: "ride an e-bike instead", hint: "For short trips a car is overkill for" },
+    ],
     start: {
       href: "/ev-or-plug-in-hybrid",
       label: "EV or plug-in hybrid?",
@@ -118,6 +128,13 @@ export const HUBS: Hub[] = [
     h1: "Lower your power bill,",
     h1Accent: "and keep the lights on when the grid goes down.",
     sub: "Solar, batteries, backup power and the everyday costs on your bill, worked out for your state. No sign-up, no sales calls.",
+    goals: [
+      { href: "/solar-calculator", label: "see if solar pays off", hint: "Panels you need and what they save in your state" },
+      { href: "/plug-in-solar", label: "try plug-in balcony solar", hint: "Is it legal where you live, and what it makes" },
+      { href: "/battery-calculator", label: "size a home battery", hint: "How many kWh for what you want to run" },
+      { href: "/power-outage-backup-calculator", label: "keep the power on in an outage", hint: "Fridge, CPAP, well pump, Wi-Fi" },
+      { href: "/space-heater-cost", label: "see what heating costs me", hint: "A space heater vs your furnace or a heat pump" },
+    ],
     start: {
       href: "/go-electric",
       label: "See what each switch saves",
@@ -175,6 +192,12 @@ export const HUBS: Hub[] = [
     h1: "More time out there,",
     h1Accent: "less time worrying about the battery.",
     sub: "Run-time calculators and battery pickers for RVs, vans, boats, kayaks and campsites, using the makers' own power figures.",
+    goals: [
+      { href: "/lithium-rv-battery", label: "upgrade my RV or van battery", hint: "What lithium saves and what size you need" },
+      { href: "/trolling-motor-battery-life", label: "fish all day on one battery", hint: "Hours for your motor and battery" },
+      { href: "/electric-outboard-motor", label: "go electric on my boat", hint: "Outboard prices, range and cost per hour" },
+      { href: "/best-power-station-for-cpap", label: "run my CPAP while camping", hint: "Nights per charge, with and without humidifier" },
+    ],
     start: {
       href: "/lithium-vs-agm-battery",
       label: "Lithium vs AGM: which costs less?",
@@ -231,6 +254,13 @@ export const HUBS: Hub[] = [
     h1: "Off grid for good,",
     h1Accent: "or ready for a week without the grid.",
     sub: "Size solar and batteries for winter, then plan the water, food and kit that get a household through an outage. Built on NREL, CDC, FEMA and Ready.gov.",
+    goals: [
+      { href: "/off-grid-solar-calculator", label: "size an off-grid solar system", hint: "Panels and battery for your state's December" },
+      { href: "/off-grid-cabin-solar-kit", label: "power a cabin", hint: "Weekend, part-time or full-time" },
+      { href: "/power-outage-backup-calculator", label: "keep the power on in an outage", hint: "What size battery for your essentials" },
+      { href: "/emergency-water-storage-calculator", label: "store emergency water", hint: "Gallons and jugs for your household" },
+      { href: "/emergency-kit-checklist", label: "build an emergency kit", hint: "72-hour and 2-week checklist" },
+    ],
     start: {
       href: "/off-grid-solar-calculator",
       label: "Off-grid solar calculator",
@@ -297,6 +327,12 @@ export const HUBS: Hub[] = [
     h1: "Straight answers,",
     h1Accent: "with the sources to check them.",
     sub: "Myths, incentives, state-by-state data and the questions people search most, each answer tied to the agency or study it came from.",
+    goals: [
+      { href: "/questions", label: "get a straight answer", hint: "The questions people search most, sourced" },
+      { href: "/myths", label: "check a myth", hint: "EV batteries, heat pumps, cloudy-day solar" },
+      { href: "/incentives", label: "see which tax credits are left", hint: "What ended in 2025 and what remains" },
+      { href: "/states", label: "look up my state", hint: "Electricity prices, charging cost, solar output" },
+    ],
     start: {
       href: "/questions",
       label: "Questions answered",
