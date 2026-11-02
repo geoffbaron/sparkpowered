@@ -7,6 +7,7 @@ import IWantTo from "@/components/IWantTo";
 import { Icon } from "@/components/icons";
 import { BigStat, HubHero, PhotoCredit } from "@/components/ui";
 import { EBIKES, EBIKES_CHECKED } from "@/data/ebikes";
+import { EBIKE_GOALS } from "@/data/hubs";
 import { NATIONAL, formatDate } from "@/lib/energy";
 import { money } from "@/lib/products";
 import {
@@ -78,13 +79,7 @@ export default function EbikesHubPage() {
         after={
           <IWantTo
             more
-            goals={[
-              { href: "/commuter-e-bike-under-1500", label: "find a commuter e-bike under $1,500", hint: "Racks, lights and fenders in the box" },
-              { href: "/e-bike-for-hills", label: "find an e-bike for hills", hint: "Torque, mid-drives and torque sensors" },
-              { href: "/e-bike-for-heavy-riders", label: "find an e-bike for a heavier rider", hint: "Bikes rated for 400 lb and up" },
-              { href: "/folding-e-bike", label: "find a folding e-bike", hint: "For apartments, RVs and car trunks" },
-              { href: "#rebates", label: "check 2026 e-bike rebates", hint: "State and city programs open now" },
-            ]}
+            goals={EBIKE_GOALS.map((g) => (g.href === "/e-bikes#rebates" ? { ...g, href: "#rebates" } : g))}
           />
         }
       />

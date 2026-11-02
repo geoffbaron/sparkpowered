@@ -378,3 +378,31 @@ export function hubById(id: HubId): Hub {
   if (!h) throw new Error(`Unknown hub ${id}`);
   return h;
 }
+
+/** Next steps on the e-bike guide and its four buying guides. */
+export const EBIKE_GOALS: Goal[] = [
+  { href: "/commuter-e-bike-under-1500", label: "find a commuter e-bike under $1,500", hint: "Racks, lights and fenders in the box" },
+  { href: "/e-bike-for-hills", label: "find an e-bike for hills", hint: "Torque, mid-drives and torque sensors" },
+  { href: "/e-bike-for-heavy-riders", label: "find an e-bike for a heavier rider", hint: "Bikes rated for 400 lb and up" },
+  { href: "/folding-e-bike", label: "find a folding e-bike", hint: "For apartments, RVs and car trunks" },
+  { href: "/e-bikes#rebates", label: "check 2026 e-bike rebates", hint: "State and city programs open now" },
+];
+
+const EBIKE_PAGES = new Set(["/e-bikes", ...EBIKE_GOALS.map((g) => g.href)]);
+
+/**
+ * Next steps for a guide or tool page: the goals of the section it belongs to (its own link
+ * dropped), or null for pages that already lead with the picker or belong to no section.
+ */
+export function nextGoalsFor(path: string): Goal[] | null {
+  if (path === "/" || HUBS.some((h) => h.path === path) || path === "/e-bikes") return null;
+  if (EBIKE_PAGES.has(path)) return EBIKE_GOALS.filter((g) => g.href !== path);
+  const hub =
+    HUBS.find((h) => h.goals.some((g) => g.href === path)) ??
+    HUBS.find((h) => h.groups.some((g) => g.links.some((l) => l.href === path)));
+  if (!hub) return null;
+  return [
+    ...hub.goals.filter((g) => g.href !== path),
+    { href: hub.path, label: "see every guide in this section", hint: hub.name },
+  ];
+}

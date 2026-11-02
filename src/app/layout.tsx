@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import AskSparkLauncher from "@/components/AskSparkLauncher";
 import PartnerClickTracker from "@/components/PartnerClickTracker";
 import Footer from "@/components/Footer";
+import WhereNext from "@/components/WhereNext";
 import {
   JsonLd,
   OG_IMAGE,
@@ -172,6 +173,7 @@ export default function RootLayout({
         <main id="main" className="flex-1">
           {children}
         </main>
+        <WhereNext />
         <Footer />
         <AskSparkLauncher />
         <PartnerClickTracker />
