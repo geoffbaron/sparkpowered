@@ -55,14 +55,22 @@ const GOALS: { group: string; goals: Goal[] }[] = [
   },
 ];
 
-/** `first` lists group names to show before the rest, so a section page leads with its own goals. */
 function rank(group: string, first: string[]) {
   const i = first.indexOf(group);
   return i === -1 ? first.length : i;
 }
 
-export default function IWantTo({ first = [] }: { first?: string[] }) {
-  const groups = [...GOALS].sort((a, b) => rank(a.group, first) - rank(b.group, first));
+/**
+ * `first` lists group names to show before the rest, so a section page leads with its own goals.
+ * `lead` is a page's own group, shown at the top; a goal it repeats, or one that links to `here`, is dropped from the rest.
+ */
+export default function IWantTo({ first = [], lead, here }: { first?: string[]; lead?: { group: string; goals: Goal[] }; here?: string }) {
+  const own = new Set([...(lead?.goals.map((g) => g.href) ?? []), ...(here ? [here] : [])]);
+  const rest = [...GOALS]
+    .sort((a, b) => rank(a.group, first) - rank(b.group, first))
+    .map((g) => ({ ...g, goals: g.goals.filter((x) => !own.has(x.href)) }))
+    .filter((g) => g.goals.length > 0);
+  const groups = lead ? [lead, ...rest] : rest;
   const [open, setOpen] = useState(false);
   const wrap = useRef<HTMLDivElement>(null);
   const button = useRef<HTMLButtonElement>(null);

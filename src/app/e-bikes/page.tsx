@@ -3,6 +3,7 @@ import Link from "next/link";
 import { AffiliateDisclosure } from "@/components/affiliate";
 import { Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
 import { QuickAnswer } from "@/components/guide-ui";
+import IWantTo from "@/components/IWantTo";
 import { Icon } from "@/components/icons";
 import { BigStat, HubHero, PhotoCredit } from "@/components/ui";
 import { EBIKES, EBIKES_CHECKED } from "@/data/ebikes";
@@ -74,10 +75,23 @@ export default function EbikesHubPage() {
         eyebrow="E-bikes"
         title={<>Half of car trips are under 6 miles. <span className="text-amber-300">An e-bike does them for pennies.</span></>}
         sub={<>How to pick one that fits your ride, what it costs per mile against a car, and which rebates are open where you live.</>}
-      >
-        <a href="#guides" className="btn btn-primary">Find your e-bike</a>
-        <a href="#rebates" className="btn btn-light">2026 rebates</a>
-      </HubHero>
+        after={
+          <IWantTo
+            first={["Drive electric"]}
+            here={PATH}
+            lead={{
+              group: "E-bikes",
+              goals: [
+                { href: "/commuter-e-bike-under-1500", label: "find a commuter e-bike under $1,500" },
+                { href: "/e-bike-for-hills", label: "find an e-bike for hills" },
+                { href: "/e-bike-for-heavy-riders", label: "find an e-bike for a heavier rider" },
+                { href: "/folding-e-bike", label: "find a folding e-bike" },
+                { href: "#rebates", label: "check 2026 e-bike rebates" },
+              ],
+            }}
+          />
+        }
+      />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <AffiliateDisclosure className="mb-8" />
