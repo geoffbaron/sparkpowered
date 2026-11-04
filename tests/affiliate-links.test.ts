@@ -43,6 +43,7 @@ const APPROVED: Partial<Record<BrandId, Rule>> = {
   vatrer: { awin: 119703 },
   kingbull: { awin: 124136 },
   allpowers: { awin: 40342 },
+  growatt: { awin: 98001 },
   himiway: { awin: 128329 },
   engwe: { awin: 65774 },
 };

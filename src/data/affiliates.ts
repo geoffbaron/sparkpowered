@@ -70,6 +70,8 @@ export interface BrandAffiliate {
   homeUrl: string;
   /** True only once the brand has approved us and links below carry tracking. */
   tracked: boolean;
+  /** The program's terms bar direct links to the store, so even source citations go through tracking. */
+  noDirectLinks?: boolean;
   network?: string;
   /** Commission and cookie window as stated by the program, for our own records. */
   commission?: string;
@@ -251,8 +253,19 @@ export const AFFILIATES: Record<BrandId, BrandAffiliate> = {
     links: { home: "https://www.awin1.com/cread.php?awinmid=40342&awinaffid=3125360&ued=https%3A%2F%2Fiallpowers.com%2F" },
     deepLink: "https://www.awin1.com/cread.php?awinmid=40342&awinaffid=3125360&ued={url}",
   },
-  // Growatt: approved on Awin Nov 4 2026; plain links until its MID and terms are checked.
-  growatt: { name: "Growatt", homeUrl: "https://growattportable.com/", tracked: false },
+  // Growatt: approved on Awin (MID 98001, 5%, 15-day cookie), tracked since Nov 4 2026.
+  // Its terms ask that we never link straight to growattportable.com, so every link goes through Awin.
+  growatt: {
+    name: "Growatt",
+    homeUrl: "https://growattportable.com/",
+    tracked: true,
+    network: "Awin",
+    commission: "5%",
+    cookieDays: 15,
+    noDirectLinks: true,
+    links: { home: "https://www.awin1.com/cread.php?awinmid=98001&awinaffid=3125360&ued=https%3A%2F%2Fgrowattportable.com%2F" },
+    deepLink: "https://www.awin1.com/cread.php?awinmid=98001&awinaffid=3125360&ued={url}",
+  },
   // Himiway (MID 128329) and ENGWE (MID 65774): joined on Awin, tracked since Nov 2 2026.
   himiway: {
     name: "Himiway",
@@ -374,6 +387,13 @@ export function partnerUrl(
   }
   if (productUrl) return { href: productUrl, tracked: false };
   return { href: categoryLink ?? a.homeUrl, tracked: false };
+}
+
+/** A source citation's link: the store page itself, unless that brand's terms bar direct links. */
+export function citationUrl(url: string): string {
+  const brand = brandForUrl(url);
+  if (!brand || !AFFILIATES[brand].noDirectLinks) return url;
+  return partnerUrl(brand, { productUrl: url }).href;
 }
 
 /** One line of a store cart: a Shopify variant id and how many. */

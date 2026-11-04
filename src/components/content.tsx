@@ -7,6 +7,7 @@
 import Link from "next/link";
 import { JsonLd, url } from "@/lib/seo";
 import { formatDate } from "@/lib/energy";
+import { citationUrl } from "@/data/affiliates";
 
 export interface Crumb {
   name: string;
@@ -151,7 +152,7 @@ export function Sources({ items }: { items: SourceRef[] }) {
       <ol className="list-decimal pl-5 space-y-2 text-sm text-stone-700">
         {items.map((s) => (
           <li key={s.url + s.name}>
-            <a href={s.url} className="underline underline-offset-2 hover:text-spark-orange" rel="noopener">
+            <a href={citationUrl(s.url)} className="underline underline-offset-2 hover:text-spark-orange" rel="noopener">
               {s.name}
             </a>
             {s.detail && <span className="text-muted"> — {s.detail}</span>}
