@@ -23,12 +23,17 @@ const PICKS: { id: string; label: string; why: string }[] = [
   {
     id: "ecoflow-delta-3-max",
     label: "Our pick for outage backup",
-    why: "The most battery for the money of any in-stock model we list. Leave the fridge plugged into it all the time: when the power cuts out it takes over in about a hundredth of a second, so the food stays cold and you may not even notice.",
+    why: "About 2 kWh, enough for a fridge through most outages. Leave the fridge plugged into it all the time: when the power cuts out it takes over in about a hundredth of a second, so the food stays cold and you may not even notice.",
+  },
+  {
+    id: "growatt-infinity-2000-pro",
+    label: "Best value at 2 kWh",
+    why: "About $100 less than the 2 kWh EcoFlow, Anker and Bluetti units we list when we checked, with LFP cells and a 5-year warranty. The trade-offs: at 51 lb it is heavier than the Anker or Jackery, it switches over in about 20 ms rather than 10, and its extra batteries were sold out.",
   },
   {
     id: "anker-solix-c1000-gen-2",
     label: "Best value · apartments",
-    why: "The cheapest full-size unit we found in stock. It refills from the wall in under an hour by Anker's figure and runs whisper-quiet (about 20 dB under light loads), so it suits a bedroom or small apartment. It can't take extra batteries later.",
+    why: "One of the cheapest full-size units we list. It refills from the wall in under an hour by Anker's figure and runs whisper-quiet (about 20 dB under light loads), so it suits a bedroom or small apartment. It can't take extra batteries later.",
   },
   {
     id: "ecoflow-delta-3-plus",
@@ -54,6 +59,11 @@ const PICKS: { id: string; label: string; why: string }[] = [
     id: "anker-solix-f3800-plus",
     label: "Best for running home circuits",
     why: "240-volt power for a well pump or a transfer switch, lots of solar input, and room to grow into whole-home backup. It was $399 cheaper than the EcoFlow DELTA Pro 3 with more output when we checked.",
+  },
+  {
+    id: "growatt-helios-3600",
+    label: "Cheapest way to 240 V",
+    why: "120 V and 240 V from one unit for about $800 less than the Anker F3800 Plus when we checked, with LFP cells and room for four extra batteries. It puts out 3,600 W against the Anker's 6,000 W, so check your well pump's starting draw first. 99 lb, on wheels.",
   },
 ];
 

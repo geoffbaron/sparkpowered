@@ -42,6 +42,7 @@ const APPROVED: Partial<Record<BrandId, Rule>> = {
   epoch: { param: "rfsn=9396856.73d8c8" },
   vatrer: { awin: 119703 },
   kingbull: { awin: 124136 },
+  allpowers: { awin: 40342 },
   himiway: { awin: 128329 },
   engwe: { awin: 65774 },
 };

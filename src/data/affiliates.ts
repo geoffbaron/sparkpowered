@@ -37,6 +37,8 @@ export type BrandId =
   | "litime"
   | "epoch"
   | "vatrer"
+  | "allpowers"
+  | "growatt"
   | "himiway"
   | "engwe"
   | "kingbull"
@@ -238,6 +240,19 @@ export const AFFILIATES: Record<BrandId, BrandAffiliate> = {
   },
   // E-bikes (Nov 2 2026): approved on Awin; tracking switched on once each MID is read from the
   // Awin dashboard. Until then plain links to the brand's own US store.
+  // ALLPOWERS: approved on Awin (MID 40342, 5%, 30-day cookie), tracked since Nov 4 2026.
+  allpowers: {
+    name: "ALLPOWERS",
+    homeUrl: "https://iallpowers.com/",
+    tracked: true,
+    network: "Awin",
+    commission: "5%",
+    cookieDays: 30,
+    links: { home: "https://www.awin1.com/cread.php?awinmid=40342&awinaffid=3125360&ued=https%3A%2F%2Fiallpowers.com%2F" },
+    deepLink: "https://www.awin1.com/cread.php?awinmid=40342&awinaffid=3125360&ued={url}",
+  },
+  // Growatt: approved on Awin Nov 4 2026; plain links until its MID and terms are checked.
+  growatt: { name: "Growatt", homeUrl: "https://growattportable.com/", tracked: false },
   // Himiway (MID 128329) and ENGWE (MID 65774): joined on Awin, tracked since Nov 2 2026.
   himiway: {
     name: "Himiway",

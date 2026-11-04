@@ -29,6 +29,7 @@ const IDS = [
   "anker-solix-c1000-gen-2",
   "ecoflow-delta-3-max",
   "jackery-explorer-2000-v2",
+  "growatt-infinity-2000-pro",
 ];
 
 const hours = (wh: number) => (wh * USABLE_FRACTION) / FRIDGE_AVG_W;
