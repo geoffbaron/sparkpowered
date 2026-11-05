@@ -58,7 +58,7 @@ const PICKS: { id: string; label: string; why: string }[] = [
   {
     id: "anker-solix-f3800-plus",
     label: "Best for running home circuits",
-    why: "240-volt power for a well pump or a transfer switch, lots of solar input, and room to grow into whole-home backup. It was $399 cheaper than the EcoFlow DELTA Pro 3 with more output when we checked.",
+    why: "240-volt power for a well pump or a transfer switch, lots of solar input, and room to grow into whole-home backup. It was $399 cheaper than the EcoFlow DELTA Pro 3 with more output when we checked. The Nature's Generator L6000 matches its 6,000 W and 3.8 kWh for $300 less, but with a 1-year warranty against Anker's 5.",
   },
   {
     id: "growatt-helios-3600",

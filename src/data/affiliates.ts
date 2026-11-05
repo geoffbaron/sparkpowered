@@ -39,6 +39,7 @@ export type BrandId =
   | "vatrer"
   | "allpowers"
   | "growatt"
+  | "naturesgenerator"
   | "himiway"
   | "engwe"
   | "kingbull"
@@ -265,6 +266,15 @@ export const AFFILIATES: Record<BrandId, BrandAffiliate> = {
     noDirectLinks: true,
     links: { home: "https://www.awin1.com/cread.php?awinmid=98001&awinaffid=3125360&ued=https%3A%2F%2Fgrowattportable.com%2F" },
     deepLink: "https://www.awin1.com/cread.php?awinmid=98001&awinaffid=3125360&ued={url}",
+  },
+  // Nature's Generator: approved on Awin (MID 98409), tracked since Nov 5 2026.
+  naturesgenerator: {
+    name: "Nature's Generator",
+    homeUrl: "https://naturesgenerator.com/",
+    tracked: true,
+    network: "Awin",
+    links: { home: "https://www.awin1.com/cread.php?awinmid=98409&awinaffid=3125360&ued=https%3A%2F%2Fnaturesgenerator.com%2F" },
+    deepLink: "https://www.awin1.com/cread.php?awinmid=98409&awinaffid=3125360&ued={url}",
   },
   // Himiway (MID 128329) and ENGWE (MID 65774): joined on Awin, tracked since Nov 2 2026.
   himiway: {
