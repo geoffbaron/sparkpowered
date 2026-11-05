@@ -5,7 +5,7 @@ import { Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/comp
 import { QuickAnswer } from "@/components/guide-ui";
 import { EbikeAlternativeNote, EbikeTable, ebikeName, ebikeSources } from "@/components/ebikes";
 import { HubHero, OurPick, PhotoCredit } from "@/components/ui";
-import { EBIKES_CHECKED, EBIKE_ALTERNATIVES, ebikeById } from "@/data/ebikes";
+import { EBIKES_CHECKED, EBIKE_ALTERNATIVES, ebikeById, ebikeSaleNote } from "@/data/ebikes";
 import { formatDate } from "@/lib/energy";
 import { money } from "@/lib/products";
 import { pageMetadata } from "@/lib/seo";
@@ -77,7 +77,7 @@ export default function HillsEbikePage() {
             {jumper.torqueNm} Nm hub motor ({jumper.peakW} W peak) with a torque sensor and full suspension.
           </p>
           <p>
-            <strong>Long, steep climbs:</strong> the <PartnerLink brand="himiway" productUrl={a7pro.url}>{ebikeName(a7pro)}</PartnerLink> ({money(a7pro.price)}) has a
+            <strong>Long, steep climbs:</strong> the <PartnerLink brand="himiway" productUrl={a7pro.url}>{ebikeName(a7pro)}</PartnerLink> ({money(a7pro.price)}{ebikeSaleNote(a7pro) && `, ${ebikeSaleNote(a7pro)}`}) has a
             mid-drive rated {a7pro.torqueNm} Nm with a torque sensor, the most torque of any single-motor bike here.
           </p>
         </QuickAnswer>
@@ -100,7 +100,7 @@ export default function HillsEbikePage() {
             name={ebikeName(a7pro)}
             icon="bike"
             why={`A ${a7pro.motorType} rated ${a7pro.torqueNm} Nm, driving through the gears, with a torque sensor and full suspension. Himiway rates it for ${a7pro.payloadLb} lb of rider and cargo, lower than the fat-tire bikes, and its spec table doesn't list a throttle.`}
-            life={[`${a7pro.torqueNm} Nm mid-drive`, "Torque sensor", `${a7pro.batteryWh} Wh battery`, `${a7pro.weightLb} lb bike`]}
+            life={[`${a7pro.torqueNm} Nm mid-drive`, "Torque sensor", `${a7pro.batteryWh} Wh battery`, `${a7pro.weightLb} lb bike`, ...(ebikeSaleNote(a7pro) ? [ebikeSaleNote(a7pro)] : [])]}
             priceUsd={a7pro.price}
             brand="himiway"
             productUrl={a7pro.url}

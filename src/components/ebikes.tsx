@@ -29,7 +29,11 @@ export function batteryLabel(b: Ebike) {
 export type EbikeColumn = "price" | "motor" | "torque" | "sensor" | "battery" | "range" | "weight" | "payload" | "folded";
 
 const COLS: Record<EbikeColumn, { head: string; cell: (b: Ebike) => React.ReactNode; right?: boolean }> = {
-  price: { head: "Price", cell: (b) => money(b.price), right: true },
+  price: {
+    head: "Price",
+    cell: (b) => (b.saleEndsLabel ? <>{money(b.price)}<span className="block text-xs text-slate-500">sale through {b.saleEndsLabel}</span></> : money(b.price)),
+    right: true,
+  },
   motor: { head: "Motor", cell: motorLabel },
   torque: { head: "Torque", cell: (b) => n(b.torqueNm, "Nm") },
   sensor: { head: "Pedal sensor", cell: (b) => b.paSensor ?? NS },

@@ -44,6 +44,12 @@ export interface Ebike {
   fendersLightsRack: string | null;
   suspension?: string | null;
   certification?: string | null;
+  /** Set when `price` is a dated brand sale: first moment the sale price is NOT shown (ISO, US Pacific). */
+  saleEndsAt?: string;
+  /** Last sale day as readers see it. */
+  saleEndsLabel?: string;
+  /** The brand's own pre-sale price, shown once the sale has ended until we re-check the page. */
+  regularPrice?: number;
 }
 
 /** A well-known bike from a brand we have no partnership with, for "when it's the better pick". */
@@ -58,7 +64,20 @@ export interface EbikeAlternative {
 }
 
 export const EBIKES_CHECKED: string = data.retrieved;
-export const EBIKES = data.bikes as Ebike[];
+/** A sale price stops being shown once its end passes: the bike falls back to the brand's regular price. */
+export function withSaleEnded(b: Ebike, now: number): Ebike {
+  if (!b.saleEndsAt || now < Date.parse(b.saleEndsAt)) return b;
+  const { saleEndsAt: _e, saleEndsLabel: _l, ...rest } = b;
+  return { ...rest, price: b.regularPrice ?? b.price };
+}
+export const EBIKES = (data.bikes as Ebike[]).map((b) => withSaleEnded(b, Date.now()));
+
+/** "Himiway's sale price through Nov 14", or "" when the price isn't a dated sale. */
+export function ebikeSaleNote(b: Ebike): string {
+  if (!b.saleEndsLabel) return "";
+  const maker = b.brand === "engwe" ? "ENGWE" : b.brand[0].toUpperCase() + b.brand.slice(1);
+  return `${maker}'s sale price through ${b.saleEndsLabel}`;
+}
 export const EBIKE_ALTERNATIVES = data.alternatives as Record<"heavy" | "hills" | "commuter" | "folding", EbikeAlternative>;
 
 export function ebikeById(id: string): Ebike {

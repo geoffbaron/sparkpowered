@@ -1,10 +1,10 @@
 {
- "retrieved": "2026-11-02",
+ "retrieved": "2026-11-05",
  "bikes": [
   {
    "model": "Himiway D5 2.0 eBike",
    "url": "https://himiwaybike.com/products/himiway-d5",
-   "price": 2199,
+   "price": 1999,
    "listPrice": 2199,
    "priceNote": "15Ah. 15Ah+20Ah dual battery $2,599 (list $2,798)",
    "motorW": 750,
@@ -93,6 +93,10 @@
    "fendersLightsRack": "Rear rack and fender kit included in delivery; 48V LED light",
    "suspension": "full (120mm / 90mm)",
    "inStock": true,
+   "saleEndsAt": "2026-11-15T00:00:00-08:00",
+   "saleEndsLabel": "Nov 14",
+   "regularPrice": 2899,
+   "saleSource": "Himiway's Black Friday phase 1 (Nov 1-14) notice to Awin partners: A7 PRO $2,899 to $1,999",
    "brand": "himiway",
    "id": "himiway-a7-pro-commuter-ebike"
   },
