@@ -536,7 +536,7 @@ const PORTABLE: Product[] = [
     category: "portable",
     url: "https://www.ankersolix.com/products/c1000-gen2",
     sourceUrl: "https://www.ankersolix.com/products/c1000-gen2",
-    retrieved: "2026-10-26",
+    retrieved: "2026-11-06",
     capacityWh: 1024,
     maxCapacityWh: null,
     notExpandable: true,
@@ -552,10 +552,10 @@ const PORTABLE: Product[] = [
     warrantyYears: null,
     volts: "120V",
     install: "diy",
-    priceUsd: 499.99,
+    priceUsd: 549.99,
     listPriceUsd: 699.99,
     notes: [
-      "Price is Anker's Halloween sale price on Oct 26 2026 (sale ends Nov 1 2026).",
+      "Price is the sale price Anker showed on Nov 6 2026 (regular $699.99). Anker said orders placed after Oct 30 ship from Nov 21.",
       "Anker says a full AC recharge takes 49 minutes.",
       "Not expandable; Anker's US page does not state the battery chemistry."
     ]
@@ -567,7 +567,7 @@ const PORTABLE: Product[] = [
     category: "portable",
     url: "https://www.ankersolix.com/products/c2000-gen2",
     sourceUrl: "https://www.ankersolix.com/products/c2000-gen2",
-    retrieved: "2026-10-26",
+    retrieved: "2026-11-06",
     capacityWh: 2048,
     maxCapacityWh: 4096,
     acOutputW: 2400,
@@ -582,10 +582,10 @@ const PORTABLE: Product[] = [
     warrantyYears: null,
     volts: "120V",
     install: "diy",
-    priceUsd: 899.99,
+    priceUsd: 999.99,
     listPriceUsd: 1199.99,
     notes: [
-      "Price is Anker's Halloween sale price on Oct 26 2026 (sale ends Nov 1 2026).",
+      "Price is the sale price Anker showed on Nov 6 2026 (regular $1,199.99). Anker said orders placed on or after Nov 2 ship from Nov 21.",
       "Doubles to 4 kWh with one BP2000 expansion battery.",
       "Replaces the SOLIX F2000 on Anker's US site."
     ],
@@ -606,7 +606,7 @@ const PORTABLE: Product[] = [
     category: "portable",
     url: "https://www.ankersolix.com/products/f3000",
     sourceUrl: "https://www.ankersolix.com/products/f3000",
-    retrieved: "2026-10-26",
+    retrieved: "2026-11-06",
     capacityWh: 3072,
     maxCapacityWh: 12288,
     acOutputW: 3600,
@@ -621,10 +621,10 @@ const PORTABLE: Product[] = [
     warrantyYears: null,
     volts: "120V",
     install: "diy",
-    priceUsd: 1399.99,
+    priceUsd: 1699.99,
     listPriceUsd: 1899.99,
     notes: [
-      "Price after Anker's auto-applied Halloween code, shown on its page Oct 26 2026 (offer ends about Nov 1 2026).",
+      "Price after Anker's auto-applied $200 code, shown on its page Nov 6 2026 (regular $1,899.99).",
       "120 V only on its own; 240 V needs two units and Anker's Double Voltage Hub.",
       "TT-30 RV outlet delivers the full 3,600 W.",
       "The BP3000 expansion battery was sold out when we checked."
@@ -637,7 +637,6 @@ const PORTABLE: Product[] = [
       listPriceUsd: 1299.99,
       url: "https://www.ankersolix.com/products/bp3000-expansion-battery-for-f3000",
       maxUnits: 3,
-      soldOut: true,
     }
   },
   {
@@ -647,7 +646,7 @@ const PORTABLE: Product[] = [
     category: "portable",
     url: "https://www.ankersolix.com/products/f3800-plus",
     sourceUrl: "https://www.ankersolix.com/products/f3800-plus",
-    retrieved: "2026-10-26",
+    retrieved: "2026-11-06",
     capacityWh: 3840,
     maxCapacityWh: 26880,
     acOutputW: 6000,
@@ -662,10 +661,10 @@ const PORTABLE: Product[] = [
     warrantyYears: 5,
     volts: "120/240V",
     install: "diy",
-    priceUsd: 2399.99,
+    priceUsd: 2599.99,
     listPriceUsd: 2999.99,
     notes: [
-      "Price after Anker's auto-applied Halloween code, shown on its page Oct 26 2026 (offer ends about Nov 1 2026).",
+      "Price after Anker's auto-applied $400 code, shown on its page Nov 6 2026 (regular $2,999.99). Sold out on Anker's US site on Nov 6 2026.",
       "6,000 W at 120/240 V, tied with the Nature's Generator L6000 for the most of any power station we list.",
       "Up to 3,200 W of solar input.",
       "Anker quotes 53.8 kWh for two linked units; one unit reaches 26.9 kWh."
@@ -745,7 +744,7 @@ const PORTABLE: Product[] = [
     category: "portable",
     url: "https://www.bluettipower.com/products/elite-200-v2-portable-power-station",
     sourceUrl: "https://www.bluettipower.com/products/elite-200-v2-portable-power-station",
-    retrieved: "2026-10-26",
+    retrieved: "2026-11-06",
     capacityWh: 2073.6,
     maxCapacityWh: null,
     notExpandable: true,
@@ -766,7 +765,7 @@ const PORTABLE: Product[] = [
     notes: [
       "Rated for 6,000 cycles to 80%, the highest rating among the 2 kWh units we list.",
       "Its surge figure applies to heating-type loads only (Bluetti's Power Lifting mode). Not expandable.",
-      "In stock on Bluetti's US site on Oct 19 2026."
+      "In stock on Bluetti's US site on Nov 6 2026."
     ]
   },
   {
@@ -896,7 +895,7 @@ const PORTABLE: Product[] = [
     category: "home",
     url: "https://www.bluettipower.com/products/apex-300-home-battery-backup",
     sourceUrl: "https://www.bluettipower.com/products/apex-300-home-battery-backup",
-    retrieved: "2026-10-26",
+    retrieved: "2026-11-06",
     capacityWh: 2764.8,
     maxCapacityWh: 19353.6,
     acOutputW: 3840,
@@ -911,7 +910,7 @@ const PORTABLE: Product[] = [
     warrantyYears: null,
     volts: "120/240V",
     install: "diy",
-    priceUsd: 1599,
+    priceUsd: 1499,
     listPriceUsd: 1699,
     notes: [
       "120/240 V with a 50 A (14-50R) outlet; built as a home backup battery.",
@@ -922,7 +921,7 @@ const PORTABLE: Product[] = [
     addOn: {
       model: "BLUETTI B300K Expansion Battery for Apex 300",
       capacityWh: 2764.8,
-      priceUsd: 1079,
+      priceUsd: 1099,
       listPriceUsd: 1199,
       url: "https://www.bluettipower.com/products/apex-300-b300k-expansion-battery",
       maxUnits: 6

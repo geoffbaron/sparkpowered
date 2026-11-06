@@ -36,6 +36,8 @@ export interface Hub {
   goals: Goal[];
   /** The one tool most visitors should start with. */
   start: { href: string; label: string; why: string };
+  /** One product pick from an approved partner, shown under the start card. Facts come from the product record. */
+  pick?: { productId: string; label: string; why: string };
   intro: string[];
   groups: HubGroup[];
   /** Question topics from /questions whose answers fit this section. */
@@ -139,6 +141,11 @@ export const HUBS: Hub[] = [
       href: "/go-electric",
       label: "See what each switch saves",
       why: "Pick your state and see the yearly saving from solar, a heat pump, a heat pump water heater, induction and backup power, side by side.",
+    },
+    pick: {
+      productId: "bluetti-elite-200-v2",
+      label: "Our pick for outages, no installer needed",
+      why: "About 2 kWh with LFP cells rated for 6,000 cycles and a 5-year warranty. It plugs in like an appliance, so it suits renters too. Leave the fridge plugged into it and it takes over in about 15 ms when the power cuts out. It can't take extra batteries later.",
     },
     intro: [
       "Home energy questions usually come down to money and outages. Will solar pay for itself now the federal credit has ended? Do I need a battery, and how big? What can a portable power station actually run? Each tool here uses your state's electricity price and sun, so the answer is yours rather than a national average.",
@@ -265,6 +272,11 @@ export const HUBS: Hub[] = [
       href: "/off-grid-solar-calculator",
       label: "Off-grid solar calculator",
       why: "Pick your appliances and state. It sizes panels and battery for December, the month that decides whether an off-grid system works.",
+    },
+    pick: {
+      productId: "bluetti-apex-300",
+      label: "Our pick for a cabin battery",
+      why: "A big battery you set up yourself: 2,764.8 Wh and 3,840 W, with LFP cells rated for 6,000 cycles. Add Bluetti's B300K batteries as the cabin's needs grow. Size the panels for your state's December first with the calculator above.",
     },
     intro: [
       "People come to off-grid power from two directions. Some are planning a cabin, a homestead or a remote build and want to know whether solar and batteries beat paying for a power line. Others want their home ready for a long outage: power for the essentials, safe water and enough food.",

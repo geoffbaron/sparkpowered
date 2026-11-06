@@ -10,8 +10,8 @@
  *   - a product record's URL is a bare store home page (any brand),
  *   - a page writes a raw <a href="..."> straight to an approved brand's store.
  *
- * Spec citations in Sources lists stay plain on purpose; they are built from
- * `sourceUrl` / source objects and rendered by <Sources>, not by these helpers.
+ * Spec citations in Sources lists go through tracking when they point at an approved
+ * brand's store (Nov 6 2026); citations to anyone else stay as written.
  * The live-site counterpart is scripts/check-affiliate-links.mjs.
  */
 import { test } from "node:test";
@@ -20,7 +20,8 @@ import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { AFFILIATES, bareHost, brandForUrl, isHomePage, partnerUrl, type BrandId } from "../src/data/affiliates";
+import { AFFILIATES, bareHost, brandForUrl, citationUrl, isHomePage, partnerUrl, type BrandId } from "../src/data/affiliates";
+import { Sources } from "../src/components/content";
 import { PlainLink } from "../src/components/guide-ui";
 import { RedodoDealBox } from "../src/components/RedodoDeal";
 
@@ -240,4 +241,18 @@ test("the Redodo code note lands on a product, never the home page", () => {
     createElement(RedodoDealBox, { now: Date.parse("2026-10-30T12:00:00Z"), product: { name: "Redodo 12V 50Ah", url: "https://www.redodopower.com/products/12v-50ah-smart-bluetooth-lithium-battery" } }),
   );
   assert.match(custom, /12v-50ah-smart-bluetooth-lithium-battery/);
+});
+
+test("source citations to approved stores are tracked and marked sponsored; others stay plain", () => {
+  const bluetti = "https://www.bluettipower.com/products/elite-200-v2-portable-power-station";
+  const anker = "https://www.ankersolix.com/products/c2000-gen2";
+  const ng = "https://naturesgenerator.com/products/lithium-6000-power-station";
+  const jackery = "https://www.jackery.com/products/jackery-explorer-1000-v2";
+  assert.match(citationUrl(bluetti).href, /^https:\/\/www\.awin1\.com\/cread\.php\?awinmid=59271&awinaffid=3125360&ued=/);
+  assert.match(citationUrl(anker).href, /^https:\/\/click\.linksynergy\.com\/deeplink\?id=2P5eyfaQKtI&mid=53552&murl=/);
+  assert.match(citationUrl(ng).href, /awinmid=98409&awinaffid=3125360/);
+  assert.deepEqual(citationUrl(jackery), { href: jackery, tracked: false });
+  const html = renderToStaticMarkup(createElement(Sources, { items: [{ name: "Bluetti", url: bluetti }, { name: "EIA", url: "https://www.eia.gov/" }] }));
+  assert.match(html, /awinmid=59271[^"]*" class="[^"]*" rel="sponsored nofollow noopener"/);
+  assert.match(html, /href="https:\/\/www\.eia\.gov\/"[^>]*rel="noopener"/);
 });

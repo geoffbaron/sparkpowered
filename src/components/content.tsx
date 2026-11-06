@@ -8,6 +8,7 @@ import Link from "next/link";
 import { JsonLd, url } from "@/lib/seo";
 import { formatDate } from "@/lib/energy";
 import { citationUrl } from "@/data/affiliates";
+import { PARTNER_REL } from "@/components/affiliate";
 
 export interface Crumb {
   name: string;
@@ -150,14 +151,17 @@ export function Sources({ items }: { items: SourceRef[] }) {
         Sources
       </h2>
       <ol className="list-decimal pl-5 space-y-2 text-sm text-stone-700">
-        {items.map((s) => (
+        {items.map((s) => {
+          const link = citationUrl(s.url);
+          return (
           <li key={s.url + s.name}>
-            <a href={citationUrl(s.url)} className="underline underline-offset-2 hover:text-spark-orange" rel="noopener">
+            <a href={link.href} className="underline underline-offset-2 hover:text-spark-orange" rel={link.tracked ? PARTNER_REL : "noopener"}>
               {s.name}
             </a>
             {s.detail && <span className="text-muted"> — {s.detail}</span>}
           </li>
-        ))}
+          );
+        })}
       </ol>
     </section>
   );

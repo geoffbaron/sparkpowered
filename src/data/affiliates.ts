@@ -399,11 +399,15 @@ export function partnerUrl(
   return { href: categoryLink ?? a.homeUrl, tracked: false };
 }
 
-/** A source citation's link: the store page itself, unless that brand's terms bar direct links. */
-export function citationUrl(url: string): string {
+/**
+ * A source citation's link. A citation to an approved brand's own store goes through our
+ * tracking (Nov 6 2026: readers click spec sources to buy, so an untagged one is a lost sale);
+ * every other source is left as written.
+ */
+export function citationUrl(url: string): ResolvedLink {
   const brand = brandForUrl(url);
-  if (!brand || !AFFILIATES[brand].noDirectLinks) return url;
-  return partnerUrl(brand, { productUrl: url }).href;
+  if (!brand || !AFFILIATES[brand].tracked) return { href: url, tracked: false };
+  return partnerUrl(brand, { productUrl: url });
 }
 
 /** One line of a store cart: a Shopify variant id and how many. */

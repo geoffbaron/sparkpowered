@@ -27,6 +27,7 @@ export const metadata: Metadata = pageMetadata({ title: TITLE, description: DESC
 
 export default function GoElectricPage() {
   const outage = productById("ecoflow-delta-3-max");
+  const outageAlt = productById("bluetti-elite-200-v2");
   // Lowest-priced charger we carry (J1772, with app scheduling), and the lowest-priced NACS one.
   const charger = chargerById("eviqo-l2-j1772");
   const smartCharger = chargerById("lectron-nexus-nacs");
@@ -61,6 +62,14 @@ export default function GoElectricPage() {
             url: outage.url,
             priceUsd: outage.priceUsd!,
             life: `Keeps a fridge, Wi-Fi, lights and phones going for ${life.essentials}, or a fridge alone for ${life.fridge}.`,
+          },
+    outageAltPick: {
+            id: outageAlt.id,
+            brand: outageAlt.brand,
+            name: fullName(outageAlt),
+            url: outageAlt.url,
+            priceUsd: outageAlt.priceUsd!,
+            life: "",
           },
     pluginPick: {
             id: PLANNER_KIT.id,

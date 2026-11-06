@@ -38,10 +38,10 @@ export const COMPARISONS: Comparison[] = [
     intro:
       "The two best-known 1 kWh power stations of 2026. Both hold about 1 kWh, recharge from the wall in under an hour by their makers' figures, and switch over fast enough to run as a UPS. The differences are expansion, solar input and price.",
     verdict:
-      "The Anker C1000 Gen 2 is cheaper ($499.99 vs $719 when we checked, both sale prices) and has more continuous output (2,000 W vs 1,800 W). The EcoFlow DELTA 3 Plus can grow: it takes EcoFlow extra batteries up to 5 kWh, accepts 1,000 W of solar against Anker's 600 W, and EcoFlow states a 5-year warranty and LFP chemistry, which Anker's US page does not state for the Gen 2.",
+      "The Anker C1000 Gen 2 is cheaper ($549.99 vs $719 when we checked, both sale prices) and has more continuous output (2,000 W vs 1,800 W). The EcoFlow DELTA 3 Plus can grow: it takes EcoFlow extra batteries up to 5 kWh, accepts 1,000 W of solar against Anker's 600 W, and EcoFlow states a 5-year warranty and LFP chemistry, which Anker's US page does not state for the Gen 2.",
     chooseA: "Choose the EcoFlow DELTA 3 Plus if you might add batteries later, plan to charge mostly from solar, or want the stated 5-year warranty.",
     chooseB: "Choose the Anker SOLIX C1000 Gen 2 if you want the lowest price for 1 kWh, slightly more output, and won't need to expand.",
-    updated: "2026-10-26",
+    updated: "2026-11-06",
   },
   {
     slug: "jackery-vs-ecoflow",
@@ -74,11 +74,11 @@ export const COMPARISONS: Comparison[] = [
     intro:
       "Anker's SOLIX line and EcoFlow's DELTA line compete model for model. We matched them by capacity and compared the makers' own US figures.",
     verdict:
-      "It splits by size. At 1 kWh the Anker C1000 Gen 2 is cheaper ($499.99 vs $629) and has more output (2,000 W vs 1,800 W), but only the EcoFlow DELTA 3 can expand. At 2 kWh the two were priced about the same when we checked ($899 for the EcoFlow DELTA 3 Max vs $899.99 for the Anker C2000 Gen 2) with similar output, but the Anker C2000 Gen 2 accepts an expansion battery. For home backup the Anker F3800 Plus has more output (6,000 W vs 4,000 W), more solar input and far more expansion (26.9 kWh vs 12.3 kWh) at a lower price, though the EcoFlow DELTA Pro 3 holds a bit more (4.1 vs 3.84 kWh).",
-    chooseA: "Choose Anker SOLIX for the cheapest 1 kWh unit here, an expandable 2 kWh unit at about the same price as the EcoFlow, or the most powerful home-backup unit (F3800 Plus).",
+      "It splits by size. At 1 kWh the Anker C1000 Gen 2 is cheaper ($549.99 vs $629) and has more output (2,000 W vs 1,800 W), but only the EcoFlow DELTA 3 can expand. At 2 kWh the EcoFlow DELTA 3 Max was cheaper when we checked ($899 vs $999.99 for the Anker C2000 Gen 2) with similar output, but the Anker C2000 Gen 2 accepts an expansion battery. For home backup the Anker F3800 Plus has more output (6,000 W vs 4,000 W), more solar input and far more expansion (26.9 kWh vs 12.3 kWh) at a lower price, though the EcoFlow DELTA Pro 3 holds a bit more (4.1 vs 3.84 kWh).",
+    chooseA: "Choose Anker SOLIX for the cheapest 1 kWh unit here, an expandable 2 kWh unit, or the most powerful home-backup unit (F3800 Plus).",
     chooseB: "Choose EcoFlow for a 1 kWh unit you can expand later, and stated LFP chemistry and warranty across the range.",
     see: { slug: "ecoflow-vs-bluetti", label: "Weighing up Bluetti too? See EcoFlow vs Bluetti" },
-    updated: "2026-10-26",
+    updated: "2026-11-06",
   },
   {
     slug: "ecoflow-vs-bluetti",
@@ -93,11 +93,11 @@ export const COMPARISONS: Comparison[] = [
     intro:
       "Bluetti undercuts EcoFlow on price at most sizes and quotes higher cycle ratings; EcoFlow had better stock and more complete published specs when we checked.",
     verdict:
-      "Bluetti is cheaper per kWh: the Elite 100 V2 was $489 for 1 kWh and the Elite 200 V2 $899 for 2.07 kWh, with 6,000-cycle ratings on the larger models. Both Elite V2 units were back in stock on Bluetti's US site on Oct 19 2026, but neither expands. For home backup the Bluetti Apex 300 ($1,599 for 2.76 kWh, 3,840 W, 120/240 V) costs far less than the EcoFlow DELTA Pro 3 ($2,799 for 4.1 kWh, 4,000 W) and expands further per unit.",
+      "Bluetti is cheaper per kWh: the Elite 100 V2 was $489 for 1 kWh and the Elite 200 V2 $899 for 2.07 kWh, with 6,000-cycle ratings on the larger models. Both Elite V2 units were back in stock on Bluetti's US site on Oct 19 2026, but neither expands. For home backup the Bluetti Apex 300 ($1,499 for 2.76 kWh, 3,840 W, 120/240 V) costs far less than the EcoFlow DELTA Pro 3 ($2,799 for 4.1 kWh, 4,000 W) and expands further per unit.",
     chooseA: "Choose EcoFlow if you want a 1 kWh unit that expands later, or a warranty stated on every model (Bluetti's US page did not state one for the Apex 300).",
     chooseB: "Choose Bluetti for the lowest price per kWh and the highest cycle ratings, especially the Apex 300 for home backup.",
     see: { slug: "anker-solix-vs-ecoflow", label: "Weighing up Anker SOLIX too? See EcoFlow vs Anker SOLIX" },
-    updated: "2026-10-26",
+    updated: "2026-11-06",
   },
   {
     slug: "bluetti-ac180-vs-jackery-explorer-1000-v2",
@@ -133,10 +133,10 @@ export const COMPARISONS: Comparison[] = [
     intro:
       "Both are wheeled, 120/240-volt power stations meant to back up home circuits through a transfer switch or smart panel, run well pumps, and charge from large solar arrays.",
     verdict:
-      "The Anker SOLIX F3800 Plus gives more of almost everything for $399 less: 3.84 kWh vs 4.1 kWh is the only spec where EcoFlow leads, while Anker has 6,000 W vs 4,000 W output, 3,200 W vs 2,600 W solar input, and expands to 26.9 kWh per unit vs 12.3 kWh. The EcoFlow is lighter (113.5 vs 136.7 lb), switches over faster (10 vs 20 ms), and quotes 4,000 cycles to 80% against Anker's 3,000+.",
+      "The Anker SOLIX F3800 Plus gives more of almost everything for about $200 less ($2,599.99 vs $2,799 when we checked; the Anker was sold out on its US site on Nov 6 2026): 3.84 kWh vs 4.1 kWh is the only spec where EcoFlow leads, while Anker has 6,000 W vs 4,000 W output, 3,200 W vs 2,600 W solar input, and expands to 26.9 kWh per unit vs 12.3 kWh. The EcoFlow is lighter (113.5 vs 136.7 lb), switches over faster (10 vs 20 ms), and quotes 4,000 cycles to 80% against Anker's 3,000+.",
     chooseA: "Choose the EcoFlow DELTA Pro 3 for slightly more base capacity, a higher cycle rating, lower weight and faster UPS switchover.",
     chooseB: "Choose the Anker SOLIX F3800 Plus for more power, more solar input and far more room to expand.",
-    updated: "2026-10-26",
+    updated: "2026-11-06",
   },
   {
     slug: "anker-solix-f3800-plus-vs-jackery-explorer-5000-plus",
@@ -145,10 +145,10 @@ export const COMPARISONS: Comparison[] = [
     pairs: [["anker-solix-f3800-plus", "jackery-explorer-5000-plus"]],
     intro: "The largest single power stations from Anker and Jackery, both built to run home circuits at 120/240 V.",
     verdict:
-      "The Jackery Explorer 5000 Plus is the bigger machine: 5.04 kWh and 7,200 W continuous vs 3.84 kWh and 6,000 W, for $3,499 against $2,399.99. Per kWh the Anker is cheaper ($625 vs $694). Anker publishes a 3,200 W solar input figure and a clear expansion path (six BP3800 batteries per unit); Jackery lists its solar ports by voltage rather than one wattage and quotes up to 60 kWh as a system. The Jackery is 2 lb lighter despite more capacity.",
+      "The Jackery Explorer 5000 Plus is the bigger machine: 5.04 kWh and 7,200 W continuous vs 3.84 kWh and 6,000 W, for $3,499 against $2,599.99. Per kWh the Anker is cheaper ($677 vs $694), but it was sold out on Anker's US site on Nov 6 2026. Anker publishes a 3,200 W solar input figure and a clear expansion path (six BP3800 batteries per unit); Jackery lists its solar ports by voltage rather than one wattage and quotes up to 60 kWh as a system. The Jackery is 2 lb lighter despite more capacity.",
     chooseA: "Choose the Anker SOLIX F3800 Plus for the lower price and a clearly specified expansion path with lots of solar input.",
     chooseB: "Choose the Jackery Explorer 5000 Plus for the most capacity and power in one unit.",
-    updated: "2026-10-26",
+    updated: "2026-11-06",
   },
   {
     slug: "tesla-powerwall-3-vs-enphase-iq-battery-5p",

@@ -25,6 +25,8 @@ interface Props {
   states: PlannerState[];
   costs: Costs;
   outagePick: PlannerProduct;
+  /** A second 2 kWh battery, from a brand we are approved with. */
+  outageAltPick?: PlannerProduct;
   pluginPick: PlannerProduct;
   chargerPick: PlannerProduct;
   smartChargerPick: PlannerProduct;
@@ -75,7 +77,7 @@ export function GoElectricPlannerFromParams(props: Props) {
   return <GoElectricPlanner key={initial} {...props} initialState={initial} fromUrl={fromUrl} autoLocate={!fromUrl} />;
 }
 
-export default function GoElectricPlanner({ states, costs, outagePick, pluginPick, chargerPick, smartChargerPick, solarQuotes, myths, sources, initialState = "OH", fromUrl = false, autoLocate = false }: Props & { initialState?: string; fromUrl?: boolean; autoLocate?: boolean }) {
+export default function GoElectricPlanner({ states, costs, outagePick, outageAltPick, pluginPick, chargerPick, smartChargerPick, solarQuotes, myths, sources, initialState = "OH", fromUrl = false, autoLocate = false }: Props & { initialState?: string; fromUrl?: boolean; autoLocate?: boolean }) {
   const valid = useMemo(() => states.map((s) => s.abbr), [states]);
   const located = useVisitorState(valid, autoLocate);
   const choose = useChooseState();
@@ -279,6 +281,11 @@ export default function GoElectricPlanner({ states, costs, outagePick, pluginPic
                 <PartnerLink brand={outagePick.brand} productId={outagePick.id} productUrl={outagePick.url} category="battery" className="btn btn-primary btn-sm">
                   Check price ({money(outagePick.priceUsd)} when we checked)
                 </PartnerLink>
+                {outageAltPick && (
+                  <PartnerLink brand={outageAltPick.brand} productId={outageAltPick.id} productUrl={outageAltPick.url} category="battery" className="btn btn-outline btn-sm">
+                    Or the {outageAltPick.name} ({money(outageAltPick.priceUsd)})
+                  </PartnerLink>
+                )}
                 <Link href="/battery-calculator" className="font-semibold text-spark-orange underline underline-offset-2">
                   Find the right battery for you
                 </Link>

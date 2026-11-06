@@ -1,7 +1,11 @@
 import Link from "next/link";
 import { Prose, Section } from "@/components/content";
 import IWantTo from "@/components/IWantTo";
-import { HubHero, PhotoCredit } from "@/components/ui";
+import { AffiliateDisclosure } from "@/components/affiliate";
+import { HubHero, OurPick, PhotoCredit } from "@/components/ui";
+import { formatDate } from "@/lib/energy";
+import { lifeSummary } from "@/lib/everyday";
+import { fullName, productById } from "@/lib/products";
 import { HUBS, type Hub } from "@/data/hubs";
 import { TOPICS } from "@/data/questions";
 import { JsonLd, url } from "@/lib/seo";
@@ -29,6 +33,8 @@ export function HubLanding({ hub }: { hub: Hub }) {
   const questions = hubQuestions(hub);
   const others = HUBS.filter((h) => h.id !== hub.id);
   const allLinks = hub.groups.flatMap((g) => g.links);
+  const pick = hub.pick ? productById(hub.pick.productId) : null;
+  const pickLife = pick ? lifeSummary(pick.capacityWh) : null;
 
   return (
     <article>
@@ -72,6 +78,28 @@ export function HubLanding({ hub }: { hub: Hub }) {
           <span className="block text-xl font-extrabold text-ink mt-1">{hub.start.label}</span>
           <span className="block text-stone-700 mt-1 max-w-3xl">{hub.start.why}</span>
         </Link>
+
+        {pick && (
+          <section aria-label="Our pick" className="mt-8">
+            <AffiliateDisclosure />
+            <div className="mt-4">
+              <OurPick
+                label={hub.pick!.label}
+                name={fullName(pick)}
+                why={hub.pick!.why}
+                life={[`Fridge, Wi-Fi and lights: ${pickLife!.essentials}`, `Fridge alone: ${pickLife!.fridge}`]}
+                priceUsd={pick.priceUsd}
+                brand={pick.brand}
+                productId={pick.id}
+                productUrl={pick.url}
+                category="battery"
+                moreHref="/best-portable-power-stations"
+                moreLabel="Compare every pick"
+              />
+              <p className="text-xs text-muted mt-2">*Price on the maker&apos;s US site when we checked on {formatDate(pick.retrieved)}; prices change often.</p>
+            </div>
+          </section>
+        )}
 
         <div className="mt-10">
           <Prose>

@@ -40,6 +40,9 @@ export default function HomePage() {
   const eGallon = (typical.kwhPer100mi / 100) * nationalRateUsd() * avgCar.mpg;
   const outage = productById("ecoflow-delta-3-max");
   const life = lifeSummary(outage.capacityWh);
+  // Shown just under the hero: a 2 kWh battery from a brand we are approved with (Bluetti, Awin).
+  const topPick = productById("bluetti-elite-200-v2");
+  const topLife = lifeSummary(topPick.capacityWh);
   const cheapestKit = [...PLUGIN_KITS].sort((a, b) => a.priceUsd - b.priceUsd)[0];
   const states = [...STATES].sort((a, b) => a.name.localeCompare(b.name));
 
@@ -94,6 +97,29 @@ export default function HomePage() {
             Tell us what you&apos;re after. We&apos;ll take you straight to the tool that answers it, on your state&apos;s real prices.
           </p>
           <IWantTo />
+        </div>
+      </section>
+
+      <section aria-labelledby="top-pick-heading" className="border-b border-black/8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <h2 id="top-pick-heading" className="text-2xl font-extrabold text-ink">Want backup power before the next outage?</h2>
+          <AffiliateDisclosure className="mt-3" />
+          <div className="mt-4">
+            <OurPick
+              label="A 2 kWh battery for outages"
+              name={fullName(topPick)}
+              why="About 2 kWh with long-life LFP cells, rated for 6,000 cycles, and a 5-year warranty. Leave the fridge plugged into it and it takes over in about 15 ms when the power cuts out. It can't take extra batteries later."
+              life={[`Fridge, Wi-Fi and lights: ${topLife.essentials}`, `Fridge alone: ${topLife.fridge}`, `CPAP: ${topLife.cpap}`, `Phone charges: about ${topLife.phones}`]}
+              priceUsd={topPick.priceUsd}
+              brand={topPick.brand}
+              productId={topPick.id}
+              productUrl={topPick.url}
+              category="battery"
+              moreHref="/best-portable-power-stations"
+              moreLabel="Compare every pick"
+            />
+            <p className="text-xs text-muted mt-2">*Price on the maker&apos;s US site when we checked on {formatDate(topPick.retrieved)}; prices change often.</p>
+          </div>
         </div>
       </section>
 

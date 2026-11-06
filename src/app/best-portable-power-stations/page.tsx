@@ -28,7 +28,7 @@ const PICKS: { id: string; label: string; why: string }[] = [
   {
     id: "growatt-infinity-2000-pro",
     label: "Best value at 2 kWh",
-    why: "About $100 less than the 2 kWh EcoFlow, Anker and Bluetti units we list when we checked, with LFP cells and a 5-year warranty. The trade-offs: at 51 lb it is heavier than the Anker or Jackery, it switches over in about 20 ms rather than 10, and its extra batteries were sold out.",
+    why: "At least $100 less than the 2 kWh EcoFlow, Anker and Bluetti units we list when we checked, with LFP cells and a 5-year warranty. The trade-offs: at 51 lb it is heavier than the Anker or Jackery, it switches over in about 20 ms rather than 10, and its extra batteries were sold out.",
   },
   {
     id: "anker-solix-c1000-gen-2",
@@ -58,12 +58,12 @@ const PICKS: { id: string; label: string; why: string }[] = [
   {
     id: "anker-solix-f3800-plus",
     label: "Best for running home circuits",
-    why: "240-volt power for a well pump or a transfer switch, lots of solar input, and room to grow into whole-home backup. It was $399 cheaper than the EcoFlow DELTA Pro 3 with more output when we checked. The Nature's Generator L6000 matches its 6,000 W and 3.8 kWh for $300 less, but with a 1-year warranty against Anker's 5.",
+    why: "240-volt power for a well pump or a transfer switch, lots of solar input, and room to grow into whole-home backup. It was about $200 cheaper than the EcoFlow DELTA Pro 3 with more output when we checked, but sold out on Anker's US site on Nov 6. The Nature's Generator L6000 matches its 6,000 W and 3.8 kWh for $500 less, but with a 1-year warranty against Anker's 5.",
   },
   {
     id: "growatt-helios-3600",
     label: "Cheapest way to 240 V",
-    why: "120 V and 240 V from one unit for about $800 less than the Anker F3800 Plus when we checked, with LFP cells and room for four extra batteries. It puts out 3,600 W against the Anker's 6,000 W, so check your well pump's starting draw first. 99 lb, on wheels.",
+    why: "120 V and 240 V from one unit for about $1,000 less than the Anker F3800 Plus when we checked, with LFP cells and room for four extra batteries. It puts out 3,600 W against the Anker's 6,000 W, so check your well pump's starting draw first. 99 lb, on wheels.",
   },
 ];
 
