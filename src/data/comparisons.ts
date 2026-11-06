@@ -59,7 +59,7 @@ export const COMPARISONS: Comparison[] = [
       "At 1 kWh the EcoFlow DELTA 3 was $579 on Nov 6 2026, and the Jackery Explorer 1000 v2 (last $559) was sold out; at 2 kWh EcoFlow is cheaper (the DELTA 3 Max was $879 vs $999 for the Explorer 2000 v2). At both sizes EcoFlow gives more output and solar input, and the DELTA 3 can take extra batteries. At home-backup size the Jackery Explorer 5000 Plus has more capacity and power (5 kWh, 7,200 W) than the DELTA Pro 3 (4 kWh, 4,000 W) for $700 more at their last prices, but on Nov 6 2026 both were sold out on their own (Jackery still sold the 5000 Plus in bundles). One caution: Jackery rates its cycles to 70% remaining capacity and EcoFlow to 80%, so equal cycle counts favor EcoFlow.",
     chooseA: "Choose Jackery for the cheaper 1 kWh unit, lighter weight at each size, or the biggest single home-backup unit of the pair.",
     chooseB: "Choose EcoFlow for higher output and solar input at each size, expandable mid-size models and faster UPS switchover (10 ms vs Jackery's 20 ms).",
-    updated: U,
+    updated: "2026-11-06",
   },
   {
     slug: "anker-solix-vs-ecoflow",
@@ -110,7 +110,7 @@ export const COMPARISONS: Comparison[] = [
       "The Bluetti AC180 offers more for less on paper: 1,152 Wh and 1,800 W for $499, against 1,070 Wh and 1,500 W for $559, plus 500 W of solar input to Jackery's 400 W. The Jackery Explorer 1000 v2 is 11.5 lb lighter (23.8 vs 35.3 lb). On Nov 6 2026 the Jackery was sold out on Jackery's US site.",
     chooseA: "Choose the Bluetti AC180 for more capacity, output and solar input per dollar.",
     chooseB: "Choose the Jackery Explorer 1000 v2 if weight matters (camping, carrying).",
-    updated: "2026-10-19",
+    updated: "2026-11-06",
   },
   {
     slug: "ecoflow-delta-3-max-vs-jackery-explorer-2000-v2",
@@ -123,7 +123,7 @@ export const COMPARISONS: Comparison[] = [
       "The EcoFlow DELTA 3 Max was both cheaper ($899 vs $999) and stronger (2,400 W vs 2,200 W continuous, 500 W vs 400 W solar input, 10 ms vs 20 ms switchover). The Jackery is lighter (39.5 vs 44.8 lb) and publishes a 4,000-cycle rating (to 70%); EcoFlow gives no cycle count for this model, only a 10-year life claim. Jackery says the 2000 v2 is not expandable; EcoFlow does not say whether the DELTA 3 Max is.",
     chooseA: "Choose the EcoFlow DELTA 3 Max for more power and solar input at a lower price.",
     chooseB: "Choose the Jackery Explorer 2000 v2 if you want the lighter unit with a published cycle rating.",
-    updated: U,
+    updated: "2026-11-06",
   },
   {
     slug: "ecoflow-delta-pro-3-vs-anker-solix-f3800-plus",
