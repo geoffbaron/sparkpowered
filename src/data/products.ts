@@ -68,6 +68,8 @@ export interface Product {
   /** Price on the manufacturer's US site on `retrieved`, or null if sold by quote. */
   priceUsd: number | null;
   listPriceUsd: number | null;
+  /** Sold out on the maker's US site at the last check: the price is the last one shown, and calculators and picks skip it. */
+  soldOut?: boolean;
   /** Shown instead of a price when priceUsd is null. */
   priceNote?: string;
   /** Short factual notes taken from the product page. */
@@ -174,17 +176,19 @@ const HOME: Product[] = [
     id: "ecoflow-delta-pro-ultra", brand: "ecoflow", model: "DELTA Pro Ultra", category: "home",
     url: "https://us.ecoflow.com/products/delta-pro-ultra",
     sourceUrl: "https://us.ecoflow.com/products/delta-pro-ultra",
-    retrieved: "2026-10-15",
+    retrieved: "2026-11-06",
     capacityWh: 6144, maxCapacityWh: 30720, expansion: "with up to four extra batteries per inverter (90 kWh with three inverters and a Smart Home Panel 2)",
     addOn: {
       model: "DELTA Pro Ultra Extra Battery", capacityWh: 6144, priceUsd: 2000, listPriceUsd: null,
-      url: "https://us.ecoflow.com/products/delta-pro-ultra", maxUnits: 4,
+      url: "https://us.ecoflow.com/products/delta-pro-ultra", maxUnits: 4, soldOut: true
     },
     acOutputW: 7200, surgeW: 10800, chemistry: "LFP", cycles: 3500, cyclesTo: 80, weightLb: 181.8, solarInputW: 5600,
     acOutlets: null, upsMs: 20, warrantyYears: 5, volts: "120/240V", install: "diy",
+    soldOut: true,
     priceUsd: 4199, listPriceUsd: 5799,
     certifications: ["UL 1973", "UL 9540"],
     notes: [
+      "Sold out on EcoFlow's US site on Nov 6 2026; the price is the last one shown.",
       "Weight is the inverter (70 lb) plus one battery (111.8 lb); they are separate pieces.",
       "Plugs in without an installer; connecting it to your home's circuits needs EcoFlow's Smart Home Panel 2, installed by an electrician.",
       "Add-on price is the difference in EcoFlow's own bundle ($6,199 for one inverter and two batteries).",
@@ -214,43 +218,13 @@ const HOME: Product[] = [
 
 const PORTABLE: Product[] = [
   {
-    id: "ecoflow-river-3-plus",
-    brand: "ecoflow",
-    model: "RIVER 3 Plus",
-    category: "portable",
-    url: "https://us.ecoflow.com/products/ecoflow-river-3-plus-portable-power-station-flash-sale",
-    sourceUrl: "https://us.ecoflow.com/products/ecoflow-river-3-plus-portable-power-station-flash-sale",
-    retrieved: "2026-10-15",
-    capacityWh: 286,
-    maxCapacityWh: 858,
-    acOutputW: 600,
-    surgeW: 1200,
-    chemistry: "LFP",
-    cycles: 3000,
-    cyclesTo: 80,
-    weightLb: 10.4,
-    solarInputW: 220,
-    acOutlets: 3,
-    upsMs: 10.0,
-    warrantyYears: null,
-    volts: "120V",
-    install: "diy",
-    priceUsd: 299,
-    listPriceUsd: null,
-    notes: [
-      "Small enough to carry in one hand; a good CPAP or camping battery.",
-      "Expands to 858 Wh with EcoFlow's RIVER 3 Plus extra batteries."
-    ],
-    expansion: "with RIVER 3 Plus extra batteries"
-  },
-  {
     id: "ecoflow-delta-3",
     brand: "ecoflow",
     model: "DELTA 3",
     category: "portable",
     url: "https://us.ecoflow.com/products/delta-3-portable-power-station",
     sourceUrl: "https://us.ecoflow.com/products/delta-3-portable-power-station",
-    retrieved: "2026-10-15",
+    retrieved: "2026-11-06",
     capacityWh: 1024,
     maxCapacityWh: 5000,
     acOutputW: 1800,
@@ -265,7 +239,7 @@ const PORTABLE: Product[] = [
     warrantyYears: 5,
     volts: "120V",
     install: "diy",
-    priceUsd: 629,
+    priceUsd: 579,
     listPriceUsd: 699,
     notes: [
       "Six AC outlets and a sub-10 ms UPS switchover.",
@@ -280,7 +254,7 @@ const PORTABLE: Product[] = [
     category: "portable",
     url: "https://us.ecoflow.com/products/delta-3-plus-portable-power-station",
     sourceUrl: "https://us.ecoflow.com/products/delta-3-plus-portable-power-station",
-    retrieved: "2026-10-15",
+    retrieved: "2026-11-06",
     capacityWh: 1024,
     maxCapacityWh: 5000,
     acOutputW: 1800,
@@ -310,7 +284,7 @@ const PORTABLE: Product[] = [
     category: "portable",
     url: "https://us.ecoflow.com/products/ecoflow-delta-3-max-portable-power-station-2048wh",
     sourceUrl: "https://us.ecoflow.com/products/ecoflow-delta-3-max-portable-power-station-2048wh",
-    retrieved: "2026-10-15",
+    retrieved: "2026-11-06",
     capacityWh: 2048,
     maxCapacityWh: null,
     acOutputW: 2400,
@@ -325,7 +299,7 @@ const PORTABLE: Product[] = [
     warrantyYears: 5,
     volts: "120V",
     install: "diy",
-    priceUsd: 899,
+    priceUsd: 879,
     listPriceUsd: 1199,
     notes: [
       "Warranty is 3 years plus 2 more when you register in EcoFlow's app.",
@@ -339,7 +313,7 @@ const PORTABLE: Product[] = [
     category: "portable",
     url: "https://us.ecoflow.com/products/ecoflow-delta-3-max-plus-portable-power-station-2048wh",
     sourceUrl: "https://us.ecoflow.com/products/ecoflow-delta-3-max-plus-portable-power-station-2048wh",
-    retrieved: "2026-10-15",
+    retrieved: "2026-11-06",
     capacityWh: 2048,
     maxCapacityWh: 10000,
     acOutputW: 3000,
@@ -354,7 +328,7 @@ const PORTABLE: Product[] = [
     warrantyYears: 5,
     volts: "120V",
     install: "diy",
-    priceUsd: 1199,
+    priceUsd: 1149,
     listPriceUsd: 1599,
     notes: [
       "Expands from 2 kWh to 10 kWh with 2 kWh extra batteries ($859 each when checked).",
@@ -369,7 +343,7 @@ const PORTABLE: Product[] = [
     category: "portable",
     url: "https://us.ecoflow.com/products/delta-pro-3-portable-power-station",
     sourceUrl: "https://us.ecoflow.com/products/delta-pro-3-portable-power-station",
-    retrieved: "2026-10-15",
+    retrieved: "2026-11-06",
     capacityWh: 4096,
     maxCapacityWh: 12288,
     acOutputW: 4000,
@@ -384,9 +358,11 @@ const PORTABLE: Product[] = [
     warrantyYears: 5,
     volts: "120/240V",
     install: "diy",
+    soldOut: true,
     priceUsd: 2799,
     listPriceUsd: 3299,
     notes: [
+      "Sold out on EcoFlow's US site on Nov 6 2026; the price is the last one shown.",
       "120/240 V output with a 30 A twist-lock (L14-30R) outlet for a transfer switch or home panel.",
       "Carried by two wheels and a handle; at 113.5 lb it is a roll-around unit, not a carry-around one.",
       "Up to 2,600 W of solar input across two ports."
@@ -398,7 +374,7 @@ const PORTABLE: Product[] = [
       priceUsd: 1899,
       listPriceUsd: null,
       url: "https://us.ecoflow.com/products/delta-pro-3-extra-battery",
-      maxUnits: 2
+      maxUnits: 2, soldOut: true
     }
   },
   {
@@ -408,7 +384,7 @@ const PORTABLE: Product[] = [
     category: "portable",
     url: "https://www.jackery.com/products/jackery-explorer-1000-v2",
     sourceUrl: "https://www.jackery.com/products/jackery-explorer-1000-v2",
-    retrieved: "2026-10-15",
+    retrieved: "2026-11-06",
     capacityWh: 1070,
     maxCapacityWh: null,
     notExpandable: true,
@@ -424,9 +400,11 @@ const PORTABLE: Product[] = [
     warrantyYears: 5,
     volts: "120V",
     install: "diy",
+    soldOut: true,
     priceUsd: 559,
     listPriceUsd: null,
     notes: [
+      "Sold out on Jackery's US site on Nov 6 2026; the price is the last one shown.",
       "Warranty is 3 years plus 2 when registered.",
       "Jackery rates cycles to 70% capacity, a lower bar than the 80% most rivals use."
     ]
@@ -438,7 +416,7 @@ const PORTABLE: Product[] = [
     category: "portable",
     url: "https://www.jackery.com/products/jackery-explorer-1000-plus-portable-power-station",
     sourceUrl: "https://www.jackery.com/products/jackery-explorer-1000-plus-portable-power-station",
-    retrieved: "2026-10-15",
+    retrieved: "2026-11-06",
     capacityWh: 1264.64,
     maxCapacityWh: 5056,
     acOutputW: 2000,
@@ -466,7 +444,7 @@ const PORTABLE: Product[] = [
       priceUsd: 599,
       listPriceUsd: null,
       url: "https://www.jackery.com/products/jackery-battery-pack-1000-plus",
-      maxUnits: 3
+      maxUnits: 3, soldOut: true
     }
   },
   {
@@ -476,7 +454,7 @@ const PORTABLE: Product[] = [
     category: "portable",
     url: "https://www.jackery.com/products/jackery-explorer-2000-v2-portable-power-station",
     sourceUrl: "https://www.jackery.com/products/jackery-explorer-2000-v2-portable-power-station",
-    retrieved: "2026-10-15",
+    retrieved: "2026-11-06",
     capacityWh: 2042,
     maxCapacityWh: null,
     notExpandable: true,
@@ -506,7 +484,7 @@ const PORTABLE: Product[] = [
     category: "portable",
     url: "https://www.jackery.com/products/jackery-explorer-5000-plus",
     sourceUrl: "https://www.jackery.com/products/jackery-explorer-5000-plus",
-    retrieved: "2026-10-15",
+    retrieved: "2026-11-06",
     capacityWh: 5040,
     maxCapacityWh: 60000,
     acOutputW: 7200,
@@ -521,9 +499,12 @@ const PORTABLE: Product[] = [
     warrantyYears: 5,
     volts: "120/240V",
     install: "diy",
+    soldOut: true,
     priceUsd: 3499,
     listPriceUsd: null,
     notes: [
+      "Jackery was still selling it in bundles, from $5,899 with a Battery Pack 5000 Plus.",
+      "Sold out on Jackery's US site on Nov 6 2026; the price is the last one shown.",
       "120/240 V output, 7,200 W continuous, for well pumps and home circuits through a transfer switch.",
       "Jackery says it scales to 60 kWh with battery packs and a second unit."
     ],
@@ -661,6 +642,7 @@ const PORTABLE: Product[] = [
     warrantyYears: 5,
     volts: "120/240V",
     install: "diy",
+    soldOut: true,
     priceUsd: 2599.99,
     listPriceUsd: 2999.99,
     notes: [
@@ -1117,12 +1099,12 @@ const PORTABLE: Product[] = [
     acOutlets: 6,
     upsMs: 20,
     warrantyYears: 5,
-    volts: "120/240V",
+    volts: "120V",
     install: "diy",
     priceUsd: 1599,
     listPriceUsd: null,
     notes: [
-      "Gives 120 V and 240 V from one unit, for a well pump or a transfer switch.",
+      "120 V from one unit. Growatt says 240 V (7,200 W) needs two units joined with its Split-phase Connector.",
       "Growatt gives both 15 ms and 20 ms for its switchover time; we use the slower figure.",
       "In stock on Growatt's US site on Nov 4 2026.",
     ],

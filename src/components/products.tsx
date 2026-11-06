@@ -19,6 +19,7 @@ export function PriceCell({ p }: { p: Product }) {
   return (
     <span className="whitespace-nowrap">
       <strong>{money(p.priceUsd)}</strong>
+      {p.soldOut && <span className="block text-xs text-muted">sold out when we checked</span>}
       {p.listPriceUsd && p.listPriceUsd > p.priceUsd && (
         <span className="block text-xs text-muted">
           list <s>{money(p.listPriceUsd)}</s>
@@ -178,7 +179,7 @@ export function productJson(p: Product, pagePath: string, reviewDate?: string) {
     pagePath,
     reviewDate,
     description: `${fullName(p)} is a ${kwh(p.capacityWh)} ${kind} with ${watts(p.acOutputW)} of continuous AC output.`,
-    priceUsd: p.priceUsd,
+    priceUsd: p.soldOut ? null : p.priceUsd,
     extra: {
       category: p.category === "home" ? "Home battery" : "Portable power station",
       additionalProperty: [

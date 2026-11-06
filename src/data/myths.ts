@@ -83,7 +83,7 @@ const S = {
   doeRebates: { label: "US DOE, Home Energy Rebates program", url: "https://www.energy.gov/cmei/scep/home-energy-rebates-program" },
   gmBolt: { label: "GM: 2027 Chevrolet Bolt (Oct 9, 2025)", url: "https://news.gm.com/home.detail.html/Pages/news/us/en/2025/oct/1009-2027-Chevrolet-Bolt.html" },
   brightSaver: { label: "Bright Saver, balcony solar kits (member prices, checked Oct 15, 2026)", url: "https://www.brightsaver.org/balcony-solar-kits" },
-  river: { label: "EcoFlow RIVER 3 Plus product page (checked Oct 15, 2026)", url: "https://us.ecoflow.com/products/ecoflow-river-3-plus-portable-power-station-flash-sale" },
+  elite30: { label: "Bluetti Elite 30 V2 product page (checked Oct 26, 2026)", url: "https://www.bluettipower.com/products/elite-30-v2-portable-power-station" },
   massSave: { label: "Mass Save, ConnectedSolutions for batteries", url: "https://masssave.com/saving/residential-rebates/connectedsolutions-batteries" },
   crReliability: { label: "Consumer Reports: EVs are less reliable than conventional cars (updated Dec 4, 2025)", url: "https://www.consumerreports.org/cars/car-reliability-owner-satisfaction/electric-vehicles-are-less-reliable-than-conventional-cars-a1047214174/" },
   communitySolar: { label: "National Laboratory of the Rockies: community solar (data as of Feb 2025)", url: "https://www.nlr.gov/state-local-tribal/community-solar" },
@@ -223,7 +223,7 @@ export const MYTHS: Myth[] = [
     verdict: "Myth",
     short: "Plug-in solar starts under $500, power stations around $300, more than half of used EVs list under $30,000, and the savings arrive every month.",
     answer: "You don't have to start with a new car or a roof full of panels. A plug-in solar kit starts at $414.17 (Bright Saver member price), a small power station that runs a CPAP is about $300, the 2027 Chevrolet Bolt launched under $30,000, and more than half of used EVs listed in September 2026 were under $30,000 (Recurrent). The federal EV credits ended for vehicles bought after Sept 30, 2025, and the home solar and efficiency credits after 2025 (IRS), but DOE Home Energy Rebates are live in some states; check your state energy office.",
-    sources: [S.brightSaver, S.river, S.recurrentUsed, S.gmBolt, S.irs, S.doeRebates],
+    sources: [S.brightSaver, S.elite30, S.recurrentUsed, S.gmBolt, S.irs, S.doeRebates],
   },
   {
     id: "battery-without-solar",

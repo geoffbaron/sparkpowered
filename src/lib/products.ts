@@ -100,6 +100,7 @@ export function sizerMatches(
   const pool = PRODUCTS.filter(
     (p) =>
       (p.category === "portable" || p.category === "home") &&
+      !p.soldOut &&
       !(opts.excludeBrands ?? []).includes(p.brand) &&
       // Plug-in systems qualify only if they reach the size with their own add-ons.
       (p.install === "professional" || maxWh(p) >= neededKwh * 1000) &&

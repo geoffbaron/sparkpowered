@@ -333,7 +333,7 @@ export interface StationOption {
 
 /** Every do-it-yourself power station or battery with a listed price, as calculator options. */
 export function stationOptions(): StationOption[] {
-  return PRODUCTS.filter((p) => p.install === "diy" && p.priceUsd != null).map((p) => ({
+  return PRODUCTS.filter((p) => p.install === "diy" && p.priceUsd != null && !p.soldOut).map((p) => ({
     id: p.id,
     name: fullName(p),
     brand: p.brand,

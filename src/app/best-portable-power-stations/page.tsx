@@ -28,7 +28,7 @@ const PICKS: { id: string; label: string; why: string }[] = [
   {
     id: "growatt-infinity-2000-pro",
     label: "Best value at 2 kWh",
-    why: "At least $100 less than the 2 kWh EcoFlow, Anker and Bluetti units we list when we checked, with LFP cells and a 5-year warranty. The trade-offs: at 51 lb it is heavier than the Anker or Jackery, it switches over in about 20 ms rather than 10, and its extra batteries were sold out.",
+    why: "About $80 less than EcoFlow's DELTA 3 Max and $100 or more under the 2 kWh Anker and Bluetti units we list when we checked, with LFP cells and a 5-year warranty. The trade-offs: at 51 lb it is heavier than the Anker or Jackery, it switches over in about 20 ms rather than 10, and its extra batteries were sold out.",
   },
   {
     id: "anker-solix-c1000-gen-2",
@@ -41,14 +41,14 @@ const PICKS: { id: string; label: string; why: string }[] = [
     why: "Start small and add EcoFlow's extra batteries later (up to five times the capacity). Two solar inputs mean a couple of portable panels can refill it in a day, and it switches over fast enough to keep a computer or router running. 5-year warranty.",
   },
   {
-    id: "jackery-explorer-1000-v2",
+    id: "bluetti-elite-100-v2",
     label: "Best for camping",
-    why: "The lightest full-size unit in our table, at 23.8 lb, with long-life LFP cells and up to a 5-year warranty (3 years plus 2 on registration). Enough outlets and solar input for a campsite. Jackery rates its cycles to 70% capacity, a lower bar than rivals' 80%.",
+    why: "25 lb, within a few ounces of the lightest full-size unit in our table, with long-life LFP cells rated 4,000 cycles to 80% and a 5-year warranty. Up to 1,000 W of solar input is unusually high for 1 kWh, so a couple of panels refill it at the campsite. It can't take extra batteries later.",
   },
   {
-    id: "ecoflow-river-3-plus",
+    id: "bluetti-elite-30-v2",
     label: "Best for CPAP and small loads",
-    why: "A 10.4 lb box for $299 that switches over in about 10 ms, so a CPAP keeps running if the power blips. Add EcoFlow's extra battery to triple it. Check your own machine: our CPAP nights assume about 28 W with a heated humidifier, from ResMed's battery guide.",
+    why: "A 9.5 lb box for about $290 that switches over in about 10 ms, so a CPAP keeps running if the power blips. It holds one night with a heated humidifier; it can't take extra batteries. Check your own machine: our CPAP nights assume about 28 W with a heated humidifier, from ResMed's battery guide.",
   },
   {
     id: "anker-solix-f3000",
@@ -56,14 +56,9 @@ const PICKS: { id: string; label: string; why: string }[] = [
     why: "Plugs straight into an RV with a TT-30 outlet that delivers its full output, takes a lot of solar, and grows to four times the capacity with Anker's batteries. At 91.5 lb it rolls rather than carries.",
   },
   {
-    id: "anker-solix-f3800-plus",
+    id: "bluetti-apex-300",
     label: "Best for running home circuits",
-    why: "240-volt power for a well pump or a transfer switch, lots of solar input, and room to grow into whole-home backup. It was about $200 cheaper than the EcoFlow DELTA Pro 3 with more output when we checked, but sold out on Anker's US site on Nov 6. The Nature's Generator L6000 matches its 6,000 W and 3.8 kWh for $500 less, but with a 1-year warranty against Anker's 5.",
-  },
-  {
-    id: "growatt-helios-3600",
-    label: "Cheapest way to 240 V",
-    why: "120 V and 240 V from one unit for about $1,000 less than the Anker F3800 Plus when we checked, with LFP cells and room for four extra batteries. It puts out 3,600 W against the Anker's 6,000 W, so check your well pump's starting draw first. 99 lb, on wheels.",
+    why: "120 V and 240 V from one unit, with a 50 A (14-50R) outlet for a well pump or a transfer switch, 3,840 W of output and room to grow to 19.4 kWh with Bluetti's B300K batteries. The Anker F3800 Plus and EcoFlow DELTA Pro 3 were both sold out on their makers' US sites on Nov 6. Need more output? The Nature's Generator L6000 gives 6,000 W at 120/240 V for $2,099.99, with a 1-year warranty. 84 lb.",
   },
 ];
 
@@ -71,7 +66,7 @@ export default function BestPowerStationsPage() {
   const all = PRODUCTS.filter((p) => p.category === "portable").sort((a, b) => a.capacityWh - b.capacityWh);
   const picks = PICKS.map((x) => ({ ...x, p: productById(x.id) }));
   const top = lifeSummary(picks[0].p.capacityWh);
-  const cheapest = all.filter((p) => p.priceUsd != null).sort((a, b) => a.priceUsd! - b.priceUsd!)[0];
+  const cheapest = all.filter((p) => p.priceUsd != null && !p.soldOut).sort((a, b) => a.priceUsd! - b.priceUsd!)[0];
 
   const faqs = [
     {
@@ -162,7 +157,7 @@ export default function BestPowerStationsPage() {
         <SpecTable products={all} caption="Portable power stations compared by published specs and price" />
         <PriceFootnote products={all} />
         <p className="text-sm text-stone-700 mt-4">
-          Bigger whole-home systems such as the EcoFlow DELTA Pro Ultra, Bluetti Apex 300 and installed batteries are on
+          Bigger whole-home systems such as the Nature's Generator MyGrid 10K, EcoFlow DELTA Pro Ultra and installed batteries are on
           our{" "}
           <Link href="/home-battery-backup" className="text-spark-orange underline underline-offset-2">home battery backup</Link>{" "}
           guide.

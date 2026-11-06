@@ -33,7 +33,7 @@ test("CPAP and cooler figures are real numbers on every buyer-guide pick", () =>
   assert.ok(Number.isFinite(CPAP_NO_HUMIDIFIER_W) && CPAP_NO_HUMIDIFIER_W > 0 && CPAP_NO_HUMIDIFIER_W < LOADS.cpapW);
   assert.ok(Number.isFinite(COOLER_WH_DAY) && COOLER_WH_DAY > 100);
   const nights = (wh: number, w: number) => (wh * USABLE_FRACTION) / (w * LOADS.cpapNightHours);
-  const ids = ["bluetti-elite-30-v2", "bluetti-elite-100-v2", "bluetti-ac180", "bluetti-elite-200-v2", "ecoflow-river-3-plus", "jackery-explorer-1000-v2", "anker-solix-c1000-gen-2"];
+  const ids = ["bluetti-elite-30-v2", "bluetti-elite-100-v2", "bluetti-ac180", "bluetti-elite-200-v2", "anker-solix-c1000-gen-2"];
   const caps = [...ids.map((id) => productById(id).capacityWh), CPAP_PACK.capacityWh];
   for (const wh of caps) {
     for (const w of [LOADS.cpapW, CPAP_NO_HUMIDIFIER_W]) {

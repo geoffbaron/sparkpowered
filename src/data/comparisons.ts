@@ -56,7 +56,7 @@ export const COMPARISONS: Comparison[] = [
     intro:
       "Jackery and EcoFlow are the two most-searched power station brands. Both now use LFP batteries across these models and both offer 5-year warranties on them. We matched each brand's models by size.",
     verdict:
-      "At 1 kWh Jackery is cheaper (the Explorer 1000 v2 was $559 vs $629 for the DELTA 3); at 2 kWh EcoFlow is (the DELTA 3 Max was $899 vs $999 for the Explorer 2000 v2). At both sizes EcoFlow gives more output and solar input, and the DELTA 3 can take extra batteries. At home-backup size the Jackery Explorer 5000 Plus has more capacity and power (5 kWh, 7,200 W) than the DELTA Pro 3 (4 kWh, 4,000 W) for $700 more. One caution: Jackery rates its cycles to 70% remaining capacity and EcoFlow to 80%, so equal cycle counts favor EcoFlow.",
+      "At 1 kWh the EcoFlow DELTA 3 was $579 on Nov 6 2026, and the Jackery Explorer 1000 v2 (last $559) was sold out; at 2 kWh EcoFlow is cheaper (the DELTA 3 Max was $879 vs $999 for the Explorer 2000 v2). At both sizes EcoFlow gives more output and solar input, and the DELTA 3 can take extra batteries. At home-backup size the Jackery Explorer 5000 Plus has more capacity and power (5 kWh, 7,200 W) than the DELTA Pro 3 (4 kWh, 4,000 W) for $700 more at their last prices, but on Nov 6 2026 both were sold out on their own (Jackery still sold the 5000 Plus in bundles). One caution: Jackery rates its cycles to 70% remaining capacity and EcoFlow to 80%, so equal cycle counts favor EcoFlow.",
     chooseA: "Choose Jackery for the cheaper 1 kWh unit, lighter weight at each size, or the biggest single home-backup unit of the pair.",
     chooseB: "Choose EcoFlow for higher output and solar input at each size, expandable mid-size models and faster UPS switchover (10 ms vs Jackery's 20 ms).",
     updated: U,
@@ -93,7 +93,7 @@ export const COMPARISONS: Comparison[] = [
     intro:
       "Bluetti undercuts EcoFlow on price at most sizes and quotes higher cycle ratings; EcoFlow had better stock and more complete published specs when we checked.",
     verdict:
-      "Bluetti is cheaper per kWh: the Elite 100 V2 was $489 for 1 kWh and the Elite 200 V2 $899 for 2.07 kWh, with 6,000-cycle ratings on the larger models. Both Elite V2 units were back in stock on Bluetti's US site on Oct 19 2026, but neither expands. For home backup the Bluetti Apex 300 ($1,499 for 2.76 kWh, 3,840 W, 120/240 V) costs far less than the EcoFlow DELTA Pro 3 ($2,799 for 4.1 kWh, 4,000 W) and expands further per unit.",
+      "Bluetti is cheaper per kWh: the Elite 100 V2 was $489 for 1 kWh and the Elite 200 V2 $899 for 2.07 kWh, with 6,000-cycle ratings on the larger models. Both Elite V2 units were back in stock on Bluetti's US site on Oct 19 2026, but neither expands. For home backup the Bluetti Apex 300 ($1,499 for 2.76 kWh, 3,840 W, 120/240 V) costs far less than the EcoFlow DELTA Pro 3 ($2,799 for 4.1 kWh, 4,000 W, sold out on EcoFlow's US site on Nov 6 2026) and expands further per unit.",
     chooseA: "Choose EcoFlow if you want a 1 kWh unit that expands later, or a warranty stated on every model (Bluetti's US page did not state one for the Apex 300).",
     chooseB: "Choose Bluetti for the lowest price per kWh and the highest cycle ratings, especially the Apex 300 for home backup.",
     see: { slug: "anker-solix-vs-ecoflow", label: "Weighing up Anker SOLIX too? See EcoFlow vs Anker SOLIX" },
@@ -107,7 +107,7 @@ export const COMPARISONS: Comparison[] = [
     intro:
       "Both are long-time best sellers around 1 kWh with LFP batteries and 5-year warranties. The AC180 has a little more capacity and output; the Jackery is lighter.",
     verdict:
-      "The Bluetti AC180 offers more for less on paper: 1,152 Wh and 1,800 W for $499, against 1,070 Wh and 1,500 W for $559, plus 500 W of solar input to Jackery's 400 W. The Jackery Explorer 1000 v2 is 11.5 lb lighter (23.8 vs 35.3 lb). Both were in stock on their makers' US sites on Oct 19 2026.",
+      "The Bluetti AC180 offers more for less on paper: 1,152 Wh and 1,800 W for $499, against 1,070 Wh and 1,500 W for $559, plus 500 W of solar input to Jackery's 400 W. The Jackery Explorer 1000 v2 is 11.5 lb lighter (23.8 vs 35.3 lb). On Nov 6 2026 the Jackery was sold out on Jackery's US site.",
     chooseA: "Choose the Bluetti AC180 for more capacity, output and solar input per dollar.",
     chooseB: "Choose the Jackery Explorer 1000 v2 if weight matters (camping, carrying).",
     updated: "2026-10-19",

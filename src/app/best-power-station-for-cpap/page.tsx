@@ -25,7 +25,7 @@ export const metadata: Metadata = pageMetadata({ title: TITLE, description: DESC
 const nights = (wh: number, w: number) => (wh * USABLE_FRACTION) / (w * LOADS.cpapNightHours);
 const n1 = (x: number) => (Math.floor(x * 10) / 10).toString();
 
-const IDS = ["bluetti-elite-30-v2", "bluetti-elite-100-v2", "bluetti-ac180", "bluetti-elite-200-v2", "ecoflow-river-3-plus", "jackery-explorer-1000-v2", "anker-solix-c1000-gen-2"];
+const IDS = ["bluetti-elite-30-v2", "bluetti-elite-100-v2", "bluetti-ac180", "bluetti-elite-200-v2", "anker-solix-c1000-gen-2"];
 
 function opt(p: Product): RuntimeOption {
   return { id: p.id, name: fullName(p), brand: AFFILIATES[p.brand].tracked ? p.brand : null, capacityWh: p.capacityWh, priceUsd: p.priceUsd!, url: p.url };
@@ -35,7 +35,7 @@ export default function CpapPage() {
   const products = IDS.map(productById);
   const e30 = productById("bluetti-elite-30-v2");
   const e100 = productById("bluetti-elite-100-v2");
-  const river = productById("ecoflow-river-3-plus");
+  const anker = productById("anker-solix-c1000-gen-2");
   const options: RuntimeOption[] = [
     ...products.map(opt),
     { id: CPAP_PACK.id, name: CPAP_PACK.name, brand: "bluetti", capacityWh: CPAP_PACK.capacityWh, priceUsd: CPAP_PACK.priceUsd, url: CPAP_PACK.url },
@@ -69,7 +69,7 @@ export default function CpapPage() {
     },
     {
       q: "Can I leave my CPAP plugged into a power station every night?",
-      a: "Yes, that is the point of a UPS-style station: plug the station into the wall and the CPAP into the station. When the power cuts out, it takes over. Look for a stated switchover time; the Bluetti Elite 30 V2, Elite 100 V2 and EcoFlow RIVER 3 Plus list 10 ms.",
+      a: "Yes, that is the point of a UPS-style station: plug the station into the wall and the CPAP into the station. When the power cuts out, it takes over. Look for a stated switchover time; the Bluetti Elite 30 V2, Elite 100 V2 and Anker SOLIX C1000 Gen 2 list 10 ms.",
     },
   ];
 
@@ -122,8 +122,7 @@ export default function CpapPage() {
           <p>
             <strong>Travel and single nights:</strong> the{" "}
             <PartnerLink brand="bluetti" productId={e30.id} productUrl={e30.url}>Bluetti Elite 30 V2</PartnerLink> ({money(e30.priceUsd!)},{" "}
-            {e30.weightLb} lb). Want one you can add a battery to later? The{" "}
-            <PlainLink href={river.url}>EcoFlow RIVER 3 Plus</PlainLink> ({money(river.priceUsd!)}) is the same size and expands to 858 Wh.
+            {e30.weightLb} lb).
           </p>
         </QuickAnswer>
 
@@ -219,8 +218,8 @@ export default function CpapPage() {
             </table>
           </div>
           <p className="text-xs text-muted mt-2 max-w-3xl">
-            *Prices and specs from each maker&apos;s US product page on {formatDate(e100.retrieved)} (EcoFlow, Jackery and Anker on{" "}
-            {formatDate(river.retrieved)}). Nights assume {LOADS.cpapNightHours} hours at {H} W or {D} W and {Math.round(USABLE_FRACTION * 100)}%
+            *Prices and specs from each maker&apos;s US product page on {formatDate(e100.retrieved)} (Anker on{" "}
+            {formatDate(anker.retrieved)}). Nights assume {LOADS.cpapNightHours} hours at {H} W or {D} W and {Math.round(USABLE_FRACTION * 100)}%
             usable capacity. Bluetti and Anker links are sponsored; others are plain links.
           </p>
         </Section>
