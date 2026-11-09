@@ -697,7 +697,7 @@ const PORTABLE: Product[] = [
     category: "portable",
     url: "https://www.bluettipower.com/products/elite-100-v2-portable-power-station",
     sourceUrl: "https://www.bluettipower.com/products/elite-100-v2-portable-power-station",
-    retrieved: "2026-10-26",
+    retrieved: "2026-11-09",
     capacityWh: 1024,
     maxCapacityWh: null,
     acOutputW: 1800,
@@ -712,8 +712,8 @@ const PORTABLE: Product[] = [
     warrantyYears: 5,
     volts: "120V",
     install: "diy",
-    priceUsd: 489,
-    listPriceUsd: 499,
+    priceUsd: 499,
+    listPriceUsd: null,
     notes: [
       "Up to 1,000 W of solar input, unusually high for a 1 kWh unit.",
       "In stock on Bluetti's US site on Oct 19 2026; Bluetti lists a 3,600 W surge and a 5-year warranty."
@@ -788,7 +788,7 @@ const PORTABLE: Product[] = [
     category: "portable",
     url: "https://www.bluettipower.com/products/elite-300-portable-power-station",
     sourceUrl: "https://www.bluettipower.com/products/elite-300-portable-power-station",
-    retrieved: "2026-10-26",
+    retrieved: "2026-11-09",
     capacityWh: 3014.4,
     maxCapacityWh: null,
     acOutputW: 2400,
@@ -803,11 +803,11 @@ const PORTABLE: Product[] = [
     warrantyYears: 5,
     volts: "120V",
     install: "diy",
-    priceUsd: 1699,
+    priceUsd: 1199,
     listPriceUsd: null,
     notes: [
-      "3 kWh for $1,699, about $564 per kWh, with an RV (TT-30) outlet and a 12 V/30 A port.",
-      "In stock on Bluetti's US site at $1,699 on Oct 26 2026; the earlier $1,199 advance-order price has ended."
+      "3 kWh for $1,199, about $398 per kWh, with an RV (TT-30) outlet and a 12 V/30 A port.",
+      "In stock on Bluetti's US site at $1,199 on Nov 9 2026 (it was $1,699 on Oct 26)."
     ]
   },
   {
@@ -817,7 +817,7 @@ const PORTABLE: Product[] = [
     category: "portable",
     url: "https://www.bluettipower.com/products/elite-400-portable-power-station",
     sourceUrl: "https://www.bluettipower.com/products/elite-400-portable-power-station",
-    retrieved: "2026-10-26",
+    retrieved: "2026-11-09",
     capacityWh: 3840,
     maxCapacityWh: null,
     acOutputW: 2600,
@@ -832,11 +832,11 @@ const PORTABLE: Product[] = [
     warrantyYears: 5,
     volts: "120V",
     install: "diy",
-    priceUsd: 1399,
+    priceUsd: 1499,
     listPriceUsd: null,
     notes: [
-      "3.84 kWh on wheels with a telescopic handle, for $1,399 (about $364 per kWh).",
-      "In stock on Bluetti's US site on Oct 26 2026; Bluetti gives no cycle rating on the page."
+      "3.84 kWh on wheels with a telescopic handle, for $1,499 (about $390 per kWh).",
+      "In stock on Bluetti's US site on Nov 9 2026; Bluetti gives no cycle rating on the page."
     ]
   },
   {
@@ -846,7 +846,7 @@ const PORTABLE: Product[] = [
     category: "portable",
     url: "https://www.bluettipower.com/products/ac200l-portable-power-station",
     sourceUrl: "https://www.bluettipower.com/products/ac200l-portable-power-station",
-    retrieved: "2026-10-26",
+    retrieved: "2026-11-09",
     capacityWh: 2048,
     maxCapacityWh: 8192,
     expansion: "with up to two B300K or B300 batteries (Bluetti also lists B210 and B230)",
@@ -864,9 +864,10 @@ const PORTABLE: Product[] = [
     install: "diy",
     priceUsd: 899,
     listPriceUsd: null,
+    soldOut: true,
     certifications: ["UL 2743"],
     notes: [
-      "Out of stock on Bluetti's US site when we checked.",
+      "Sold out on Bluetti's US site on Nov 9 2026, and the page now says discontinued.",
       "Expands with Bluetti's add-on batteries; 8.2 kWh assumes two 3.07 kWh B300 units."
     ]
   },

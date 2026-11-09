@@ -141,13 +141,13 @@ const DEFS: KitDef[] = [
     name: "Bluetti Elite 300 + 350 W solar",
     blurb: "A weekend place with a fridge, or a small part-time cabin",
     lines: [
-      { variantId: 48309261664475, qty: 1, label: "Elite 300 power station (3,014 Wh) + 350 W solar panel, Bluetti bundle", unitPriceUsd: 1499, url: `${BL}elite-300-350w`, wh: 3014.4, panelW: 350 },
+      { variantId: 48309261664475, qty: 1, label: "Elite 300 power station (3,014 Wh) + 350 W solar panel, Bluetti bundle", unitPriceUsd: 1649, url: `${BL}elite-300-350w`, wh: 3014.4, panelW: 350 },
     ],
     acOutputW: 2400,
     solarInputW: 1200,
     checked: KITS_CHECKED,
     sources: [`${BL}elite-300-350w`, `${BL}elite-300-portable-power-station`],
-    notes: ["On Oct 26 2026 this bundle ($1,499) cost less than the Elite 300 alone ($1,699)."],
+    notes: ["On Nov 9 2026 this bundle cost $1,649 and the Elite 300 alone $1,199."],
   },
   {
     id: "bluetti-elite-400-700w",
