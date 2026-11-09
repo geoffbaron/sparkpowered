@@ -158,6 +158,7 @@ export const HUBS: Hub[] = [
         links: [
           { href: "/solar-calculator", title: "Solar savings calculator", desc: "Panels you need, what they make and what they're worth in your state", kind: "Calculator" },
           { href: "/solar-finder", title: "Find solar installers", desc: "Installers serving your ZIP code and how to check a quote", kind: "Calculator" },
+          { href: "/solar-panels-not-working", title: "Solar panels stopped working?", desc: "Safe checks, who repairs a system when the installer is gone, costs and new-owner paperwork", kind: "Guide" },
           { href: "/plug-in-solar", title: "Plug-in balcony solar", desc: "State-by-state laws, what an 800 W kit makes, and real kits", kind: "Guide" },
         ],
       },

@@ -107,6 +107,7 @@ export const ROUTES: { path: string; lastModified: string }[] = [
   { path: "/battery-calculator", lastModified: CONTENT_UPDATED },
   { path: "/calculator", lastModified: CONTENT_UPDATED },
   { path: "/solar-finder", lastModified: CONTENT_UPDATED },
+  { path: "/solar-panels-not-working", lastModified: "2026-11-09" },
   { path: "/plug-in-solar", lastModified: CONTENT_UPDATED },
   { path: "/best-portable-power-stations", lastModified: "2026-11-06" },
   { path: "/home-battery-backup", lastModified: "2026-11-06" },
