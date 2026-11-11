@@ -14,9 +14,12 @@ import {
   SOURCES,
   formatDate,
 } from "@/lib/energy";
+import { HOURS_PER_NIGHT, LIGHT_PRESETS, SEASON_DAYS, stringWatts } from "@/lib/holiday";
 import { JsonLd, pageMetadata, url } from "@/lib/seo";
 
 const PATH = "/methodology";
+const light = (id: string) => LIGHT_PRESETS.find((p) => p.id === id)!;
+const ledC9 = light("led-c9");
 export const metadata: Metadata = pageMetadata({
   title: "Methodology: How We Calculate Our Energy Figures",
   description:
@@ -76,6 +79,15 @@ export default function MethodologyPage() {
           </li>
           <li>
             <strong>Gasoline car comparison:</strong> {NATIONAL.gasMpg} mpg. {SOURCES.gasMpg.note}
+          </li>
+          <li>
+            <strong>Holiday lights and space heaters:</strong> the same state electricity prices, times the watts and hours stated on
+            each page. Bulb wattages: LED mini {light("led-mini").wattsPerBulb} W, incandescent mini {light("inc-mini").wattsPerBulb} W,
+            incandescent C9 {light("inc-c9").wattsPerBulb} W (Entergy); LED C9 {stringWatts(ledC9).toFixed(1)} W per {ledC9.bulbs}-bulb
+            string (US Department of Energy figure, as reported by The Day, and the label on current LED C9 sets). Season:{" "}
+            {HOURS_PER_NIGHT} hours a night for {SEASON_DAYS} nights. See{" "}
+            <Link href="/christmas-lights-cost" className="underline">Christmas lights cost</Link> and{" "}
+            <Link href="/space-heater-cost" className="underline">space heater cost</Link>.
           </li>
         </ul>
       </Section>

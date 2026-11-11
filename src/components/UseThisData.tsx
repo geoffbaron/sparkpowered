@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { url } from "@/lib/seo";
 
 /**
@@ -5,7 +6,7 @@ import { url } from "@/lib/seo";
  * download and a ready-made credit line. Reporters and bloggers who reuse the
  * numbers are the site's best source of links.
  */
-export function UseThisData({ path, title, csv }: { path: string; title: string; csv: string }) {
+export function UseThisData({ path, title, csv, children }: { path: string; title: string; csv: string; children?: ReactNode }) {
   const credit = `<a href="${url(path)}">${title}, Spark Powered</a>`;
   return (
     <aside className="mt-10 rounded-2xl border border-black/10 bg-surface p-5 sm:p-6" data-testid="use-this-data">
@@ -26,6 +27,7 @@ export function UseThisData({ path, title, csv }: { path: string; title: string;
           className="mt-1 block w-full rounded-lg border border-black/20 bg-white px-3 py-2 font-mono text-xs"
         />
       </label>
+      {children}
     </aside>
   );
 }

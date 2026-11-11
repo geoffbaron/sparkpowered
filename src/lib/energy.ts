@@ -57,6 +57,8 @@ export interface Source {
   ytdLabel?: string;
   ytdPrevLabel?: string;
   monthLabel?: string;
+  /** Release date of the source issue (YYYY-MM-DD), where the publisher states one. */
+  released?: string;
 }
 
 interface EnergyData {

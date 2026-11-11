@@ -8,7 +8,7 @@
  */
 
 import home from "@/data/home-energy.json";
-import { STATES } from "@/lib/energy";
+import { NATIONAL, STATES, type StateEnergy, ytdWindow } from "@/lib/energy";
 import { ASSUMPTIONS, MMBTU_PER_MCF } from "@/lib/go-electric";
 
 /** Heat in one kWh of electricity, in MMBtu. */
@@ -25,7 +25,11 @@ export interface LightPreset {
  * Per-bulb wattages: incandescent mini 0.4 W, C7/C9 incandescent 5 to 7 W,
  * LED mini 0.07 W (Entergy, "Lighting the holidays: an energy cost
  * comparison"). LED C9: 2.4 W for a 25-bulb string (US DOE figure as reported
- * by The Day, New London).
+ * by The Day, New London). Checked against current product labels on
+ * 2026-11-11: Christmas Lite Co 25-bulb LED C9 set, 2.4 W (1000Bulbs.com);
+ * PartyLights LED C9 25-light set, "2.4W per string"; Super Bright LEDs
+ * 17 ft 25-bulb LED C9 string, 2.1 W. Screw-in LED C9
+ * replacement bulbs draw more; see LED_C9_REPLACEMENT_W.
  */
 export const LIGHT_PRESETS: LightPreset[] = [
   { id: "led-mini", label: "LED mini lights, 100 bulbs", bulbs: 100, wattsPerBulb: 0.07 },
@@ -35,6 +39,25 @@ export const LIGHT_PRESETS: LightPreset[] = [
 ];
 
 export const stringWatts = (p: LightPreset) => p.bulbs * p.wattsPerBulb;
+
+/**
+ * Screw-in LED C9 replacement bulbs (for an old C9 cord) are brighter and draw
+ * more than a sealed LED C9 set: 0.75 W a bulb on the label of Christmas.com's
+ * 25-pack of warm white C9 E17 LED bulbs, checked 2026-11-11.
+ */
+/** Date the LED C9 product labels below were read. */
+export const LED_C9_CHECKED = "2026-11-11";
+export const LED_C9_REPLACEMENT_W = 0.75;
+export const LED_C9_REPLACEMENT_SOURCE = {
+  name: "Christmas.com, 25-pack C9 LED replacement bulbs, warm white (0.75 W a bulb on the label)",
+  url: "https://christmas.com/25-pack-c9-led-outdoor-christmas-replacement-bulbs-warm-white-c9-e17-base",
+};
+
+/** Current LED C9 set labels behind the 2.4 W string figure. */
+export const LED_C9_LABEL_SOURCES = [
+  { name: "Christmas Lite Co 25-bulb LED C9 set, 2.4 W (1000Bulbs.com listing)", url: "https://1000bulbs.com/product/200216/CMS-25C9-8GWWDLX.html" },
+  { name: "PartyLights LED C9 25-light set, 2.4 W per string", url: "https://partylights.com/led-c9-25-lightset-warmwhite" },
+];
 
 /** Season defaults: Thanksgiving weekend to Epiphany, dusk to bedtime. */
 export const SEASON_DAYS = 40;
@@ -75,14 +98,70 @@ export const DISPLAY_STRINGS = 10;
 
 const presetById = (id: string) => LIGHT_PRESETS.find((p) => p.id === id)!;
 
+/** Watts of the example display: LED and old-style mini lights. */
+export const displayWatts = () => ({
+  led: DISPLAY_STRINGS * stringWatts(presetById("led-mini")),
+  old: DISPLAY_STRINGS * stringWatts(presetById("inc-mini")),
+});
+
+/**
+ * Percent change in the average residential price, this year to date against
+ * the same months last year. The display's running cost changes by the same
+ * percent, since watts and hours are fixed.
+ */
+export function priceChangePct(current: number, previous: number) {
+  return (current / previous - 1) * 100;
+}
+
+export const stateChangePct = (s: StateEnergy) =>
+  priceChangePct(s.electricity.residentialCentsPerKwhYtd, s.electricity.residentialCentsPerKwhYtdPrevYear);
+
+/** Whole-percent change with a sign: "+15%", "-9%", "0%". */
+export function formatChangePct(pct: number) {
+  const r = Math.round(pct);
+  return r === 0 ? "0%" : `${r > 0 ? "+" : "-"}${Math.abs(r)}%`;
+}
+
+/** "January to August 2026": the EIA year-to-date window in words. */
+export const ytdWindowWords = () => ytdWindow().replace("–", " to ");
+
 /** Season cost of the example display in every state, most expensive first. */
 export function lightsByState() {
-  const ledW = DISPLAY_STRINGS * stringWatts(presetById("led-mini"));
-  const oldW = DISPLAY_STRINGS * stringWatts(presetById("inc-mini"));
+  const w = displayWatts();
   return STATES.map((s) => {
     const c = s.electricity.residentialCentsPerKwhYtd;
-    return { s, c, led: lightsCost(ledW, c).usd, old: lightsCost(oldW, c).usd };
+    return { s, c, led: lightsCost(w.led, c).usd, old: lightsCost(w.old, c).usd, pct: stateChangePct(s) };
   }).sort((a, b) => b.c - a.c);
+}
+
+/**
+ * The dated headline numbers for the Christmas lights page, all computed from
+ * the state data so they follow every price refresh.
+ */
+export function lightsKeyFindings() {
+  const rows = lightsByState();
+  const w = displayWatts();
+  const us = NATIONAL.residentialCentsPerKwhYtd;
+  const priciest = rows[0];
+  const cheapest = rows[rows.length - 1];
+  const byChange = [...rows].sort((a, b) => b.pct - a.pct);
+  const biggestRises = byChange.filter((r) => Math.round(r.pct) > 0).slice(0, 3);
+  const last = byChange[byChange.length - 1];
+  const largestDrop = Math.round(last.pct) < 0 ? last : null;
+  const c9Old = lightsCost(stringWatts(presetById("inc-c9")), us).usd;
+  return {
+    usCents: us,
+    usLed: lightsCost(w.led, us).usd,
+    usOld: lightsCost(w.old, us).usd,
+    usChangePct: priceChangePct(us, NATIONAL.residentialCentsPerKwhYtdPrevYear),
+    priciest,
+    cheapest,
+    /** An LED display in the priciest state costs less than old-style bulbs in the cheapest. */
+    bulbBeatsState: priciest.led < cheapest.old,
+    biggestRises,
+    largestDrop,
+    c9OldString: c9Old,
+  };
 }
 
 /** Space heater cost per hour in every state, with the same heat from a furnace and a heat pump. Most expensive first. */

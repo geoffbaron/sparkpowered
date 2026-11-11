@@ -4,8 +4,23 @@ import HolidayLightsCalc from "@/components/HolidayLightsCalc";
 import { HubHero, PhotoCredit } from "@/components/ui";
 import { QuickAnswer } from "@/components/guide-ui";
 import { Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
-import { DATA_UPDATED, NATIONAL, SOURCES, STATES, cents, formatDate, usd, ytdWindow } from "@/lib/energy";
-import { DISPLAY_STRINGS, HOURS_PER_NIGHT, LIGHT_PRESETS, SEASON_DAYS, lightsByState, lightsCost, stringWatts } from "@/lib/holiday";
+import { DATA_UPDATED, NATIONAL, SOURCES, STATES, cents, formatDate, num, usd, ytdWindow } from "@/lib/energy";
+import {
+  DISPLAY_STRINGS,
+  HOURS_PER_NIGHT,
+  LED_C9_CHECKED,
+  LED_C9_LABEL_SOURCES,
+  LED_C9_REPLACEMENT_SOURCE,
+  LED_C9_REPLACEMENT_W,
+  LIGHT_PRESETS,
+  SEASON_DAYS,
+  formatChangePct,
+  lightsByState,
+  lightsCost,
+  lightsKeyFindings,
+  stringWatts,
+  ytdWindowWords,
+} from "@/lib/holiday";
 import { UseThisData } from "@/components/UseThisData";
 import { JsonLd, pageMetadata, url } from "@/lib/seo";
 
@@ -30,6 +45,15 @@ export default function ChristmasLightsCostPage() {
   const usLed = lightsCost(ledW, us).usd;
   const usOld = lightsCost(oldW, us).usd;
   const usBig = lightsCost(BIG_W, us);
+  const kf = lightsKeyFindings();
+  const dc = rows.some((r) => r.s.abbr === "DC");
+  const coverage = dc ? `${rows.length - 1} states and DC` : `${rows.length} states`;
+  const ytdWords = ytdWindowWords();
+  const released = SOURCES.electricityPrice.released;
+  const season = DATA_UPDATED.slice(0, 4);
+  const pctWord = (p: number) => `${Math.abs(Math.round(p))}%`;
+  const ledC9 = stringWatts(preset("led-c9"));
+  const ledC9Replacement = preset("led-c9").bulbs * LED_C9_REPLACEMENT_W;
   const props = {
     states: STATES.map((s) => ({ abbr: s.abbr, name: s.name, cents: s.electricity.residentialCentsPerKwhYtd })),
     usCents: us,
@@ -50,7 +74,7 @@ export default function ChristmasLightsCostPage() {
     },
     {
       q: "Are LED Christmas lights worth it?",
-      a: `On running cost alone, they pay off quickly for big old-style bulbs: a 25-bulb string of incandescent C9s draws about ${Math.round(stringWatts(preset("inc-c9")))} watts, against about ${stringWatts(preset("led-c9")).toFixed(1)} watts for LED C9s. LEDs also run cool to the touch and you can connect far more strings end to end on one outlet.`,
+      a: `On running cost alone, they pay off quickly for big old-style bulbs: a 25-bulb string of incandescent C9s draws about ${Math.round(stringWatts(preset("inc-c9")))} watts, against about ${ledC9.toFixed(1)} watts for a sealed LED C9 set. Screw-in LED replacement bulbs for an old C9 cord draw more, about ${num(ledC9Replacement)} watts for 25, still a small fraction. LEDs also run cool to the touch and you can connect far more strings end to end on one outlet.`,
     },
     {
       q: "What does a giant display like the one in the movies cost?",
@@ -96,6 +120,70 @@ export default function ChristmasLightsCostPage() {
           Electricity prices updated <time dateTime={DATA_UPDATED}>{formatDate(DATA_UPDATED)}</time> ·{" "}
           <Link href="/methodology" className="underline underline-offset-2 hover:text-spark-orange">How we calculate this</Link>
         </p>
+        <section id="key-findings" aria-labelledby="key-findings-title" className="mb-8 rounded-2xl border border-black/10 bg-surface p-5 sm:p-6" data-testid="key-findings">
+          <h2 id="key-findings-title" className="text-xl font-extrabold text-ink">
+            Key findings, holiday season {season}{" "}
+            <span className="text-sm font-normal text-muted">
+              (updated <time dateTime={DATA_UPDATED}>{formatDate(DATA_UPDATED)}</time>)
+            </span>
+          </h2>
+          <ul className="mt-3 list-disc pl-5 space-y-2 text-stone-700 leading-relaxed max-w-3xl">
+            <li>
+              A 1,000-bulb display of LED mini lights costs about <strong>{usd(kf.usLed, 2)}</strong> to run for the whole season at the US
+              average electricity price. The same display in old-style bulbs costs about <strong>{usd(kf.usOld, 2)}</strong>.
+            </li>
+            <li>
+              <strong>{kf.priciest.s.name}</strong> pays the most: <strong>{usd(kf.priciest.old, 2)}</strong> a season for old-style bulbs,{" "}
+              <strong>{usd(kf.priciest.led, 2)}</strong> for LEDs. <strong>{kf.cheapest.s.name}</strong> pays the least:{" "}
+              <strong>{usd(kf.cheapest.old, 2)}</strong> and <strong>{usd(kf.cheapest.led, 2)}</strong>.
+            </li>
+            {kf.bulbBeatsState && (
+              <li>
+                An LED display in {kf.priciest.s.name} costs less to run than an old-style display in {kf.cheapest.s.name}. The bulbs
+                matter more than the state.
+              </li>
+            )}
+            <li>
+              Running the same display costs{" "}
+              {Math.round(kf.usChangePct) === 0 ? (
+                <>about the same as last year</>
+              ) : (
+                <>
+                  about <strong>{pctWord(kf.usChangePct)} {kf.usChangePct > 0 ? "more" : "less"}</strong> than last year
+                </>
+              )}{" "}
+              at the US average.
+              {kf.biggestRises.length > 0 && (
+                <>
+                  {" "}The biggest increases:{" "}
+                  {kf.biggestRises.map((r, i) => (
+                    <span key={r.s.abbr}>
+                      {i > 0 && (i === kf.biggestRises.length - 1 ? " and " : ", ")}
+                      <strong>{r.s.name} ({formatChangePct(r.pct)})</strong>
+                    </span>
+                  ))}
+                  .
+                </>
+              )}
+              {kf.largestDrop && (
+                <>
+                  {" "}The largest drop: {kf.largestDrop.s.name}, down {pctWord(kf.largestDrop.pct)}.
+                </>
+              )}
+            </li>
+            {kf.c9OldString > kf.usLed && (
+              <li>
+                One 25-bulb string of old-style C9 bulbs costs about <strong>{usd(kf.c9OldString, 2)}</strong> a season, more than a whole
+                1,000-bulb LED display.
+              </li>
+            )}
+          </ul>
+          <p className="mt-3 text-sm text-muted max-w-3xl">
+            Assumptions: {HOURS_PER_NIGHT} hours a night for {SEASON_DAYS} nights. Prices: each state&apos;s average residential price,{" "}
+            {ytdWords}, from the US Energy Information Administration.{" "}
+            <a href="#how" className="underline underline-offset-2 hover:text-spark-orange">How we calculate this</a>
+          </p>
+        </section>
         <QuickAnswer>
           <p>
             LED lights cost pennies a night. Old-style incandescent bulbs, especially the big C7 and C9 kind, are where the money goes:
@@ -119,6 +207,11 @@ export default function ChristmasLightsCostPage() {
               {((oldW * 6) / 1000).toFixed(1)} kWh. At {cents(us)} per kWh that is {usd((oldW * 6 * us) / 100000, 2)} a night, or{" "}
               {usd(usOld, 2)} over {SEASON_DAYS} nights.
             </p>
+            <p>
+              These are average prices paid so far in {season}, including fixed charges spread over each kilowatt-hour. Some utilities,
+              mostly in the Northeast, raised winter supply rates this fall, so a December bill there can run higher than this average.
+              Your bill shows your own price per kWh.
+            </p>
             <Callout>
               Bulb wattages vary by brand. The exact figure is printed on the box or the tag near the plug; put it in the &quot;anything
               else&quot; box for the most accurate answer.
@@ -128,7 +221,8 @@ export default function ChristmasLightsCostPage() {
 
         <Section title="Christmas lights cost in every state" id="by-state">
           <p className="text-stone-700 max-w-3xl mb-4">
-            A 1,000-bulb display of mini lights, {HOURS_PER_NIGHT} hours a night for {SEASON_DAYS} nights. Most expensive first.
+            A 1,000-bulb display of mini lights, {HOURS_PER_NIGHT} hours a night for {SEASON_DAYS} nights, at each state&apos;s average home
+            electricity price for {ytdWords} (EIA). Most expensive first. {coverage}.
           </p>
           <div className="overflow-x-auto rounded-xl border border-black/8 bg-surface">
             <table className="w-full text-sm">
@@ -140,10 +234,11 @@ export default function ChristmasLightsCostPage() {
                   <th scope="col" className="p-3 font-semibold text-right">¢/kWh</th>
                   <th scope="col" className="p-3 font-semibold text-right">LED season</th>
                   <th scope="col" className="p-3 font-semibold text-right">Old-style season</th>
+                  <th scope="col" className="p-3 font-semibold text-right">vs last year</th>
                 </tr>
               </thead>
               <tbody>
-                {rows.map(({ s, c, led, old }, i) => (
+                {rows.map(({ s, c, led, old, pct }, i) => (
                   <tr key={s.abbr} className="border-t border-black/6">
                     <td className="p-3 text-muted tabular-nums">{i + 1}</td>
                     <th scope="row" className="p-3 font-medium">
@@ -152,11 +247,19 @@ export default function ChristmasLightsCostPage() {
                     <td className="p-3 text-right tabular-nums">{c.toFixed(1)}</td>
                     <td className="p-3 text-right tabular-nums">{usd(led, 2)}</td>
                     <td className="p-3 text-right tabular-nums">{usd(old, 2)}</td>
+                    <td className="p-3 text-right tabular-nums">{formatChangePct(pct)}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
+          <p className="mt-3 text-xs text-muted max-w-3xl" data-testid="how-to-cite">
+            How to cite: Spark Powered, &quot;Christmas lights cost by state, {season},&quot; sparkpowered.com/christmas-lights-cost, using US
+            Energy Information Administration average residential electricity prices for {ytdWords} (Electric Power Monthly
+            {released ? <>, released {formatDate(released)}</> : null}). Display: {(DISPLAY_STRINGS * preset("led-mini").bulbs).toLocaleString("en-US")} mini bulbs,{" "}
+            {HOURS_PER_NIGHT} hours a night for {SEASON_DAYS} nights. LED mini {preset("led-mini").wattsPerBulb} W a bulb, incandescent mini{" "}
+            {preset("inc-mini").wattsPerBulb} W, incandescent C9 {preset("inc-c9").wattsPerBulb} W.
+          </p>
         </Section>
 
         <Section title="Five ways to cut the cost" id="tips">
@@ -169,7 +272,13 @@ export default function ChristmasLightsCostPage() {
           </ul>
         </Section>
 
-        <UseThisData path={PATH} title="Christmas lights cost by state" csv={`${PATH}/data.csv`} />
+        <UseThisData path={PATH} title="Christmas lights cost by state" csv={`${PATH}/data.csv`}>
+          <p className="mt-4 text-sm text-stone-700 max-w-3xl" data-testid="press-contact">
+            <strong>For reporters:</strong> Geoff Baron, editor. Email{" "}
+            <a className="underline" href="mailto:geoff@mylastlap.com">geoff@mylastlap.com</a>. I can run numbers for your state, a
+            different display size or a local utility&apos;s rate, usually the same day.
+          </p>
+        </UseThisData>
 
         <Faq items={faqs} path={PATH} />
         <Disclaimer />
@@ -178,6 +287,8 @@ export default function ChristmasLightsCostPage() {
             { name: SOURCES.electricityPrice.name, url: SOURCES.electricityPrice.url, detail: SOURCES.electricityPrice.period },
             { name: "Entergy, Lighting the holidays: an energy cost comparison (bulb wattages)", url: "https://www.entergy.com/blog/lighting-the-holidays-an-energy-cost-comparison" },
             { name: "The Day (New London), What your Christmas lights will do to your electricity bill (LED C9 string wattage, citing US DOE)", url: "https://www.theday.com/?p=85128" },
+            ...LED_C9_LABEL_SOURCES.map((x) => ({ ...x, detail: `LED C9 label, checked ${formatDate(LED_C9_CHECKED)}` })),
+            { ...LED_C9_REPLACEMENT_SOURCE, detail: `checked ${formatDate(LED_C9_CHECKED)}` },
           ]}
         />
         <RelatedLinks

@@ -138,7 +138,7 @@ export const ROUTES: { path: string; lastModified: string }[] = [
   { path: "/incentives", lastModified: CONTENT_UPDATED },
   { path: "/myths", lastModified: "2026-11-06" },
   { path: "/solartopia", lastModified: "2026-10-22" },
-  { path: "/christmas-lights-cost", lastModified: "2026-10-23" },
+  { path: "/christmas-lights-cost", lastModified: "2026-11-11" },
   { path: "/space-heater-cost", lastModified: "2026-10-23" },
   { path: "/questions", lastModified: QUESTIONS_UPDATED },
   { path: "/questions/home-solar", lastModified: "2026-11-11" },
@@ -162,6 +162,27 @@ export const ROUTES: { path: string; lastModified: string }[] = [
   { path: "/disclaimer", lastModified: CONTENT_UPDATED },
   { path: "/privacy", lastModified: CONTENT_UPDATED },
 ];
+
+/**
+ * Pages that print state electricity prices or show DATA_UPDATED. Their
+ * sitemap date is the later of the content date above and the data date, so
+ * a price refresh moves lastmod without editing ROUTES (sitemap.ts).
+ */
+export const DATA_ROUTES = new Set([
+  "/",
+  "/go-electric",
+  "/ev-charging-cost",
+  "/solar-calculator",
+  "/solar-finder",
+  "/states",
+  "/methodology",
+  "/christmas-lights-cost",
+  "/space-heater-cost",
+  "/off-grid-solar-calculator",
+  "/off-grid-cabin-solar-kit",
+  "/how-to-go-off-grid",
+  "/power-outage-backup-calculator",
+]);
 
 /**
  * Renders a JSON-LD block. Structured data is how answer engines quote a page

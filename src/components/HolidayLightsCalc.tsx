@@ -73,7 +73,7 @@ export default function HolidayLightsCalc({
             {LIGHT_PRESETS.map((p) => (
               <li key={p.id} className="flex items-center justify-between gap-3">
                 <span>
-                  {p.label} <span className="text-muted">({stringWatts(p).toFixed(stringWatts(p) < 10 ? 1 : 0)} W each)</span>
+                  {p.label} <span className="text-muted">({stringWatts(p).toFixed(stringWatts(p) < 10 ? 1 : 0)} W per string)</span>
                 </span>
                 <input
                   type="number"

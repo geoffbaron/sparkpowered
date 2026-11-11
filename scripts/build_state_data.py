@@ -38,6 +38,7 @@ UA = {"User-Agent": "Mozilla/5.0 (SparkPowered data build; +https://sparkpowered
 URLS = {
     "eia_price_month": "https://www.eia.gov/electricity/monthly/xls/table_5_06_a.xlsx",
     "eia_price_ytd": "https://www.eia.gov/electricity/monthly/xls/table_5_06_b.xlsx",
+    "eia_epm_page": "https://www.eia.gov/electricity/monthly/",
     "eia_bill": "https://www.eia.gov/electricity/sales_revenue_price/xls/table_5A.xlsx",
     "eia_gas": "https://www.eia.gov/dnav/pet/xls/PET_PRI_GND_A_EPMR_PTE_DPGAL_W.xls",
     "afdc_states": "https://afdc.energy.gov/stations/states",
@@ -110,6 +111,15 @@ def eia_state_rows(path):
     return title, header, data
 
 
+def epm_release_date(path):
+    """Release date of the Electric Power Monthly issue on EIA's landing page, as YYYY-MM-DD."""
+    s = open(path, encoding="utf-8", errors="replace").read()
+    m = re.search(r'Release Date:</span>\s*<span class="date">\s*([A-Z][a-z]+ \d{1,2}, \d{4})', s)
+    if not m:
+        raise SystemExit("EIA Electric Power Monthly release date not found")
+    return dt.datetime.strptime(m.group(1), "%B %d, %Y").date().isoformat()
+
+
 def parse_afdc(path):
     s = open(path, encoding="utf-8").read()
     t = html.unescape(re.sub(r"\s+", " ", re.sub(r"<[^>]+>", "|", s)))
@@ -143,6 +153,7 @@ def main():
     t_m, h_m, month = eia_state_rows(fetch("eia_price_month", cached))
     t_y, h_y, ytd = eia_state_rows(fetch("eia_price_ytd", cached))
     month_label, ytd_label, ytd_prev_label = h_m[1], h_y[1], h_y[2]
+    epm_released = epm_release_date(fetch("eia_epm_page", cached))
 
     # ── Usage and bills ──
     wb = openpyxl.load_workbook(fetch("eia_bill", cached), data_only=True)
@@ -240,6 +251,7 @@ def main():
                 "url": "https://www.eia.gov/electricity/monthly/",
                 "period": f"{ytd_label} (year to date); latest month {month_label}",
                 "ytdLabel": ytd_label, "ytdPrevLabel": ytd_prev_label, "monthLabel": month_label,
+                "released": epm_released,
                 "note": "Average revenue per kWh across all residential customers, including fixed charges spread over usage. Preliminary estimates.",
                 "retrieved": today,
             },
