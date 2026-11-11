@@ -3,7 +3,8 @@ import { AffiliateDisclosure, PartnerLink } from "@/components/affiliate";
 import { Breadcrumbs, Callout, Disclaimer, RelatedLinks } from "@/components/content";
 import { QuickAnswer } from "@/components/guide-ui";
 import { RedodoDeal } from "@/components/RedodoDeal";
-import { TOPICS, questionPath, type Block, type Question, type Topic } from "@/data/questions";
+import LocalStateLinks from "@/components/LocalStateLinks";
+import { TOPICS, topicIsStateBound, type Block, type Question, type Topic } from "@/data/questions";
 import { formatDate } from "@/lib/energy";
 import { JsonLd, QUESTIONS_UPDATED, QUESTIONS_UPDATED_AT, url } from "@/lib/seo";
 
@@ -68,9 +69,8 @@ export function ToolLink({ href, label }: { href: string; label: string }) {
 }
 
 /**
- * Everything under a question's heading: short answer, detail, partner picks,
- * tools and sources. Shared by the hub and the single-question page so the two
- * always show the same fact-checked text, links and rel attributes.
+ * Everything under a question's heading on its hub: short answer, detail, worked
+ * example, partner picks, tools and sources.
  */
 export function QuestionAnswer({ q, redodo }: { q: Question; redodo: boolean }) {
   const redodoPick = q.picks?.find((p) => p.brand === "redodo");
@@ -206,13 +206,15 @@ export default function QuestionHub({ topic }: { topic: Topic }) {
       {topic.questions.map((q) => (
         <section key={q.id} aria-labelledby={q.id} className="mt-12">
           <h2 id={q.id} className="text-2xl font-bold mb-4 scroll-mt-24">
-            <Link href={questionPath(topic, q)} className="hover:text-spark-orange">
+            <a href={`#${q.id}`} className="hover:text-spark-orange">
               {q.q}
-            </Link>
+            </a>
           </h2>
           <QuestionAnswer q={q} redodo={q.id === redodoQ} />
         </section>
       ))}
+
+      {topicIsStateBound(topic) && <LocalStateLinks />}
 
       <section aria-labelledby="more-questions" className="mt-14">
         <h2 id="more-questions" className="text-xl font-bold mb-3">

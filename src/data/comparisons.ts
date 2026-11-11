@@ -125,19 +125,8 @@ export const COMPARISONS: Comparison[] = [
     chooseB: "Choose the Jackery Explorer 2000 v2 if you want the lighter unit with a published cycle rating.",
     updated: "2026-11-06",
   },
-  {
-    slug: "ecoflow-delta-pro-3-vs-anker-solix-f3800-plus",
-    title: "EcoFlow DELTA Pro 3 vs Anker SOLIX F3800 Plus",
-    description: "The two leading 120/240 V home-backup power stations compared: capacity, output, solar, expansion and price.",
-    pairs: [["ecoflow-delta-pro-3", "anker-solix-f3800-plus"]],
-    intro:
-      "Both are wheeled, 120/240-volt power stations meant to back up home circuits through a transfer switch or smart panel, run well pumps, and charge from large solar arrays.",
-    verdict:
-      "The Anker SOLIX F3800 Plus gives more of almost everything for about $200 less ($2,599.99 vs $2,799 when we checked; the Anker was sold out on its US site on Nov 6 2026): 3.84 kWh vs 4.1 kWh is the only spec where EcoFlow leads, while Anker has 6,000 W vs 4,000 W output, 3,200 W vs 2,600 W solar input, and expands to 26.9 kWh per unit vs 12.3 kWh. The EcoFlow is lighter (113.5 vs 136.7 lb), switches over faster (10 vs 20 ms), and quotes 4,000 cycles to 80% against Anker's 3,000+.",
-    chooseA: "Choose the EcoFlow DELTA Pro 3 for slightly more base capacity, a higher cycle rating, lower weight and faster UPS switchover.",
-    chooseB: "Choose the Anker SOLIX F3800 Plus for more power, more solar input and far more room to expand.",
-    updated: "2026-11-06",
-  },
+  // ecoflow-delta-pro-3-vs-anker-solix-f3800-plus folded 2026-11-11: both units sold out, and the same pair is
+  // the 120/240 V size class on anker-solix-vs-ecoflow, which it now 308s to (next.config.ts).
   {
     slug: "anker-solix-f3800-plus-vs-jackery-explorer-5000-plus",
     title: "Anker SOLIX F3800 Plus vs Jackery Explorer 5000 Plus",

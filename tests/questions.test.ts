@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { ALL_QUESTIONS, TOPICS } from "../src/data/questions";
+import { ALL_QUESTIONS, TOPICS, questionPath } from "../src/data/questions";
 import { ROUTES } from "../src/lib/seo";
 
 const all = TOPICS.flatMap((t) => t.questions.map((q) => ({ t, q })));
@@ -40,30 +40,42 @@ test("short answers are 2 to 5 sentences", () => {
   }
 });
 
-test("every question has its own page in the sitemap, with a short description and a guide link", async () => {
-  const { ALL_QUESTIONS, questionPath, questionDescription, guideFor } = await import("../src/data/questions");
+test("the old single-answer pages are gone from the sitemap; the hubs stay", async () => {
   const { default: sitemap } = await import("../src/app/sitemap");
   const urls = new Set(sitemap().map((e) => new URL(e.url).pathname));
-  const paths = new Set<string>();
   for (const { topic, question } of ALL_QUESTIONS) {
-    const p = questionPath(topic, question);
-    assert.ok(!paths.has(p), `duplicate page ${p}`);
-    paths.add(p);
-    assert.ok(urls.has(p), `${p} missing from sitemap`);
-    const d = questionDescription(question);
-    assert.ok(d.length > 40 && d.length <= 155, `${p}: description is ${d.length} chars`);
-    assert.match(guideFor(topic, question).href, /^\//, `${p}: guide link is not on site`);
+    assert.ok(!urls.has(`${topic.path}/${question.id}`), `${topic.path}/${question.id} still in sitemap`);
+    assert.equal(questionPath(topic, question), `${topic.path}#${question.id}`);
   }
-  assert.equal(paths.size, all.length);
+  for (const t of TOPICS) assert.ok(urls.has(t.path), `${t.path} missing from sitemap`);
+  assert.ok(![...urls].some((u) => /^\/questions\/[^/]+\/[^/]+/.test(u)), "a single-answer URL is still listed");
 });
 
-test("llms.txt lists every question page", async () => {
+test("every old question URL 308s to its hub anchor", async () => {
+  const { default: config } = await import("../next.config");
+  const rules = await config.redirects!();
+  const rule = rules.find((r) => r.source.startsWith("/questions/"));
+  assert.ok(rule, "no /questions redirect");
+  assert.equal(rule.permanent, true);
+  // Compile the Next source pattern: ":topic(a|b)" -> "(a|b)", ":question" -> "([^/]+)".
+  const re = new RegExp(`^${rule.source.replace(/:topic(\([^)]*\))/, "$1").replace(":question", "([^/]+)")}$`);
+  for (const { topic, question } of ALL_QUESTIONS) {
+    const m = `${topic.path}/${question.id}`.match(re);
+    assert.ok(m, `${topic.path}/${question.id} not redirected`);
+    const dest = rule.destination.replace(":topic", m[1]).replace(":question", m[2]);
+    assert.equal(dest, `${topic.path}#${question.id}`);
+  }
+  // Hub pages themselves must not match.
+  for (const t of TOPICS) assert.ok(!re.test(t.path), `${t.path} would redirect`);
+  assert.equal(ALL_QUESTIONS.length, 34);
+});
+
+test("llms.txt links every answer at its hub anchor and no single-answer URL", async () => {
   const { readFileSync } = await import("node:fs");
-  const { ALL_QUESTIONS, questionPath } = await import("../src/data/questions");
   const llms = readFileSync("public/llms.txt", "utf8");
   for (const { topic, question } of ALL_QUESTIONS) {
-    const p = `https://sparkpowered.com${questionPath(topic, question)})`;
-    assert.ok(llms.includes(p), `${p} missing from llms.txt`);
+    assert.ok(llms.includes(`https://sparkpowered.com${topic.path}#${question.id})`), `${question.id} missing from llms.txt`);
+    assert.ok(!llms.includes(`https://sparkpowered.com${topic.path}/${question.id}`), `${question.id} old URL in llms.txt`);
   }
 });
 

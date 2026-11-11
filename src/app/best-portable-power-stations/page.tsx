@@ -243,6 +243,9 @@ export default function BestPowerStationsPage() {
           { href: "/lithium-rv-battery", label: "Lithium RV and boat batteries", desc: "Swap lead-acid for lithium: savings and sizes" },
           { href: "/best-power-station-for-cpap", label: "Power station for CPAP", desc: "Nights of CPAP per dollar" },
           { href: "/power-station-for-refrigerator", label: "Power station for a fridge", desc: "Hours of fridge each one gives" },
+          { href: "/generator-runtime-calculator", label: "Generator runtime calculator", desc: "Fuel to store if you go gas instead" },
+          { href: "/off-grid-solar-calculator", label: "Off-grid solar calculator", desc: "Panels and battery for a cabin with no grid" },
+          { href: "/emergency-kit-checklist", label: "Emergency kit checklist", desc: "What else goes in an outage kit" },
         ]}
       />
       <PhotoCredit name="power-station" />

@@ -169,7 +169,7 @@ test("knowledge pack is built from the site's pages and data", () => {
   assert.match(KNOWLEDGE_PACK, /25D\): Not allowed for expenditures made after 31 December 2025/);
   assert.match(KNOWLEDGE_PACK, /25C\): Not allowed for property placed in service after 31 December 2025/);
   // Question answers, state data, calculators, the site index.
-  assert.match(KNOWLEDGE_PACK, /Page: \/questions\/costs-and-incentives\/ev-charger-tax-credit-2026/);
+  assert.match(KNOWLEDGE_PACK, /Page: \/questions\/costs-and-incentives#ev-charger-tax-credit-2026/);
   assert.match(KNOWLEDGE_PACK, /Texas \| \/states\/texas \| \d/);
   assert.match(KNOWLEDGE_PACK, /\/solar-calculator/);
   assert.match(KNOWLEDGE_PACK, /# SITE INDEX/);

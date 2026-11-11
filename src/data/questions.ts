@@ -282,6 +282,9 @@ export const TOPICS: Topic[] = [
       { href: "/plug-in-solar", label: "Plug-in solar guide", desc: "Balcony kits, state laws and what they produce." },
       { href: "/solar-finder", label: "Solar Finder", desc: "Compare installers near you." },
       { href: "/home-battery-backup", label: "Home battery backup", desc: "Batteries for outages, sized and priced." },
+      { href: "/off-grid-solar-calculator", label: "Off-grid solar calculator", desc: "Panels and battery for a home or cabin with no grid." },
+      { href: "/off-grid-cabin-solar-kit", label: "Off-grid cabin solar kit", desc: "Kit sizes for weekend to full-time cabins." },
+      { href: "/how-to-go-off-grid", label: "How to go off grid", desc: "Grid extension cost against solar plus battery." },
     ],
     questions: [
       {
@@ -428,6 +431,10 @@ export const TOPICS: Topic[] = [
       { href: "/best-portable-power-stations", label: "Best portable power stations", desc: "Every size, with real run times." },
       { href: "/power-station-for-refrigerator", label: "Power station for a fridge", desc: "Size one for your fridge." },
       { href: "/battery-calculator", label: "Home battery sizer", desc: "How much battery your home needs." },
+      { href: "/generator-runtime-calculator", label: "Generator runtime calculator", desc: "How much fuel to store, and CO safety." },
+      { href: "/emergency-kit-checklist", label: "Emergency kit checklist", desc: "The Ready.gov 72-hour and 2-week list." },
+      { href: "/emergency-water-storage-calculator", label: "Emergency water storage", desc: "Gallons to store for your household." },
+      { href: "/compare/jackery-vs-ecoflow", label: "Jackery vs EcoFlow", desc: "The two big power station brands, size by size." },
     ],
     questions: [
       {
@@ -554,6 +561,7 @@ export const TOPICS: Topic[] = [
       { href: "/best-home-ev-charger", label: "Best home EV charger", desc: "Our picks at every price." },
       { href: "/ev-charger-installation-cost", label: "Charger installation cost", desc: "State averages and what adds to the bill." },
       { href: "/calculator", label: "EV Finder", desc: "Which EV fits how you drive." },
+      { href: "/ev-or-plug-in-hybrid", label: "EV or plug-in hybrid?", desc: "Which one fits your driving and charging." },
     ],
     questions: [
       {
@@ -686,6 +694,9 @@ export const TOPICS: Topic[] = [
       { href: "/best-trolling-motor-battery", label: "Best trolling motor batteries", desc: "Lithium picks for 12, 24 and 36 V." },
       { href: "/electric-outboard-motor", label: "Electric outboard motors", desc: "Range, price and running cost." },
       { href: "/charge-lithium-battery-on-boat", label: "Charging lithium on a boat", desc: "Chargers, alternators and solar." },
+      { href: "/24v-vs-36v-trolling-motor", label: "24V vs 36V trolling motor", desc: "Which voltage fits your boat." },
+      { href: "/kayak-trolling-motor-battery", label: "Kayak trolling motor battery", desc: "Light batteries sized for a kayak motor." },
+      { href: "/fish-finder-battery", label: "Fish finder battery", desc: "Size a battery for your fish finder." },
     ],
     questions: [
       {
@@ -891,11 +902,22 @@ export function topicBySlug(slug: string): Topic {
 
 export const QUESTION_COUNT = TOPICS.reduce((n, t) => n + t.questions.length, 0);
 
-// ---------------------------------------------------------------- single-question pages
+// ---------------------------------------------------------------- answer anchors
 
-/** Each answer also has its own page, at the hub path plus the anchor id. */
+/**
+ * Where an answer lives: its hub plus the anchor id. The old single-answer pages
+ * (/questions/<hub>/<id>) were folded into the hubs on 2026-11-11 and 308 to here.
+ */
 export function questionPath(t: Topic, q: Question): string {
-  return `${t.path}/${q.id}`;
+  return `${t.path}#${q.id}`;
+}
+
+/** Hubs whose answers depend on the state get links to the state pages with checked local details. */
+export function topicIsStateBound(t: Topic): boolean {
+  return (
+    t.slug === "costs-and-incentives" ||
+    t.questions.some((q) => q.tools?.some((x) => x.href.startsWith("/states") || x.href === "/incentives" || x.href.startsWith("/solar-calculator") || x.href.startsWith("/ev-charging-cost")))
+  );
 }
 
 /** Every question with its hub, in hub order. */
@@ -1098,46 +1120,4 @@ export const ALL_QUESTIONS: { topic: Topic; question: Question }[] = TOPICS.flat
   topic.questions.map((question) => ({ topic, question })),
 );
 
-/** The next few questions in the same hub (wrapping round), for "related questions". */
-export function relatedQuestions(t: Topic, q: Question, n = 4): Question[] {
-  const i = t.questions.findIndex((x) => x.id === q.id);
-  const out: Question[] = [];
-  for (let k = 1; k < t.questions.length && out.length < n; k++) out.push(t.questions[(i + k) % t.questions.length]);
-  return out;
-}
 
-/**
- * The existing guide page that fits a question best: the first of its own tool
- * links that is one of the hub's guides, else its first on-site tool link, else
- * the hub's first guide.
- */
-export function guideFor(t: Topic, q: Question): { href: string; label: string; desc?: string } {
-  const own = (q.tools ?? []).filter((x) => x.href.startsWith("/"));
-  for (const x of own) {
-    const g = t.related.find((r) => r.href === x.href);
-    if (g) return g;
-  }
-  return own[0] ?? t.related[0];
-}
-
-/**
- * Meta description from the short answer: as many whole leading sentences as
- * fit in 155 characters; if that is too thin (a one-word "No." opener, say),
- * the short answer cut at a word boundary instead.
- */
-export function questionDescription(q: Question, max = 155): string {
-  if (q.a.length <= max) return q.a;
-  const sentences = q.a.split(/(?<=[.!?])\s+(?=[A-Z0-9])/);
-  let out = "";
-  for (const s of sentences) {
-    const next = out ? `${out} ${s}` : s;
-    if (next.length > max) break;
-    out = next;
-  }
-  if (out.length >= 100) return out;
-  let cut = q.a.slice(0, max);
-  cut = cut.slice(0, cut.lastIndexOf(" "));
-  // Never end inside an unclosed bracket, e.g. "(EIA…".
-  if (cut.lastIndexOf("(") > cut.lastIndexOf(")")) cut = cut.slice(0, cut.lastIndexOf("("));
-  return `${cut.replace(/[\s,;:(\u2013\u2014-]+$/, "")}\u2026`;
-}

@@ -18,7 +18,7 @@ import { COMPARISONS } from "@/data/comparisons";
 import { ENDED_CREDITS } from "@/data/incentives";
 import { MYTHS } from "@/data/myths";
 import { PRODUCTS } from "@/data/products";
-import { ALL_QUESTIONS, TOPICS, questionPath, type Block } from "@/data/questions";
+import { TOPICS, questionPath, type Block } from "@/data/questions";
 import { EIA_LATEST, LOCAL_CHECKED, STATE_LOCAL } from "@/data/state-local";
 import { DATA_UPDATED, NATIONAL, STATES } from "@/lib/energy";
 import { money } from "@/lib/products";
@@ -134,7 +134,7 @@ function buildPages(): Set<string> {
   const pages = new Set<string>(["/ask"]);
   for (const r of ROUTES) pages.add(r.path);
   for (const s of STATES) pages.add(`/states/${s.slug}`);
-  for (const { topic, question } of ALL_QUESTIONS) pages.add(questionPath(topic, question));
+  // Answers live on their hubs (in ROUTES); links to /questions/<hub>#<id> pass through the hub path.
   for (const c of COMPARISONS) pages.add(`/compare/${c.slug}`);
   return pages;
 }
