@@ -536,7 +536,7 @@ const PORTABLE: Product[] = [
     priceUsd: 549.99,
     listPriceUsd: 699.99,
     notes: [
-      "Price is the sale price Anker showed on Nov 6 2026 (regular $699.99). Anker said orders placed after Oct 30 ship from Nov 21.",
+      "Price is the sale price Anker showed on Nov 6 2026 (regular $699.99).",
       "Anker says a full AC recharge takes 49 minutes.",
       "Not expandable; Anker's US page does not state the battery chemistry."
     ]
@@ -566,7 +566,7 @@ const PORTABLE: Product[] = [
     priceUsd: 999.99,
     listPriceUsd: 1199.99,
     notes: [
-      "Price is the sale price Anker showed on Nov 6 2026 (regular $1,199.99). Anker said orders placed on or after Nov 2 ship from Nov 21.",
+      "Price is the sale price Anker showed on Nov 6 2026 (regular $1,199.99).",
       "Doubles to 4 kWh with one BP2000 expansion battery.",
       "Replaces the SOLIX F2000 on Anker's US site."
     ],

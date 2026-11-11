@@ -58,11 +58,11 @@ export default function FridgePage() {
     },
     {
       q: "What size power station do I need for a fridge?",
-      a: `For a fridge through one night, about 1 kWh. To keep it cold for a full day without recharging, about 2.5 to 3 kWh, such as the Bluetti Elite 300 (${money(e300.priceUsd!)}, ${hText(hours(e300.capacityWh))}). Output matters too: the station's continuous watts must cover the fridge (usually a few hundred watts running) and its surge must cover the compressor start, which every 1 kWh-plus model here does.`,
+      a: `For a fridge through one night, about 1 kWh. To keep it cold for a full day without recharging, about 2.5 to 3 kWh, such as the Bluetti Elite 300 (${money(e300.priceUsd!)}, ${hText(hours(e300.capacityWh))}). Output matters too: the station's continuous watts must cover the fridge (usually a few hundred watts running) and its surge must cover the compressor start. A worst-case start (EWEB's generator-sizing figure) is about 2,900 W in all; the Bluetti AC180 and Elite 200 V2 list surge figures for heating-type loads only, so their specs don't confirm they start every fridge. Our what-it-runs pages show each model's limits.`,
     },
     {
       q: "Can a 1000 W power station run a refrigerator?",
-      a: "Usually yes. A kitchen fridge runs at roughly 100 to 200 W while the compressor is on and spikes for a moment at start-up, which a 1,000 W-plus inverter with a surge rating handles. The limit is capacity (watt-hours), not output: a 1 kWh station gives you about half a day.",
+      a: "Usually yes. A kitchen fridge runs at roughly 100 to 200 W while the compressor is on and spikes for a moment at start-up, which a 1,000 W-plus inverter with a motor surge rating handles. The limit is capacity (watt-hours), not output: a 1 kWh station gives you about half a day.",
     },
     {
       q: "Do I have to run the fridge all the time in an outage?",
@@ -226,8 +226,9 @@ export default function FridgePage() {
           <div className="grid gap-3">
             <Callout>
               <strong>&quot;A battery can&apos;t start a fridge compressor.&quot;</strong> It can if the inverter is big enough. A fridge
-              runs at a few hundred watts and spikes briefly when the compressor starts; every station here has at least 1,800 W of
-              continuous output.
+              runs at a few hundred watts and spikes briefly when the compressor starts. Pick a station whose motor surge rating covers that
+              spike: some makers&apos; surge figures (Bluetti&apos;s Power Lifting on the AC180 and Elite 200 V2) apply to heaters and kettles
+              only.
             </Callout>
             <Callout>
               <strong>&quot;You need a gas generator for real outages.&quot;</strong> For the whole house, maybe. For the fridge, Wi-Fi
