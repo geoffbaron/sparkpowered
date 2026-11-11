@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import WhatItRunsLinks from "@/components/WhatItRunsLinks";
 import { AffiliateDisclosure, PartnerLink } from "@/components/affiliate";
 import { Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
 import { PriceFootnote, ProductListJsonLd } from "@/components/products";
@@ -244,6 +245,8 @@ export default function FridgePage() {
             see what backup lasts in your area on your <Link href="/states" className="text-spark-orange underline underline-offset-2">state page</Link>.
           </p>
         </Section>
+
+        <WhatItRunsLinks />
 
         <Faq items={faqs} path={PATH} />
         <Disclaimer>

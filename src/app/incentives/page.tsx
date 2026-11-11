@@ -16,6 +16,7 @@ import { STATES, formatDate } from "@/lib/energy";
 import { stateSources } from "@/lib/state-sources";
 import { JsonLd, pageMetadata, url } from "@/lib/seo";
 import { ENDED_CREDITS as ENDED } from "@/data/incentives";
+import { STATE_INCENTIVES, STATE_INCENTIVES_READ } from "@/data/state-incentives";
 import AskSparkCta from "@/components/AskSparkCta";
 
 const PATH = "/incentives";
@@ -196,6 +197,16 @@ export default function IncentivesPage() {
             energy data page
           </Link>{" "}
           also lists them.
+        </p>
+        <p className="text-stone-700 leading-relaxed mb-4">
+          For ten states we read every main program on its official page ({formatDate(STATE_INCENTIVES_READ)}): amount, who qualifies, end date
+          and link.{" "}
+          {STATES.filter((s) => STATE_INCENTIVES[s.abbr]).map((s, i, a) => (
+            <span key={s.abbr}>
+              <Link href={`/states/${s.slug}#incentives`} className="underline text-spark-orange">{s.name}</Link>
+              {i < a.length - 1 ? ", " : "."}
+            </span>
+          ))}
         </p>
         <IncentivesForState
           states={[...STATES]

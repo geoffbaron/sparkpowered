@@ -46,6 +46,7 @@ import {
 import { JsonLd, pageMetadata, url } from "@/lib/seo";
 import { stateSources } from "@/lib/state-sources";
 import { EIA_LATEST, LOCAL_CHECKED, STATE_LOCAL } from "@/data/state-local";
+import { KIND_LABEL, STATE_INCENTIVES, STATE_INCENTIVES_READ, STATUS_LABEL } from "@/data/state-incentives";
 
 export function generateStaticParams() {
   return STATES.map((s) => ({ slug: s.slug }));
@@ -59,7 +60,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!s) return {};
   const c = chargingFigures(s);
   return pageMetadata({
-    title: `${s.name} Electricity Rates, EV Charging & Solar (2026)`,
+    title: STATE_INCENTIVES[s.abbr]
+      ? `${s.name} EV Tax Credits & Rebates, Electricity Rates & Solar (2026)`
+      : `${s.name} Electricity Rates, EV Charging & Solar (2026)`,
     description: `${s.name} homes paid ${cents(s.electricity.residentialCentsPerKwhYtd)}/kWh in ${ytdWindow()} (EIA). Charging an EV costs about ${usd(c.evPer100, 2)} per 100 miles; 1 kW of solar makes ${num(s.solar.kwhPerKwYear)} kWh a year.`,
     path: `/states/${s.slug}`,
   });
@@ -106,6 +109,7 @@ export default async function StatePage({ params }: Props) {
   const n = STATES.length;
   const links = stateSources(s);
   const local = STATE_LOCAL[s.abbr];
+  const inc = STATE_INCENTIVES[s.abbr];
   const plan = typicalPlan(s.abbr);
   const evRow = plan.all.find((x) => x.id === "ev");
   const solarRow = plan.all.find((x) => x.id === "solar");
@@ -129,6 +133,14 @@ export default async function StatePage({ params }: Props) {
       a: `An average ${s.name} home uses about ${bat.dailyKwh.toFixed(1)} kWh a day. One ${POWERWALL_3_KWH} kWh battery such as a Tesla Powerwall 3 would cover about ${Math.round(bat.hoursPerPowerwall)} hours of average use, and longer if you only back up essential circuits.`,
     },
   ];
+
+  if (inc) {
+    const open = inc.programs.filter((p) => p.status === "open" && p.kind !== "ev-fee");
+    faqs.unshift({
+      q: `Does ${s.name} have an EV tax credit in 2026?`,
+      a: `${inc.evCredit} The federal new and used EV credits (30D and 25E) ended for vehicles acquired after September 30, 2025 (IRS fact sheet FS-2025-05).${open.length ? ` Programs open when we checked on ${formatDate(STATE_INCENTIVES_READ)}: ${open.map((p) => `${p.name} (${p.amount})`).join("; ")}.` : ""}`,
+    });
+  }
 
   const datasetSchema = {
     "@context": "https://schema.org",
@@ -394,6 +406,44 @@ export default async function StatePage({ params }: Props) {
       </Section>
 
       <Section title={`Incentives in ${s.name}`} id="incentives">
+        {inc && (
+          <div className="mb-6">
+            <p className="text-stone-800 leading-relaxed max-w-3xl font-medium" data-testid="state-ev-credit">{inc.evCredit}</p>
+            <div className="overflow-x-auto rounded-xl border border-black/8 bg-surface mt-4">
+              <table className="w-full text-sm">
+                <caption className="sr-only">{s.name} EV, charger, solar, battery and heat pump programs, read {formatDate(STATE_INCENTIVES_READ)}</caption>
+                <thead className="bg-surface-light text-left">
+                  <tr>
+                    <th scope="col" className="p-3 font-semibold">Program</th>
+                    <th scope="col" className="p-3 font-semibold">Amount</th>
+                    <th scope="col" className="p-3 font-semibold">Who qualifies</th>
+                    <th scope="col" className="p-3 font-semibold">Status and end date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {inc.programs.map((p) => (
+                    <tr key={p.name} className="border-t border-black/8 align-top">
+                      <th scope="row" className="p-3 font-medium text-left">
+                        <a href={p.url} className="underline underline-offset-2 hover:text-spark-orange" rel="noopener">{p.name}</a>
+                        <span className="block text-xs text-muted font-normal">{KIND_LABEL[p.kind]}{p.via ? ` · via ${p.via}` : ""}</span>
+                      </th>
+                      <td className="p-3">{p.amount}</td>
+                      <td className="p-3">{p.who}</td>
+                      <td className="p-3">
+                        <strong className={p.status === "closed" ? "text-red-700" : p.status === "open" ? "text-leaf" : "text-spark-amber"}>{STATUS_LABEL[p.status]}</strong>
+                        <span className="block">{p.ends}</span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="text-xs text-muted mt-2 max-w-3xl">
+              Each program read on its official page on <time dateTime={STATE_INCENTIVES_READ}>{formatDate(STATE_INCENTIVES_READ)}</time>; the program
+              name links to that page. Funding runs out and rules change, so confirm there before you buy.
+            </p>
+          </div>
+        )}
         <p className="text-stone-700 leading-relaxed max-w-3xl">
           The federal $7,500 new-EV and $4,000 used-EV tax credits ended for vehicles acquired after 30
           September 2025, and the 30% homeowner credit for solar and batteries ended for expenditures after
@@ -421,6 +471,8 @@ export default async function StatePage({ params }: Props) {
 
       <Sources
         items={[
+          ...(inc ? inc.programs.map((p) => ({ name: p.name, url: p.url, detail: `read ${formatDate(p.read)}` })).filter((x, i, a) => a.findIndex((y) => y.url === x.url) === i) : []),
+          ...(inc ? [{ name: "IRS FS-2025-05: FAQs on Public Law 119-21 changes to clean energy credits", url: "https://www.irs.gov/newsroom/faqs-for-modification-of-sections-25c-25d-25e-30c-30d-45l-45w-and-179d-under-public-law-119-21-139-stat-72-july-4-2025-commonly-known-as-the-one-big-beautiful-bill-act-obbb", detail: `read ${formatDate(STATE_INCENTIVES_READ)}` }] : []),
           ...(local ? [EIA_LATEST.source, ...local.facts.map((f) => f.source)].filter((x, i, a) => a.findIndex((y) => y.url === x.url) === i).map((x) => ({ name: x.name, url: x.url })) : []),
           {
             name: SOURCES.electricityPrice.name,

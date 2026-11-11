@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import WhatItRunsLinks from "@/components/WhatItRunsLinks";
 import OutageCalc from "@/components/offgrid/OutageCalc";
 import { AffiliateDisclosure, PartnerLink } from "@/components/affiliate";
 import { BigStat, HubHero, PhotoCredit } from "@/components/ui";
@@ -209,6 +210,8 @@ export default function OutageBackupPage() {
             fuel to store with the <Link href="/generator-runtime-calculator" className="underline">generator runtime calculator</Link>.
           </p>
         </Section>
+
+        <WhatItRunsLinks />
 
         <Faq items={faqs} path={PATH} />
         <Disclaimer>
