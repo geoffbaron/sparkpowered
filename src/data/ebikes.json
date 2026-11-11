@@ -30,6 +30,10 @@
    "fendersLightsRack": "fenders, integrated front/rear lights with turn signal, MIK rear rack",
    "suspension": "full (100mm fork / 130mm rear)",
    "inStock": true,
+   "saleEndsAt": "2026-11-15T00:00:00-08:00",
+   "saleEndsLabel": "Nov 14",
+   "regularPrice": 2199,
+   "saleSource": "Himiway Black Friday page read 2026-11-11 (up to $1,000 off select e-bikes Nov 1-15); D5 2.0 was $2,199 on our Nov 2 check, $1,999 on Nov 5 and Nov 11",
    "brand": "himiway",
    "id": "himiway-d5-2-0-ebike"
   },

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { DealsStrip } from "@/components/DealsStrip";
 import { AffiliateDisclosure } from "@/components/affiliate";
 import { Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
 import { BigStat, HubHero, MythCallout, PhotoCredit } from "@/components/ui";
@@ -109,6 +110,7 @@ export default function BestPowerStationsPage() {
         <a href="#picks" className="btn btn-primary">See our picks</a>
         <Link href="/battery-calculator" className="btn btn-light">Find the right size for you</Link>
       </HubHero>
+      <DealsStrip />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <p className="text-sm text-muted mb-6">

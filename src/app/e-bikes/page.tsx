@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { DealsStrip } from "@/components/DealsStrip";
 import { AffiliateDisclosure } from "@/components/affiliate";
 import { Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
 import { QuickAnswer } from "@/components/guide-ui";
@@ -83,6 +84,7 @@ export default function EbikesHubPage() {
           />
         }
       />
+      <DealsStrip />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <AffiliateDisclosure className="mb-8" />

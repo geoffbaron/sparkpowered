@@ -18,6 +18,7 @@ import { fullName, productById } from "@/lib/products";
 import { GAS_CARS, homeFigures, MMBTU_PER_MCF } from "@/lib/go-electric";
 import AskSparkCta from "@/components/AskSparkCta";
 import IWantTo from "@/components/IWantTo";
+import { DealsStrip } from "@/components/DealsStrip";
 
 const TITLE = "Go Electric and Save: EV, Solar & Battery Savings by State";
 const DESCRIPTION =
@@ -99,6 +100,7 @@ export default function HomePage() {
           <IWantTo />
         </div>
       </section>
+      <DealsStrip />
 
       <section aria-labelledby="top-pick-heading" className="border-b border-black/8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
