@@ -145,7 +145,7 @@ export default function BoatingHub() {
             </Callout>
             <Callout>
               <strong>&quot;Lithium and water don&apos;t mix.&quot;</strong> Marine lithium batteries use lithium iron phosphate, the most stable lithium
-              chemistry, in sealed cases; several of our picks are rated IP65 or IP67 against spray and rain.
+              chemistry, in sealed cases; several of our picks are rated IP65 or IP67 against spray and rain. IP65 means spray, not being underwater. Lower risk is not no risk: secure it so it can&apos;t slide, cover the terminals, fuse it within 7 inches of the battery and keep it out of standing water.
             </Callout>
           </div>
         </Section>

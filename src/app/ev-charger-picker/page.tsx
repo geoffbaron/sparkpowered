@@ -46,7 +46,7 @@ export default function EvChargerPickerPage() {
     },
     {
       q: "Can I use my dryer outlet?",
-      a: "Only slowly. A 30-amp dryer circuit allows 24 amps of charging under the 125% rule, about 18 miles of range an hour by ChargePoint's estimate, and only with a charger you can set that low and a plug that matches the outlet. Have an electrician check the circuit first.",
+      a: "Only slowly. A 30-amp dryer circuit allows 24 amps of charging under the 125% rule, about 18 miles of range an hour by ChargePoint's estimate, and only with a charger you can set that low and a plug that matches the outlet. Have an electrician check the circuit first. Unplug the dryer while charging and never use an adapter or splitter; older three-prong dryer outlets have no ground and should not be used until an electrician replaces them.",
     },
     {
       q: "Do I need a permit, and can I install it myself?",
@@ -87,7 +87,9 @@ export default function EvChargerPickerPage() {
             </p>
             <p>
               <strong>What your wiring allows:</strong> the circuit must be 125% of the charger&apos;s draw, so a NEMA 14-50 outlet (50-amp
-              circuit) allows 40 amps, a 40-amp circuit 32 amps, and a 30-amp dryer circuit 24 amps. Above 40 amps, chargers are hardwired.
+              circuit) allows 40 amps, a 40-amp circuit 32 amps, and a 30-amp dryer circuit 24 amps. Above 40 amps, chargers are hardwired. These
+              figures assume the wire is sized for the breaker, the outlet is in good condition and the circuit serves nothing else; a licensed
+              electrician should confirm all three, and a permit is often required.
             </p>
             <p>
               <strong>Which charger:</strong> we only link chargers from brands we have checked and partner with ({HOME_CHARGERS.length} models

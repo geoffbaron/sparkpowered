@@ -165,7 +165,7 @@ export default function LithiumVsAgmPage() {
               <strong>&quot;Lithium batteries catch fire.&quot;</strong> RV and marine lithium batteries use lithium iron phosphate, which
               Battery University calls one of the safest lithium-ion types (
               <a href={BATTERY_FACTS.lfpSafety.url} className="underline" rel="noopener">source</a>). Fuse it near the battery, like any
-              battery.
+              battery. Lower risk is not no risk: secure it so it can&apos;t slide, cover the terminals, fuse it within 7 inches of the battery and keep it out of standing water. Charge it only with a lithium profile.
             </Callout>
             <Callout>
               <strong>&quot;You need all new charging gear.&quot;</strong> Usually just the right setting. Many recent converters, solar

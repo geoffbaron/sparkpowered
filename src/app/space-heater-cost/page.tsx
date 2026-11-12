@@ -165,8 +165,9 @@ export default function SpaceHeaterCostPage() {
         <Section title="When the power goes out" id="outage">
           <p className="text-stone-700 leading-relaxed max-w-3xl">
             A space heater is the one thing a portable power station cannot run for long: 1,500 watts empties a 1,000 Wh unit in well under
-            an hour. In a winter outage, use a power station for the furnace blower, lights, phones and the fridge, and keep warm with
-            layers in one closed-off room. See <Link href="/best-portable-power-stations" className="underline">backup power for outages</Link>.
+            an hour. In a winter outage, use a power station for lights, phones and the fridge; a furnace blower that is wired into the house
+            needs a transfer switch installed by an electrician. Keep warm with layers in one closed-off room. Never heat the home with a
+            gas oven or stove, a grill, a camp stove or a generator, and keep battery-powered carbon monoxide alarms working. See <Link href="/best-portable-power-stations" className="underline">backup power for outages</Link>.
           </p>
         </Section>
 

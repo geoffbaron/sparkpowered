@@ -325,11 +325,13 @@ export default function EvChargerPicker({ data }: { data: PickerData }) {
                 </select>
               </label>
               <p className="text-2xl font-extrabold text-ink mt-3 tabular-nums" data-testid="ev-picker-install">
-                {res.install.zero ? "$0" : res.install.low === res.install.high ? `About ${money(res.install.low)}` : `${money(res.install.low)} to ${money(res.install.high)}`}
+                {res.install.zero && inp.power === "dryer" ? "Electrician check first" : res.install.zero ? "$0" : res.install.low === res.install.high ? `About ${money(res.install.low)}` : `${money(res.install.low)} to ${money(res.install.high)}`}
               </p>
               <p className="text-sm text-stone-700 mt-1">
-                {res.install.zero
-                  ? "You already have the outlet, so the charger plugs straight in. Pay an electrician to check it."
+                {res.install.zero && inp.power === "dryer"
+                  ? "Your dryer outlet can work only with a charger made for that exact plug and set to 24 amps or less. Have an electrician check the outlet, wiring and breaker first, and never use an adapter."
+                  : res.install.zero
+                  ? "You already have the outlet, so the charger plugs straight in. Have an electrician check first that it's on its own 50-amp circuit with matching wire and in good shape."
                   : `${stateName ? `${stateName} average` : "US average"} for a home charger installation, labor and materials, before the charger (Qmerit 2026 data via EnergySage).`}
               </p>
               {res.install.extras.length > 0 && (

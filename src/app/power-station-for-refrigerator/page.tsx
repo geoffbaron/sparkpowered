@@ -66,11 +66,11 @@ export default function FridgePage() {
     },
     {
       q: "Do I have to run the fridge all the time in an outage?",
-      a: "No. FoodSafety.gov says a closed refrigerator keeps food safe for about 4 hours and a full freezer about 48 hours. Running the fridge a few hours on, a few hours off, with the door shut, stretches any battery much further than our continuous figures.",
+      a: "No. FoodSafety.gov says a closed refrigerator keeps food safe for about 4 hours and a full freezer about 48 hours. Running the fridge a few hours on, a few hours off, with the door shut, stretches any battery much further than our continuous figures. Keep an appliance thermometer in the fridge: it must stay at 40°F or below, and food that has been above 40°F for two hours or more goes in the trash. When in doubt, throw it out.",
     },
     {
       q: "Is a power station better than a gas generator for a fridge?",
-      a: "For a fridge and essentials, often yes: it is silent, needs no fuel, and is safe indoors, so it can sit right next to the fridge. A gas generator is cheaper for long, whole-house outages but must run outdoors because of carbon monoxide. Add solar panels and a station can keep going for days.",
+      a: "For a fridge and essentials, often yes: it is silent, needs no fuel and makes no fumes, so it can be used indoors next to the fridge. A gas generator is cheaper for long, whole-house outages but must run outdoors because of carbon monoxide. Add solar panels and a station can keep going for days.",
     },
   ];
 
@@ -117,7 +117,7 @@ export default function FridgePage() {
         <section aria-label="What it means" className="grid sm:grid-cols-3 gap-3 mt-8">
           <BigStat tone="leaf" value={hText(hours(e300.capacityWh))} label="Of fridge from 3 kWh" note={`Bluetti Elite 300, ${money(e300.priceUsd!)}`} />
           <BigStat value={`${fridgeWhDay.toLocaleString("en-US")} Wh`} label="What a typical fridge uses a day" note={`${FRIDGE_KWH_YEAR} kWh a year (EIA)`} />
-          <BigStat tone="orange" value="4 hours" label="Food stays safe with the door shut" note="FoodSafety.gov, so you can run it in shifts" />
+          <BigStat tone="orange" value="4 hours" label="Food stays safe with the door shut" note="FoodSafety.gov; keep it at 40°F or below" />
         </section>
 
         <section id="picker" className="mt-12 scroll-mt-24" aria-labelledby="picker-heading">
@@ -237,7 +237,7 @@ export default function FridgePage() {
             </Callout>
             <Callout>
               <strong>&quot;It has to run the fridge non-stop.&quot;</strong> No: a closed fridge keeps food safe about 4 hours. Run it
-              in shifts and a 2 kWh station can cover a much longer outage.
+              in shifts and a 2 kWh station can cover a much longer outage. Keep an appliance thermometer in the fridge: it must stay at 40°F or below, and food that has been above 40°F for two hours or more goes in the trash. When in doubt, throw it out.
             </Callout>
           </div>
           <p className="text-sm text-stone-700 mt-4 max-w-3xl">

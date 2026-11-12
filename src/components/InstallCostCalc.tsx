@@ -81,11 +81,15 @@ export default function InstallCostCalc({
           <LocalNote name={states.find((s) => s.abbr === abbr)?.name ?? null} local selectId="install-state" />
         </label>
         <fieldset>
-          <legend className="font-bold text-ink mb-2">2. Is there already a 240-volt outlet (dryer or RV type) where you park?</legend>
+          <legend className="font-bold text-ink mb-2">2. Is there already a NEMA 14-50 outlet (RV or range type, four holes) on its own 50-amp circuit where you park?</legend>
           <div className="flex flex-wrap gap-2">
             <button type="button" aria-pressed={hasOutlet} onClick={() => setHasOutlet(true)} className={pillClass(hasOutlet)}>Yes</button>
             <button type="button" aria-pressed={!hasOutlet} onClick={() => setHasOutlet(false)} className={pillClass(!hasOutlet)}>No</button>
           </div>
+          <p className="mt-2 text-xs text-muted">
+            A dryer outlet is a different plug on a 30-amp circuit: it allows only 24 amps of charging, and none of these chargers fit it. Never use a plug adapter.
+            {hasOutlet && " Have an electrician check the 14-50 first: matching wire, a heavy-duty outlet in good shape, and GFCI protection where local code requires."}
+          </p>
         </fieldset>
         {!hasOutlet && (
           <fieldset>

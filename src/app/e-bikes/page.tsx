@@ -172,7 +172,7 @@ export default function EbikesHubPage() {
             All three have a motor of no more than 750 W under the federal definition. More than 40 states use this three-class system
             (PeopleForBikes counted 43 in 2024), and each state decides where each class may ride. Class 3 often has extra rules: in California, for
             example, riders must be 16 or older and wear a helmet, and many local multi-use trails don&apos;t allow class 3. Many bikes let you set
-            the top speed, so you can match your local rules. Check your state and city before you buy.
+            the top speed, so you can match your local rules. Check your state and city before you buy. Wear a bike helmet on every ride; the CPSC recommends one for all e-bike riders. Look for UL 2849 certification of the whole electrical system, and charge only with the maker&apos;s charger, while you&apos;re awake and nearby.
           </p>
         </Section>
 

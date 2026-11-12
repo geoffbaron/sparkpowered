@@ -268,6 +268,7 @@ export default function ChristmasLightsCostPage() {
             <li>Replace the big incandescent C7 and C9 strings first. They use the most power by far.</li>
             <li>Keep old mini strings for indoors if you like the warm look; the saving from swapping them is smaller.</li>
             <li>Outdoors, use lights and extension cords rated for outdoor use and plug into a GFCI outlet.</li>
+            <li>Use lights with a UL or ETL mark, throw out sets with cracked sockets or frayed wires, connect no more strings end to end than the box allows, and turn them off when you go to bed or leave the house.</li>
             <li>Want them free to run? A small <Link href="/plug-in-solar" className="underline">plug-in solar</Link> kit or a <Link href="/best-portable-power-stations" className="underline">power station</Link> charged by day can run an LED display at night.</li>
           </ul>
         </Section>

@@ -110,7 +110,7 @@ export default function HillsEbikePage() {
             label="Most raw power, for off-road climbs"
             name={ebikeName(e26)}
             icon="bolt"
-            why={`Two hub motors rated ${e26.motorW?.toLocaleString("en-US")} W together (${e26.peakW?.toLocaleString("en-US")} W peak) and ${e26.torqueNm} Nm combined. That rating is above the 750 W in the federal e-bike definition, so check your state's rules before riding it on roads and paths, and expect the shortest range here in dual-motor mode.`}
+            why={`Two hub motors rated ${e26.motorW?.toLocaleString("en-US")} W together (${e26.peakW?.toLocaleString("en-US")} W peak) and ${e26.torqueNm} Nm combined. That rating is above the 750 W in the federal e-bike definition, so check your state's rules before riding it on roads and paths: above 750 W, or with a throttle past 20 mph, many states treat it as a moped or motor vehicle that needs registration, a license and insurance, and expect the shortest range here in dual-motor mode.`}
             life={[`${e26.torqueNm} Nm combined`, `${e26.batteryWh} Wh battery`, "Full suspension", `${e26.weightLb} lb bike`]}
             priceUsd={e26.price}
             brand="engwe"
@@ -150,7 +150,8 @@ export default function HillsEbikePage() {
 
         <Faq items={faqs} path={PATH} />
         <Disclaimer>
-          We compare makers&apos; stated specs; we have not ridden these bikes. Prices are from the makers&apos; US websites on {formatDate(EBIKES_CHECKED)},
+          We compare makers&apos; stated specs; we have not ridden these bikes. Look for UL 2849 certification of the whole electrical system, charge only with the maker&apos;s charger while you&apos;re awake and
+          nearby, and wear a helmet. Prices are from the makers&apos; US websites on {formatDate(EBIKES_CHECKED)},
           several during sales, and change often. Kingbull, Himiway and ENGWE links may earn us a commission; {alt.brand} is a plain link.
         </Disclaimer>
         <Sources items={ebikeSources(bikes, [alt])} />

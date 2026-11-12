@@ -59,7 +59,7 @@ export default function EmergencyFoodCalculatorPage() {
     },
     {
       q: "What food is best for an emergency supply?",
-      a: "FEMA suggests foods your family already eats that need no refrigeration, water, special preparation or cooking, and that are high in calories and nutrition. Canned goods and pantry staples count. Rotate them, first in, first out, and keep a manual can opener.",
+      a: "FEMA suggests foods your family already eats that need no refrigeration, water, special preparation or cooking, and that are high in calories and nutrition. Canned goods and pantry staples count. Rotate them, first in, first out, and keep a manual can opener. Throw away any can that is bulging, leaking, rusted or badly dented, and in an outage cook only with a camp stove or grill outdoors, never indoors or in a garage, because of carbon monoxide.",
     },
   ];
 

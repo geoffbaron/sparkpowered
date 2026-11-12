@@ -70,7 +70,7 @@ export default function VoltageComparePage() {
     },
     {
       q: "How many batteries does a 36V trolling motor need?",
-      a: `Three 12 V lead-acid batteries wired in series (about ${Math.round(3 * LEAD_ACID_REF.weightLb)} lb of AGM), or one 36 V lithium. Redodo's 36V 50Ah was ${money(li36_50.priceUsd ?? 0)} and weighs ${li36_50.weightLb} lb. For all-day running you can also wire three 12V 100Ah lithium batteries in series (${money(li36_100.priceUsd ?? 0)} for three).`,
+      a: `Three 12 V lead-acid batteries wired in series (about ${Math.round(3 * LEAD_ACID_REF.weightLb)} lb of AGM), or one 36 V lithium. Redodo's 36V 50Ah was ${money(li36_50.priceUsd ?? 0)} and weighs ${li36_50.weightLb} lb. For all-day running you can also wire three 12V 100Ah lithium batteries in series (${money(li36_100.priceUsd ?? 0)} for three). When wiring in series, use the same make, model and age, charge each battery full on its own first, check the maker allows that many in series, fuse the main positive lead and charge the bank with a charger for the full voltage (or one per battery).`,
     },
   ];
 
@@ -209,7 +209,7 @@ export default function VoltageComparePage() {
 
         <Faq items={faqs} path={PATH} />
         <Disclaimer>
-          Thrust needs depend on boat weight, hull, wind and current. Follow your motor maker&apos;s battery and wiring instructions. Prices change
+          Thrust needs depend on boat weight, hull, wind and current. Follow your motor maker&apos;s battery and wiring instructions. Put a manual-reset breaker or fuse on the positive lead close to the battery (within 7 inches, or 72 inches if the cable is sheathed), at the size your motor maker specifies (Minn Kota lists 60 A for its 50 to 55 lb 12 V motors), use the wire size in the motor&apos;s table, and keep terminals tight and covered. Disconnect the motor before wiring a 24 or 36 V bank; a miswired bank can short and catch fire. Prices change
           often; the dates are shown.
         </Disclaimer>
         <Sources

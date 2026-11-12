@@ -26,7 +26,7 @@ export default function PluginSolarBox({ s }: { s: StateEnergy }) {
         <strong>Is it legal?</strong>{" "}
         {law?.status === "law" ? (
           <>
-            {s.name} has a plug-in solar law ({law.bill}, {law.year}): {law.summary}{" "}
+            {s.name} has a plug-in solar law ({law.bill}, {law.year}): {law.summary} Use a listed kit at or under the state&apos;s size limit, plugged straight into a wall outlet, never an extension cord or power strip.{" "}
           </>
         ) : law?.status === "pending" ? (
           <>

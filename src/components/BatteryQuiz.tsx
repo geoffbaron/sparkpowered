@@ -240,7 +240,7 @@ export default function BatteryQuiz() {
                   >
                     <div className="flex flex-wrap gap-2 mb-3">
                       <span className="inline-flex items-center bg-surface-light border border-black/8 text-xs font-semibold px-3 py-1 rounded-full">
-                        {p.install === "professional" ? "Professionally installed" : "Plug in yourself"}
+                        {p.install === "professional" ? "Professionally installed" : "Plugs in yourself; feeding home circuits needs an electrician"}
                       </span>
                       {inBudget && (
                         <span className="inline-flex items-center gap-1 bg-green-100 text-green-700 border border-green-200 text-xs font-semibold px-3 py-1 rounded-full">

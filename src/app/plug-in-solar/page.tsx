@@ -194,8 +194,8 @@ export default function PluginSolarPage() {
         title={<>Solar for everyone. <span className="text-amber-300">Just plug it in.</span></>}
         sub={
           <>
-            A small set of panels plugs into an ordinary outdoor outlet and powers your fridge, Wi-Fi and TV while the sun
-            is up. No roof, no installer, no loan, and you can take it with you when you move. {laws.length} states now
+            A small, certified kit plugs straight into an outdoor outlet, where your state allows it, and powers your fridge,
+            Wi-Fi and TV while the sun is up. No roof, no installer, no loan, and you can take it with you when you move. {laws.length} states now
             allow it without utility paperwork.
           </>
         }
@@ -300,8 +300,8 @@ export default function PluginSolarPage() {
           </p>
           <p>
             The inverter is the safety-critical part. A listed one stops sending power within moments if the grid
-            goes down, so the plug&apos;s pins are never live when unplugged and it cannot feed lines a utility
-            worker is repairing. That also means a kit with no battery gives <strong>no backup power</strong> during
+            goes down, so the plug&apos;s pins go dead within moments when unplugged and it cannot feed lines a
+            utility worker is repairing. Don&apos;t touch the pins, and unplug only by the plug. That also means a kit with no battery gives <strong>no backup power</strong> during
             an outage.
           </p>
           <p>
@@ -399,7 +399,7 @@ export default function PluginSolarPage() {
         </div>
       </Section>
 
-      <Section title="Safe by design: what to look for" id="safety">
+      <Section title="Safety: what to look for" id="safety">
         <div className="text-stone-700 leading-relaxed space-y-4 max-w-3xl">
           <ul className="list-disc pl-5 space-y-2">
             <li>

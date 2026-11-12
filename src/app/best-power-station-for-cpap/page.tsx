@@ -143,7 +143,7 @@ export default function CpapPage() {
           <OurPick
             label="Best for most CPAP users"
             name={fullName(e100)}
-            why="Nearly four nights with the humidifier for $499, and it doubles as a UPS: leave the CPAP plugged into it at home and you won't wake up when the power goes. 25 lb, 5-year warranty, and fast solar charging if the outage drags on."
+            why="Nearly four nights with the humidifier for $499, and it doubles as a UPS: leave the CPAP plugged into it at home and it keeps running when the power goes. If you depend on your CPAP, ask your doctor and the device maker which battery setups they approve, and keep a second backup plan. 25 lb, 5-year warranty, and fast solar charging if the outage drags on."
             life={[`CPAP with humidifier: ${n1(nights(e100.capacityWh, H))} nights`, `Without humidifier: ${n1(nights(e100.capacityWh, D))} nights`]}
             priceUsd={e100.priceUsd}
             brand="bluetti"
@@ -239,7 +239,9 @@ export default function CpapPage() {
             <Callout>
               <strong>&quot;Power stations are a fire risk in the bedroom.&quot;</strong> Every model here uses lithium iron phosphate
               (LFP), the most heat-stable lithium chemistry, with a built-in management system. Keep it ventilated and off the carpet,
-              like any electrical device.
+              like any electrical device. Don&apos;t cover it or tuck it under bedding, keep the cords where no one trips on them, use the
+              maker&apos;s own charger, and stop using it if it swells, smells or gets hot. A smoke alarm in or near the bedroom matters
+              either way.
             </Callout>
           </div>
         </Section>

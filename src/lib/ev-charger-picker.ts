@@ -177,11 +177,11 @@ export function pick(input: PickerInput, data: PickerData): PickerResult {
   if (input.reach === "long")
     notes.push(`The chargers we carry have ${Math.min(...HOME_CHARGERS.filter((c) => c.cableFt).map((c) => c.cableFt!))} to ${LONGEST_CABLE_FT}-foot cables. Measure from where the charger will hang to your car's port; if it's farther, ask the electrician to put the outlet or charger closer to where you park.`);
   if (input.power === "dryer")
-    notes.push("A 30-amp dryer circuit allows 24 amps of charging under the 125% rule, and nothing else should run on it while the car charges. Have an electrician check the circuit first.");
+    notes.push("A 30-amp dryer circuit allows 24 amps of charging under the 125% rule. Unplug the dryer while you charge, and never use a splitter or plug adapter. Older three-prong dryer outlets (NEMA 10-30) have no separate ground wire; don't charge from one until an electrician has replaced it. Have a licensed electrician check the outlet, wiring and breaker first and replace a worn or loose outlet, and if the outlet or plug ever feels warm, stop and call them.");
   if (input.power === "tight")
     notes.push("Ask the electrician for a load calculation first. A 40-amp circuit with the charger set to 32 amps often avoids a panel upgrade.");
   if (input.power === "outlet1450")
-    notes.push("Have an electrician confirm the outlet is on its own 50-amp circuit and in good shape before you charge on it every night.");
+    notes.push("Have an electrician confirm the outlet is on its own 50-amp circuit with matching wire, in good shape (a heavy-duty, industrial-grade outlet is best for nightly charging) and GFCI-protected where local code requires, before you charge on it every night.");
   if (shortOvernight)
     notes.push(`At ${amps} amps your day takes about ${Math.ceil(byAmps[amps])} hours to put back, longer than one night. A bigger circuit would help.`);
 
@@ -202,7 +202,7 @@ export function pick(input: PickerInput, data: PickerData): PickerResult {
   const eviqoSwitch = "A switch inside sets the maximum to 16, 32, 40 or 48 amps";
 
   if (input.power === "dryer") {
-    noMatch = `Look for a Level 2 ${connector} charger you can set to 24 amps or lower, with a plug that matches your dryer outlet (dryer outlets are a different shape from a NEMA 14-50). None of the chargers we carry ships with that plug, so we don't link one. For faster charging, add a 50-amp circuit instead.`;
+    noMatch = `Look for a Level 2 ${connector} charger you can set to 24 amps or lower, with a plug that matches your dryer outlet (dryer outlets are a different shape from a NEMA 14-50). None of the chargers we carry ships with that plug, so we don't link one. Never use a plug adapter to fit a 14-50 charger to a dryer outlet. For faster charging, add a 50-amp circuit instead.`;
   } else if (connection === "hardwired") {
     if (connector === "J1772") {
       products.push({
@@ -223,7 +223,7 @@ export function pick(input: PickerInput, data: PickerData): PickerResult {
       });
     }
   } else if (input.mount === "move" && connector === "NACS") {
-    products.push({ charger: lp, setTo: amps < 40 ? amps : undefined, why: "Portable: works from an ordinary outlet or a NEMA 14-50, adjustable from 8 to 40 amps, and moves with you. Lectron listed it as a pre-order shipping mid-November." });
+    products.push({ charger: lp, setTo: amps < 40 ? amps : undefined, why: "Portable: works from an ordinary outlet or a NEMA 14-50, adjustable from 8 to 40 amps, and moves with you. On an ordinary outlet keep it at 12 amps or less; use 40 amps only on a 14-50 on its own 50-amp circuit, and never with an extension cord or adapter. Lectron listed it as a pre-order shipping mid-November." });
     if (input.smart)
       products.push({ charger: en, setTo: amps < 40 ? amps : undefined, why: `Or a wall-mounted plug-in for the same NEMA 14-50 outlet, with app scheduling and a ${en.cableFt}-foot cable; unplug it and take it when you move.` });
     else products.push({ charger: ln, why: "Or a wall-mounted plug-in for the same NEMA 14-50 outlet, 40 amps, IP66 weatherproof." });

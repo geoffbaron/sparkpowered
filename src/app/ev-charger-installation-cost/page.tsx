@@ -107,7 +107,7 @@ export default function InstallCostPage() {
             <PartnerLink brand="lectron" productId={ln.id} productUrl={ln.url} disclose>Lectron NEXUS NACS</PartnerLink> was {money(ln.priceUsd)}.
           </p>
           <p>
-            <strong>Already have a 240-volt outlet in the garage?</strong> A plug-in charger installs for $0.{" "}
+            <strong>Already have a NEMA 14-50 outlet in the garage?</strong> A plug-in charger installs for $0. Have an electrician check it first: it should be on its own 50-amp circuit with matching wire, a heavy-duty outlet in good condition, and GFCI-protected where local code requires. A dryer outlet is not the same: it allows only 24 amps and needs a charger made for its plug.{" "}
             <strong>Older 100-amp panel?</strong> Budget {money(c.serviceUpgrade[0])} to {money(c.serviceUpgrade[1])} more for an upgrade,
             or ask about a lower-amp circuit or load management first.
           </p>
@@ -201,16 +201,16 @@ export default function InstallCostPage() {
           <div className="grid gap-3">
             <Callout>
               <strong>&quot;Every EV owner needs a $5,000 electrical upgrade.&quot;</strong> No. The average installation is{" "}
-              {money(c.usAverage)}, and a plug-in charger next to an existing 240-volt outlet costs nothing to install. Panel upgrades
+              {money(c.usAverage)}, and a plug-in charger next to an existing, electrician-checked NEMA 14-50 outlet costs nothing to install. Panel upgrades
               are the exception, and load management can often avoid them.
             </Callout>
             <Callout>
-              <strong>&quot;I can just use an extension cord.&quot;</strong> Don&apos;t. Charging draws high current for hours; charger makers
-              generally warn against extension cords. Use the outlet directly or have a circuit installed.
+              <strong>&quot;I can just use an extension cord.&quot;</strong> Don&apos;t. Charging draws high current for hours, and charger and car makers say not to use
+              extension cords, plug adapters or power strips. Plug straight into a suitable outlet or have a circuit installed.
             </Callout>
             <Callout>
               <strong>&quot;A Level 2 charger is required.&quot;</strong> Not always: an ordinary outlet adds roughly 45 miles
-              overnight, enough for many commutes. See{" "}
+              overnight, enough for many commutes. Use a grounded outlet in good condition, ideally with nothing else running on the circuit, and plug the cord straight in: no extension cord or power strip. If the plug or outlet gets hot, stop and have an electrician look at it. See{" "}
               <Link href="/ev-charging-cost#home-charger" className="underline">do you need one?</Link>
             </Callout>
           </div>

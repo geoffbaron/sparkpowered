@@ -98,7 +98,7 @@ export const HOME_CHARGERS: HomeCharger[] = [
     sourceUrl: "https://ev-lectron.com/products/lectron-portable-level-1-2-tesla-nacs-ev-charger-120v-240v-adjustable-current-8-40a-nema-5-15-14-50",
     retrieved: "2026-10-31",
     notes: [
-      "Comes with plugs for both an ordinary outlet and a 240-volt NEMA 14-50, adjustable from 8 to 40 amps.",
+      "Comes with plugs for both an ordinary outlet and a 240-volt NEMA 14-50, adjustable from 8 to 40 amps. Keep it at 12 amps or less on an ordinary outlet, and never use an extension cord or adapter.",
       "Good for renters or a second home; Lectron listed it as shipping in mid-November when we checked.",
     ],
   },

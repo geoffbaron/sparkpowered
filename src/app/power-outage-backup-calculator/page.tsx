@@ -68,7 +68,7 @@ export default function OutageBackupPage() {
     },
     {
       q: "How long will food last in the fridge without power?",
-      a: "About 4 hours in a closed fridge and about 48 hours in a full freezer (Ready.gov, FoodSafety.gov). Ready.gov says to throw away food that has been at 40°F or higher for two hours or more. Keep the doors shut, and you can run the fridge in shifts from a power station to stretch the battery.",
+      a: "About 4 hours in a closed fridge and about 48 hours in a full freezer (Ready.gov, FoodSafety.gov). Ready.gov says to throw away food that has been at 40°F or higher for two hours or more. Keep the doors shut, and you can run the fridge in shifts from a power station to stretch the battery. Keep an appliance thermometer inside so you know it stays at 40°F or below.",
     },
     {
       q: "Can solar panels recharge a power station in winter?",
@@ -206,7 +206,9 @@ export default function OutageBackupPage() {
 
         <Section title="Running a generator instead?" id="generator">
           <p className="text-stone-700 leading-relaxed max-w-3xl">
-            A generator covers long outages and big loads, but it must run outdoors, at least 20 feet from the house (Ready.gov, CDC). See how much
+            A generator covers long outages and big loads, but it must run outdoors, at least 20 feet from the house with the exhaust pointed away (Ready.gov, CDC). Never run one in a
+            garage, even with the door open, put battery-backed carbon monoxide alarms on every level, and connect it to house wiring only
+            through a transfer switch installed by an electrician. See how much
             fuel to store with the <Link href="/generator-runtime-calculator" className="underline">generator runtime calculator</Link>.
           </p>
         </Section>

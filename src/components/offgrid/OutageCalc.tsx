@@ -56,7 +56,7 @@ export default function OutageCalc({ states, stations, fallbackAbbr }: { states:
         <fieldset>
           <legend className="font-bold text-ink mb-2">1. What must keep running</legend>
           <LoadList picks={picks} onChange={setPicks} idPrefix="out" />
-          <p className="text-xs text-muted mt-2">Hours are example settings. A furnace blower runs more on cold days; a well pump runs while you use water.</p>
+          <p className="text-xs text-muted mt-2">Hours are example settings. A furnace blower runs more on cold days; a well pump runs while you use water. Furnaces and well pumps are usually wired in: to run them from a battery or generator, have a licensed electrician fit a transfer switch or power inlet. Never use a double-ended cord or a dryer outlet.</p>
         </fieldset>
         <fieldset>
           <legend className="font-bold text-ink mb-2">2. How long is the outage?</legend>

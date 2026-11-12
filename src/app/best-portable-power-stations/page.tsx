@@ -25,7 +25,7 @@ const PICKS: { id: string; label: string; why: string }[] = [
   {
     id: "ecoflow-delta-3-max",
     label: "Our pick for outage backup",
-    why: "About 2 kWh, enough for a fridge through most outages. Leave the fridge plugged into it all the time: when the power cuts out it takes over in about a hundredth of a second, so the food stays cold and you may not even notice.",
+    why: "About 2 kWh, enough for a fridge through most outages. Leave the fridge plugged into it all the time: when the power cuts out it takes over in about a hundredth of a second, so the food stays cold and you may not even notice. Plug the fridge straight into the station, not through a power strip or light extension cord.",
   },
   {
     id: "growatt-infinity-2000-pro",
@@ -50,7 +50,7 @@ const PICKS: { id: string; label: string; why: string }[] = [
   {
     id: "bluetti-elite-30-v2",
     label: "Best for CPAP and small loads",
-    why: "A 9.5 lb box for about $290 that switches over in about 10 ms, so a CPAP keeps running if the power blips. It holds one night with a heated humidifier; it can't take extra batteries. Check your own machine: our CPAP nights assume about 28 W with a heated humidifier, from ResMed's battery guide.",
+    why: "A 9.5 lb box for about $290 that switches over in about 10 ms, so a CPAP keeps running if the power blips. It holds one night with a heated humidifier; it can't take extra batteries. Check your own machine: our CPAP nights assume about 28 W with a heated humidifier, from ResMed's battery guide. If you depend on a CPAP, ask your doctor and the device maker which battery setups they approve.",
   },
   {
     id: "anker-solix-f3000",

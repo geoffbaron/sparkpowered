@@ -71,6 +71,13 @@ export interface Question {
   q: string;
   /** Short answer: 2 to 4 sentences, plain text. */
   a: string;
+  /**
+   * Safety conditions the reader must meet before acting on the answer, shown in a
+   * warning box right under it and appended to the answer in structured data.
+   * Required on any answer that tells someone to plug in, wire, charge or run something
+   * (added 2026-11-12 after a reader rightly said the dryer-outlet answer left them out).
+   */
+  safety?: string;
   detail: Block[];
   sources: Source[];
   /** Links that help the reader run the numbers for their own home. External ones open in a new tab. */
@@ -167,6 +174,12 @@ const S = {
   bluetti200: { name: "Bluetti Elite 200 V2, product page (capacity and output)", url: productById("bluetti-elite-200-v2").sourceUrl },
   bluetti300: { name: "Bluetti Elite 300, product page (capacity and output)", url: productById("bluetti-elite-300").sourceUrl },
   ecoflowUltra: { name: "EcoFlow DELTA Pro Ultra, product page (Smart Home Panel 2 requirement)", url: productById("ecoflow-delta-pro-ultra").sourceUrl },
+  nec: { name: "NFPA 70, National Electrical Code (free read-only access): Article 625, EV charging, and 210.19/210.20, continuous loads", url: "https://www.nfpa.org/codes-and-standards/nfpa-70-standard-development/70" },
+  teslaMobile: { name: "Tesla: Mobile Connector (outlet, breaker and maximum current chart)", url: "https://www.tesla.com/support/charging/mobile-connector" },
+  cpscHeater: { name: "U.S. Consumer Product Safety Commission: Portable electric heater safety (PDF)", url: "https://www.cpsc.gov/s3fs-public/PortableElectricHeaterSafetyNSN.pdf" },
+  fsis: { name: "USDA Food Safety and Inspection Service: Keep your food safe during emergencies", url: "https://www.fsis.usda.gov/food-safety/safe-food-handling-and-preparation/emergencies/keep-your-food-safe-during-emergencies" },
+  redodoCharger: { name: "Redodo: Can I charge a LiFePO4 battery with a normal charger?", url: "https://www.redodopower.com/blogs/learn-about-lithium/can-i-charge-lifepo4-battery-with-a-normal-charger" },
+  redodoCold: { name: "Redodo: Self-heating vs low-temperature protection", url: "https://www.redodopower.com/blogs/learn-about-lithium/self-heating-vs-low-temperature-protection" },
 } satisfies Record<string, Source>;
 
 // ---------------------------------------------------------------- figures read on QUESTIONS_UPDATED
@@ -377,6 +390,7 @@ export const TOPICS: Topic[] = [
         id: "solar-panels-to-charge-ev",
         q: "How many solar panels does it take to charge an EV?",
         a: `For 1,000 miles a month in a compact SUV like the ${typical.year} ${typical.make} ${typical.model} (${typical.kwhPer100mi} kWh per 100 miles, EPA), you need about ${n0(evYearKwh)} kWh a year. That is about ${n1(evKw(az))} kW of panels (${evPanels(az)} panels of ${PANEL_WATTS} W) in Arizona and about ${n1(evKw(wa))} kW (${evPanels(wa)} panels) in Washington. Panels make that energy in daytime, so unless the car charges at midday, net metering or a battery covers the timing.`,
+        safety: "Roof solar is permanent electrical work: it needs a licensed installer, a permit and your utility's approval to connect.",
         detail: [
           {
             table: {
@@ -401,6 +415,7 @@ export const TOPICS: Topic[] = [
         id: "plug-in-solar-legal",
         q: "Is plug-in balcony solar legal in my state?",
         a: `As of our ${formatDate(LAW_REVIEWED)} review, ${lawStates.length} states have passed plug-in solar laws: ${listNames(lawInForce)} already, and ${listNames(lawLater)} from 2027. Most cap a kit at 1,200 W, and most require a kit certified by a testing lab. Elsewhere, connecting any generator to the grid falls under your utility's normal interconnection rules, so ask the utility first.`,
+        safety: "Use only a kit certified for plug-in use (look for UL 3700, or the listing your state names) with an inverter that shuts off in a power cut. Plug it straight into a wall outlet, never an extension cord or power strip, keep within your state's size limit and give the utility any notice your law requires. In Maine, kits over 420 W need a licensed electrician and a dedicated circuit.",
         detail: [
           {
             ul: [
@@ -452,6 +467,7 @@ export const TOPICS: Topic[] = [
         id: "home-battery-outage-hours",
         q: "How long will a home battery power my house in an outage?",
         a: `One ${POWERWALL_3_KWH} kWh battery, such as a Tesla Powerwall 3, runs the average US home for about ${Math.round((POWERWALL_3_KWH / usDailyKwh) * 24)} hours, because the average home uses about ${n0(usDailyKwh)} kWh a day (EIA, 2024). Cut back to essentials and it lasts days: a fridge, Wi-Fi, four LED bulbs for five hours and two phone charges come to about ${n1(essentialsKwh)} kWh a day, so the same battery covers about ${half(POWERWALL_3_KWH / essentialsKwh)} days of that.`,
+        safety: "These run times assume a full battery set up to back up the circuits you want. Air conditioning, electric heat, a well pump or an EV charger drain it much faster. A home battery must be installed by a certified installer and a licensed electrician, with the permits your area requires.",
         detail: [
           { p: `To size your own: add up the daily kWh of what you want to keep running, multiply by the days of backup you want, and check the battery's continuous power rating covers everything that runs at once. The average US home's fridges use ${home.national.fridgeKwh} kWh a year (EIA), about ${n1((home.national.fridgeKwh / 365))} kWh a day.` },
           {
@@ -484,6 +500,7 @@ export const TOPICS: Topic[] = [
         id: "power-station-refrigerator",
         q: "How long will a portable power station run a refrigerator?",
         a: `About ${Math.round(fridgeHours(e100.capacityWh))} hours on a 1 kWh station and about ${Math.round(fridgeHours(e200.capacityWh))} hours on a 2 kWh one, for an average fridge. The average US home's fridges use ${home.national.fridgeKwh} kWh a year (EIA), about ${Math.round(FRIDGE_AVG_W)} W averaged over the day, and a station delivers roughly ${Math.round(USABLE_FRACTION * 100)}% of its rated capacity after inverter losses. Ready.gov says a closed fridge keeps food cold for about four hours, so you can run it in shifts and stretch any battery.`,
+        safety: "Check that the station's surge (peak) rating covers your fridge's start-up, and plug the fridge straight into the station, not through an extension cord or power strip. Keep the doors shut and a thermometer in the fridge: the USDA says to throw out perishable food that has been above 40 F for more than 2 hours.",
         detail: [
           {
             table: {
@@ -494,7 +511,7 @@ export const TOPICS: Topic[] = [
           },
           { p: "Ready.gov also says a full freezer holds its temperature for about 48 hours, and to throw out food that has reached 40 degrees or higher. Our fridge calculator lets you enter your own fridge's yearly kWh instead of the average." },
         ],
-        sources: [S.eiaRecs, S.ready, S.bluetti100, S.bluetti200, S.bluetti300],
+        sources: [S.eiaRecs, S.ready, S.bluetti100, S.bluetti200, S.bluetti300, S.fsis],
         tools: [{ href: "/power-station-for-refrigerator", label: "Fridge run-time calculator" }],
         picks: [e100, e200, e300].map((p) => ({ brand: "bluetti" as const, label: `Bluetti ${p.model}`, url: p.url, productId: p.id, note: `${n0(p.capacityWh)} Wh, about ${Math.round(fridgeHours(p.capacityWh))} hours of an average fridge` })),
       },
@@ -524,6 +541,7 @@ export const TOPICS: Topic[] = [
         id: "power-station-space-heater",
         q: "Can a power station run a space heater?",
         a: `Only briefly. If your heater is rated 1,500 W on high (check its label), it needs a station that can deliver at least 1,500 W continuously, and it drains the battery fast: the ${n0(e200.capacityWh)} Wh Bluetti ${e200.model} runs it for about ${n1((e200.capacityWh * USABLE_FRACTION) / HEATER_W)} hours, and a small 600 W station such as the Elite 30 V2 cannot run it at all. On a low setting it lasts longer in proportion to the watts.`,
+        safety: "Plug the heater straight into the station, never through an extension cord or power strip, which can overheat. The CPSC says to keep anything that can burn at least 3 feet away, set the heater on a level floor and never leave it running while you sleep or are out of the room. Use a heater with tip-over and overheat shutoff.",
         detail: [
           {
             table: {
@@ -539,7 +557,7 @@ export const TOPICS: Topic[] = [
           },
           { p: "Run time is the station's capacity, less about 15% for inverter losses, divided by the heater's watts." },
         ],
-        sources: [S.bluetti30, S.bluetti100, S.bluetti200, S.bluetti300],
+        sources: [S.bluetti30, S.bluetti100, S.bluetti200, S.bluetti300, S.cpscHeater],
         tools: [{ href: "/space-heater-cost", label: "What a space heater costs to run" }],
       },
     ],
@@ -604,6 +622,7 @@ export const TOPICS: Topic[] = [
         id: "level-1-or-level-2",
         q: "Do I need a Level 2 charger, or is a regular outlet enough?",
         a: `A regular 120-volt outlet may be enough. The Department of Energy says Level 1 adds about 5 miles of range per hour, about 40 miles in 8 hours, and that many drivers meet their daily needs charging overnight that way, if there is an outlet on a dedicated circuit near where they park. Level 2 at 240 volts adds about 25 miles an hour, or up to ${lectron.milesPerHour} with a 40-amp charger like the Lectron NEXUS, and suits longer commutes, irregular schedules or cars with large batteries.`,
+        safety: "Plug the charging cord straight into a grounded outlet in good condition, ideally on its own circuit; never use an extension cord or power strip. If the plug or outlet gets warm, stop charging and have an electrician check it.",
         detail: [
           { p: "The DOE gives a range of charging times from less than 20 minutes on a DC fast charger to 20 hours or more on Level 1, depending on how empty and how big the battery is, the car's built-in charger and the equipment." },
           { p: `A plug-in Level 2 charger needs a 240-volt outlet such as a NEMA 14-50; Lectron says a licensed electrician must install the outlet and a dedicated 240-volt circuit if you don't have one. The Lectron NEXUS was ${usd2(lectron.priceUsd)} on Lectron's site when we checked on October 25, 2026.` },
@@ -620,6 +639,7 @@ export const TOPICS: Topic[] = [
         id: "breaker-size-ev-charger",
         q: "What size breaker and how many amps do I need for a home EV charger?",
         a: "The circuit must be rated for 125% of what the charger draws, because EV charging is a continuous load under the National Electrical Code. That means a 32-amp charger on a 40-amp circuit, 40 amps on a 50-amp circuit and 48 amps on a 60-amp circuit. ChargePoint estimates 40 amps adds about 30 miles of range an hour and 48 amps about 36, and the Department of Energy notes that charging speed also depends on the car's built-in charger.",
+        safety: "Never put a bigger breaker on existing wire: the wire has to be rated for the breaker, or it can overheat. A licensed electrician should size the circuit, check your panel has room and pull any permit. If you use a NEMA 14-50 outlet, use a heavy-duty, industrial-grade one with its terminals tightened to spec; a cheap or loose outlet can overheat over hours of charging.",
         detail: [
           {
             table: {
@@ -636,18 +656,19 @@ export const TOPICS: Topic[] = [
           },
           { p: "The Department of Energy notes most residential Level 2 chargers run at up to 30 amps and need a dedicated 40-amp circuit to meet NEC Article 625. If your panel has limited capacity, ChargePoint says a licensed electrician should pick the highest amperage it has room for; even 24 amps adds about 18 miles an hour, roughly 140 miles over 8 hours." },
         ],
-        sources: [S.chargepoint, S.chargepointTips, S.afdcStations, S.afdcHome],
+        sources: [S.chargepoint, S.chargepointTips, S.afdcStations, S.afdcHome, S.nec],
         tools: [{ href: "/ev-charger-picker", label: "Which charger do I need? 1-minute picker" }, { href: "/ev-charger-installation-cost", label: "Charger installation cost" }],
       },
       {
         id: "nema-14-50-or-hardwired",
         q: "Should I use a NEMA 14-50 outlet or hardwire my EV charger?",
         a: `On a 50-amp NEMA 14-50 outlet the 125% rule caps charging at 40 amps, so faster chargers are hardwired. Hardwiring is also what ChargePoint recommends if local code requires a GFCI breaker for the outlet, and what Autel recommends for outdoor installs. EnergySage puts the cost difference between the two installs at about ${usd0(INSTALL_COST.hardwireVsPlug[0])} to ${usd0(INSTALL_COST.hardwireVsPlug[1])}.`,
+        safety: "A 14-50 outlet for charging should be a heavy-duty, industrial-grade one on its own circuit, installed by a licensed electrician with its terminals tightened to spec; cheap or loose outlets can overheat over hours of charging. Plug the charger straight in, never through an extension cord or adapter the charger maker does not approve.",
         detail: [
           { p: "ChargePoint allows plug-in installs only on 40-amp and 50-amp circuits (32 or 40 amps of charging) and does not recommend a GFCI breaker with its Home Flex, because the charger has its own charging circuit interrupting device." },
           { p: `Both Lectron's NEXUS (${usd2(lectron.priceUsd)}) and Autel's MaxiCharger AC Elite Home 40A (${usd0(autel40.priceUsd)}), both on the makers' sites on October 25, 2026, plug into a 14-50; Autel's 50-amp version is hardwired.` },
         ],
-        sources: [S.chargepoint, S.chargepointTips, S.autel40, S.installCost, S.lectron, S.eviqo],
+        sources: [S.chargepoint, S.chargepointTips, S.autel40, S.installCost, S.lectron, S.eviqo, S.nec],
         tools: [{ href: "/ev-charger-picker", label: "Which charger do I need? 1-minute picker" }, { href: "/best-home-ev-charger", label: "Plug-in and hardwired chargers compared" }],
         picks: [
           { brand: "lectron", label: "Lectron NEXUS 40A", url: lectron.url, note: "NEMA 14-50 plug-in, J1772 or Tesla plug" },
@@ -659,11 +680,12 @@ export const TOPICS: Topic[] = [
         id: "dryer-outlet-ev",
         q: "Can I charge my EV from my dryer outlet?",
         a: "Only at a reduced rate. If your dryer outlet is on a 30-amp circuit (check the breaker), the 125% rule for continuous loads limits charging to 24 amps, which ChargePoint estimates adds about 18 miles of range an hour. That needs a charger you can set to 24 amps or lower, and since 24 amps is the circuit's whole continuous limit, nothing else should run on it while the car charges. Have a licensed electrician check the circuit before relying on it.",
+        safety: "Only on a circuit and outlet in good condition: if the outlet is loose, worn, discolored or gets warm, or you are not sure about the wiring, have a licensed electrician check it first. Set the charger to 24 amps or lower, or use an adapter that limits it to 24 amps. Never use an extension cord or a cheap plug splitter, and never run the dryer while the car charges unless you use a listed sharing device made for it. Older 3-prong dryer outlets (NEMA 10-30) have no separate ground wire; ask an electrician before charging from one.",
         detail: [
           { p: "For faster charging, a new 40- or 50-amp circuit gives 32 or 40 amps (25 or 30 miles an hour, ChargePoint's estimates); the installation cost page shows what adding one costs in your state." },
           { p: "Lectron's portable charger adjusts from 8 to 40 amps and comes with plugs for an ordinary outlet and a NEMA 14-50; check that any adapter you use is rated for your outlet." },
         ],
-        sources: [S.chargepoint, S.chargepointTips, S.afdcHome, S.lectronPortable],
+        sources: [S.chargepoint, S.chargepointTips, S.afdcHome, S.lectronPortable, S.nec, S.teslaMobile],
         tools: [{ href: "/ev-charger-picker", label: "Which charger do I need? 1-minute picker" }, { href: "/ev-charger-installation-cost", label: "Cost to add a charging circuit" }],
       },
       {
@@ -703,6 +725,7 @@ export const TOPICS: Topic[] = [
         id: "trolling-motor-battery-life",
         q: "How long will a trolling motor battery last?",
         a: `Divide the battery's usable amp-hours by what the motor draws. A ${m55.thrustLb} lb, 12-volt Minn Kota draws up to ${m55.maxAmps} amps at full speed, so a 100Ah lithium battery runs it about ${n0(runtimeHours(m55, 1, 100))} hours flat out and about ${n0(runtimeHours(m55, 0.5, 100))} at half speed. A 100Ah AGM, which should only be run down halfway, gives about half that: ${n0(runtimeHours(m55, 1, agmUsableAh))} and ${n0(runtimeHours(m55, 0.5, agmUsableAh))} hours.`,
+        safety: "Protect the motor leads with the circuit breaker or fuse the motor maker specifies (Minn Kota lists a 60 A breaker for its 50 to 55 lb, 12-volt motors) and the wire size its manual gives for your cable length. Keep the terminals tight and covered.",
         detail: [
           {
             table: {
@@ -721,6 +744,7 @@ export const TOPICS: Topic[] = [
         id: "trolling-motor-battery-size",
         q: "What size battery do I need for my trolling motor?",
         a: "Match the voltage first, then pick capacity for your day. A 12-volt motor runs on one 12-volt battery; for 24 or 36 volts you wire two or three 12-volt batteries in series, or use one 24- or 36-volt lithium battery. Minn Kota recommends a deep-cycle marine battery of at least 105 amp-hours for its 12-volt Endura C2, and Redodo recommends its 12V 100Ah lithium for 30 to 70 lb thrust motors.",
+        safety: "Wire batteries in series only with identical batteries of the same type, age and charge, keep every terminal tight and covered, and protect the motor leads with the breaker or fuse the motor maker specifies.",
         detail: [
           { p: "Connecting batteries in series raises the voltage; connecting them in parallel raises the capacity (Victron, Wiring Unlimited)." },
           { p: "Redodo says its 12V 100Ah gives the same usable energy as a 200Ah lead-acid battery, because it is rated for full discharge while Renogy advises not taking its AGM below 50%. Use the runtime calculator to check a battery against your motor and speed." },
@@ -736,10 +760,11 @@ export const TOPICS: Topic[] = [
         id: "charge-lithium-regular-charger",
         q: "Can I charge a lithium trolling battery with a regular charger?",
         a: "Use a charger with a lithium (LiFePO4) setting. Redodo specifies a 14.6-volt LiFePO4 charger for its 12V 100Ah battery and says a 20-amp one refills it in about 5 hours. Before using a lead-acid or AGM mode, check that its voltages match the battery maker's charging spec; if they don't, buy a lithium charger.",
+        safety: "Never use a lead-acid charger's equalize, desulfate or repair mode on a lithium battery; those modes push the voltage too high. Don't charge a LiFePO4 battery below freezing (32 F) unless its maker says it has low-temperature charge protection or a built-in heater.",
         detail: [
           { p: "Our boat charging guide covers onboard chargers, alternators and solar for 12, 24 and 36-volt setups." },
         ],
-        sources: [S.redodo100],
+        sources: [S.redodo100, S.redodoCharger, S.redodoCold],
         tools: [{ href: "/charge-lithium-battery-on-boat", label: "Charging lithium on a boat" }],
       },
       {

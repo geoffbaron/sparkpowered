@@ -119,7 +119,7 @@ export default function BestHomeEvChargerPage() {
     },
     {
       q: "Do I need a Level 2 charger at all?",
-      a: `Not always. An ordinary 120-volt outlet adds about ${level1Mph} miles of range an hour, roughly ${level1Mph * 10} miles overnight, which covers many commutes. Level 2 refills even a long day's driving overnight.`,
+      a: `Not always. An ordinary 120-volt outlet adds about ${level1Mph} miles of range an hour, roughly ${level1Mph * 10} miles overnight, which covers many commutes. Plug the cord straight into a grounded outlet in good condition, never an extension cord or power strip. Level 2 refills even a long day's driving overnight.`,
     },
   ];
 
@@ -243,8 +243,8 @@ export default function BestHomeEvChargerPage() {
             label="Best for renters and second homes"
             name={`Lectron ${lp.name}`}
             icon="car"
-            why="Works from an ordinary outlet or a 240-volt one, adjustable from 8 to 40 amps, and goes with you when you move. Tesla (NACS) plug."
-            life={["No installation if you have the outlet", "Ordinary or 240-volt outlet"]}
+            why="Works from an ordinary outlet (keep it at 12 amps or less there) or a NEMA 14-50 on its own 50-amp circuit (up to 40 amps), and goes with you when you move. Never use an extension cord or adapter. Tesla (NACS) plug."
+            life={["No installation if you have a checked outlet", "Ordinary or NEMA 14-50 outlet"]}
             priceUsd={lp.priceUsd}
             brand="lectron"
             productId={lp.id}
@@ -316,7 +316,7 @@ export default function BestHomeEvChargerPage() {
           <p className="text-stone-700 leading-relaxed max-w-3xl">
             Installation usually costs more than the charger. Qmerit&apos;s 2026 data, published by EnergySage, puts the US average at{" "}
             {money(INSTALL_COST.usAverage)} for labor and materials, from {money(INSTALL_COST.byState.OR)} in Oregon to{" "}
-            {money(INSTALL_COST.byState.MS)} in Mississippi. A plug-in charger next to an existing 240-volt outlet costs nothing to install.{" "}
+            {money(INSTALL_COST.byState.MS)} in Mississippi. A plug-in charger next to an existing NEMA 14-50 outlet costs nothing to install, once an electrician has checked the outlet is on its own 50-amp circuit, in good condition and GFCI-protected where code requires.{" "}
             <Link href="/ev-charger-installation-cost" className="text-spark-orange font-semibold underline underline-offset-2">
               Estimate your installation cost by state
             </Link>

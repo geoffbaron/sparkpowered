@@ -84,11 +84,15 @@ export default function ChargeOnBoatPage() {
           <p>
             <strong>At home or the dock:</strong> a plug-in lithium charger for your voltage, from{" "}
             <PartnerLink brand="redodo" productId={c12.id} productUrl={c12.url}>{money(c12.priceUsd)} for 12 V</PartnerLink>.
+            At the dock, plug into a GFCI-protected outlet or pedestal with a marine-rated cord, never a household extension cord, keep the
+            charger dry and unplug the motor while charging. A charger mounted on the boat should be a marine on-board charger. Never swim near
+            a dock with power.
           </p>
           <p>
             <strong>While the engine runs:</strong> a DC-to-DC charger, such as the{" "}
             <PartnerLink brand="redodo" productId={dcdc.id} productUrl={dcdc.url}>Redodo 12V 40A with MPPT</PartnerLink> ({money(dcdc.priceUsd)}),
-            which also takes a solar panel. Never wire a lithium battery straight to the alternator.
+            which also takes a solar panel. Never wire a lithium battery straight to the alternator. Fuse the DC-to-DC charger&apos;s input and
+            output cables near each battery, at the sizes in its manual.
           </p>
         </QuickAnswer>
 
@@ -176,7 +180,7 @@ export default function ChargeOnBoatPage() {
           <div className="grid gap-3">
             <Callout>
               <strong>&quot;Lithium needs babysitting.&quot;</strong> Less than lead-acid. There&apos;s no water to top up, it doesn&apos;t need a full
-              charge after every trip to stay healthy, and the battery&apos;s own management system stops it overcharging.
+              charge after every trip to stay healthy, but set every charger to its lithium profile: the battery&apos;s management system is a backstop, not the main control.
             </Callout>
             <Callout>
               <strong>&quot;Charging gear makes lithium too expensive.&quot;</strong> A lithium charger starts at {money(c12.priceUsd)}. Many marine
@@ -187,7 +191,8 @@ export default function ChargeOnBoatPage() {
 
         <Faq items={faqs} path={PATH} />
         <Disclaimer>
-          Follow your battery, charger and engine makers&apos; wiring instructions and fuse every connection. Prices are copied from makers&apos; US
+          Follow your battery, charger and engine makers&apos; wiring instructions and fuse every connection close to the battery. Never use a
+          lead-acid charger&apos;s equalize or desulfate mode on lithium, and don&apos;t charge below freezing unless the battery has low-temperature protection. Prices are copied from makers&apos; US
           websites on {formatDate(BOATING_CHECKED)} and change often. Redodo and Bluetti links are sponsored.
         </Disclaimer>
         <Sources

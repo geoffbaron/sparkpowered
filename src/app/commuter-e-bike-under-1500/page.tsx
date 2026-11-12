@@ -128,7 +128,7 @@ export default function CommuterEbikePage() {
             </Callout>
             <Callout>
               <strong>Where you&apos;ll park it.</strong> Secure, dry storage protects the battery. If it lives in an apartment, a folding bike
-              or a removable battery you can charge indoors makes life easier.
+              or a removable battery you can charge indoors makes life easier. Charge it with the maker&apos;s charger, while you&apos;re home and awake, on a hard surface away from exits and anything that burns.
             </Callout>
           </div>
         </Section>

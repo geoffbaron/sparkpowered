@@ -241,7 +241,7 @@ export default function LithiumRvBatteryPage() {
             label="Best for cold-weather camping"
             name={fullName(heated)}
             icon="heat"
-            why="Warms itself before charging below freezing, so solar or your alternator can still top it up on a frosty morning."
+            why="Warms itself before charging below freezing, so solar, or your alternator through a DC-to-DC charger, can still top it up on a frosty morning."
             life={["Charges below 32°F", "Same 1,280 Wh as the standard 100 Ah"]}
             priceUsd={heated.priceUsd}
             brand="redodo"
@@ -253,7 +253,7 @@ export default function LithiumRvBatteryPage() {
             label="Best for boondocking and big loads"
             name={fullName(big)}
             icon="sun"
-            why={`Three days of fridge, lights, CPAP and laptop in one box, and 2,560 W continuous for a coffee maker or microwave through an inverter. Want it lighter? The ${plus.short} (${money(plus.priceUsd)}) has the same power output and two-thirds the energy.`}
+            why={`Three days of fridge, lights, CPAP and laptop in one box, and 2,560 W continuous for a coffee maker or microwave through an inverter (that is over 200 A at 12 V: use the inverter maker's cable size and a fuse at the battery, and have an RV technician connect any inverter to the RV's AC wiring). Want it lighter? The ${plus.short} (${money(plus.priceUsd)}) has the same power output and two-thirds the energy.`}
             life={["Fridge, lights, CPAP, laptop: about 3 days", `${big.weightLb} lb vs six AGMs`]}
             priceUsd={big.priceUsd}
             brand="redodo"
@@ -277,7 +277,7 @@ export default function LithiumRvBatteryPage() {
             label="For off-grid cabins and home solar"
             name={fullName(home48)}
             icon="home"
-            why="A 48 V building block for solar systems with a 48 V inverter. Four together store 20 kWh, with Bluetooth monitoring on each."
+            why="A 48 V building block for solar systems with a 48 V inverter. Four together store 20 kWh, with Bluetooth monitoring on each. A home or cabin battery bank falls under the electrical code: get a permit and have a licensed electrician install it."
             life={["5,120 Wh per battery", "Up to 4 in parallel"]}
             priceUsd={home48.priceUsd}
             brand="redodo"
@@ -365,7 +365,8 @@ export default function LithiumRvBatteryPage() {
             </p>
             <p>
               Wiring it yourself? Panels charge the battery through the controller, never straight. Connect the battery side
-              first and the panels last, with a fuse on each positive cable:
+              first and the panels last, with a fuse on each positive cable (within 7 inches of the battery), wire sized for the current, the panels
+              covered or their breaker open while you work, and the controller and inverter in a dry, ventilated spot:
             </p>
             <HowToVideo video={SOLAR_TO_BATTERY_VIDEO} />
             <p>
@@ -429,7 +430,8 @@ export default function LithiumRvBatteryPage() {
         <Disclaimer>
           Prices and specifications are copied from the makers&apos; US websites on the dates shown and change often. Daily
           use figures are typical values; your appliances may use more or less. Have a qualified technician check your
-          converter, alternator charging and wiring when you change battery type.
+          converter, alternator charging and wiring when you change battery type. Lower risk is not no risk: secure the battery so it can&apos;t
+          slide, cover the terminals and fuse it close to the battery.
         </Disclaimer>
         <Sources
           items={[

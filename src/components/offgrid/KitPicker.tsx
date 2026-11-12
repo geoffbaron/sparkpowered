@@ -333,7 +333,7 @@ function Chips({ cov, t, kit, need }: { cov: Coverage; t: ReturnType<typeof conf
       {cov.inputCapped && (
         <p className="mt-1 text-xs text-stone-700">
           This station takes at most {fmtW(kit.solarInputW)} of solar, so no number of panels reaches your {fmtW(need.panelW)} December need. Plan on a
-          generator for dark spells.
+          generator for dark spells, run outdoors only, at least 20 feet from the house.
         </p>
       )}
       {!cov.inputCapped && cov.panelPct != null && cov.panelPct < 100 && (
@@ -350,7 +350,7 @@ function TooBig({ need }: { need: KitNeed }) {
       <p className="text-sm text-stone-800 mt-1">
         No kit we list holds {fmtKwh(need.batteryWh)}
         {need.runningW > 0 ? <> and puts out {fmtW(need.runningW)} at once</> : null}. The closest are below, with what they fall short by. A system this
-        size is usually built from components: separate panels, a charge controller, an inverter and a battery bank, often installed by an electrician.
+        size is usually built from components: separate panels, a charge controller, an inverter and a battery bank. A component system is wired under the National Electrical Code (Article 690): fused strings, DC disconnects, grounding and properly sized wire. Get a permit and have a licensed electrician install or inspect it.
       </p>
       <p className="text-sm mt-2 flex flex-wrap gap-x-4 gap-y-1">
         <PartnerLink brand="shopsolar">Component systems at Shop Solar Kits</PartnerLink>

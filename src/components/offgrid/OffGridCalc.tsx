@@ -160,7 +160,7 @@ export default function OffGridCalc({ states, fallbackAbbr, initialAbbr }: Props
         </p>
         <p className="text-xs text-muted mt-4">
           Sized for December, the darkest month. The rest of the year you will have spare power. The US Department of Energy also advises a
-          backup generator for long cloudy spells.
+          backup generator for long cloudy spells; run it outdoors only, at least 20 feet from the building, with carbon monoxide alarms inside.
         </p>
       </div>
     </div>

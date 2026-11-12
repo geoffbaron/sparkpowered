@@ -60,7 +60,7 @@ export default function KayakBatteryPage() {
     },
     {
       q: "Can I run my fish finder off the trolling motor battery?",
-      a: "Yes, with an inline fuse on the fish finder lead. A fish finder draws about 1 A, which barely dents a 50Ah lithium. Some anglers prefer a separate small battery so motor noise doesn't show on the sonar screen.",
+      a: "Yes, with an inline fuse on the fish finder lead, at the size in the fish finder's manual, at the battery end. A fish finder draws about 1 A, which barely dents a 50Ah lithium. Some anglers prefer a separate small battery so motor noise doesn't show on the sonar screen.",
     },
     {
       q: "Where should the battery go in a kayak?",
@@ -220,7 +220,7 @@ export default function KayakBatteryPage() {
               <strong>&quot;Lithium isn&apos;t safe on the water.&quot;</strong> These are lithium iron phosphate (LiFePO4) batteries, the most
               stable lithium chemistry (
               <a href={BATTERY_FACTS.lfpSafety.url} className="underline" rel="noopener">Battery University</a>), with a battery management system
-              that cuts off on short circuits and overcharging. Fuse the main lead, as with any battery.
+              that cuts off on short circuits and overcharging. Fuse the main lead, as with any battery. Lower risk is not no risk: secure it so it can&apos;t slide, cover the terminals, fuse it within 7 inches of the battery and keep it out of standing water.
             </Callout>
           </div>
         </Section>
@@ -236,7 +236,8 @@ export default function KayakBatteryPage() {
 
         <Faq items={faqs} path={PATH} />
         <Disclaimer>
-          Runtimes are calm-water estimates. Prices and specs are copied from makers&apos; US websites on the dates shown and change often.
+          Runtimes are calm-water estimates. Adding a motor, even an electric one, means most states require you to register the kayak; wear
+          a life jacket and follow your state&apos;s boating rules. Prices and specs are copied from makers&apos; US websites on the dates shown and change often.
           Redodo, Bluetti and Piscifun links are sponsored; Dakota Lithium is a plain link.
         </Disclaimer>
         <Sources

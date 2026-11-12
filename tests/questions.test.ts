@@ -88,3 +88,26 @@ test("every question has a worked example with a source and a calculator link", 
     assert.doesNotMatch(q.example.text, /NaN|undefined|Infinity/, `${q.id} example text`);
   }
 });
+
+test("answers that tell people to plug in, wire, charge or run something carry safety conditions", () => {
+  const needSafety = [
+    "dryer-outlet-ev",
+    "breaker-size-ev-charger",
+    "nema-14-50-or-hardwired",
+    "level-1-or-level-2",
+    "home-battery-outage-hours",
+    "power-station-refrigerator",
+    "power-station-space-heater",
+    "trolling-motor-battery-life",
+    "trolling-motor-battery-size",
+    "charge-lithium-regular-charger",
+    "plug-in-solar-legal",
+    "solar-panels-to-charge-ev",
+  ];
+  for (const id of needSafety) {
+    const q = ALL_QUESTIONS.find((x) => x.question.id === id)?.question;
+    assert.ok(q, `${id} not found`);
+    assert.ok(q.safety && q.safety.length > 40, `${id} has no safety conditions`);
+    assert.doesNotMatch(q.safety, /NaN|undefined/, `${id} safety text`);
+  }
+});

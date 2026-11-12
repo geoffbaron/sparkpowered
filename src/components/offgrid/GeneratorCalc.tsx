@@ -95,7 +95,7 @@ export default function GeneratorCalc() {
             </ul>
             <p className="text-xs text-muted mt-4">
               Fuel use is the maker&apos;s figure, divided out: tank ÷ runtime = fuel an hour. Real use varies with load and conditions, so keep a
-              margin.
+              margin. Run a generator outdoors only, at least 20 feet from the house with the exhaust pointed away from doors, windows and vents; never in a garage, shed or crawlspace, even with the door open; and fit battery carbon monoxide alarms.
             </p>
           </>
         ) : (

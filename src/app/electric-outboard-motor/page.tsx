@@ -235,7 +235,7 @@ export default function ElectricOutboardPage() {
             </Callout>
             <Callout>
               <strong>&quot;You&apos;ll be stranded when the battery dies.&quot;</strong> At a slow troll the makers quote 10 hours or more on one battery;
-              flat out it is about an hour. Plan the trip the way you would a small fuel tank, and carry a paddle, as you should with gas.
+              flat out it is about an hour. Plan the trip the way you would a small fuel tank, and carry a paddle, as you should with gas. Wear the kill-switch lanyard, carry a life jacket for everyone aboard, and register the boat: most states count an electric motor as a motor under their boating laws.
             </Callout>
             <Callout>
               <strong>&quot;They cost too much.&quot;</strong> Up front, yes, by about $1,200 to $1,600 for a small motor. Fuel and upkeep claw some of

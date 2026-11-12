@@ -328,7 +328,7 @@ export const READY_KIT: KitItem[] = [
   { id: "dust-mask", text: "Dust mask to help filter contaminated air", group: "basic" },
   { id: "sheeting", text: "Plastic sheeting, scissors and duct tape to shelter in place", group: "basic" },
   { id: "sanitation", text: "Moist towelettes, garbage bags and plastic ties for personal sanitation", group: "basic" },
-  { id: "wrench", text: "Wrench or pliers to turn off utilities", group: "basic" },
+  { id: "wrench", text: "Wrench or pliers to turn off utilities (turn off gas only if you smell gas or hear hissing; only the gas company or a licensed pro should turn it back on)", group: "basic" },
   { id: "can-opener", text: "Manual can opener for food", group: "basic" },
   { id: "maps", text: "Local maps", group: "basic" },
   { id: "phone", text: "Cell phone with chargers and a backup battery", group: "basic" },

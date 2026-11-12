@@ -137,7 +137,7 @@ export default function HomeBatteryBackupPage() {
         <OurPick
           label="Our pick to keep the essentials on"
           name={fullName(essentials)}
-          why="Plug the fridge, router and a lamp into it and leave them there. When the power cuts out it takes over in about a hundredth of a second. No electrician needed."
+          why="Plug the fridge, router and a lamp straight into it (no power strip or light extension cord) and leave them there. When the power cuts out it takes over in about a hundredth of a second. No electrician needed, as long as you never connect it to your house wiring."
           life={[`Fridge alone: ${lifeSummary(essentials.capacityWh).fridge}`, `CPAP: ${lifeSummary(essentials.capacityWh).cpap}`]}
           priceUsd={essentials.priceUsd}
           brand={essentials.brand}

@@ -4,7 +4,7 @@ import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
   title: "Disclaimer",
-  description: "The limits of Spark Powered's calculators, data and information. Estimates only; not financial, tax or legal advice.",
+  description: "Safety first, and the limits of Spark Powered's calculators, data and information. Estimates only; not electrical, financial, tax or legal advice.",
   path: "/disclaimer",
 });
 
@@ -14,6 +14,15 @@ export default function DisclaimerPage() {
       <Breadcrumbs items={[{ name: "Disclaimer", path: "/disclaimer" }]} />
       <PageIntro title="Disclaimer" lede="Please read this before relying on anything on Spark Powered." />
       <div className="text-stone-700 leading-relaxed space-y-4">
+        <p id="safety" className="scroll-mt-24">
+          <strong>Safety comes first.</strong> Electricity, batteries, fuel and heaters can cause fires, shocks and
+          carbon monoxide poisoning. Our guides are general information to help you plan and ask the right questions,
+          not instructions for your home, vehicle or boat, and we cannot see your wiring or equipment. Always follow
+          the manufacturer&apos;s instructions and your local codes, use certified (listed) equipment, never use extension
+          cords, power strips or adapters a maker does not approve, and stop and call a licensed electrician if a plug,
+          outlet or cord gets warm or anything smells hot. If you are not sure something is safe, don&apos;t do it until a
+          qualified professional has checked it.
+        </p>
         <p>
           <strong>Estimates, not quotes.</strong> Our calculators and state pages use averages from public
           data. Your real costs and savings depend on your utility rate plan, how and when you use power,
@@ -41,8 +50,10 @@ export default function DisclaimerPage() {
           their articles and are not responsible for their content.
         </p>
         <p>
-          <strong>Electrical work.</strong> Chargers, solar panels and batteries must be installed by licensed
-          professionals under local codes and permits.
+          <strong>Electrical work.</strong> New circuits, outlets, EV chargers, solar panels, home batteries, transfer
+          switches and boat or RV wiring must be installed by licensed professionals under local codes, with any
+          permits and inspections they require. Never connect a generator or power station to house wiring through a
+          wall outlet.
         </p>
       </div>
 

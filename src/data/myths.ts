@@ -194,8 +194,8 @@ export const MYTHS: Myth[] = [
     topic: "solar",
     myth: "Solar is all or nothing. I'd need a $30,000 system.",
     verdict: "Myth",
-    short: "A plug-in solar kit starts under $500, plugs into an outlet, and needs no roof or installer.",
-    answer: "Plug-in (balcony) solar kits of one to four panels plug into an ordinary outdoor outlet and power whatever is running in your home while the sun is up. The nonprofit Bright Saver sells a 360 W kit for $414.17 to members, and several states now allow kits up to 1,200 W without utility paperwork. If your roof isn't right, community solar lets you subscribe to a shared array in states that allow it.",
+    short: "A plug-in solar kit starts under $500, plugs straight into an outdoor outlet in states that allow it, and needs no roof or installer.",
+    answer: "Plug-in (balcony) solar kits of one to four panels plug straight into an ordinary outdoor outlet (never an extension cord) in states that allow them, and power whatever is running in your home while the sun is up. The nonprofit Bright Saver sells a 360 W kit for $414.17 to members, and several states now allow kits up to 1,200 W without utility paperwork. If your roof isn't right, community solar lets you subscribe to a shared array in states that allow it.",
     sources: [S.brightSaver, S.communitySolar],
   },
   {

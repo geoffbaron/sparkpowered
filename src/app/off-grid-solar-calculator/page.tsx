@@ -194,7 +194,7 @@ export default function OffGridSolarCalculatorPage() {
               Under about 1,000 W of panels and a few kWh of battery, an all-in-one portable power station with solar input can do the job. See{" "}
               <Link href="/off-grid-cabin-solar-kit" className="underline">what size cabin solar kit you need</Link>. Bigger than that, you are
               looking at a component system with a separate inverter and battery bank, plus a backup generator, as the US Department of Energy
-              advises.
+              advises. A component system is wired under the National Electrical Code (Article 690): fused strings, DC disconnects, grounding and properly sized wire. Get a permit and have a licensed electrician install or inspect it. Run any generator outdoors, at least 20 feet from the building.
             </p>
             <p>
               Comparing that with the cost of bringing in a power line? See <Link href="/how-to-go-off-grid" className="underline">how to go off grid</Link>.

@@ -217,11 +217,11 @@ export default function CabinSolarKitPage() {
         <Section title="All-in-one station or component system?" id="type">
           <div className="text-stone-700 leading-relaxed space-y-3 max-w-3xl">
             <p>
-              <strong>All-in-one power station.</strong> Battery, inverter and solar charge controller in one box. Plug the panels in and go. It
+              <strong>All-in-one power station.</strong> Battery, inverter and solar charge controller in one box. Plug the panels in and go, after checking that their combined open-circuit voltage, with room for cold mornings, stays under the station&apos;s solar input limit. It
               suits a weekend or part-time cabin, and you can take it home in an outage. The limit is how many watts of solar it accepts.
             </p>
             <p>
-              <strong>Component system.</strong> Separate panels, charge controller, inverter and battery bank. It scales to a full-time home. Check with your county about permits before you buy. The US Department of Energy notes that the
+              <strong>Component system.</strong> Separate panels, charge controller, inverter and battery bank. It scales to a full-time home. Check with your county about permits before you buy: a component system is wired under the National Electrical Code (Article 690), with fused strings, DC disconnects, grounding and properly sized wire, so have a licensed electrician install or inspect it. The US Department of Energy notes that the
               equipment besides the panels, such as batteries, controllers and inverters, could be half the cost of a stand-alone system.
             </p>
             <Callout>

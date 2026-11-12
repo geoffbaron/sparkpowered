@@ -60,7 +60,7 @@ export default function FishFinderBatteryPage() {
     },
     {
       q: "Is a 16V battery OK for a fish finder?",
-      a: "Many units are built for it. Garmin lists 10 to 20 V for its STRIKER series, Humminbird 10 to 20 V for MEGA Live, and LiveScope Plus takes 10 to 32 V. Check your unit's input range before buying, and use a charger with a 16 V lithium setting.",
+      a: "Many units are built for it. Garmin lists 10 to 20 V for its STRIKER series, Humminbird 10 to 20 V for MEGA Live, and LiveScope Plus takes 10 to 32 V. Check your unit's input range before buying: a 16 V lithium reads about 18 V when full, so the unit's maximum must be above that. Use a charger with a 16 V lithium setting.",
     },
     {
       q: "What battery is best for ice fishing electronics?",

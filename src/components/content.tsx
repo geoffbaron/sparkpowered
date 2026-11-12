@@ -245,10 +245,11 @@ export function Disclaimer({ children }: { children?: React.ReactNode }) {
   return (
     <p className="mt-10 text-xs text-muted leading-relaxed max-w-3xl">
       {children ??
-        "Estimates only. Your actual costs depend on your utility's rate plan, how and when you charge or use power, and local prices. This is general information, not financial, tax or legal advice."}{" "}
-      See our{" "}
-      <Link href="/disclaimer" className="underline underline-offset-2">
-        disclaimer
+        "Estimates only. Your actual costs depend on your utility's rate plan, how and when you charge or use power, and local prices. This is general information, not electrical, financial, tax or legal advice."}{" "}
+      Safety first: follow each maker&apos;s instructions and your local codes, use certified equipment, and have a licensed
+      professional do any wiring. See our{" "}
+      <Link href="/disclaimer#safety" className="underline underline-offset-2">
+        safety notes and disclaimer
       </Link>
       .
     </p>

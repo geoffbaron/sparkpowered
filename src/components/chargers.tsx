@@ -144,7 +144,7 @@ export function HomeChargerGuide({ state }: { state?: StateEnergy }) {
       <div className="mt-5 text-stone-700 leading-relaxed space-y-3 max-w-3xl">
         <p>
           <strong>Do you need one?</strong> Not always. If you drive under about 40 miles a day, the cord that comes with many EVs
-          on an ordinary outlet adds roughly {Math.round(l1Mph * 10)} miles overnight (10 hours), which can be enough. A 240-volt
+          on an ordinary outlet adds roughly {Math.round(l1Mph * 10)} miles overnight (10 hours), which can be enough. Use a grounded outlet in good condition, ideally with nothing else running on the circuit, and plug the cord straight in: no extension cord or power strip. If the plug or outlet gets hot, stop and have an electrician look at it. A 240-volt
           charger refills even a long day&apos;s driving overnight, so you never think about it.
         </p>
         <p>
@@ -155,7 +155,8 @@ export function HomeChargerGuide({ state }: { state?: StateEnergy }) {
         </p>
         <p>
           <strong>Renting or not ready to wire?</strong> Lectron&apos;s portable charger ({usd(portable.priceUsd, 2)} when we checked)
-          works on an ordinary outlet and on a 240-volt one, and moves with you.
+          works on an ordinary outlet (at 12 amps or less) and on a NEMA 14-50 on its own 50-amp circuit (up to 40 amps), and moves with
+          you. Never use an extension cord or plug adapter with it.
         </p>
       </div>
       <div className="mt-5">

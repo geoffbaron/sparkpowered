@@ -79,6 +79,13 @@ export function QuestionAnswer({ q, redodo }: { q: Question; redodo: boolean }) 
       <QuickAnswer>
         <p>{q.a}</p>
       </QuickAnswer>
+      {q.safety && (
+        <div className="mt-4">
+          <Callout tone="warn">
+            <strong>Safety first.</strong> {q.safety}
+          </Callout>
+        </div>
+      )}
       <div className="prose-sp text-stone-700 leading-relaxed space-y-4 mt-5">
         {q.detail.map((b, i) => (
           <DetailBlock key={i} b={b} />
@@ -160,7 +167,7 @@ export default function QuestionHub({ topic }: { topic: Topic }) {
             "@type": "Question",
             name: q.q,
             url: `${url(topic.path)}#${q.id}`,
-            acceptedAnswer: { "@type": "Answer", text: q.a },
+            acceptedAnswer: { "@type": "Answer", text: q.safety ? `${q.a} Safety first: ${q.safety}` : q.a },
           })),
         }}
       />

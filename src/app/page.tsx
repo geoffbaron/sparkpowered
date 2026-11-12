@@ -62,7 +62,7 @@ export default function HomePage() {
   const SWITCHES: { href: string; image: ImageKey; icon: string; title: string; payoff: string; cta: string }[] = [
     { href: "/ev-charging-cost", image: "ev", icon: "car", title: "Drive electric", payoff: `Charging at home is like paying ${usd(eGallon, 2)} a gallon. No more gas station stops.`, cta: "See your charging cost" },
     { href: "/solar-calculator", image: "solar-roof", icon: "sun", title: "Rooftop solar", payoff: "Make your own power for 25+ years and stop riding every rate hike.", cta: "See what you'd save" },
-    { href: "/plug-in-solar", image: "plugin-solar", icon: "plug", title: "Plug-in solar", payoff: `Kits start around ${usd(cheapestKit.priceUsd)}. Plugs into an outlet. Great for renters.`, cta: "Is it legal where you live?" },
+    { href: "/plug-in-solar", image: "plugin-solar", icon: "plug", title: "Plug-in solar", payoff: `Kits start around ${usd(cheapestKit.priceUsd)}. Plugs into an outlet where state law allows. Great for renters.`, cta: "Is it legal where you live?" },
     { href: "/best-portable-power-stations", image: "power-station", icon: "battery", title: "Backup power", payoff: `Keep the fridge, Wi-Fi and lights on for ${life.essentials} when the grid goes down.`, cta: "Find the right battery" },
     { href: "/home-battery-backup", image: "home-battery", icon: "home", title: "Whole-home battery", payoff: "The lights stay on automatically and silently, with no fuel to store.", cta: "Compare home batteries" },
     { href: "/go-electric", image: "heat-pump", icon: "heat", title: "Heat pump", payoff: "One quiet machine heats in winter and cools in summer.", cta: "See if it saves you money" },

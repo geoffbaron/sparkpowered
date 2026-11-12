@@ -62,7 +62,7 @@ export default function TrollingPage() {
     },
     {
       q: "Can I use a 12V lithium battery with my 24V trolling motor?",
-      a: "Yes, by wiring two identical 12 V lithium batteries in series, or buy a single 24 V battery, which is simpler, lighter and keeps the cells balanced. Never mix lithium and lead-acid, or old and new batteries, in one string.",
+      a: "Yes, by wiring two identical 12 V lithium batteries in series, or buy a single 24 V battery, which is simpler, lighter and keeps the cells balanced. Never mix lithium and lead-acid, or old and new batteries, in one string. When wiring in series, use the same make, model and age, charge each battery full on its own first, check the maker allows that many in series, fuse the main positive lead and charge the bank with a charger for the full voltage (or one per battery).",
     },
     {
       q: "Do I need a special charger for a lithium trolling battery?",
@@ -290,7 +290,7 @@ export default function TrollingPage() {
         <Faq items={faqs} path={PATH} />
         <Disclaimer>
           Runtimes depend on thrust setting, wind, current and boat weight. Prices and specifications are copied from makers&apos; US
-          websites on the dates shown and change often. Follow your motor&apos;s wiring and fuse instructions.
+          websites on the dates shown and change often. Follow your motor&apos;s wiring and fuse instructions. Put a manual-reset breaker or fuse on the positive lead close to the battery (within 7 inches, or 72 inches if the cable is sheathed), at the size your motor maker specifies (Minn Kota lists 60 A for its 50 to 55 lb 12 V motors), use the wire size in the motor&apos;s table, and keep terminals tight and covered. Check the battery&apos;s continuous current rating is above your motor&apos;s maximum draw.
         </Disclaimer>
         <Sources
           items={[

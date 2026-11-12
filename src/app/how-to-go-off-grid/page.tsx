@@ -59,11 +59,11 @@ export default function HowToGoOffGridPage() {
     },
     {
       q: "What is the first step to going off grid?",
-      a: "Write down everything you will run and for how long each day, then add up the watt-hours. That number sets the size of everything else. Cutting it, with LED lights, an efficient fridge and propane or wood for heat and cooking, is the cheapest way to shrink the system.",
+      a: "Write down everything you will run and for how long each day, then add up the watt-hours. That number sets the size of everything else. Cutting it, with LED lights, an efficient fridge and propane or wood for heat and cooking, is the cheapest way to shrink the system. Use fuel-burning appliances vented to the outside and installed to code, with carbon monoxide and smoke alarms on every level.",
     },
     {
       q: "Do I need a generator if I go off grid?",
-      a: "It is wise. The US Department of Energy recommends sizing batteries for cloudy weather and using a backup generator for the slumps. A generator lets you buy a smaller battery bank and covers long stormy spells.",
+      a: "It is wise. The US Department of Energy recommends sizing batteries for cloudy weather and using a backup generator for the slumps. A generator lets you buy a smaller battery bank and covers long stormy spells. Run a generator outdoors only, at least 20 feet from the house with the exhaust pointed away from doors, windows and vents; never in a garage, shed or crawlspace, even with the door open; and fit battery carbon monoxide alarms.",
     },
     {
       q: "Do I need a permit to go off grid?",
@@ -190,7 +190,7 @@ export default function HowToGoOffGridPage() {
             </li>
             <li>
               <strong>Shrink them.</strong> Every watt-hour you cut saves panels and battery. Propane or wood for heat, hot water and cooking keeps
-              the biggest loads off the system.
+              the biggest loads off the system; use appliances vented outside and installed to code, with carbon monoxide and smoke alarms on every level.
             </li>
             <li>
               <strong>Size for December.</strong> Off grid there is no utility to cover a dark month. Use your state&apos;s winter solar output, not
@@ -198,7 +198,7 @@ export default function HowToGoOffGridPage() {
             </li>
             <li>
               <strong>Pick days of storage, and a backup.</strong> The US Department of Energy advises sizing batteries for cloudy weather and
-              keeping a backup generator. See the <Link href="/generator-runtime-calculator" className="underline">generator fuel calculator</Link>.
+              keeping a backup generator, run outdoors only, at least 20 feet from the cabin, never in a shed or garage. See the <Link href="/generator-runtime-calculator" className="underline">generator fuel calculator</Link>.
             </li>
             <li>
               <strong>Get the line quote.</strong> Ask the utility what it would charge to connect. Compare it with your solar and battery quotes.

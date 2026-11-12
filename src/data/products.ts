@@ -210,7 +210,7 @@ const HOME: Product[] = [
     certifications: ["UL 1741 (inverter)", "UL 1973 (battery)"],
     notes: [
       "Weight is the inverter (152 lb) plus the battery in the box (213 lb); they are separate pieces.",
-      "Wired to your home through a transfer switch; with a 50 A automatic switch it is $5,999.99 on Nature's Generator's site.",
+      "Wired to your home through a transfer switch installed by a licensed electrician; with a 50 A automatic switch it is $5,999.99 on Nature's Generator's site. Never feed your house through a wall or dryer outlet.",
       "Ships by freight, curbside only.",
     ],
   },
@@ -363,7 +363,7 @@ const PORTABLE: Product[] = [
     listPriceUsd: 3299,
     notes: [
       "Sold out on EcoFlow's US site on Nov 6 2026; the price is the last one shown.",
-      "120/240 V output with a 30 A twist-lock (L14-30R) outlet for a transfer switch or home panel.",
+      "120/240 V output with a 30 A twist-lock (L14-30R) outlet for a transfer switch installed by a licensed electrician. Never feed your house through a wall or dryer outlet.",
       "Carried by two wheels and a handle; at 113.5 lb it is a roll-around unit, not a carry-around one.",
       "Up to 2,600 W of solar input across two ports."
     ],
@@ -505,7 +505,7 @@ const PORTABLE: Product[] = [
     notes: [
       "Jackery was still selling it in bundles, from $5,899 with a Battery Pack 5000 Plus.",
       "Sold out on Jackery's US site on Nov 6 2026; the price is the last one shown.",
-      "120/240 V output, 7,200 W continuous, for well pumps and home circuits through a transfer switch.",
+      "120/240 V output, 7,200 W continuous, for well pumps and home circuits through a transfer switch installed by a licensed electrician.",
       "Jackery says it scales to 60 kWh with battery packs and a second unit."
     ],
     expansion: "with Battery Pack 5000 Plus units (system figure)"
@@ -1174,7 +1174,7 @@ const PORTABLE: Product[] = [
     priceUsd: 2099.99,
     listPriceUsd: 2999.99,
     notes: [
-      "6,000 W at 120/240 V with a 30 A twist-lock (L14-30R) outlet for a transfer switch.",
+      "6,000 W at 120/240 V with a 30 A twist-lock (L14-30R) outlet for a transfer switch installed by a licensed electrician.",
       "1-year warranty on the main unit (the Power Pod has 3 + 2 years), shorter than most power stations we list.",
       "In stock on Nature's Generator's site on Nov 5 2026.",
     ],

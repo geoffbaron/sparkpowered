@@ -38,7 +38,7 @@ export default function GeneratorRuntimePage() {
     },
     {
       q: "How do I connect a generator to my house?",
-      a: "Only through a properly rated transfer switch installed by a qualified electrician (NFPA). Otherwise, plug appliances straight into the generator, or use heavy-duty outdoor-rated extension cords with all three prongs.",
+      a: "Only through a properly rated transfer switch installed by a qualified electrician (NFPA). Otherwise, plug appliances straight into the generator, or use heavy-duty outdoor-rated extension cords with all three prongs, rated for the total load and with no cuts or worn spots. Never plug a generator into a wall outlet: that can electrocute utility workers and neighbors. Keep it dry, on a level surface, outdoors at least 20 feet from the house.",
     },
   ];
 

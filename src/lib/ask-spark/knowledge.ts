@@ -201,7 +201,7 @@ function buildPack(): string {
 
   for (const t of TOPICS) {
     const qs = t.questions.map((q) => {
-      const lines = [`## Q: ${q.q}`, `Page: ${questionPath(t, q)}`, `Answer: ${q.a}`, ...q.detail.map(blockText)];
+      const lines = [`## Q: ${q.q}`, `Page: ${questionPath(t, q)}`, `Answer: ${q.a}`, ...(q.safety ? [`Safety first (always pass this on): ${q.safety}`] : []), ...q.detail.map(blockText)];
       if (q.example) lines.push(`Worked example: ${q.example.text} (calculator: ${q.example.tool.href})`);
       if (q.tools?.length) lines.push(`Calculators/tools: ${q.tools.map((x) => x.href).join(", ")}`);
       return lines.join("\n");

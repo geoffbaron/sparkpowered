@@ -351,8 +351,9 @@ export default async function WhatItRunsPage({ params }: Props) {
       </Section>
 
       <Callout>
-        <strong>Safe to run indoors.</strong> A battery power station makes no exhaust, so unlike a gas generator it can sit next to the fridge or the bed. Gas generators must run outdoors,
-        at least 20 ft from windows and doors (Ready.gov).
+        <strong>Fine to use indoors.</strong> A battery power station makes no exhaust, so unlike a gas generator it can sit inside near the fridge. Keep it on a hard, level
+        surface with its vents clear, away from water, heat and bedding, plug appliances straight into it (no power strips or light extension cords), and charge it as the
+        maker&apos;s manual says. Gas generators must run outdoors, at least 20 ft from windows and doors (Ready.gov).
       </Callout>
 
       <Faq items={faqs} path={path} />

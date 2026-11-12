@@ -170,7 +170,7 @@ export default function TrollingRuntimePage() {
           <div className="grid gap-3">
             <Callout>
               <strong>Hours = usable amp-hours / amps.</strong> A lithium battery gives you all of its rating; Renogy advises running its AGM no
-              lower than half. Batteries wired in series for 24 or 36 V keep the same amp-hours, so the sum works the same way.
+              lower than half. Batteries wired in series for 24 or 36 V keep the same amp-hours, so the sum works the same way. Use matched batteries of the same age and charge, and fuse the main positive lead.
             </Callout>
             <Callout>
               <strong>Speeds.</strong> {SPEEDS.map((s) => `${s.label}: ${s.hint}`).join(" ")}

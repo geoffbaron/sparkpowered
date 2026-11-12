@@ -150,7 +150,8 @@ export default function HeavyRiderEbikePage() {
 
         <Faq items={faqs} path={PATH} />
         <Disclaimer>
-          We compare makers&apos; stated specs; we have not ridden these bikes. Prices are from the makers&apos; US websites on {formatDate(EBIKES_CHECKED)},
+          We compare makers&apos; stated specs; we have not ridden these bikes. Look for UL 2849 certification of the whole electrical system, charge only with the maker&apos;s charger while you&apos;re awake and
+          nearby, and wear a helmet. Prices are from the makers&apos; US websites on {formatDate(EBIKES_CHECKED)},
           several during sales, and change often. Kingbull, Himiway and ENGWE links may earn us a commission; {alt.brand} is a plain link.
         </Disclaimer>
         <Sources items={ebikeSources(bikes, [alt])} />
