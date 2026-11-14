@@ -14,10 +14,10 @@ import { formatDate } from "@/lib/energy";
 import { kwh, money, productById, watts } from "@/lib/products";
 
 const PATH = "/black-friday-deals";
-const UPDATED = "2026-11-11";
+const UPDATED = "2026-11-14";
 const TITLE = "Black Friday 2026 Power Station and E-Bike Deals, Checked Against Our Price Log";
 const DESCRIPTION =
-  "Black Friday power station and e-bike deals from Anker SOLIX, Bluetti, Growatt and Himiway, read on each maker's store and compared with the prices we logged in October. See which deals are real and which were cheaper last month.";
+  "Black Friday power station and e-bike deals from Anker SOLIX, Bluetti and Himiway, read on each maker's store and compared with the prices we logged in October. See which deals are real and which were cheaper last month.";
 
 export const metadata: Metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH, type: "article" });
 
@@ -134,11 +134,11 @@ export default function BlackFridayDealsPage() {
   const faqs = [
     {
       q: "Are Black Friday power station deals real?",
-      a: "Some are. Makers show a crossed-out \"was\" price that is often higher than what they charged in recent weeks. We compare each sale price with the prices we read on the same store in October and early November. When we checked on Nov 11, Bluetti's Apex 300 and Growatt's HELIOS 3600 were at or below the lowest prices we'd logged, while Anker's C1000 Gen 2, C2000 Gen 2 and F3000 had been cheaper on Oct 26 than in Anker's early Black Friday sale.",
+      a: "Some are. Makers show a crossed-out \"was\" price that is often higher than what they charged in recent weeks. We compare each sale price with the prices we read on the same store in October and early November. When we checked on Nov 11, Bluetti's Apex 300 was at the lowest price we'd logged, while Anker's C1000 Gen 2, C2000 Gen 2 and F3000 had been cheaper on Oct 26 than in Anker's early Black Friday sale.",
     },
     {
       q: "When do these Black Friday sales end?",
-      a: "Anker SOLIX lists Nov 10-18, Bluetti Nov 5-18 (11:59 PM Pacific), Growatt Nov 10-30 and Himiway Nov 1-15. Each deal leaves this page when its maker's sale ends.",
+      a: "Anker SOLIX lists Nov 10-18, Bluetti Nov 5-18 (11:59 PM Pacific) and Himiway Nov 1-15. Each deal leaves this page when its maker's sale ends.",
     },
     {
       q: "Which power station should I get for outages?",

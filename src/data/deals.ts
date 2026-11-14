@@ -49,7 +49,7 @@ const CHECKED = "2026-11-11";
 const ANKER_SALE = { saleName: "Anker SOLIX Black Friday Early Access", saleUrl: "https://www.ankersolix.com/black-friday-pps", startsAt: "2026-11-10T00:00:00-08:00", endsAt: "2026-11-19T00:00:00-08:00", datesLabel: "Nov 10-18", endsLabel: "Nov 18" };
 // Bluetti's terms: 12:00 AM PST Nov 5 to 11:59 PM PST Nov 18, 2026.
 const BLUETTI_SALE = { saleName: "Bluetti Black Friday Early Access", saleUrl: "https://www.bluettipower.com/pages/black-friday", startsAt: "2026-11-05T00:00:00-08:00", endsAt: "2026-11-19T00:00:00-08:00", datesLabel: "Nov 5-18", endsLabel: "Nov 18" };
-const GROWATT_SALE = { saleName: "Growatt Black Friday Sale", saleUrl: "https://growattportable.com/", startsAt: "2026-11-10T00:00:00-08:00", endsAt: "2026-12-01T00:00:00-08:00", datesLabel: "Nov 10-30", endsLabel: "Nov 30" };
+// Growatt removed Nov 14: its store showed $1,599 with no sale price or code, so the $1,198.98 read on Nov 11 could not be confirmed.
 // Himiway's page: up to $1,000 off select e-bikes Nov 1-15 (its D5 2.0 gift offer runs to Nov 30,
 // but the page doesn't say which price lasts that long, so we stop showing prices after Nov 14).
 const HIMIWAY_SALE = { saleName: "Himiway Black Friday sale", saleUrl: "https://himiwaybike.com/pages/black-friday", startsAt: "2026-11-01T00:00:00-07:00", endsAt: "2026-11-15T00:00:00-08:00", datesLabel: "Nov 1-15", endsLabel: "Nov 14" };
@@ -62,13 +62,6 @@ export const BLACK_FRIDAY_2026: Deal[] = [
     log: [{ date: "2026-10-15", usd: 1599 }, { date: "2026-10-26", usd: 1599 }, { date: "2026-11-06", usd: 1499 }],
     ...BLUETTI_SALE, checked: CHECKED,
     howNote: "Bluetti also takes $50 off orders over $2,000 and adds a free kids' T-shirt or hoodie with an Apex 300.",
-  },
-  {
-    id: "bf26-growatt-helios-3600", brand: "growatt", kind: "power-station", productId: "growatt-helios-3600", name: "Growatt HELIOS 3600",
-    url: "https://growattportable.com/products/growatt-helios-3600-portable-power-station",
-    salePriceUsd: 1198.98, makerWasUsd: 1599,
-    log: [{ date: "2026-11-04", usd: 1599 }],
-    ...GROWATT_SALE, checked: CHECKED,
   },
   {
     id: "bf26-anker-c1000-gen-2", brand: "anker", kind: "power-station", productId: "anker-solix-c1000-gen-2", name: "Anker SOLIX C1000 Gen 2",
