@@ -587,7 +587,7 @@ const PORTABLE: Product[] = [
     category: "portable",
     url: "https://www.ankersolix.com/products/f3000",
     sourceUrl: "https://www.ankersolix.com/products/f3000",
-    retrieved: "2026-11-06",
+    retrieved: "2026-11-14",
     capacityWh: 3072,
     maxCapacityWh: 12288,
     acOutputW: 3600,
@@ -605,16 +605,16 @@ const PORTABLE: Product[] = [
     priceUsd: 1699.99,
     listPriceUsd: 1899.99,
     notes: [
-      "Price after Anker's auto-applied $200 code, shown on its page Nov 6 2026 (regular $1,899.99).",
+      "Price after Anker's auto-applied $200 code, shown on its page Nov 6 and Nov 14 2026 (regular $1,899.99).",
       "120 V only on its own; 240 V needs two units and Anker's Double Voltage Hub.",
       "TT-30 RV outlet delivers the full 3,600 W.",
-      "The BP3000 expansion battery was sold out when we checked."
+      "The BP3000 expansion battery was in stock on Nov 14 2026 at $999.99 after Anker's auto-applied $300 code (regular $1,299.99); it was sold out on Nov 6."
     ],
     expansion: "with up to three BP3000 expansion batteries",
     addOn: {
       model: "Anker SOLIX BP3000 Expansion Battery",
       capacityWh: 3072,
-      priceUsd: 1199.99,
+      priceUsd: 999.99,
       listPriceUsd: 1299.99,
       url: "https://www.ankersolix.com/products/bp3000-expansion-battery-for-f3000",
       maxUnits: 3,

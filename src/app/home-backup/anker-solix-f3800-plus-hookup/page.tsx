@@ -5,7 +5,7 @@ import { Breadcrumbs, Callout, Disclaimer, Faq, RelatedLinks, Section } from "@/
 import { QuickAnswer } from "@/components/guide-ui";
 import { ElectricianRule, HomeBackupLinks, WhatWeChecked } from "@/components/home-backup";
 import { HOME_BACKUP_HUB } from "@/data/home-backup";
-import { HOOKUP_COSTS, HOOKUP_PARTS, HOOKUP_SAFETY_SOURCES, range } from "@/data/hookup-parts";
+import { HOOKUP_COSTS, HOOKUP_PARTS, HOOKUP_SAFETY_SOURCES, range } from "@/data/hookup";
 import { formatDate } from "@/lib/energy";
 import { fullName, kwh, money, productById, watts } from "@/lib/products";
 import { JsonLd, pageMetadata, url } from "@/lib/seo";

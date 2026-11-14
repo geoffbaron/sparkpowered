@@ -123,3 +123,10 @@ Verdict: Bluetti's pages sell the AT1 but don't compare it with an interlock or 
 | Home Integration Kit guide (Bluetti_Sub_Panel_1.pdf) is image-only; no claims taken from it | cdn.shopify.com PDF | 2026-11-14 |
 
 Safety pass done (Nov 14 2026): electrician + permit on every option; neutral question sent to Bluetti support and the electrician, not answered by us; no wiring steps.
+
+## Price recheck (Grant request, Nov 14 2026)
+
+| Claim | Source | Read |
+|---|---|---|
+| Anker BP3000 expansion battery in stock ("Estimated dispatch within 7 days", Add to Cart): $1,299.99 regular, $999.99 after $300 auto code. products.ts F3000 add-on updated (was $1,199.99 and noted sold out from Nov 6) | ankersolix.com/products/bp3000-expansion-battery-for-f3000 | 2026-11-14 |
+| Anker F3000 unchanged: $1,699.99 after $200 code, in stock | ankersolix.com/products/f3000 | 2026-11-14 |
