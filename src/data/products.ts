@@ -726,7 +726,7 @@ const PORTABLE: Product[] = [
     category: "portable",
     url: "https://www.bluettipower.com/products/elite-200-v2-portable-power-station",
     sourceUrl: "https://www.bluettipower.com/products/elite-200-v2-portable-power-station",
-    retrieved: "2026-11-06",
+    retrieved: "2026-11-14",
     capacityWh: 2073.6,
     maxCapacityWh: null,
     notExpandable: true,
@@ -747,7 +747,7 @@ const PORTABLE: Product[] = [
     notes: [
       "Rated for 6,000 cycles to 80%, the highest rating among the 2 kWh units we list.",
       "Its surge figure applies to heating-type loads only (Bluetti's Power Lifting mode). Not expandable.",
-      "In stock on Bluetti's US site on Nov 6 2026."
+      "In stock on Bluetti's US site on Nov 14 2026."
     ]
   },
   {
@@ -889,7 +889,7 @@ const PORTABLE: Product[] = [
     weightLb: 83.78,
     solarInputW: 2400,
     acOutlets: 6,
-    upsMs: null,
+    upsMs: 20,
     warrantyYears: null,
     volts: "120/240V",
     install: "diy",
@@ -898,6 +898,7 @@ const PORTABLE: Product[] = [
     notes: [
       "120/240 V with a 50 A (14-50R) outlet; built as a home backup battery.",
       "Bluetti lists a 0 ms switchover in online UPS mode and 20 ms otherwise.",
+      "Its 7,680 W figure is Power Lifting for heating-type loads only (kettles, heaters), per Bluetti's user manual section 5.3, not a motor-start surge.",
       "Expands to 19.4 kWh with six B300K batteries; Bluetti says multiple units scale further."
     ],
     expansion: "with up to six B300K expansion batteries",
@@ -1011,7 +1012,7 @@ const PORTABLE: Product[] = [
     category: "portable",
     url: "https://iallpowers.com/products/allpowers-r3500-portable-power-station-3200w-3168wh",
     sourceUrl: "https://iallpowers.com/products/allpowers-r3500-portable-power-station-3200w-3168wh",
-    retrieved: "2026-11-04",
+    retrieved: "2026-11-14",
     capacityWh: 3168,
     maxCapacityWh: 6336,
     expansion: "1 B3000 battery (3,168 Wh); the B3000 was sold out on Nov 4 2026",
@@ -1031,7 +1032,7 @@ const PORTABLE: Product[] = [
     listPriceUsd: null,
     notes: [
       "120 V only, so it can't run a 240 V well pump.",
-      "In stock on ALLPOWERS' US site on Nov 4 2026.",
+      "In stock on ALLPOWERS' US site on Nov 14 2026.",
     ],
   },
   {

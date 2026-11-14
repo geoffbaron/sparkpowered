@@ -154,3 +154,97 @@ Verdict: no direct head-to-head; spec-only listicles and forums. Build, built on
 | NOT used: deals.ts shows a Growatt Black Friday price of $1,198.98 for the HELIOS 3600 (Nov 10-30). Growatt's product page on Nov 14 showed $1,599 with no code shown; flagged to Grant, not repeated on this page | growattportable.com | 2026-11-14 |
 
 Safety pass done (Nov 14 2026): 240 V into house circuits only via inlet+interlock, transfer switch or maker panel, licensed electrician and permit; no wiring steps.
+
+## /home-backup/furnace (dropped)
+
+Live Google check, 2026-11-14, query "power station for gas furnace blower" (google.com, hl=en, gl=us). 7 organic results with titles:
+1. reddit.com/r/preppers: "Powering Whole Home Gas Furnace with Portable ..."
+2. ecoflow.com/us/blog: "Portable Power Station for Gas Furnace: How to Choose ..." (maker blog)
+3. udpwr.com/blogs: "Gas Furnace Battery Backup: Power Station Sizing & ..." (maker blog)
+4. generatorchecker.com/best-for/gas-furnace-blower: "Best Power Station for a Gas Furnace Fan (Blower) (2026)"
+5. iallpowers.com/blogs: "Can a Portable Power Station Run a Gas Furnace?" (maker blog)
+6. homedepot.com: "Portable Power Stations" (category page)
+7. backuppowerhub.com: "Best Power Stations for HVAC: Complete Guide (2026)"
+Verdict: one forum out of seven; page 1 is three makers' blogs, two spec sites and a retailer. The plan's condition (build only if page 1 is mostly forums) is not met. Dropped; entry removed from src/data/home-backup.ts. The outage calculator keeps its furnace-blower load.
+
+## /home-backup/well-pump
+
+Live Google check, 2026-11-14, query "power station for well pump 240v". 7 organic results with titles:
+1. backuppowerhub.com: "Best Power Stations for Well Pump Backup"
+2. reddit.com/r/SolarDIY: "Best way to provide 240V for well pump?"
+3. generatorchecker.com/best-for/well-pump-1hp: "Best Power Station for a Well Pump (2026)"
+4. pvbat.com: "240V Well Pump Battery Backup | Split-Phase & Surge ..."
+5. amazon.com: "240v Portable Power Station" (search page)
+6. facebook.com/groups/offgridlivingsurvival: "240v backup power setup for water well pump"
+7. signaturesolar.com: "SoftStartUSA | SoftStart Well Pump" (retailer)
+Verdict: forums, spec sites and retailers; no page computes starting watts from the pump's own nameplate against in-stock models. Built.
+
+| Claim | Source | Read |
+|---|---|---|
+| 4-inch single-phase motors (without G suffix): 1/2 HP 115 V 2-wire max 12.0 A / 960 W, LRA 64.4; 1/2 HP 230 V 2-wire 6.0 A / 960 W, LRA 32.2; 3/4 HP 8.0 A / 1,310 W, LRA 40.7; 1 HP 10.4 A / 1,600 W, LRA 48.7; 1.5 HP 13.1 A / 2,280 W, LRA 66.2; 3-wire (standard control box) 1/2 HP 115 V Y12.0 / 960 W, LRA 50.5; 1/2 HP 230 V Y6.0 / 960 W, LRA 23; 3/4 HP Y8.0 / 1,310 W, LRA 34.2; 1 HP 10.4 / 1,600 W, LRA 41.8; 1.5 HP Y11.5 / 2,080 W, LRA 51.4; 2 HP Y13.2 / 2,555 W, LRA 53.1; 3 HP Y17.0 / 3,400 W, LRA 83.4 | Franklin Electric AIM Manual, 60 Hz Submersible Systems, 2026 edition (M1311 06-26), 4-inch single-phase motor specifications table, https://dwee.nebraska.gov/sites/default/files/water/2026_60Hz_AIM_Manual_Submersible_Systems.pdf | 2026-11-14 |
+| "The motor current goes from zero to locked rotor amps, then drops to running amps at full speed" | same, Reduced Voltage Starters section | 2026-11-14 |
+| Transfer switches "must be used any time a generator is used as standby or back up on power lines" | same, Generator Operation section | 2026-11-14 |
+| Single-phase encapsulated submersible motors "can only be used with the appropriate Franklin Electric constant pressure controller" (drives); soft starts "may not be compatible with SubMonitor/SubMonitor-Plus" | same, variable frequency drive and reduced voltage starter sections | 2026-11-14 |
+| Watts = volts × amps when a label gives amps | US DOE Energy Saver, Estimating appliance energy use (archived copy), already cited site-wide | 2026-11-14 |
+| Starting method: running watts plus the biggest motor's extra starting watts; water well pump 1/3 HP 1,000 W + 2,000 W | EWEB generator sizing sheet (pdftotext of the PDF) | 2026-11-14 |
+| Apex 300: "Power Lifting Mode ... power up to 7,680W pure resistive loads like kettles, electric blankets, hairdryers"; "This mode is only for pure resistive loads rated 3,840W-7,680W"; UPS 0 ms (240 V, specific outlets) or ≤20 ms. Data fix: products.ts Apex 300 now carries the heating-only note (motor surge = 3,840 W) and upsMs 20 | BLUETTI Apex 300 user manual (US EN), section 5.3 and UPS section, https://cdn.shopify.com/s/files/1/0550/5620/3836/files/Apex_300_User_Manual_US_EN.pdf; product page lists "Lifting Power 7,680W", no separate surge figure | 2026-11-14 |
+| Apex 300 $1,499 (compare-at $1,699), in stock; pure sine wave | bluettipower.com/products/apex-300-home-battery-backup (.js and page) | 2026-11-14 |
+| Pick rule (computed): tracked, in-stock station that runs the most Franklin 230 V motors, then starts the most, then cheapest -> Apex 300 (only in-stock tracked 240 V model; starts none on paper). 120 V 1/2 HP 3-wire start (5,808 W) covered on paper by Anker F3000, ALLPOWERS R3500, EcoFlow DELTA 3 Max Plus | computed from products.ts | 2026-11-14 |
+
+Safety pass done (2026-11-14): pump is wired in, so transfer switch or inlet + interlock by a licensed electrician with a permit (shared ElectricianRule box); backfeeding through dryer outlet or double-ended cord stated as illegal and deadly; don't open the control box; soft starter fitted by electrician or pump installer, matched to the motor maker's rules.
+
+## /home-backup/pellet-stove
+
+Live Google check, 2026-11-14, query "power station for pellet stove". 8 organic results:
+1. ecoflow.com/us/blog: "Pellet Stove Backup Power: Solutions for Power Outages" (maker blog)
+2. reddit.com/r/PelletStoveTalk: "What's your power back up for your stove?"
+3. secamerica.com: "SF512, Pellet Stove Battery Backup" (product)
+4. amazon.com: "Pellet Stove Battery Backup" (search page)
+5. hearth.com forums: "Pellet stove with battery back up?"
+6. facebook.com group: "What portable power stations work for pellet stoves?"
+7. jackery.com/blogs: "5 Best Pellet Stove Battery Backup for Power Outages" (maker blog)
+8. firewoodhoardersclub.com forums: "Battery Station for Pellet Stove"
+Verdict: four forums, two maker blogs selling their own units, a product page and a search page. Built.
+
+| Claim | Source | Read |
+|---|---|---|
+| US Stove 5660: "Electrical Rating 115-120 volts, 60 HZ, 3.0 Amps / Watts (operational) 180W / Watts (igniter running) 346W"; "A power surge protector is required"; "The heater will not operate during a power outage ... check the heater for smoke spillage and open a window" | US Stove 5660 owner's manual 851901T-0503J, https://www.usstove.com/wp-content/uploads/2023/05/5660-Owners-Manual.pdf (maker-hosted) | 2026-11-14 |
+| US Stove US5522-W: "110-120 Volts AC, 60 HZ, 3.0 Amps / Watts (operational) 162 (approx.) / Watts (igniter running) 332 (approx.)" | US5522-W manual 854002-0606M, https://www.usstove.com/wp-content/uploads/2023/08/854002-US5522-W-EN_FR.pdf (maker-hosted) | 2026-11-14 |
+| Harman P43/P61/P68: "120 VAC, 60 Hz, Start 4.2 Amps, Run 2.8 Amps" (= 504 W / 336 W at 120 V); "Some generator or battery back-up systems may not be compatible with the micro-processor electronics"; "A power failure will cause the combustion blower to stop running, which may lead to exhaust see[p]age into the room"; "The UPS provides safe shut-down only"; "Use only Harman® approved battery back-up devices"; "A surge protector is recommended" | Harman P-Series owner's manual 8390-044C, third-party copy https://assets.pellet-stove-parts-4less.com/website/manufacturers/harman/pellet/models/p43-c/harman-p43-c-owners-manual_mod_01.pdf (HHT's download server returned empty pages) | 2026-11-14 |
+| PelPro PP130: "Electrical Rating (On High) ... 120 VAC, 60 Hz, Start 2.6 Amps, Run 2.3 Amps" (= 312 W / 276 W); "A good surge protector is recommended" | PelPro PP130 owner's manual 7086-171I (May 6 2015), third-party copy https://assets.pellet-stove-parts-4less.com/website/manufacturers/pelpro/pellet/models/pp130/pelpro-pp130-owners-manual_mod_01.pdf | 2026-11-14 |
+| Harman back-up sheet: UPS "simply provide enough power for quick shut down"; APS1012SW "Pure Sine Wave Output", "No changes needed on pellet stove due to pure sine wave"; non-sine units "should be set to Continue Operation" | Harman Battery Backup Options HAR-0040U-0718, forum copy https://hearth.com/talk/attachments/har-battery-back-up-options-pdf.231401 (no Harman-hosted copy found) | 2026-11-14 |
+| Englander 25-PDVC: power interrupted more than about three minutes -> unit "OFF" when power returns, otherwise back to Start-Up; "If you see smoke coming out of your unit into the room due to a power failure, DO NOT OPEN THE HOPPER OR DOOR"; no electrical rating printed | Englander manual 46313A (2023-01-17), https://cdn.shopify.com/s/files/1/0782/2077/files/25PVD.pdf (Shopify CDN; store owner not confirmed) | 2026-11-14 |
+| Unverified, not used: Enviro Empress 500 W, Comfortbilt HP22 520/150 W, Breckwell SP1002 425/175 W (search snippets only; Enviro's own manuals behind a bot check) | - | 2026-11-14 |
+| Runtime = usable Wh (85%) ÷ running watts; switchover = each product's upsMs | src/lib/can-it-run.ts usableWh, products.ts | 2026-11-14 |
+| ALLPOWERS R3500 $1,199 (compare-at $2,099), in stock; "3200W Pure Sine Wave Inverter (6000W peak)"; UPS "only 15ms" | iallpowers.com/products/allpowers-r3500-portable-power-station-3200w-3168wh (.js and page) | 2026-11-14 |
+| Pick rule (computed): most usable Wh per dollar among in-stock tracked stations with a stated switchover -> ALLPOWERS R3500 | computed from products.ts | 2026-11-14 |
+| CO alarms on every level | Ready.gov, Power outages (OFFGRID_SOURCES.readyOutage) | 2026-11-14 |
+
+Safety pass done (2026-11-14): smoke on power loss (Harman, US Stove, Englander quoted), CO alarms on every level, plug straight into the station through the surge protector the manual calls for, no extension cord, station outside the stove's clearances, no backfeeding (charging from the wall is fine; feeding output into house wiring is illegal), transfer switch by a licensed electrician for any hard-wiring; no claim that a station rides through an outage mid-burn.
+
+## /home-backup/bluetti-elite-200-v2-solar-panels
+
+Live Google check, 2026-11-14, query "bluetti elite 200 v2 solar panel compatible". 8 organic results:
+1. reddit.com/r/bluetti: "Bluetti Elite 200 V2 – what solar panels can I safely add?"
+2. amazon.com: BLUETTI store "Solar Panel"
+3. generatorchecker.com/compatibility/solar/bluetti-elite-200-v2
+4. stationarena.com/products/bluetti-elite-200-v2/solar-panels
+5. backuppowerhub.com: "Bluetti Solar Panel Compatibility: Wiring Guide (2026)"
+6. bluettipower.com/collections/solar-panels
+7. bluettipower.com/products/elite-200-v2-portable-power-station
+8. bluettipower.com/products/bluetti-sp200l-solar-panel-200w
+Verdict: Bluetti's own pages list specs but no layouts or cold check; the rest are a forum question and spec sites. Built (homepage pick).
+
+| Claim | Source | Read |
+|---|---|---|
+| "Do not use solar panels with open circuit voltage higher than 60V. Solar input voltage range for the unit is 12V-60V"; "Voc: 12V-60V Current: 20A Max. Power: 1,000W Max."; both MC4 sets "will be connected in parallel ... if one set has two 200W (20V/10A) panels in series, the other set should also have two"; DC Input (XT60PM-M) 1,000W, 12-60V, 20A; MC4-XT60 solar cable in the box; PV setting: non-advanced 11-30 V I ≤ 8.2 A, 30-60 V I ≤ 20 A; advanced 11-16 V ≤ 8.2 A, 16-60 V ≤ 20 A; E033 PV overvoltage; "The unit is for off-grid use only. Do not connect its AC output to the grid"; third-party panels OK with Voc 12-60 V and MC4, avoid mixing; full in about 2.4 hours at 1,000 W | BLUETTI Elite 200 V2 user manual V1.0, https://s4.bluettipower.com/bluetti_lgf/support/2025/05/2e595f43-44bf-471a-8eff-da42abfbbcca.pdf | 2026-11-14 |
+| Product page: Solar Input 1,000W Max., 12V to 60V, 20A Max.; UPS ≤15ms; Inverter Type Pure Sine Wave; $899, in stock | bluettipower.com/products/elite-200-v2-portable-power-station (.js and page) | 2026-11-14 |
+| SORA 500: Voc 49.1 V, Isc 13.31 A, Vmp 40.92 V, Imp 10.22 A, MC4 | bluettipower.com/products/500w-portable-solar-panel | 2026-11-14 |
+| 350W: spec table Voc 44 V, Isc 11.4 A, Vmp 37 V, Imp 9.5 A; marketing line on the same page says "33V open-circuit voltage" (conflict; we use 44 V and say so) | bluettipower.com/products/350w-solar-panel | 2026-11-14 |
+| SP200L: OCV 24.6 V, Isc 10.8 A, MC4. SP100L: OCV 24.62 V, Isc 5.13 A, MC4. PV100 FX: Voc 41.4 V, Isc 3.05 A, MC4. SORA 60: OCV 27.5 V, Isc 2.76 A, DC5521 connector | each panel's bluettipower.com product page | 2026-11-14 |
+| Voc(cold) = Voc(STC) × (1 + (coefficient/100) × (Tmin − 25)); worked example 45 V, −0.36%/°C, −10°C -> 50.67 V; Table 690.7(A) factors range 1.02 at 24°C to 1.25 at −40°C; 1.18 at −17°C | John Wiles, PV Systems Math: Sample Calculations, IAEI Magazine Sept/Oct 2019, https://iaeimagazine.org/columns/photovoltaic/pv-systems-math-sample-calculations/ | 2026-11-14 |
+| Layout math (computed): 2 × SP200L series 49.2 V, 58.1 V at ×1.18, 61.5 V at ×1.25; 1 × SORA 500 57.9 / 61.4 V; 2 × 350W parallel Isc 22.8 A | src/lib/offgrid.ts pvLayout, tests/home-backup-loads.test.ts | 2026-11-14 |
+
+Safety pass done (2026-11-14): 60 V limit and E033 stated with the cold check; Bluetti's off-grid-only rule quoted; backfeeding through a wall or dryer outlet or double-ended cord stated as illegal; transfer switch by a licensed electrician with a permit for house circuits.
+
+Data discrepancies found, not fixed here (outside these pages): Bluetti's pages give the Elite 400 "3,900 W Lifting Power" (products.ts surgeW 5,200) and the Elite 100 V2 "Surge 2,700W" / "2,700W Lifting Power" (products.ts 3,600); the Elite 300 page shows both "Lifting Power: 4,800 W" and "Surge Power 4,800 W". Bluetti's surge figures look like heating-only Power Lifting across the range; worth a products.ts pass.

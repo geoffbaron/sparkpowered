@@ -44,6 +44,8 @@ export const OFFGRID_SOURCES = {
   cpscStandards: { name: "CPSC, Portable generators: voluntary standards", url: "https://cpsc.gov/Regulations-Laws--Standards/Voluntary-Standards/Portable-Generators", detail: "UL 2201 and ANSI/PGMA G300 CO shutoff standards are voluntary" },
   nfpa: { name: "NFPA, Generator safety tip sheet (copy hosted by the Village of Penn Yan)", url: "https://www.villageofpennyan.gov/uploads/1/2/3/8/123892065/nfpa-generator-safety.pdf", detail: "never in an attached garage; CO alarms; cool before refueling; fuel in labeled containers outside living areas; transfer switch by a qualified electrician" },
   epaWells: { name: "US EPA, Private drinking water wells", url: "https://www.epa.gov/privatewells" },
+  franklinAim: { name: "Franklin Electric, AIM Manual: 60 Hz Submersible Systems, 2026 edition (M1311 06-26), copy hosted by the Nebraska Department of Water, Energy and Environment", url: "https://dwee.nebraska.gov/sites/default/files/water/2026_60Hz_AIM_Manual_Submersible_Systems.pdf", detail: "4-inch single-phase motor table (page 39): maximum service-factor amps and watts and locked rotor amps for each horsepower and voltage" },
+  iaeiPv: { name: "John Wiles, PV Systems Math: Sample Calculations, IAEI Magazine (Sept/Oct 2019)", url: "https://iaeimagazine.org/columns/photovoltaic/pv-systems-math-sample-calculations/", detail: "cold-weather Voc: Voc × (1 + coefficient × (lowest temperature − 25°C)); NEC Table 690.7(A) factors run from 1.02 at 24°C to 1.25 at −40°C, 1.18 at −17°C" },
   epaSeptic: { name: "US EPA, Septic systems", url: "https://www.epa.gov/septic" },
 } as const;
 
@@ -136,6 +138,152 @@ export function peakWatts(picks: LoadPick[]) {
   const running = on.reduce((t, p) => t + loadDef(p.id).runW * p.count, 0);
   const start = on.reduce((m, p) => Math.max(m, loadDef(p.id).startW), 0);
   return { running, start, peak: running + start };
+}
+
+/**
+ * Whether one load fits one power station: running watts must fit under the
+ * continuous output, and running plus extra starting watts under the surge
+ * available for motors (the outage calculator's EWEB rule). The
+ * what-it-runs tables (fitFor in can-it-run.ts) and the well pump calculator
+ * both use this.
+ */
+export type LoadFit = "runs" | "start-unconfirmed" | "too-big";
+
+export function loadFit(load: { runW: number; startW: number }, station: { acOutputW: number; motorSurgeW: number }): LoadFit {
+  if (load.runW > station.acOutputW) return "too-big";
+  if (load.startW > 0 && load.runW + load.startW > station.motorSurgeW) return "start-unconfirmed";
+  return "runs";
+}
+
+// ---------------------------------------------------------------------------
+// Well pumps
+// ---------------------------------------------------------------------------
+
+/**
+ * Franklin Electric 4-inch single-phase submersible motors (AIM manual, 2026
+ * edition, page 39: "4-inch/1-Phase/Encapsulated without G suffix"). maxAmps and
+ * maxW are the maximum service-factor load; lockedRotorA is the locked rotor
+ * amps, the current the motor draws for the instant it starts at full voltage.
+ * 3-wire rows are the standard control box (Y = line amps).
+ */
+export interface PumpMotor {
+  id: string;
+  hp: string;
+  wires: 2 | 3;
+  volts: 115 | 230;
+  maxAmps: number;
+  maxW: number;
+  lockedRotorA: number;
+}
+
+const motor = (hp: string, wires: 2 | 3, volts: 115 | 230, maxAmps: number, maxW: number, lockedRotorA: number): PumpMotor => ({
+  id: `${hp.replace("/", "-")}hp-${volts}v-${wires}w`, hp, wires, volts, maxAmps, maxW, lockedRotorA,
+});
+
+export const PUMP_MOTORS: PumpMotor[] = [
+  motor("1/2", 2, 115, 12.0, 960, 64.4),
+  motor("1/2", 2, 230, 6.0, 960, 32.2),
+  motor("3/4", 2, 230, 8.0, 1310, 40.7),
+  motor("1", 2, 230, 10.4, 1600, 48.7),
+  motor("1.5", 2, 230, 13.1, 2280, 66.2),
+  motor("1/2", 3, 115, 12.0, 960, 50.5),
+  motor("1/2", 3, 230, 6.0, 960, 23),
+  motor("3/4", 3, 230, 8.0, 1310, 34.2),
+  motor("1", 3, 230, 10.4, 1600, 41.8),
+  motor("1.5", 3, 230, 11.5, 2080, 51.4),
+  motor("2", 3, 230, 13.2, 2555, 53.1),
+  motor("3", 3, 230, 17.0, 3400, 83.4),
+];
+
+export const pumpMotor = (id: string) => {
+  const m = PUMP_MOTORS.find((x) => x.id === id);
+  if (!m) throw new Error(`Unknown pump motor ${id}`);
+  return m;
+};
+
+export interface PumpLoad {
+  /** Running watts: nameplate volts × amps when the visitor enters amps (DOE), else Franklin's maximum load watts. */
+  runW: number;
+  /** Total starting draw: volts × locked rotor amps (treated as watts against the surge rating). */
+  startTotalW: number;
+  /** Extra watts on top of running at start, as the fit check expects. */
+  startW: number;
+  basis: "nameplate" | "table";
+  /** True for a 230 V motor: it needs a station with 240 V output. */
+  needs240: boolean;
+}
+
+/** Running and starting watts for a well pump motor; `amps` is the nameplate max amps if the visitor has it. */
+export function pumpLoad(m: PumpMotor, amps?: number | null): PumpLoad {
+  const nameplate = amps != null && Number.isFinite(amps) && amps > 0;
+  const runW = nameplate ? m.volts * amps : m.maxW;
+  const startTotalW = m.volts * m.lockedRotorA;
+  return { runW, startTotalW, startW: Math.max(0, startTotalW - runW), basis: nameplate ? "nameplate" : "table", needs240: m.volts === 230 };
+}
+
+/** What a client calculator needs to know about a station for a motor load. */
+export interface MotorStation {
+  id: string;
+  name: string;
+  volts: "120V" | "120/240V";
+  acOutputW: number;
+  motorSurgeW: number;
+  usableWh: number;
+  priceUsd: number;
+  tracked: boolean;
+}
+
+export type PumpFit = LoadFit | "needs-240v";
+
+export function pumpFit(load: PumpLoad, s: Pick<MotorStation, "volts" | "acOutputW" | "motorSurgeW">): PumpFit {
+  if (load.needs240 && s.volts !== "120/240V") return "needs-240v";
+  return loadFit(load, s);
+}
+
+// ---------------------------------------------------------------------------
+// Solar input: open-circuit voltage in the cold
+// ---------------------------------------------------------------------------
+
+/** NEC Table 690.7(A) factors quoted by IAEI (Wiles, 2019) for crystalline silicon panels. */
+export const NEC_COLD_FACTORS = [
+  { tempC: -17, tempF: 1, factor: 1.18 },
+  { tempC: -40, tempF: -40, factor: 1.25 },
+] as const;
+
+/** IAEI: Voc(cold) = Voc(STC) × (1 + coefficient%/100 × (lowest temperature − 25°C)); coefficient is negative, e.g. −0.3. */
+export const coldVoc = (vocStc: number, coeffPctPerC: number, lowC: number) => vocStc * (1 + (coeffPctPerC / 100) * (lowC - 25));
+
+export interface PvInput {
+  minV: number;
+  maxV: number;
+  maxA: number;
+  maxW: number;
+}
+
+export interface PvPanel {
+  vocV: number;
+  iscA: number;
+  watts: number;
+}
+
+/** One layout: `series` panels per string, `parallel` identical strings. */
+export function pvLayout(panel: PvPanel, series: number, parallel: number, input: PvInput) {
+  const voc = panel.vocV * series;
+  const isc = panel.iscA * parallel;
+  const watts = panel.watts * series * parallel;
+  const cold = NEC_COLD_FACTORS.map((c) => ({ ...c, voc: voc * c.factor, ok: voc * c.factor <= input.maxV }));
+  return {
+    series,
+    parallel,
+    voc,
+    isc,
+    watts,
+    cold,
+    voltsOk: voc >= input.minV && voc <= input.maxV,
+    currentOk: isc <= input.maxA,
+    /** Panel watts above the input limit are not used (the station caps its input). */
+    capped: watts > input.maxW,
+  };
 }
 
 /** The "essentials" day used across the site: fridge, Wi-Fi, 4 LED bulbs for 5 hours, 2 phone charges. */

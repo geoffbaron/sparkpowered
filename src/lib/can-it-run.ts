@@ -16,8 +16,10 @@
 import type { Product } from "@/data/products";
 import { CPAP_NO_HUMIDIFIER_W, LOADS, USABLE_FRACTION, duration } from "@/lib/everyday";
 import { HEATER_WATTS } from "@/lib/holiday";
-import { OFFGRID_SOURCES, loadDef, type SourceKey } from "@/lib/offgrid";
-import { productById } from "@/lib/products";
+import { AFFILIATES } from "@/data/affiliates";
+import { PRODUCTS } from "@/data/products";
+import { OFFGRID_SOURCES, loadDef, loadFit, type LoadFit, type MotorStation, type SourceKey } from "@/lib/offgrid";
+import { fullName, productById } from "@/lib/products";
 
 /** Date the appliance figures and the model list below were checked. */
 export const CAN_IT_RUN_CHECKED = "2026-11-11";
@@ -109,13 +111,33 @@ export const surgeIsHeatingOnly = (p: Product) => p.notes.some((n) => /heating-t
 /** Surge available to start a motor: the stated surge, or just the continuous rating when there is none for motors. */
 export const motorSurgeW = (p: Product) => (surgeIsHeatingOnly(p) ? p.acOutputW : (p.surgeW ?? p.acOutputW));
 
-export type Fit = "runs" | "start-unconfirmed" | "too-big";
+export type Fit = LoadFit;
 
 export function fitFor(p: Product, a: Appliance): Fit {
-  if (a.runW > p.acOutputW) return "too-big";
-  if (a.startW > 0 && a.runW + a.startW > motorSurgeW(p)) return "start-unconfirmed";
-  return "runs";
+  return loadFit(a, { acOutputW: p.acOutputW, motorSurgeW: motorSurgeW(p) });
 }
+
+/** A station as the well pump calculator sees it: motor surge (not a heating-only figure) and usable watt-hours. */
+export function motorStation(p: Product): MotorStation {
+  return {
+    id: p.id,
+    name: fullName(p),
+    volts: p.volts,
+    acOutputW: p.acOutputW,
+    motorSurgeW: motorSurgeW(p),
+    usableWh: usableWh(p),
+    priceUsd: p.priceUsd ?? 0,
+    tracked: AFFILIATES[p.brand].tracked,
+  };
+}
+
+/**
+ * Stations a load page compares: do-it-yourself, priced, in stock at the last
+ * check, and not Nature's Generator (no new placements while its payments are
+ * in doubt).
+ */
+export const loadPageProducts = () =>
+  PRODUCTS.filter((p) => p.install === "diy" && p.priceUsd != null && !p.soldOut && p.brand !== "naturesgenerator");
 
 /** "about 9 hours", "4 nights", "65 charges", "about 52 minutes". */
 export function runText(p: Product, a: Appliance, wh = p.capacityWh) {

@@ -134,6 +134,9 @@ export default function HomePage() {
               moreLabel="Compare every pick"
             />
             <p className="text-xs text-muted mt-2">*Price on the maker&apos;s US site when we checked on {formatDate(topPick.retrieved)}; prices change often.</p>
+            <p className="text-sm mt-2">
+              <Link href="/home-backup/bluetti-elite-200-v2-solar-panels" className="font-semibold text-spark-orange underline underline-offset-2">Which solar panels fit it</Link>
+            </p>
           </div>
         </div>
       </section>
