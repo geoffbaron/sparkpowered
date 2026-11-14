@@ -107,7 +107,7 @@ export default function InstallCostPage() {
             <PartnerLink brand="lectron" productId={ln.id} productUrl={ln.url} disclose>Lectron NEXUS NACS</PartnerLink> was {money(ln.priceUsd)}.
           </p>
           <p>
-            <strong>Already have a NEMA 14-50 outlet in the garage?</strong> A plug-in charger installs for $0. Have an electrician check it first: it should be on its own 50-amp circuit with matching wire, a heavy-duty outlet in good condition, and GFCI-protected where local code requires. A dryer outlet is not the same: it allows only 24 amps and needs a charger made for its plug.{" "}
+            <strong>Already have a NEMA 14-50 outlet in the garage?</strong> A plug-in charger installs for $0. Have an electrician check it first: it should be on its own 50-amp circuit with matching wire, a heavy-duty outlet in good condition, and GFCI-protected where local code requires. (If that GFCI keeps tripping, <Link href="/ev-charger-tripping-gfci" className="underline">here is why and the safe fix</Link>.) A dryer outlet is not the same: it allows only 24 amps and needs a charger made for its plug.{" "}
             <strong>Older 100-amp panel?</strong> Budget {money(c.serviceUpgrade[0])} to {money(c.serviceUpgrade[1])} more for an upgrade,
             or ask about a lower-amp circuit or load management first.
           </p>
@@ -234,6 +234,8 @@ export default function InstallCostPage() {
         <RelatedLinks
           links={[
             { href: "/best-home-ev-charger", label: "Best home EV charger", desc: "EVIQO, Lectron, Autel, Tesla and more compared" },
+            { href: "/ev-charger-tripping-gfci", label: "Charger tripping a GFCI breaker?", desc: "Why plug-in chargers trip GFCIs, and when hardwiring is the fix" },
+            { href: "/ev-charger-extension-cord", label: "Extension cord for a charger?", desc: "Why makers say no, and the safe ways to reach your car" },
             { href: "/ev-charging-cost", label: "EV charging cost calculator", desc: "What charging costs in your state vs gas" },
             { href: "/incentives", label: "2026 incentives", desc: "What federal help is left and where to find rebates" },
             { href: "/states", label: "All state data", desc: "Electricity prices and charging costs by state" },

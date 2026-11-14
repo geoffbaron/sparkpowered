@@ -145,7 +145,7 @@ export const HOME_CHARGERS: HomeCharger[] = [
     listPriceUsd: null,
     url: "https://autelenergy.us/products/maxicharger-ac-hardwired-wallbox-with-side-holster",
     sourceUrl: "https://autelenergy.us/products/maxicharger-ac-hardwired-wallbox-with-side-holster",
-    retrieved: "2026-10-31",
+    retrieved: "2026-11-14",
     notes: [
       "The fastest home option here: up to 12 kW, about a quarter faster than a 40-amp plug-in charger, for cars that can take it.",
       "Wired straight into your panel, which Autel recommends for outdoor installs.",
@@ -174,7 +174,7 @@ export const HOME_CHARGERS: HomeCharger[] = [
     listPriceUsd: 499,
     url: "https://eviqo.io/products/eviqo_level2_ev_charger",
     sourceUrl: "https://eviqo.io/products/eviqo_level2_ev_charger",
-    retrieved: "2026-10-31",
+    retrieved: "2026-11-14",
     notes: [
       "One charger, two ways to install: plug into a NEMA 14-50 outlet for 40 amps (up to 38 miles of range an hour, EVIQO's figure), or have an electrician hardwire it for 48 amps (up to 46).",
       "A switch inside sets the maximum to 16, 32, 40 or 48 amps to match your circuit; the app fine-tunes from 6 amps up, schedules charging and tracks use (needs 2.4 GHz Wi-Fi).",
@@ -222,7 +222,7 @@ export const HOME_CHARGERS: HomeCharger[] = [
     listPriceUsd: 579.99,
     url: "https://eviqo.io/products/eviqo-level-2-ev-charger-hardwire-version-240v-48-amp-home-charging-station-25-cable-40-input-cable",
     sourceUrl: "https://eviqo.io/products/eviqo-level-2-ev-charger-hardwire-version-240v-48-amp-home-charging-station-25-cable-40-input-cable",
-    retrieved: "2026-10-31",
+    retrieved: "2026-11-14",
     notes: [
       "48 amps on a dedicated 60-amp circuit; a switch unlocks 50 amps on a 70-amp circuit. Same holster and reset button as the Gen 2 plug-in.",
     ],
@@ -269,7 +269,7 @@ export const HOME_CHARGERS: HomeCharger[] = [
     listPriceUsd: 599,
     url: "https://eviqo.io/products/eviqo-level-2-ev-charger-hardwired-nacs-charger-compatible-with-tesla",
     sourceUrl: "https://eviqo.io/products/eviqo-level-2-ev-charger-hardwired-nacs-charger-compatible-with-tesla",
-    retrieved: "2026-10-31",
+    retrieved: "2026-11-14",
     notes: [
       "A hardwired Tesla-style (NACS) charger: 48 amps on a dedicated 60-amp circuit, app scheduling, 25-foot cable, IP66 / NEMA 4 weatherproof for outdoor installs.",
     ],

@@ -136,6 +136,8 @@ export const ROUTES: { path: string; lastModified: string }[] = [
   { path: "/power-stations/bluetti-elite-300/what-it-runs", lastModified: "2026-11-11" },
   { path: "/best-home-ev-charger", lastModified: "2026-10-19" },
   { path: "/ev-charger-installation-cost", lastModified: "2026-10-31" },
+  { path: "/ev-charger-tripping-gfci", lastModified: "2026-11-14" },
+  { path: "/ev-charger-extension-cord", lastModified: "2026-11-14" },
   { path: "/ev-charger-picker", lastModified: "2026-10-31" },
   { path: "/ev-or-plug-in-hybrid", lastModified: "2026-10-30" },
   { path: "/compare", lastModified: CONTENT_UPDATED },

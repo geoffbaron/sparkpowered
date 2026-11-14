@@ -357,6 +357,8 @@ export default function BestHomeEvChargerPage() {
         <RelatedLinks
           links={[
             { href: "/ev-charger-installation-cost", label: "EV charger installation cost", desc: "Average price in your state, and what adds to it" },
+            { href: "/ev-charger-tripping-gfci", label: "Charger tripping a GFCI breaker?", desc: "Why it happens, what to check, and the safe fix" },
+            { href: "/ev-charger-extension-cord", label: "Extension cord for a charger?", desc: "What charger makers say, and the safe options" },
             { href: "/questions/ev-charging", label: "Home charging questions, answered", desc: "Breakers, dryer outlets, Level 1 vs 2 and permits" },
             { href: "/ev-charging-cost", label: "EV charging cost calculator", desc: "What charging costs in your state vs gas" },
             { href: "/go-electric", label: "Go Electric savings", desc: "Add up an EV, solar and heat pump" },
