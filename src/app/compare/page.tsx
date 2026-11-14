@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs, PageIntro, RelatedLinks } from "@/components/content";
 import { COMPARISONS } from "@/data/comparisons";
+import { liveHomeBackupPages } from "@/data/home-backup";
 import { JsonLd, pageMetadata, url } from "@/lib/seo";
 
 const PATH = "/compare";
@@ -12,6 +13,9 @@ const DESCRIPTION =
 export const metadata: Metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH });
 
 export default function CompareIndex() {
+  // Hand-built home-backup comparisons (their own routes, not the [slug] template).
+  const extra = liveHomeBackupPages().filter((p) => p.kind === "compare").map((p) => ({ slug: p.href.replace("/compare/", ""), title: p.title, description: p.desc }));
+  const all = [...COMPARISONS.map((c) => ({ slug: c.slug, title: c.title, description: c.description })), ...extra];
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <JsonLd
@@ -23,7 +27,7 @@ export default function CompareIndex() {
           description: DESCRIPTION,
           url: url(PATH),
           isPartOf: { "@id": url("/#website") },
-          hasPart: COMPARISONS.map((c) => ({ "@type": "Article", headline: c.title, url: url(`/compare/${c.slug}`) })),
+          hasPart: all.map((c) => ({ "@type": "Article", headline: c.title, url: url(`/compare/${c.slug}`) })),
         }}
       />
       <Breadcrumbs items={[{ name: "Comparisons", path: PATH }]} />
@@ -33,7 +37,7 @@ export default function CompareIndex() {
         lede="The match-ups people search for most, compared on the specs that matter: capacity, output, battery chemistry, expansion, solar input, warranty and price per kWh."
       />
       <ul className="grid sm:grid-cols-2 gap-3">
-        {COMPARISONS.map((c) => (
+        {all.map((c) => (
           <li key={c.slug}>
             <Link
               href={`/compare/${c.slug}`}

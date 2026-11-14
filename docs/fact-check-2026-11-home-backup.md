@@ -130,3 +130,27 @@ Safety pass done (Nov 14 2026): electrician + permit on every option; neutral qu
 |---|---|---|
 | Anker BP3000 expansion battery in stock ("Estimated dispatch within 7 days", Add to Cart): $1,299.99 regular, $999.99 after $300 auto code. products.ts F3000 add-on updated (was $1,199.99 and noted sold out from Nov 6) | ankersolix.com/products/bp3000-expansion-battery-for-f3000 | 2026-11-14 |
 | Anker F3000 unchanged: $1,699.99 after $200 code, in stock | ankersolix.com/products/f3000 | 2026-11-14 |
+
+## /compare/growatt-helios-3600-vs-bluetti-apex-300
+
+Query: "growatt helios 3600 vs bluetti apex 300" (Nov 14 2026):
+1. diysolarforum.com, Bluetti vs Growatt: am I setting myself up for pain
+2. dannycamping.com, best 240 V portable power stations 2026
+3. thegeneratorinsider.com, 15 best solar generators for home backup
+4. youtube.com, top 5 whole-house solar generators
+5. reddit.com r/preppers, Growatt HELIOS 3600 opinions
+6. yahoo.com (AT&T), Amazon blowing out solar generators
+7. blackoutsizer.com, Growatt: 4 models, specs and comparisons
+8. homebackupwatts.com, Growatt portable power station buyer's guide
+Verdict: no direct head-to-head; spec-only listicles and forums. Build, built on the 240 V question.
+
+| Claim | Source | Read |
+|---|---|---|
+| "Support 240V whole-home power when parallel two HELIOS 3600s" | growattportable.com HELIOS 3600 page | 2026-11-14 |
+| HELIOS 3600 $1,599 in stock; Extra Battery $1,589 sold out; "HELIOS 3600*2 + Double Voltage Hub" $3,337 in stock | same page, /products/...js variants | 2026-11-14 |
+| Double Voltage Power Hub $139; 7,200 W from two units; one NEMA 6-20, two NEMA L14-30 | growattportable.com/products/growatt-double-voltage-power-hub | 2026-11-14 |
+| Apex 300 $1,499 in stock; 14-50R 16 A at 240 V on battery, 50 A bypass | Bluetti store .js; Apex 300 manual V3.1 | 2026-11-14 |
+| Price log: Apex 300 Oct 15 $1,599, Oct 26 $1,599, Nov 6 $1,499, Nov 14 $1,499; HELIOS Nov 4 $1,599, Nov 14 $1,599 | deals.ts log + products.ts | 2026-11-14 |
+| NOT used: deals.ts shows a Growatt Black Friday price of $1,198.98 for the HELIOS 3600 (Nov 10-30). Growatt's product page on Nov 14 showed $1,599 with no code shown; flagged to Grant, not repeated on this page | growattportable.com | 2026-11-14 |
+
+Safety pass done (Nov 14 2026): 240 V into house circuits only via inlet+interlock, transfer switch or maker panel, licensed electrician and permit; no wiring steps.

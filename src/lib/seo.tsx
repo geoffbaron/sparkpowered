@@ -115,6 +115,7 @@ export const ROUTES: { path: string; lastModified: string }[] = [
   { path: "/home-backup", lastModified: "2026-11-14" },
   { path: "/home-backup/anker-solix-f3800-plus-hookup", lastModified: "2026-11-14" },
   { path: "/home-backup/bluetti-apex-300-hookup", lastModified: "2026-11-14" },
+  { path: "/compare/growatt-helios-3600-vs-bluetti-apex-300", lastModified: "2026-11-14" },
   { path: "/lithium-rv-battery", lastModified: "2026-10-16" },
   { path: "/lithium-vs-agm-battery", lastModified: "2026-10-19" },
   { path: "/best-trolling-motor-battery", lastModified: "2026-10-19" },

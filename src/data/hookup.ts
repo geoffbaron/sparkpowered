@@ -237,6 +237,15 @@ export const HOOKUP_PARTS = {
     inStock: true,
     note: "Bluetti's listing says only that it ties an Apex 300 into home circuits; the linked guide is a scanned image with no text we could check.",
   },
+  growattPair: {
+    id: "growatt-helios-3600-x2-hub",
+    name: "Growatt HELIOS 3600 x 2 + Double Voltage Hub",
+    url: "https://growattportable.com/products/growatt-helios-3600-portable-power-station",
+    listPriceUsd: 3337,
+    retrieved: NOV14,
+    inStock: true,
+    note: "Growatt's own two-unit bundle option on the HELIOS 3600 page, the way to 240 V.",
+  },
   growattHub: {
     id: "growatt-double-voltage-hub",
     name: "Growatt Double Voltage Power Hub",
