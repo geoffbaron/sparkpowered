@@ -73,3 +73,4 @@ export default function PartnerClickTracker() {
     };
   }, []);
   return null;
+}
