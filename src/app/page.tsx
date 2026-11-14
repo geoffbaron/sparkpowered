@@ -19,6 +19,7 @@ import { GAS_CARS, homeFigures, MMBTU_PER_MCF } from "@/lib/go-electric";
 import AskSparkCta from "@/components/AskSparkCta";
 import IWantTo from "@/components/IWantTo";
 import { DealsStrip } from "@/components/DealsStrip";
+import { HOME_BACKUP_HUB, liveHomeBackupPages } from "@/data/home-backup";
 
 const TITLE = "Go Electric and Save: EV, Solar & Battery Savings by State";
 const DESCRIPTION =
@@ -104,8 +105,20 @@ export default function HomePage() {
 
       <section aria-labelledby="top-pick-heading" className="border-b border-black/8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <h2 id="top-pick-heading" className="text-2xl font-extrabold text-ink">Want backup power before the next outage?</h2>
-          <AffiliateDisclosure className="mt-3" />
+          <h2 id="top-pick-heading" className="text-2xl font-extrabold text-ink">Keep the house running in an outage</h2>
+          <p className="text-stone-700 mt-2 max-w-2xl">
+            Four ways to connect a big battery to your home, from extension cords to a transfer switch, with what each costs and when you need an
+            electrician.
+          </p>
+          <div className="mt-3 flex flex-wrap gap-3">
+            <Link href={HOME_BACKUP_HUB.path} className="btn btn-primary">See the four ways</Link>
+            {liveHomeBackupPages()
+              .filter((p) => p.kind === "tool")
+              .map((p) => (
+                <Link key={p.href} href={p.href} className="btn btn-outline">{p.title}</Link>
+              ))}
+          </div>
+          <AffiliateDisclosure className="mt-4" />
           <div className="mt-4">
             <OurPick
               label="A 2 kWh battery for outages"

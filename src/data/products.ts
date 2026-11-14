@@ -627,7 +627,7 @@ const PORTABLE: Product[] = [
     category: "portable",
     url: "https://www.ankersolix.com/products/f3800-plus",
     sourceUrl: "https://www.ankersolix.com/products/f3800-plus",
-    retrieved: "2026-11-06",
+    retrieved: "2026-11-14",
     capacityWh: 3840,
     maxCapacityWh: 26880,
     acOutputW: 6000,
@@ -643,10 +643,10 @@ const PORTABLE: Product[] = [
     volts: "120/240V",
     install: "diy",
     soldOut: true,
-    priceUsd: 2599.99,
+    priceUsd: 2399.99,
     listPriceUsd: 2999.99,
     notes: [
-      "Price after Anker's auto-applied $400 code, shown on its page Nov 6 2026 (regular $2,999.99). Sold out on Anker's US site on Nov 6 2026.",
+      "Price after Anker's auto-applied $600 code, shown on its page Nov 14 2026 (regular $2,999.99). Sold out on Anker's US site on Nov 6 and again on Nov 14 2026; the F3800 Plus + Smart Home Power Kit bundle was in stock.",
       "6,000 W at 120/240 V, tied with the Nature's Generator L6000 for the most of any power station we list.",
       "Up to 3,200 W of solar input.",
       "Anker quotes 53.8 kWh for two linked units; one unit reaches 26.9 kWh."

@@ -5,6 +5,7 @@ import { AffiliateDisclosure, PartnerLink } from "@/components/affiliate";
 import { Breadcrumbs, Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
 import { PriceFootnote, productJson } from "@/components/products";
 import { QuickAnswer } from "@/components/guide-ui";
+import { HomeBackupLinks } from "@/components/home-backup";
 import { BigStat } from "@/components/ui";
 import type { Product } from "@/data/products";
 import {
@@ -372,6 +373,7 @@ export default async function WhatItRunsPage({ params }: Props) {
       />
       <p className="text-xs text-muted mt-4">Appliance figures checked {formatDate(CAN_IT_RUN_CHECKED)}.</p>
 
+      <HomeBackupLinks />
       <RelatedLinks
         links={[
           ...others.map((o) => ({ href: whatItRunsPath(o.id), label: `What the ${fullName(o)} runs`, desc: `${kwh(o.capacityWh)}, ${money(o.priceUsd!)}: a fridge ${runText(o, fridge)}` })),

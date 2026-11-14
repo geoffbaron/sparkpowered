@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { DealsStrip } from "@/components/DealsStrip";
 import WhatItRunsLinks from "@/components/WhatItRunsLinks";
+import { HomeBackupLinks } from "@/components/home-backup";
 import { AffiliateDisclosure } from "@/components/affiliate";
 import { Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
 import { BigStat, HubHero, MythCallout, PhotoCredit } from "@/components/ui";
@@ -231,6 +232,7 @@ export default function BestPowerStationsPage() {
       </Section>
 
       <WhatItRunsLinks />
+      <HomeBackupLinks />
 
       <Faq items={faqs} path={PATH} />
       <Disclaimer>
