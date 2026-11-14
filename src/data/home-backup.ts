@@ -15,7 +15,7 @@ export interface HomeBackupPage {
 }
 
 export const HOME_BACKUP_PAGES: HomeBackupPage[] = [
-  { href: "/home-backup/hookup-picker", title: "Hookup picker", desc: "Five questions: how to connect a battery to your house, what size, and the parts", kind: "tool", live: false },
+  { href: "/home-backup/hookup-picker", title: "Hookup picker", desc: "Five questions: how to connect a battery to your house, what size, and the parts", kind: "tool", live: true },
   { href: "/home-backup/anker-solix-f3800-plus-hookup", title: "Anker SOLIX F3800 Plus hookup", desc: "Inlet box, Anker's transfer switch or the Home Power Panel", kind: "guide", live: false },
   { href: "/home-backup/bluetti-apex-300-hookup", title: "Bluetti Apex 300 hookup", desc: "AT1, interlock or manual transfer switch, and the neutral question", kind: "guide", live: false },
   { href: "/compare/growatt-helios-3600-vs-bluetti-apex-300", title: "Growatt HELIOS 3600 vs Bluetti Apex 300", desc: "Built on the 240 V question", kind: "compare", live: false },
