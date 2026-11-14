@@ -38,3 +38,6 @@ export function partnerClick(href: string, origin = "https://sparkpowered.com"):
   const tracked = AFFILIATES[brand].tracked && !!ref && u.search.includes(ref);
   return { brand, tracked };
 }
+
+/** First path segment ("home" for /), so store clicks can be grouped by site section. */
+export const sectionOf = (pathname: string) => pathname.split("/").filter(Boolean)[0] ?? "home";
