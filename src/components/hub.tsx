@@ -93,6 +93,7 @@ export function HubLanding({ hub }: { hub: Hub }) {
                 productId={pick.id}
                 productUrl={pick.url}
                 category="battery"
+                headingLevel={2}
                 moreHref="/best-portable-power-stations"
                 moreLabel="Compare every pick"
               />

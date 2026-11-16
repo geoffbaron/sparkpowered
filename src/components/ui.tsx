@@ -64,6 +64,7 @@ export function OurPick({
   moreHref,
   moreLabel,
   disclose = false,
+  headingLevel = 3,
 }: {
   label: string;
   name: string;
@@ -82,7 +83,10 @@ export function OurPick({
   moreLabel?: string;
   /** Show the commission note right next to the button. */
   disclose?: boolean;
+  /** Heading level for the product name; use 2 when the card sits right under the page h1. */
+  headingLevel?: 2 | 3;
 }) {
+  const Heading = headingLevel === 2 ? "h2" : "h3";
   return (
     <article className="rounded-3xl bg-white border border-black/10 shadow-sm overflow-hidden grid sm:grid-cols-[10rem_1fr]">
       <div className="bg-gradient-to-br from-amber-100 via-orange-50 to-sky-100 flex items-center justify-center p-6 text-spark-orange" aria-hidden="true">
@@ -90,7 +94,7 @@ export function OurPick({
       </div>
       <div className="p-5 sm:p-6">
         <p className="text-xs font-bold uppercase tracking-wide text-spark-amber">{label}</p>
-        <h3 className="text-xl font-extrabold text-ink mt-1">{name}</h3>
+        <Heading className="text-xl font-extrabold text-ink mt-1">{name}</Heading>
         <p className="text-stone-700 mt-2 leading-relaxed">{why}</p>
         {life && life.length > 0 && (
           <ul className="mt-3 grid sm:grid-cols-2 gap-x-4 gap-y-1 text-sm">
