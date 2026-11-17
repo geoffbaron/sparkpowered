@@ -599,7 +599,7 @@ export function typicalWinterState() {
 export const OFFGRID_LINKS = [
   { href: "/off-grid-solar-calculator", label: "Off-grid solar calculator", desc: "Panels and battery for your state's darkest month" },
   { href: "/off-grid-cabin-solar-kit", label: "Cabin solar kit size", desc: "Weekend, part-time or full-time, by state" },
-  { href: "/off-grid-kit", label: "90-day off-grid kit", desc: "Power, fuel, water and food by home size" },
+  { href: "/off-grid-kit", label: "90-day survival kit", desc: "Power, water, food and garden by home size" },
   { href: "/how-to-go-off-grid", label: "How to go off grid", desc: "Power line cost vs solar and battery, step by step" },
   { href: "/power-outage-backup-calculator", label: "Power outage backup calculator", desc: "Fridge, CPAP, well pump and furnace through an outage" },
   { href: "/generator-runtime-calculator", label: "Generator runtime and fuel", desc: "How much fuel to store, and how to run it safely" },

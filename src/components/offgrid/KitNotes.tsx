@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { EXAMPLE_PUMP_240, type KitPackage } from "@/lib/offgrid-kit";
+import { EXAMPLE_PUMP_240, KIT_DAYS, type KitPackage } from "@/lib/offgrid-kit";
 import { fmtWh } from "@/lib/offgrid";
 
 /** The honest limits of a package, chosen from its notes. Always says what it will not run. */
@@ -48,6 +48,14 @@ export default function KitNotes({ k, stateName }: { k: KitPackage; stateName: s
         Series or parallel? It depends on the station&apos;s solar input voltage and current limits, which cold mornings push up. Check its
         manual before wiring the panels; our <Link href="/home-backup/bluetti-elite-200-v2-solar-panels" className="underline">Elite 200 V2 panel guide</Link>{" "}
         shows how.
+      </li>
+      <li data-note="stove-safety">
+        <strong>Cook outdoors.</strong> CDC: never use a portable gas camp stove indoors, never heat a house with a gas oven, and never burn
+        charcoal indoors. For heat, keep the furnace blower or a pellet stove running on the power above.
+      </li>
+      <li data-note="garden-timeline">
+        <strong>A garden will not feed you inside {KIT_DAYS} days.</strong> Even quick crops take 25 to 60 days to a first harvest, and nothing
+        grows outdoors through a cold-state winter. Stored food carries the {KIT_DAYS} days; the garden is for going longer.
       </li>
       <li data-note="generator-safety">
         Run the generator outdoors, at least 20 feet from windows, doors and vents, with a battery carbon monoxide alarm inside. Store fuel in

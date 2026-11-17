@@ -34,12 +34,13 @@ export default function KitPresetCards({ kits, stateName, compact = false }: { k
                   {p.panels} × {p.panel.watts} W panels ({fmtW(p.panelW)})
                 </li>
                 <li>Generator fuel: about {n0(k.generator.gallons)} gal of gasoline</li>
-                {!compact && (
-                  <>
-                    <li>Water: {n0(k.water.storeGallons)} gal stored, plus a filter and a source</li>
-                    <li>Food: {n0(k.food.total)} calories</li>
-                  </>
-                )}
+                <li>Water: {n0(k.water.storeGallons)} gal stored, plus a filter and a source</li>
+                <li>
+                  Food: {n0(k.food.total)} calories
+                  {compact ? "" : ` (${n0(k.supplies.staples[0].pounds)} lb rice, ${n0(k.supplies.staples[1].pounds)} lb beans and more)`}
+                </li>
+                <li>Stove: {n0(k.supplies.cooking.cylinders)} propane cylinders</li>
+                {!compact && <li>Seeds for {n0(k.supplies.garden.rowFeet[0])} to {n0(k.supplies.garden.rowFeet[1])} ft of garden row</li>}
               </ul>
             ) : (
               <p className="mt-3 text-sm">No power station we track fits; see the builder.</p>

@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import LocalNote from "@/components/LocalNote";
 import KitNotes from "@/components/offgrid/KitNotes";
 import KitPackageList from "@/components/offgrid/KitPackageList";
+import SurvivalChecklist from "@/components/offgrid/SurvivalChecklist";
 import { pillClass } from "@/components/guide-ui";
 import { useChooseState, useVisitorState } from "@/hooks/useVisitorState";
 import { NATIONAL_CHOICE } from "@/lib/visitor-state";
@@ -21,6 +22,7 @@ import {
   type KitLoad,
 } from "@/lib/offgrid-kit";
 import { fmtWh } from "@/lib/offgrid";
+import { COOK_MINUTES_PER_PERSON } from "@/lib/survival-kit";
 
 function Num({ id, label, value, onChange, step, max }: { id: string; label: string; value: number; onChange: (n: number) => void; step: number; max: number }) {
   return (
@@ -57,6 +59,7 @@ export default function OffGridKitBuilder({ states, fallbackAbbr }: { states: Of
   const [loads, setLoads] = useState<KitLoad[]>(homePreset("medium").loads);
   const [well240, setWell240] = useState(homePreset("medium").well240);
   const [darkDays, setDarkDays] = useState<number>(DEFAULT_DARK_DAYS);
+  const [cookMinutes, setCookMinutes] = useState<number | null>(null);
   const [gen, setGen] = useState({ ratedW: EXAMPLE_GENERATOR.ratedW, tankGal: EXAMPLE_GENERATOR.tankGal, runtimeHours: EXAMPLE_GENERATOR.runtimeHours });
 
   const pickHome = (id: HomeSize) => {
@@ -64,6 +67,7 @@ export default function OffGridKitBuilder({ states, fallbackAbbr }: { states: Of
     setHome(id);
     setLoads(h.loads);
     setWell240(h.well240);
+    setCookMinutes(null);
   };
 
   // Preset cards link here with ?home=small|medium|large.
@@ -74,10 +78,12 @@ export default function OffGridKitBuilder({ states, fallbackAbbr }: { states: Of
   }, []);
 
   const toggle = (id: KitLoad) => setLoads((xs) => (xs.includes(id) ? xs.filter((x) => x !== id) : [...xs, id]));
-  const k = buildKit({ home, loads, perKwDay: st.dec, well240, darkDays, generator: gen });
   const h = homePreset(home);
+  const cook = cookMinutes ?? h.people.length * COOK_MINUTES_PER_PERSON;
+  const k = buildKit({ home, loads, perKwDay: st.dec, well240, darkDays, generator: gen, cookMinutes: cook });
 
   return (
+    <>
     <div className="rounded-3xl border border-black/10 bg-white shadow-sm overflow-hidden grid lg:grid-cols-5" data-testid="kit-builder">
       <div className="p-5 sm:p-6 border-b lg:border-b-0 lg:border-r border-black/8 space-y-5 lg:col-span-2">
         <fieldset>
@@ -153,6 +159,15 @@ export default function OffGridKitBuilder({ states, fallbackAbbr }: { states: Of
             <Num id="kit-gen-hrs" label="Hours a tank" value={gen.runtimeHours} step={0.1} max={200} onChange={(n) => setGen({ ...gen, runtimeHours: n })} />
           </div>
         </details>
+        <details className="text-sm">
+          <summary className="font-bold text-ink cursor-pointer">6. Your cooking (optional)</summary>
+          <p className="text-xs text-muted mt-2">
+            Minutes a day with both burners of a two-burner camp stove on high. Our example is {COOK_MINUTES_PER_PERSON} minutes a person.
+          </p>
+          <div className="mt-3">
+            <Num id="kit-cook-min" label="Stove minutes a day" value={cook} step={5} max={600} onChange={(n) => setCookMinutes(n)} />
+          </div>
+        </details>
         <p className="text-xs text-muted">
           About {fmtWh(k.whPerDay)} a day. Sized as if all {KIT_DAYS} days were December in {st.city} ({st.dec.toFixed(2)} kWh a day per kW of
           panels), the worst case.
@@ -166,5 +181,7 @@ export default function OffGridKitBuilder({ states, fallbackAbbr }: { states: Of
         <KitNotes k={k} stateName={st.name} />
       </div>
     </div>
+    <SurvivalChecklist k={k} stateName={st.name} />
+    </>
   );
 }

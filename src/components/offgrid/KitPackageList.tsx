@@ -7,6 +7,7 @@ import { fmtKwh, fmtW, fmtWh } from "@/lib/offgrid";
 import { money } from "@/lib/products";
 
 const n0 = (n: number) => Math.round(n).toLocaleString("en-US");
+const range = (a: number, b: number) => (a === b ? n0(a) : `${n0(a)} to ${n0(b)}`);
 const n1 = (n: number) => (n >= 100 ? n0(n) : (Math.round(n * 10) / 10).toLocaleString("en-US"));
 
 function Row({ title, children, price, testId }: { title: string; children: React.ReactNode; price?: React.ReactNode; testId?: string }) {
@@ -26,6 +27,7 @@ export default function KitPackageList({ k, stateName }: { k: KitPackage; stateN
   const p = k.power;
   const station = p ? PRODUCTS.find((x) => x.id === p.match.option.id)! : null;
   const g = k.generator;
+  const s = k.supplies;
   const checked = (iso: string) => <span className="block text-xs text-muted font-normal">on the maker&apos;s site {formatDate(iso)}</span>;
 
   return (
@@ -84,25 +86,47 @@ export default function KitPackageList({ k, stateName }: { k: KitPackage; stateN
         <Row title="Water" testId="kit-water" price={<>{n0(k.water.storeGallons)} gal stored</>}>
           Store <strong>{n0(k.water.storeGallons)} gallons</strong> ({k.water.storeDays} days, 1 gallon a person a day). For the other{" "}
           {k.water.treatDays} days ({n0(k.water.treatGallons)} gallons) you need a source, such as a well, rain barrel or nearby water, and a
-          certified filter or purifier. See <Link href="/best-emergency-water-filters" className="underline">emergency water filters</Link> and{" "}
+          certified filter or purifier. Rainwater is not safe to drink untreated (CDC); check your state&apos;s rules before collecting it. To
+          treat all of it with bleach instead takes about <strong>{n1(s.bleach.flOz)} fl oz</strong> of 6% unscented bleach, double for cloudy
+          water. See <Link href="/best-emergency-water-filters" className="underline">emergency water filters</Link> and{" "}
           <Link href="/how-to-purify-water" className="underline">how to purify water</Link>.
         </Row>
         <Row title="Food" testId="kit-food" price={<>{n0(k.food.total)} cal</>}>
           About <strong>{n0(k.food.daily)} calories a day</strong> for {k.food.people} people, so {n0(k.food.total)} calories for {KIT_DAYS} days.
-          Check your own household in the <Link href="/emergency-food-calculator" className="underline">emergency food calculator</Link>.
+          As shelf-stable staples:
+          <ul className="mt-1 grid grid-cols-1 sm:grid-cols-2 gap-x-4 text-stone-800" data-testid="kit-staples">
+            {s.staples.map((l) => (
+              <li key={l.staple.id}>
+                {l.staple.label}: <strong className="tabular-nums">{l.cans != null ? `${n0(l.cans)} cans` : `${n0(l.pounds)} lb`}</strong>
+                {l.gallons != null ? ` (about ${n1(l.gallons)} gal)` : ""}
+              </li>
+            ))}
+          </ul>
+          <span className="block mt-1">
+            Or the same calories in freeze-dried meals. Check your own household in the{" "}
+            <Link href="/emergency-food-calculator" className="underline">emergency food calculator</Link>.
+          </span>
         </Row>
-        <Row title="Heat, light and the rest">
-          Flashlights, a battery or crank radio, first aid, medicines and the rest of the list are on the{" "}
-          <Link href="/emergency-kit-checklist" className="underline">emergency kit checklist</Link>. Heating with a pellet stove? See{" "}
-          <Link href="/home-backup/pellet-stove" className="underline">power for a pellet stove</Link>.
+        <Row title="Cooking fuel" testId="kit-cooking" price={<>{n0(s.cooking.cylinders)} cylinders</>}>
+          A two-burner propane camp stove, <strong>outdoors only</strong>. At {n0(s.cooking.minutesPerDay)} minutes a day with both burners on
+          high, that is <strong>{n0(s.cooking.cylinders)} one-pound cylinders</strong> (about {n0(s.cooking.pounds)} lb of propane, or{" "}
+          {s.cooking.bulkTanks} × 20-lb tanks with an adapter hose).
+        </Row>
+        <Row title="Seeds and garden" testId="kit-garden" price={<>{range(s.garden.rowFeet[0], s.garden.rowFeet[1])} ft of row</>}>
+          Seed for {k.food.people} people: {range(s.garden.rowFeet[0], s.garden.rowFeet[1])} feet of row plus squash hills and tomato plants. Most
+          crops take 50 to 100 days, so a garden started on day 1 adds little inside {KIT_DAYS} days. It matters for going longer.
+        </Row>
+        <Row title="Medical, light and the rest">
+          First aid, {KIT_DAYS} days of prescriptions (ask your doctor or pharmacist), a toilet without water, a NOAA Weather Radio, lights and
+          batteries: all on the printable checklist below.
         </Row>
       </ul>
       {p && (
         <p className="mt-3 text-base font-extrabold text-ink" data-testid="kit-total">
           Power items total: <span className="tabular-nums">{money(p.priceUsd)}</span>
           <span className="block text-xs text-muted font-normal">
-            Station, batteries and panels at the makers&apos; prices on the dates shown. Water, food and the generator are listed as amounts, not
-            prices.{" "}
+            Station, batteries and panels at the makers&apos; prices on the dates shown. Water, food, fuel, seeds and the generator are listed as amounts,
+            not prices.{" "}
             {p.short
               ? `${KIT_BATTERY_DAYS} days of your ${fmtWh(k.whPerDay)} a day needs ${fmtKwh(k.size.batteryWh)} of battery; the biggest station we track holds ${fmtKwh(p.match.totalWh)}, so the generator does more.`
               : `Battery: ${fmtKwh(p.match.totalWh)}, at least ${KIT_BATTERY_DAYS} days of your ${fmtWh(k.whPerDay)} a day.`}

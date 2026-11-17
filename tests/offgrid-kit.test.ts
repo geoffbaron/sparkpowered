@@ -117,3 +117,73 @@ test("kit stations and panels are dated and tracked", () => {
     if (s.listPriceUsd != null) assert.ok(s.listPriceUsd >= s.priceUsd);
   }
 });
+
+/* ------------------------------------------------------------------ */
+/* Survival supplies: food, stove fuel, bleach, garden                  */
+/* ------------------------------------------------------------------ */
+
+import { BULK_TANK_LB, COOK_MINUTES_PER_PERSON, CROPS, DROPS_PER_TSP, EXAMPLE_STOVE, STAPLES, bleachFor, cookingPlan, gardenFor, staplesFor } from "../src/lib/survival-kit";
+
+test("staples hold exactly the household's calories, from USDA calories per 100 g", () => {
+  assert.ok(Math.abs(STAPLES.reduce((s, x) => s + x.share, 0) - 1) < 1e-9, "shares add to 100%");
+  for (const k of presetKits(decemberPerKwDay(STATES[0]))) {
+    const cal = k.supplies.staples.reduce((s, l) => s + (l.pounds * 453.592 * l.staple.kcalPer100g) / 100, 0);
+    assert.ok(Math.abs(cal - k.food.total) < 1, `${k.home.id}: ${cal} vs ${k.food.total}`);
+    assert.deepEqual(k.supplies.staples, staplesFor(k.food.total));
+  }
+  // Rice: 365 kcal per 100 g -> 1 lb is about 1,656 calories.
+  const rice = staplesFor(1_000_000)[0];
+  assert.equal(rice.staple.id, "rice");
+  assert.ok(Math.abs(rice.pounds - (350_000 / 365) * 100 / 453.592) < 1e-9);
+});
+
+test("stove fuel reuses the generator fuel formula and the maker's runtime", () => {
+  const c = cookingPlan(4, KIT_DAYS);
+  const g = generatorPlan({ tankSize: 1, runtimeHours: EXAMPLE_STOVE.hoursPerCylinder, hoursPerDay: (4 * COOK_MINUTES_PER_PERSON) / 60, days: KIT_DAYS });
+  assert.equal(c.cylinders, Math.max(0, Math.ceil(g.fuel - 1e-9)));
+  assert.ok(Math.abs(c.pounds - (g.fuel * EXAMPLE_STOVE.cylinderOz) / 16) < 1e-9);
+  assert.equal(c.bulkTanks, Math.ceil(c.pounds / BULK_TANK_LB - 1e-9));
+  assert.equal(cookingPlan(4, KIT_DAYS, 0).cylinders, 0);
+});
+
+test("bleach comes from the EPA table", () => {
+  assert.equal(DROPS_PER_TSP, 64);
+  const b = bleachFor(100);
+  assert.equal(b.dropsPerGallon, 8);
+  assert.ok(Math.abs(b.flOz - (800 / 64 / 6)) < 1e-9);
+  assert.equal(b.flOzCloudy, b.flOz * 2);
+});
+
+test("every supply amount scales with household size", () => {
+  const [s, m, l] = presetKits(decemberPerKwDay(STATES[0]));
+  for (const i of STAPLES.keys()) assert.ok(s.supplies.staples[i].pounds < m.supplies.staples[i].pounds && m.supplies.staples[i].pounds < l.supplies.staples[i].pounds);
+  assert.ok(s.supplies.cooking.cylinders < m.supplies.cooking.cylinders && m.supplies.cooking.cylinders < l.supplies.cooking.cylinders);
+  assert.ok(s.supplies.bleach.flOz < m.supplies.bleach.flOz && m.supplies.bleach.flOz < l.supplies.bleach.flOz);
+  assert.ok(s.supplies.garden.rowFeet[1] < m.supplies.garden.rowFeet[1] && m.supplies.garden.rowFeet[1] < l.supplies.garden.rowFeet[1]);
+  assert.equal(m.supplies.bleach.flOz, bleachFor(m.water.treatGallons).flOz);
+  assert.deepEqual(m.supplies.garden, gardenFor(m.food.people, KIT_DAYS));
+});
+
+test("the garden is honest about the 90-day window", () => {
+  const g = gardenFor(4, KIT_DAYS);
+  // Long crops are not ready; nothing is ready on day 1.
+  for (const l of g.lines) assert.equal(l.daysToEat, Math.max(0, KIT_DAYS - l.crop.days[1]));
+  assert.ok(g.lines.some((l) => l.daysToEat === 0), "some crops are not ready inside 90 days");
+  assert.ok(CROPS.every((c) => c.days[0] >= 25), "no crop is faster than the extension table says");
+  const notes = readFileSync("src/components/offgrid/KitNotes.tsx", "utf8");
+  for (const s of ["A garden will not feed you", "never use a portable gas camp stove indoors"]) assert.ok(notes.includes(s), s);
+  const page = readFileSync("src/app/off-grid-kit/page.tsx", "utf8");
+  for (const s of ["adds a little fresh food near the end", "last spring freeze map", "not medical advice", "doctor or pharmacist", "full-sized by early November", "We have not priced these"]) assert.ok(page.includes(s), s);
+  // No invented frost dates: the page links out instead.
+  assert.doesNotMatch(page, /last frost[^.]*\b(January|February|March|April|May|June)\b/i);
+});
+
+test("no hard-coded prices in the survival parts; food brands are plain links", () => {
+  for (const f of ["src/lib/survival-kit.ts", "src/components/offgrid/SurvivalChecklist.tsx", "src/components/offgrid/KitPackageList.tsx", "src/components/offgrid/KitPresetCards.tsx"]) {
+    assert.doesNotMatch(readFileSync(f, "utf8").replace(/\$\{/g, ""), /\$\d/, `${f} has a price`);
+  }
+  for (const b of ["valleyfood", "readywise", "mountainhouse"] as const) assert.equal(AFFILIATES[b].tracked, false);
+  const checklist = readFileSync("src/components/offgrid/SurvivalChecklist.tsx", "utf8");
+  assert.match(checklist, /@media print/);
+  assert.match(readFileSync("src/app/off-grid/page.tsx", "utf8"), /power, water, food and garden/i);
+});

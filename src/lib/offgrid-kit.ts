@@ -33,6 +33,7 @@ import {
   type StationOption,
 } from "@/lib/offgrid";
 import { GOAL_DAYS, foodNeeded, waterNeeded, type FoodPerson } from "@/lib/prep";
+import { bleachFor, cookingPlan, gardenFor, staplesFor } from "@/lib/survival-kit";
 
 /** The package covers this many days. */
 export const KIT_DAYS = 90;
@@ -165,6 +166,8 @@ export interface KitInput {
   well240?: boolean;
   darkDays?: number;
   generator?: { ratedW: number; tankGal: number; runtimeHours: number };
+  /** Minutes a day of cooking with both stove burners on high. Defaults to our example per person. */
+  cookMinutes?: number;
 }
 
 export interface KitPower {
@@ -204,6 +207,13 @@ export interface KitPackage {
   };
   water: { storeDays: number; storeGallons: number; treatDays: number; treatGallons: number; totalGallons: number };
   food: { daily: number; total: number; people: number };
+  /** Food staples, stove fuel, water treatment and garden, scaled by household. */
+  supplies: {
+    staples: ReturnType<typeof staplesFor>;
+    cooking: ReturnType<typeof cookingPlan>;
+    bleach: ReturnType<typeof bleachFor>;
+    garden: ReturnType<typeof gardenFor>;
+  };
   /** Plain-language warnings the page must show. */
   notes: string[];
 }
@@ -317,6 +327,12 @@ export function buildKit(input: KitInput): KitPackage {
     },
     water: { storeDays: GOAL_DAYS, storeGallons: stored.total, treatDays: KIT_DAYS - GOAL_DAYS, treatGallons: all.total - stored.total, totalGallons: all.total },
     food: { daily: food.daily, total: food.total, people },
+    supplies: {
+      staples: staplesFor(food.total),
+      cooking: cookingPlan(people, KIT_DAYS, input.cookMinutes),
+      bleach: bleachFor(all.total - stored.total),
+      garden: gardenFor(people, KIT_DAYS),
+    },
     notes,
   };
 }
