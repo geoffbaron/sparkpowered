@@ -172,6 +172,10 @@ export default function CabinSolarKitPage() {
             <strong>Full-time home:</strong> about {fmtW(fulltime.here.panelW)} and {fmtKwh(fulltime.here.batteryWh)}. That is a component system,
             not a power station.
           </p>
+          <p>
+            Getting a whole household through a long outage instead? The{" "}
+            <Link href="/off-grid-kit" className="underline">90-day off-grid kit</Link> adds generator fuel, water and food by home size.
+          </p>
         </QuickAnswer>
 
         <h2 id="picker" className="text-2xl font-extrabold text-ink mt-10 mb-4 scroll-mt-24">Your cabin, your state</h2>

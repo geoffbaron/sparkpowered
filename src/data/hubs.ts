@@ -264,6 +264,7 @@ export const HUBS: Hub[] = [
     sub: "Size solar and batteries for winter, then plan the water, food and kit that get a household through an outage. Built on NREL, CDC, FEMA and Ready.gov.",
     goals: [
       { href: "/off-grid-solar-calculator", label: "size an off-grid solar system", hint: "Panels and battery for your state's December" },
+      { href: "/off-grid-kit", label: "go 90 days off grid", hint: "One package by home size: power, fuel, water, food" },
       { href: "/off-grid-cabin-solar-kit", label: "power a cabin", hint: "Weekend, part-time or full-time" },
       { href: "/power-outage-backup-calculator", label: "keep the power on in an outage", hint: "What size battery for your essentials" },
       { href: "/emergency-water-storage-calculator", label: "store emergency water", hint: "Gallons and jugs for your household" },
@@ -290,6 +291,7 @@ export const HUBS: Hub[] = [
         links: [
           { href: "/off-grid-solar-calculator", title: "Off-grid solar calculator", desc: "Panel watts and battery kWh for your state's December sun", kind: "Calculator" },
           { href: "/how-to-go-off-grid", title: "How to go off grid", desc: "Power line cost per mile vs solar and battery, plus permits, well and septic", kind: "Guide" },
+          { href: "/off-grid-kit", title: "90-day off-grid kit", desc: "Small, medium or large home: power, generator fuel, water and food, priced", kind: "Picker" },
           { href: "/off-grid-cabin-solar-kit", title: "Off-grid cabin solar kit", desc: "Weekend, part-time or full-time cabin, sized by state", kind: "Picker" },
           { href: "/generator-runtime-calculator", title: "Generator runtime and fuel", desc: "Hours per tank and fuel to store, from your generator's spec sheet", kind: "Calculator" },
         ],
@@ -319,6 +321,7 @@ export const HUBS: Hub[] = [
     pageQuestions: [
       { q: "How many solar panels and how much battery do I need to live off grid?", href: "/off-grid-solar-calculator", answeredBy: "Off-grid solar calculator" },
       { q: "Is it cheaper to run a power line or go solar?", href: "/how-to-go-off-grid", answeredBy: "How to go off grid" },
+      { q: "What do I need to go off grid for 90 days?", href: "/off-grid-kit", answeredBy: "90-day off-grid kit" },
       { q: "How much water should I store for an emergency?", href: "/emergency-water-storage-calculator", answeredBy: "Water storage calculator" },
       { q: "How many drops of bleach purify a gallon of water?", href: "/how-to-purify-water", answeredBy: "How to purify water" },
       { q: "What's the difference between a water filter and a purifier?", href: "/best-emergency-water-filters", answeredBy: "Emergency water filters" },

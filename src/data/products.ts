@@ -517,7 +517,7 @@ const PORTABLE: Product[] = [
     category: "portable",
     url: "https://www.ankersolix.com/products/c1000-gen2",
     sourceUrl: "https://www.ankersolix.com/products/c1000-gen2",
-    retrieved: "2026-11-06",
+    retrieved: "2026-11-17",
     capacityWh: 1024,
     maxCapacityWh: null,
     notExpandable: true,
@@ -533,10 +533,10 @@ const PORTABLE: Product[] = [
     warrantyYears: null,
     volts: "120V",
     install: "diy",
-    priceUsd: 549.99,
+    priceUsd: 529.99,
     listPriceUsd: 699.99,
     notes: [
-      "Price is the sale price Anker showed on Nov 6 2026 (regular $699.99).",
+      "Price is the Black Friday Early Access price Anker showed on Nov 17 2026 (regular $699.99); Anker's banner gave the sale as Nov 10 to 18.",
       "Anker says a full AC recharge takes 49 minutes.",
       "Not expandable; Anker's US page does not state the battery chemistry."
     ]
@@ -548,7 +548,7 @@ const PORTABLE: Product[] = [
     category: "portable",
     url: "https://www.ankersolix.com/products/c2000-gen2",
     sourceUrl: "https://www.ankersolix.com/products/c2000-gen2",
-    retrieved: "2026-11-06",
+    retrieved: "2026-11-17",
     capacityWh: 2048,
     maxCapacityWh: 4096,
     acOutputW: 2400,
@@ -563,10 +563,11 @@ const PORTABLE: Product[] = [
     warrantyYears: null,
     volts: "120V",
     install: "diy",
-    priceUsd: 999.99,
+    priceUsd: 949.99,
     listPriceUsd: 1199.99,
     notes: [
-      "Price is the sale price Anker showed on Nov 6 2026 (regular $1,199.99).",
+      "Price is the Black Friday Early Access price Anker showed on Nov 17 2026 (regular $1,199.99); Anker's banner gave the sale as Nov 10 to 18.",
+      "The BP2000 expansion battery was sold out on Anker's US site on Nov 17 2026.",
       "Doubles to 4 kWh with one BP2000 expansion battery.",
       "Replaces the SOLIX F2000 on Anker's US site."
     ],
@@ -577,7 +578,8 @@ const PORTABLE: Product[] = [
       priceUsd: 749.99,
       listPriceUsd: 899.99,
       url: "https://www.ankersolix.com/products/c2000-gen2-expansion-battery",
-      maxUnits: 1
+      maxUnits: 1,
+      soldOut: true
     }
   },
   {
@@ -668,7 +670,7 @@ const PORTABLE: Product[] = [
     category: "portable",
     url: "https://www.bluettipower.com/products/ac180",
     sourceUrl: "https://www.bluettipower.com/products/ac180",
-    retrieved: "2026-10-26",
+    retrieved: "2026-11-17",
     capacityWh: 1152,
     maxCapacityWh: null,
     acOutputW: 1800,
@@ -683,7 +685,7 @@ const PORTABLE: Product[] = [
     warrantyYears: 5,
     volts: "120V",
     install: "diy",
-    priceUsd: 499,
+    priceUsd: 549,
     listPriceUsd: null,
     notes: [
       "Back in stock on Bluetti's US site on Oct 19 2026, after being out of stock on Oct 15.",
@@ -697,7 +699,7 @@ const PORTABLE: Product[] = [
     category: "portable",
     url: "https://www.bluettipower.com/products/elite-100-v2-portable-power-station",
     sourceUrl: "https://www.bluettipower.com/products/elite-100-v2-portable-power-station",
-    retrieved: "2026-11-09",
+    retrieved: "2026-11-17",
     capacityWh: 1024,
     maxCapacityWh: null,
     acOutputW: 1800,
@@ -757,7 +759,7 @@ const PORTABLE: Product[] = [
     category: "portable",
     url: "https://www.bluettipower.com/products/elite-30-v2-portable-power-station",
     sourceUrl: "https://www.bluettipower.com/products/elite-30-v2-portable-power-station",
-    retrieved: "2026-10-26",
+    retrieved: "2026-11-17",
     capacityWh: 288,
     maxCapacityWh: null,
     notExpandable: true,
@@ -773,7 +775,7 @@ const PORTABLE: Product[] = [
     warrantyYears: 5,
     volts: "120V",
     install: "diy",
-    priceUsd: 289.99,
+    priceUsd: 299.99,
     listPriceUsd: null,
     notes: [
       "Under 10 lb and rated under 30 dB at light loads, quiet enough for a bedroom.",
@@ -788,7 +790,7 @@ const PORTABLE: Product[] = [
     category: "portable",
     url: "https://www.bluettipower.com/products/elite-300-portable-power-station",
     sourceUrl: "https://www.bluettipower.com/products/elite-300-portable-power-station",
-    retrieved: "2026-11-09",
+    retrieved: "2026-11-17",
     capacityWh: 3014.4,
     maxCapacityWh: null,
     acOutputW: 2400,
@@ -817,7 +819,7 @@ const PORTABLE: Product[] = [
     category: "portable",
     url: "https://www.bluettipower.com/products/elite-400-portable-power-station",
     sourceUrl: "https://www.bluettipower.com/products/elite-400-portable-power-station",
-    retrieved: "2026-11-09",
+    retrieved: "2026-11-17",
     capacityWh: 3840,
     maxCapacityWh: null,
     acOutputW: 2600,
@@ -1270,3 +1272,52 @@ export const ROOFTOP_SOLAR_COST = {
   url: "https://www.energysage.com/local-data/solar-panel-cost/",
   retrieved: "2026-10-15",
 };
+
+/**
+ * Portable solar panels for the off-grid kit, one per brand whose stations the
+ * kit can pick. Same rules as PRODUCTS: price and stock from the maker's US
+ * store on `retrieved`. Each panel is one the maker sells for its own stations.
+ */
+export interface SolarPanel {
+  id: string;
+  brand: Exclude<BrandId, "energysage">;
+  model: string;
+  watts: number;
+  url: string;
+  sourceUrl: string;
+  retrieved: string;
+  priceUsd: number;
+  listPriceUsd: number | null;
+  soldOut?: boolean;
+  notes: string[];
+}
+
+export const SOLAR_PANELS: SolarPanel[] = [
+  {
+    id: "anker-solix-ps400-bifacial",
+    brand: "anker",
+    model: "SOLIX PS400 Bifacial Portable Solar Panel",
+    watts: 400,
+    url: "https://www.ankersolix.com/products/ps400-bifacial-portable-solar-panel",
+    sourceUrl: "https://www.ankersolix.com/products/ps400-bifacial-portable-solar-panel",
+    retrieved: "2026-11-17",
+    priceUsd: 599.99,
+    listPriceUsd: 799.99,
+    notes: [
+      "Black Friday Early Access price Anker showed on Nov 17 2026 (regular $799.99); Anker's banner gave the sale as Nov 10 to 18.",
+      "The non-bifacial PS400 was sold out on Nov 17 2026.",
+    ],
+  },
+  {
+    id: "bluetti-350w-solar-panel",
+    brand: "bluetti",
+    model: "350W Solar Panel",
+    watts: 350,
+    url: "https://www.bluettipower.com/products/350w-solar-panel",
+    sourceUrl: "https://www.bluettipower.com/products/350w-solar-panel",
+    retrieved: "2026-11-17",
+    priceUsd: 649,
+    listPriceUsd: null,
+    notes: ["Bluetti sells this panel in bundles with the AC180, Elite 200 V2 and Apex 300 (store listings, Nov 17 2026)."],
+  },
+];

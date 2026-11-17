@@ -160,6 +160,7 @@ export const ROUTES: { path: string; lastModified: string }[] = [
   { path: "/questions/costs-and-incentives", lastModified: "2026-11-11" },
   { path: "/off-grid-solar-calculator", lastModified: "2026-10-26" },
   { path: "/off-grid-cabin-solar-kit", lastModified: "2026-10-26" },
+  { path: "/off-grid-kit", lastModified: "2026-11-17" },
   { path: "/how-to-go-off-grid", lastModified: "2026-10-26" },
   { path: "/power-outage-backup-calculator", lastModified: "2026-11-06" },
   { path: "/home-backup/well-pump", lastModified: "2026-11-14" },
@@ -195,6 +196,7 @@ export const DATA_ROUTES = new Set([
   "/space-heater-cost",
   "/off-grid-solar-calculator",
   "/off-grid-cabin-solar-kit",
+  "/off-grid-kit",
   "/how-to-go-off-grid",
   "/power-outage-backup-calculator",
 ]);

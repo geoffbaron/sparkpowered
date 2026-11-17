@@ -29,7 +29,8 @@ function hubQuestions(hub: Hub) {
 }
 
 /** Landing page for one main nav section: start here, every guide grouped by goal, common questions. */
-export function HubLanding({ hub }: { hub: Hub }) {
+/** `extra` is an optional block shown under the pick, for a section that needs one (the off-grid kit packages). */
+export function HubLanding({ hub, extra }: { hub: Hub; extra?: React.ReactNode }) {
   const questions = hubQuestions(hub);
   const others = HUBS.filter((h) => h.id !== hub.id);
   const allLinks = hub.groups.flatMap((g) => g.links);
@@ -101,6 +102,8 @@ export function HubLanding({ hub }: { hub: Hub }) {
             </div>
           </section>
         )}
+
+        {extra}
 
         <div className="mt-10">
           <Prose>

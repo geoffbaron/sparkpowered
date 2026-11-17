@@ -248,3 +248,32 @@ Verdict: Bluetti's own pages list specs but no layouts or cold check; the rest a
 Safety pass done (2026-11-14): 60 V limit and E033 stated with the cold check; Bluetti's off-grid-only rule quoted; backfeeding through a wall or dryer outlet or double-ended cord stated as illegal; transfer switch by a licensed electrician with a permit for house circuits.
 
 Data discrepancies found, not fixed here (outside these pages): Bluetti's pages give the Elite 400 "3,900 W Lifting Power" (products.ts surgeW 5,200) and the Elite 100 V2 "Surge 2,700W" / "2,700W Lifting Power" (products.ts 3,600); the Elite 300 page shows both "Lifting Power: 4,800 W" and "Surge Power 4,800 W". Bluetti's surge figures look like heating-only Power Lifting across the range; worth a products.ts pass.
+
+## /off-grid-kit
+
+Live Google check, 2026-11-17, query "off grid kit for 90 days" (organic, ads and video carousel left out):
+1. fortune.com: "Pentagon orders bases to plan for 90 days without the grid" (news, Oct 26 2026)
+2. lifesaverusa.co: "Pentagon's 90-Day Off-Grid Plan: What Families Should..." (blog)
+3. mypatriotsupply.com: "The Pentagon Is Planning for 90 Days. Should Your Family?" (food seller blog)
+4. snopes.com: "What we know about Pentagon's FORTRESS initiative" (fact check)
+5. lionenergy.com: "Lion Den 90-Day Emergency Plan" (one maker's own kits)
+6. yahoo.com: Pentagon 90-day story (syndicated news)
+7. facebook.com (4Patriots video post)
+8. Shopping carousel: SunGold, Eco-Worthy, Anker E10 component kits (no sizing by home)
+Query "off grid package by home size": rocksolar.io sizing guide, solarset.com sizing guide, reddit r/OffGrid, unboundsolar.com calculator, altestore.com calculator, solartown.com large kits, diysolarforum.com thread, Quora/Facebook threads.
+Verdict: the 90-day query is driven by the Pentagon FORTRESS news; results are news, seller blogs and one maker's own kits. Sizing results are generic calculators. Nothing combines power, generator fuel, water and food by home size and state with dated prices. Built. Site check: /off-grid-cabin-solar-kit covers cabins (weekend/part-time/full-time, power only); the new page is a household's 90 days and links both ways.
+
+| Claim | Source | Read |
+|---|---|---|
+| Loads (fridge, freezer, LED, phone, router, CPAP, well pump 1/3 HP 1,000 W + 2,000 W start, furnace blower 700 W + 1,400 W start), December kWh per kW by state, panels = Wh a day ÷ December kWh per kW, battery = Wh a day × days ÷ 0.85 | src/lib/offgrid.ts LOAD_DEFS, sizeOffGrid (EIA RECS, EWEB, ResMed, DOE, PVWatts; existing sources) | 2026-11-17 |
+| Battery days 2 (not 3) because the package carries a generator: stated on the page as our choice | src/lib/offgrid-kit.ts KIT_BATTERY_DAYS | 2026-11-17 |
+| Honda EU2200i: "120V 2200W max. (18.3A), 1800W rated (15A)"; "Fuel Tank Capacity .95 gal"; "Run Time per Tankful 3.2hr @ rated load 8.1 hrs @ 1/4 load". The page header showed "Gas Powered (discontinued)"; used only as example spec figures, no buy link, reader can enter their own | powerequipment.honda.com/generators/models/eu2200i | 2026-11-17 |
+| Fuel = tank ÷ hours a tank × hours run (generatorPlan); hours = shortfall Wh ÷ rated W | src/lib/offgrid.ts generatorPlan | 2026-11-17 |
+| Water 1 gal/person/day, 2-week store; food from Dietary Guidelines Table A2-2 (moderate) | src/lib/prep.ts (CDC, FEMA, DGA; existing sources) | 2026-11-17 |
+| 240 V pump needs a 120/240 V station; 1/2 HP 230 V start from Franklin AIM; soft starter fix; licensed electrician and transfer switch | /home-backup/well-pump (same pumpFit and wording) | 2026-11-17 |
+| Bluetti AC180 $549 (was $499 on Oct 26), in stock; Elite 30 V2 $299.99 (was $289.99); Elite 100 V2 $499, Elite 300 $1,199, Elite 400 $1,499, Apex 300 $1,499, B300K for Apex 300 $1,099, all in stock | bluettipower.com/products/<handle>.js on the store's origin | 2026-11-17 |
+| Bluetti 350W Solar Panel $649, in stock (variant 49045516320987); 200W $399; SORA 500 $849; Bluetti lists 350W bundles with AC180, Elite 200 V2 and Apex 300 | bluettipower.com/products/350w-solar-panel.js and /search/suggest.json | 2026-11-17 |
+| Anker C1000 Gen 2 $529.99 (regular $699.99); C2000 Gen 2 $949.99 (regular $1,199.99); BP2000 sold out ("Notify Me"); BP3000 $999.99 (regular $1,299.99), Add to Cart; PS400 Bifacial $599.99 (regular $799.99), Add to Cart; non-bifacial PS400 sold out. Banner: "Black Friday Early Access ... Nov. 10th - 18th" | ankersolix.com product pages (page text) and /collections/solar-panels | 2026-11-17 |
+| Presets in Maryland (typical December, 2.20 kWh/kW/day): small 2.7 kWh/day -> Apex 300 + 2 B300K + 4 × 350W, $6,293; medium 8.6 kWh/day and large 9.7 kWh/day -> Apex 300 + 6 B300K + 6 × 350W, $11,987 (battery short of 2 days, solar input capped at 2,400 W) | computed, tests/offgrid-kit.test.ts | 2026-11-17 |
+
+Safety pass done (2026-11-17): essentials only, says it will not run central AC, electric heat, an electric range or a dryer; generator outdoors 20 ft from windows, doors and vents, battery CO alarm, fuel in approved containers away from the house (Ready.gov, CDC, NFPA); never plug a generator or station into a wall outlet; well pump wired in via a transfer switch by a licensed electrician, soft starter by a licensed electrician or pump installer; panel series/parallel checked against the station's voltage limits with cold-weather margin; cloudy-state note that solar alone will not keep up.
