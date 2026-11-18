@@ -1321,3 +1321,89 @@ export const SOLAR_PANELS: SolarPanel[] = [
     notes: ["Bluetti sells this panel in bundles with the AC180, Elite 200 V2 and Apex 300 (store listings, Nov 17 2026)."],
   },
 ];
+
+/**
+ * Complete off-grid systems: an installed inverter, a 48 V battery bank and a
+ * panel array sold as one kit. Bigger than any power station we track, and not
+ * plug-and-play: the inverter is wired to the house, which takes an electrician
+ * and usually a permit. Same rules as PRODUCTS: specs and price from the maker's
+ * own US store on `retrieved`, null for anything it does not state.
+ */
+export interface OffGridSystem {
+  id: string;
+  brand: Exclude<BrandId, "energysage">;
+  model: string;
+  /** The store option this record is (kits come in several sizes on one page). */
+  variant: string;
+  url: string;
+  sourceUrl: string;
+  retrieved: string;
+  /** Battery in the kit, watt-hours (modules × module size). */
+  capacityWh: number;
+  battery: { model: string; count: number; moduleWh: number; chemistry: "LFP" | "NMC" | null; warrantyYears: number | null; certifications: string[] };
+  /** More of the same battery module bought separately. `maxUnits` is how many more the maker's stated limit allows. */
+  addOn: AddOnBattery;
+  inverter: { model: string; count: number; url: string; certifications: string[] };
+  /** Inverter continuous AC output, watts. */
+  acOutputW: number;
+  /** Inverter peak output, watts, as the maker states it. */
+  surgeW: number | null;
+  volts: "120V" | "120/240V";
+  /** Most solar the inverter accepts, watts. */
+  solarInputW: number;
+  /** Panels in the box. */
+  panel: { model: string; watts: number; count: number; warrantyYears: number | null };
+  priceUsd: number;
+  listPriceUsd: number | null;
+  soldOut?: boolean;
+  notes: string[];
+}
+
+export const OFFGRID_SYSTEMS: OffGridSystem[] = [
+  {
+    id: "ecoworthy-10kw-offgrid-20kwh",
+    brand: "ecoworthy",
+    model: "10kW Complete Off-Grid Solar Power System",
+    variant: "5310W PV & 20.48kWh Battery",
+    url: "https://www.eco-worthy.com/products/eco-worthy-complete-off-grid-solar-power-system-20-48kwh-61-44kwh-battery-10000w-120-240v-5310w-15340w-pv",
+    sourceUrl: "https://www.eco-worthy.com/products/eco-worthy-complete-off-grid-solar-power-system-20-48kwh-61-44kwh-battery-10000w-120-240v-5310w-15340w-pv",
+    retrieved: "2026-11-18",
+    capacityWh: 20480,
+    battery: {
+      model: "Cubix100 51.2V 100Ah LiFePO4 server rack battery",
+      count: 4,
+      moduleWh: 5120,
+      chemistry: "LFP",
+      warrantyYears: 10,
+      certifications: ["UL 9540", "UL 1973", "UL 9540A"],
+    },
+    addOn: {
+      model: "Cubix100 51.2V 100Ah LiFePO4 server rack battery (5.12 kWh)",
+      capacityWh: 5120,
+      priceUsd: 889.99,
+      listPriceUsd: 1299.99,
+      url: "https://www.eco-worthy.com/products/eco-worthy-51-2v-100ah-lifepo4-lithium-battery-5-12kwh-capacity-server-rack-battery",
+      // Eco-Worthy: up to 32 batteries in parallel; the kit has 4.
+      maxUnits: 28,
+    },
+    inverter: {
+      model: "Liber 10KP 10000W split-phase all-in-one off-grid inverter",
+      count: 1,
+      url: "https://www.eco-worthy.com/products/eco-worthy-10000w-solar-off-grid-inverter-charger-48v-dc-to-240v-ac-split-phase-power-inverter",
+      certifications: ["UL 1741"],
+    },
+    acOutputW: 10000,
+    surgeW: 20000,
+    volts: "120/240V",
+    solarInputW: 11000,
+    panel: { model: "590W N-type monocrystalline panel", watts: 590, count: 9, warrantyYears: 12 },
+    priceUsd: 7999.99,
+    listPriceUsd: 10999.99,
+    notes: [
+      "Inverter: 10,000 W rated, 20,000 W peak, 120/240 V split-phase or 120 V single-phase, rated for a 6 HP motor load, 11,000 W of solar input, indoor use only (IP20), per Eco-Worthy's inverter page on Nov 18 2026.",
+      "In the box: 9 × 590 W panels, the inverter, 4 × 51.2 V 100 Ah batteries and a 6-layer rack with busbar. Mounts and wiring to the house are not included.",
+      "Eco-Worthy recommends a professional installer or certified electrician. The panels ship on a pallet by truck.",
+      "On Nov 18 2026 Eco-Worthy said the Cubix100 battery was on presale, shipping about Nov 25.",
+    ],
+  },
+];

@@ -45,6 +45,8 @@ const KIT_BRANDS: { brand: BrandId; what: string; url: string }[] = [
   { brand: "sungold", what: "Cabin and tiny-home solar kits, inverters and batteries", url: "https://sungoldpower.com/collections/cabine-tiny-home-kits" },
   { brand: "signaturesolar", what: "Off-grid solar kits and components", url: "https://signaturesolar.com/kits-bundles/off-grid-solar-kits/" },
   { brand: "renogy", what: "Off-grid solar kits: panels, charge controllers, inverters and batteries", url: "https://www.renogy.com/collections/off-grid" },
+  // Checked Nov 18 2026: Eco-Worthy's complete off-grid kit range, 48 V systems from 1.5 kW of panels up.
+  { brand: "ecoworthy", what: "Complete off-grid kits: 48 V inverters, server-rack batteries and panels", url: "https://www.eco-worthy.com/collections/complete-off-grid-kits" },
   { brand: "goalzero", what: "Off-grid solar generators: power stations paired with solar panels", url: "https://goalzero.com/collections/off-grid-solar-systems-power" },
 ];
 

@@ -11,7 +11,7 @@
  */
 
 import { AFFILIATES } from "@/data/affiliates";
-import { PRODUCTS, SOLAR_PANELS, type SolarPanel } from "@/data/products";
+import { OFFGRID_SYSTEMS, PRODUCTS, SOLAR_PANELS, type OffGridSystem, type SolarPanel } from "@/data/products";
 import { motorSurgeW } from "@/lib/can-it-run";
 import { LOADS } from "@/lib/everyday";
 import {
@@ -152,6 +152,30 @@ export function kitStations(): StationOption[] {
 
 const product = (id: string) => PRODUCTS.find((p) => p.id === id)!;
 
+/**
+ * Complete off-grid systems (installed inverter, 48 V battery bank, panels in the box) as
+ * calculator options, so the same matchStations picks the battery count. Used only when no
+ * power station we track holds the household's battery size.
+ */
+export function kitSystems(): StationOption[] {
+  return OFFGRID_SYSTEMS.filter((s) => AFFILIATES[s.brand].tracked && !s.soldOut).map((s) => ({
+    id: s.id,
+    name: `${AFFILIATES[s.brand].name} ${s.model}`,
+    brand: s.brand,
+    capacityWh: s.capacityWh,
+    addOnWh: s.addOn.capacityWh,
+    addOnMax: s.addOn.maxUnits,
+    addOnUsd: s.addOn.soldOut ? null : s.addOn.priceUsd,
+    priceUsd: s.priceUsd,
+    solarInputW: s.solarInputW,
+    acOutputW: s.acOutputW,
+    surgeW: s.surgeW,
+    url: s.url,
+  }));
+}
+
+export const systemById = (id: string) => OFFGRID_SYSTEMS.find((s) => s.id === id);
+
 /** The example 240 V pump the well-pump page uses: 1/2 HP, 230 V, 3-wire (Franklin Electric table). */
 export const EXAMPLE_PUMP_240 = pumpMotor("1-2hp-230v-3w");
 
@@ -172,9 +196,14 @@ export interface KitInput {
 
 export interface KitPower {
   match: StationMatch;
+  /** Set when the pick is a complete off-grid system rather than a power station: panels come in its box. */
+  system: OffGridSystem | null;
   /** True when no station we track holds the full battery size; the biggest one is used and the generator does more. */
   short: boolean;
-  panel: SolarPanel;
+  /** The panel bought separately; null for a system, whose panels are in the box. */
+  panel: SolarPanel | null;
+  /** Panel watts, for the panels bought or the ones in the system's box. */
+  panelWatts: number;
   panels: number;
   panelW: number;
   /** True when the station's solar input is below the December panel need. */
@@ -247,10 +276,34 @@ export function buildKit(input: KitInput): KitPackage {
 
   let options = kitStations();
   if (well240) options = options.filter((o) => product(o.id).volts === "120/240V");
-  const chosen = whPerDay > 0 ? pickPower(options, size.batteryWh, runningW) : null;
+  let chosen = whPerDay > 0 ? pickPower(options, size.batteryWh, runningW) : null;
+  // No station holds it: a complete off-grid system that does, if one we track fits.
+  let system: OffGridSystem | null = null;
+  if (whPerDay > 0 && (!chosen || chosen.short)) {
+    const sys = kitSystems().filter((o) => !well240 || systemById(o.id)!.volts === "120/240V");
+    const m = matchStations(sys, size.batteryWh, { runningW, limit: 1 })[0];
+    if (m) {
+      chosen = { match: m, short: false };
+      system = systemById(m.option.id)!;
+    }
+  }
 
   let power: KitPower | null = null;
-  if (chosen) {
+  if (system && chosen) {
+    const panelW = system.panel.count * system.panel.watts;
+    power = {
+      match: chosen.match,
+      system,
+      short: false,
+      panel: null,
+      panelWatts: system.panel.watts,
+      panels: system.panel.count,
+      panelW,
+      inputCapped: false,
+      solarWhDay: solarWhPerDay(panelW, input.perKwDay),
+      priceUsd: r2(chosen.match.totalUsd),
+    };
+  } else if (chosen) {
     const o = chosen.match.option;
     const panel = panelFor(o.brand)!;
     const cap = o.solarInputW ?? 0;
@@ -260,8 +313,10 @@ export function buildKit(input: KitInput): KitPackage {
     const panelW = panels * panel.watts;
     power = {
       match: chosen.match,
+      system: null,
       short: chosen.short,
       panel,
+      panelWatts: panel.watts,
       panels,
       panelW,
       inputCapped: cap < size.panelW,
@@ -274,8 +329,11 @@ export function buildKit(input: KitInput): KitPackage {
   if (hasWell) {
     if (!power) wellStart = "none";
     else {
-      const p = product(power.match.option.id);
-      const st = { volts: p.volts, acOutputW: p.acOutputW, motorSurgeW: motorSurgeW(p) };
+      const sys = power.system;
+      const p = sys ? null : product(power.match.option.id);
+      const st = sys
+        ? { volts: sys.volts, acOutputW: sys.acOutputW, motorSurgeW: sys.surgeW ?? sys.acOutputW }
+        : { volts: p!.volts, acOutputW: p!.acOutputW, motorSurgeW: motorSurgeW(p!) };
       const fit = well240 ? pumpFit(pumpLoad(EXAMPLE_PUMP_240), st) : loadFit(loadDef("well"), st);
       wellStart = fit === "runs" ? "runs" : fit === "start-unconfirmed" ? "soft-start" : "none";
     }
@@ -300,6 +358,8 @@ export function buildKit(input: KitInput): KitPackage {
   if (power?.short) notes.push("battery-short");
   if (power?.inputCapped) notes.push("solar-input-capped");
   if (shortfallWhDay > 0) notes.push("cloudy-winter");
+  if (power?.system) notes.push("system-install");
+  if (power?.system && size.panelW > power.panelW) notes.push("system-more-panels");
   if (hasWell && well240) notes.push("well-240v");
   if (wellStart === "soft-start") notes.push("well-soft-start");
   if (hasWell && !power) notes.push("well-no-station");
@@ -338,7 +398,10 @@ export function buildKit(input: KitInput): KitPackage {
 }
 
 /** Product ids a package can show, for price dates and sources. */
-export const kitProductIds = (k: KitPackage) => (k.power ? [k.power.match.option.id] : []);
+export const kitProductIds = (k: KitPackage) => (k.power && !k.power.system ? [k.power.match.option.id] : []);
+
+/** Complete systems a package can show, for price dates and sources. */
+export const kitSystemIds = (k: KitPackage) => (k.power?.system ? [k.power.system.id] : []);
 
 /** The three preset packages for one state's December sun. */
 export const presetKits = (perKwDay: number) => HOME_PRESETS.map((h) => buildKit({ home: h.id, loads: h.loads, perKwDay }));

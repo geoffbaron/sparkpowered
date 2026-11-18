@@ -42,8 +42,9 @@ export default function SurvivalChecklist({ k, stateName }: { k: KitPackage; sta
 
   const power: string[] = p
     ? [
-        `${p.match.option.name}${p.match.addOns ? ` + ${p.match.addOns} expansion batteries` : ""} (${fmtKwh(p.match.totalWh)})`,
-        `${p.panels} × ${p.panel.watts} W solar panels (${fmtW(p.panelW)})`,
+        `${p.match.option.name}${p.match.addOns ? ` + ${p.match.addOns} expansion batter${p.match.addOns === 1 ? "y" : "ies"}` : ""} (${fmtKwh(p.match.totalWh)})`,
+        `${p.panels} × ${p.panelWatts} W solar panels (${fmtW(p.panelW)})${p.system ? ", in the system's box" : ""}`,
+        ...(p.system ? ["Installation by a licensed electrician, with any permit your county requires"] : []),
         `Generator and about ${n1(g.gallons)} gallons of gasoline in approved containers`,
       ]
     : [`Generator and about ${n1(g.gallons)} gallons of gasoline in approved containers`];

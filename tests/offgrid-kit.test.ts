@@ -1,8 +1,8 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { AFFILIATES } from "../src/data/affiliates";
-import { PRODUCTS, SOLAR_PANELS } from "../src/data/products";
+import { AFFILIATES, partnerUrl } from "../src/data/affiliates";
+import { OFFGRID_SYSTEMS, PRODUCTS, SOLAR_PANELS } from "../src/data/products";
 import { STATES } from "../src/lib/energy";
 import { dailyWh, decemberPerKwDay, generatorPlan, sizeOffGrid, solarWhPerDay } from "../src/lib/offgrid";
 import { GOAL_DAYS, foodNeeded, waterNeeded } from "../src/lib/prep";
@@ -15,6 +15,7 @@ import {
   homePreset,
   kitPicks,
   kitStations,
+  kitSystems,
   presetKits,
 } from "../src/lib/offgrid-kit";
 import { ROUTES } from "../src/lib/seo";
@@ -27,13 +28,24 @@ test("every preset in every state gets an in-stock, tracked, priced power packag
   for (const { s, d } of decs) {
     for (const k of presetKits(d)) {
       assert.ok(k.power, `${k.home.id} in ${s.name} has no station`);
+      if (k.power!.system) {
+        const sys = k.power!.system;
+        assert.ok(AFFILIATES[sys.brand].tracked && !sys.soldOut, `${sys.id} untracked or sold out`);
+        assert.equal(k.power!.panel, null, "a system's panels are in its box");
+        assert.equal(k.power!.panelW, sys.panel.count * sys.panel.watts);
+        assert.ok(k.power!.panelW <= sys.solarInputW);
+        assert.ok(sys.acOutputW >= k.runningW, `${sys.id} cannot run everything at once`);
+        assert.ok(k.power!.match.totalWh >= k.size.batteryWh, "a system holds the full battery size");
+        assert.ok(k.notes.includes("system-install"));
+        continue;
+      }
       const p = PRODUCTS.find((x) => x.id === k.power!.match.option.id)!;
       assert.ok(AFFILIATES[p.brand].tracked, `${p.id} is not a tracked brand`);
       assert.notEqual(p.brand, "naturesgenerator");
       assert.ok(!p.soldOut && p.priceUsd != null, `${p.id} sold out or unpriced`);
       if (k.power!.match.addOns > 0) assert.ok(p.addOn && !p.addOn.soldOut && p.addOn.priceUsd != null, `${p.id} add-on unavailable`);
-      assert.equal(k.power!.panel.brand, p.brand, "panels come from the station's maker");
-      assert.ok(!k.power!.panel.soldOut);
+      assert.equal(k.power!.panel!.brand, p.brand, "panels come from the station's maker");
+      assert.ok(!k.power!.panel!.soldOut);
       assert.ok(k.power!.panels >= 1);
       assert.ok(k.power!.panelW <= (p.solarInputW ?? 0), `${p.id} panels over its solar input`);
       assert.ok(p.acOutputW >= k.runningW, `${p.id} cannot run everything at once`);
@@ -43,8 +55,15 @@ test("every preset in every state gets an in-stock, tracked, priced power packag
 
 test("package totals add up from the dated prices", () => {
   for (const k of presetKits(decemberPerKwDay(STATES[0]))) {
+    const sys = k.power!.system;
+    if (sys) {
+      const sum = sys.priceUsd + k.power!.match.addOns * sys.addOn.priceUsd!;
+      assert.ok(Math.abs(sum - k.power!.priceUsd) < 0.01, `${k.home.id}: ${sum} vs ${k.power!.priceUsd}`);
+      assert.equal(k.power!.match.totalWh, sys.capacityWh + k.power!.match.addOns * sys.addOn.capacityWh);
+      continue;
+    }
     const p = PRODUCTS.find((x) => x.id === k.power!.match.option.id)!;
-    const sum = p.priceUsd! + k.power!.match.addOns * (p.addOn?.priceUsd ?? 0) + k.power!.panels * k.power!.panel.priceUsd;
+    const sum = p.priceUsd! + k.power!.match.addOns * (p.addOn?.priceUsd ?? 0) + k.power!.panels * k.power!.panel!.priceUsd;
     assert.ok(Math.abs(sum - k.power!.priceUsd) < 0.01, `${k.home.id}: ${sum} vs ${k.power!.priceUsd}`);
     assert.equal(k.power!.match.totalWh, p.capacityWh + k.power!.match.addOns * (p.addOn?.capacityWh ?? 0));
   }
@@ -78,8 +97,8 @@ test("bigger homes need more", () => {
 test("well pump: 240 V picks a 120/240 V station and flags the start honestly", () => {
   const k = buildKit({ home: "large", loads: homePreset("large").loads, perKwDay: sunniest.d });
   assert.ok(k.well240);
-  const p = PRODUCTS.find((x) => x.id === k.power!.match.option.id)!;
-  assert.equal(p.volts, "120/240V");
+  const volts = k.power!.system?.volts ?? PRODUCTS.find((x) => x.id === k.power!.match.option.id)!.volts;
+  assert.equal(volts, "120/240V");
   assert.ok(k.notes.includes("well-240v"));
   assert.ok(k.wellStart === "runs" || k.notes.includes("well-soft-start"), "an uncovered start must say soft starter");
   // A 120 V pump can use any station.
@@ -186,4 +205,59 @@ test("no hard-coded prices in the survival parts; food brands are plain links", 
   const checklist = readFileSync("src/components/offgrid/SurvivalChecklist.tsx", "utf8");
   assert.match(checklist, /@media print/);
   assert.match(readFileSync("src/app/off-grid/page.tsx", "utf8"), /power, water, food and garden/i);
+});
+
+/* ------------------------------------------------------------------ */
+/* Complete off-grid systems above the portable cap (Eco-Worthy)        */
+/* ------------------------------------------------------------------ */
+
+/** The most battery any kit station reaches with all its add-ons. */
+const portableCapWh = Math.max(...kitStations().map((o) => o.capacityWh + (o.addOnUsd != null ? o.addOnMax * (o.addOnWh ?? 0) : 0)));
+
+test("past the biggest portable setup, Medium and Large get a system, and Large gets a bigger one", () => {
+  for (const { s, d } of decs) {
+    const [sm, m, l] = presetKits(d);
+    for (const k of [sm, m, l]) {
+      if (k.size.batteryWh > portableCapWh) {
+        assert.ok(k.power?.system, `${k.home.id} in ${s.name} needs ${k.size.batteryWh} Wh, over the portable cap, but got a station`);
+        assert.ok(!k.notes.includes("battery-short"));
+      } else assert.equal(k.power?.system, null, `${k.home.id} in ${s.name} fits a station`);
+    }
+    if (m.size.batteryWh > portableCapWh && l.size.batteryWh > m.power!.match.totalWh) {
+      assert.ok(l.power!.match.totalWh > m.power!.match.totalWh, `${s.name}: Large is no bigger than Medium`);
+      assert.ok(l.power!.priceUsd > m.power!.priceUsd);
+    }
+  }
+  // The presets as shipped do cross the cap, so the page really shows different gear.
+  const [, m, l] = presetKits(decemberPerKwDay(STATES[0]));
+  assert.ok(m.size.batteryWh > portableCapWh && l.power!.match.totalWh > m.power!.match.totalWh);
+});
+
+test("a 240 V well pump runs on the system from the maker's stated output", () => {
+  const k = buildKit({ home: "large", loads: homePreset("large").loads, perKwDay: darkest.d });
+  const sys = k.power!.system!;
+  assert.equal(sys.volts, "120/240V");
+  assert.equal(k.wellStart, "runs", "20,000 W peak covers a 1/2 HP 230 V start");
+});
+
+test("off-grid systems: dated, priced, tracked buy links, maker specs only", () => {
+  assert.ok(kitSystems().length > 0);
+  for (const sys of OFFGRID_SYSTEMS) {
+    assert.match(sys.retrieved, /^\d{4}-\d{2}-\d{2}$/);
+    assert.ok(sys.priceUsd > 0 && (sys.listPriceUsd == null || sys.listPriceUsd >= sys.priceUsd));
+    assert.ok(sys.addOn.priceUsd != null && sys.addOn.priceUsd > 0);
+    assert.equal(sys.capacityWh, sys.battery.count * sys.battery.moduleWh);
+    assert.equal(sys.addOn.capacityWh, sys.battery.moduleWh, "extra batteries are the same module");
+    for (const u of [sys.url, sys.addOn.url, sys.inverter.url]) {
+      const l = partnerUrl(sys.brand, { productUrl: u });
+      assert.ok(l.tracked, `${u} untracked`);
+      const q = new URL(l.href).searchParams;
+      assert.equal(q.get("awinmid"), "73461");
+      assert.equal(q.get("ued"), u);
+    }
+  }
+  const files = ["src/components/offgrid/KitNotes.tsx", "src/components/offgrid/KitPackageList.tsx", "src/components/offgrid/KitPresetCards.tsx", "src/app/off-grid-kit/page.tsx"];
+  for (const f of files) assert.doesNotMatch(readFileSync(f, "utf8").replace(/\$\{/g, ""), /\$\d/, `${f} has a price`);
+  const notes = readFileSync("src/components/offgrid/KitNotes.tsx", "utf8");
+  for (const t of ["licensed electrician", "permit", "/how-to-go-off-grid"]) assert.ok(notes.includes(t), t);
 });

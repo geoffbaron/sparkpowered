@@ -62,7 +62,8 @@ export type BrandId =
   | "valleyfood"
   | "readywise"
   | "mountainhouse"
-  | "midland";
+  | "midland"
+  | "ecoworthy";
 
 export interface BrandAffiliate {
   /** Display name. */
@@ -301,6 +302,18 @@ export const AFFILIATES: Record<BrandId, BrandAffiliate> = {
     network: "Awin",
     links: { home: "https://www.awin1.com/cread.php?awinmid=124136&awinaffid=3125360&ued=https%3A%2F%2Fwww.kingbullbike.com%2F" },
     deepLink: "https://www.awin1.com/cread.php?awinmid=124136&awinaffid=3125360&ued={url}",
+  },
+  // Approved Nov 18 2026 on Awin (ECO-WORTHY US, MID 73461) for publisher 3125360. 5% default
+  // commission, 30-day cookie, US and Canada. Shopify store at www.eco-worthy.com.
+  ecoworthy: {
+    name: "Eco-Worthy",
+    homeUrl: "https://www.eco-worthy.com/",
+    tracked: true,
+    network: "Awin",
+    commission: "5%",
+    cookieDays: 30,
+    links: { home: "https://www.awin1.com/cread.php?awinmid=73461&awinaffid=3125360&ued=https%3A%2F%2Fwww.eco-worthy.com%2F" },
+    deepLink: "https://www.awin1.com/cread.php?awinmid=73461&awinaffid=3125360&ued={url}",
   },
   // Applied, pending on Awin (plain links until approved): Jackery, EcoFlow, Oupes, Pecron,
   // and per-sale solar installers Momentum Solar, Solar Savings, Solar Simplified, Nautilus community solar.

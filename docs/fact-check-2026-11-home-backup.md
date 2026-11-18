@@ -301,3 +301,22 @@ Live Google check, 2026-11-17, query "90 day survival kit for family" (6 organic
 | Medium (family of 4, Maryland): 756,000 cal -> rice 160 lb, beans 73 lb, oats 66 lb, oil 19 lb (2.5 gal), peanut butter 28 lb, 266 cans; 90 cylinders (92 lb, 5 × 20-lb tanks); 6.3 fl oz bleach for 304 gal; 372-704 ft of garden row | computed, tests/offgrid-kit.test.ts | 2026-11-17 |
 
 Safety pass done (2026-11-17): stove outdoors only with CDC's wording, no gas oven or charcoal for heat, CO alarm; generator rules unchanged; rainwater treated before drinking; prescriptions only "talk to your doctor or pharmacist" (CDC), no dosing; bleach dose only from the EPA table, double for cloudy water, under a year old; disclaimer says not medical advice; garden and greenhouse limits stated (not ready inside 90 days, covers hold food in a cold winter, greenhouse needs heat this kit does not carry); no prices for food, seeds, stove or greenhouse.
+
+## /off-grid-kit (Eco-Worthy complete systems above the portable cap, Nov 18 2026)
+
+No new page or query: this extends the existing builder, so no new Google top-8. Eco-Worthy approved on Awin Nov 18 2026 (MID 73461).
+
+| Claim | Source | Read |
+|---|---|---|
+| Eco-Worthy Complete Off-Grid Solar Power System, option "5310W PV & 20.48kWh Battery": $7,999.99 (regular $10,999.99), in stock | eco-worthy.com/products/eco-worthy-complete-off-grid-solar-power-system-20-48kwh-61-44kwh-battery-10000w-120-240v-5310w-15340w-pv (store .js) | 2026-11-18 |
+| In the box: 9 x 590 W panels, 1 x 10000 W all-in-one off-grid inverter, 4 x 51.2 V 100 Ah LiFePO4 batteries, 6-layer rack with 600 A busbar | same page, "Included in the Box" | 2026-11-18 |
+| 10 kW 120/240 V split-phase or 120 V single-phase within its 10 kW continuous rating; up to 11,000 W PV input | same page, description and FAQ | 2026-11-18 |
+| Battery tested to UL 9540, UL 1973, UL 9540A, 10-year warranty; up to 32 batteries in parallel | same page | 2026-11-18 |
+| 590 W panels, 12-year warranty | same page | 2026-11-18 |
+| Maker recommends a professional installer or certified electrician; panels ship by truck on a pallet | same page, FAQ | 2026-11-18 |
+| Cubix100 battery on presale, shipping about Nov 25 | same page banner | 2026-11-18 |
+| Liber 10KP inverter: rated 10,000 W, peak 20,000 W, 120/240 VAC single or split phase, 6 HP motor capacity, 11,000 W max PV input, IP20 indoor, UL 1741 | eco-worthy.com/products/eco-worthy-10000w-solar-off-grid-inverter-charger-48v-dc-to-240v-ac-split-phase-power-inverter | 2026-11-18 |
+| Cubix100 51.2 V 100 Ah server rack battery, 5.12 kWh: $889.99 (regular $1,299.99), LiFePO4, 10-year warranty | eco-worthy.com/products/eco-worthy-51-2v-100ah-lifepo4-lithium-battery-5-12kwh-capacity-server-rack-battery (store .js) | 2026-11-18 |
+| Eco-Worthy complete off-grid kit range (cabin page maker list) | eco-worthy.com/collections/complete-off-grid-kits | 2026-11-18 |
+
+Not used: inverter warranty (not stated on the product pages), the 8260/10620 W PV kit (never the cheapest match), extra panels (no separate 590 W panel sold; the builder keeps the panels in the box and the generator covers December's gap). Safety pass done: the system is described as installed by a licensed electrician with a permit and inspection, not plug-and-play; 240 V pump runs on the maker's stated 120/240 V output and 20,000 W peak.

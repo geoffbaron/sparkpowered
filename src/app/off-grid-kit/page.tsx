@@ -8,10 +8,10 @@ import { QuickAnswer } from "@/components/guide-ui";
 import { Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
 import { PriceFootnote } from "@/components/products";
 import { AFFILIATES } from "@/data/affiliates";
-import { SOLAR_PANELS } from "@/data/products";
+import { OFFGRID_SYSTEMS, SOLAR_PANELS } from "@/data/products";
 import { DATA_UPDATED, STATES, formatDate } from "@/lib/energy";
 import { decemberPerKwDay, fmtKwh, fmtWh, offGridStates, relatedFor, sourcesFor, typicalWinterState } from "@/lib/offgrid";
-import { EXAMPLE_GENERATOR, KIT_BATTERY_DAYS, KIT_DAYS, buildKit, homePreset, kitProductIds, presetKits } from "@/lib/offgrid-kit";
+import { EXAMPLE_GENERATOR, KIT_BATTERY_DAYS, KIT_DAYS, buildKit, homePreset, kitProductIds, kitSystemIds, presetKits } from "@/lib/offgrid-kit";
 import { GOAL_DAYS, PREP_SOURCES as P } from "@/lib/prep";
 import { COOK_MINUTES_PER_PERSON, EXAMPLE_STOVE, LIGHT_COMMS, MEDICAL_HYGIENE, STAPLES, SURVIVAL_READ, SURVIVAL_SOURCES as SV, fdcUrl } from "@/lib/survival-kit";
 import { money, productById } from "@/lib/products";
@@ -38,6 +38,9 @@ export default function OffGridKitPage() {
     for (const k of presetKits(decemberPerKwDay(s))) for (const id of kitProductIds(k)) ids.add(id);
   for (const k of kits) for (const id of kitProductIds(k)) ids.add(id);
   const shown = [...ids].map(productById);
+  const sysIds = new Set<string>();
+  for (const s of STATES) for (const k of presetKits(decemberPerKwDay(s))) for (const id of kitSystemIds(k)) sysIds.add(id);
+  const systems = OFFGRID_SYSTEMS.filter((s) => sysIds.has(s.id));
 
   // The same medium home in the sunniest and darkest December, for the fuel contrast.
   const decs = STATES.map((s) => ({ s, d: decemberPerKwDay(s) })).sort((a, b) => a.d - b.d);
@@ -48,7 +51,7 @@ export default function OffGridKitPage() {
 
   const pkgLine = (k: (typeof kits)[number]) =>
     k.power
-      ? `${k.power.match.option.name}${k.power.match.addOns ? ` with ${k.power.match.addOns} expansion batteries` : ""} (${fmtKwh(k.power.match.totalWh)}) and ${k.power.panels} × ${k.power.panel.watts} W panels, ${money(k.power.priceUsd)} for the power items, plus about ${n0(k.generator.gallons)} gallons of generator fuel`
+      ? `${k.power.match.option.name}${k.power.match.addOns ? ` with ${k.power.match.addOns} ${k.power.system ? "extra" : "expansion"} batter${k.power.match.addOns === 1 ? "y" : "ies"}` : ""} (${fmtKwh(k.power.match.totalWh)}) and ${k.power.panels} × ${k.power.panelWatts} W panels${k.power.system ? " in the box" : ""}, ${money(k.power.priceUsd)} for the power items, plus about ${n0(k.generator.gallons)} gallons of generator fuel`
       : "no power station we track";
 
   const ms = medium.supplies;
@@ -63,7 +66,7 @@ export default function OffGridKitPage() {
     },
     {
       q: "Can a power station run my whole house for 90 days?",
-      a: "No. A portable power station package runs essentials: the fridge, a freezer, lights, internet, a CPAP, a furnace blower and, with the right station, a well pump. It will not run central air conditioning, electric heat, an electric range or an electric dryer. For a whole house you need a permanent off-grid or home battery system designed and installed by professionals.",
+      a: "No. A portable power station package runs essentials: the fridge, a freezer, lights, internet, a CPAP, a furnace blower and, with the right station, a well pump. When a family's essentials need more battery than the biggest power station we track, our package moves up to a complete off-grid system (an inverter, a 48 V battery rack and panels), which a licensed electrician wires into the house, usually with a permit. Neither is sized for central air conditioning, electric heat, an electric range or an electric dryer.",
     },
     {
       q: "Is solar enough to get through a winter off grid?",
@@ -87,7 +90,7 @@ export default function OffGridKitPage() {
     },
     {
       q: "Can a power station run a 240 V well pump?",
-      a: "Only one with 240 V output, so the large-home package uses a 120/240 V station. Starting the pump is the hard part; if the station's specs do not cover the start, a soft starter fitted by a licensed electrician or pump installer is the usual fix. The pump is wired in, so a licensed electrician connects the station through a transfer switch.",
+      a: "Only one with 240 V output, so the large-home package uses a station or system the maker rates for 120/240 V. Starting the pump is the hard part; if the specs do not cover the start, a soft starter fitted by a licensed electrician or pump installer is the usual fix. The pump is wired in, so a licensed electrician makes the connection through a transfer switch.",
     },
   ];
 
@@ -156,6 +159,7 @@ export default function OffGridKitPage() {
         <PriceFootnote products={shown} />
         <p className="text-xs text-muted mt-1">
           Panels: {SOLAR_PANELS.map((s) => `${AFFILIATES[s.brand].name} ${s.model} on ${formatDate(s.retrieved)}`).join("; ")}.
+          {systems.length > 0 && <> Off-grid systems and their extra batteries: {systems.map((s) => `${AFFILIATES[s.brand].name} ${s.model} (${s.variant}) on ${formatDate(s.retrieved)}`).join("; ")}.</>}
         </p>
 
         <Section title="How we size it" id="method">
@@ -166,7 +170,9 @@ export default function OffGridKitPage() {
               Eugene Water &amp; Electric Board&apos;s sheet for motors). The battery holds {KIT_BATTERY_DAYS} days of that with no sun; the panels
               are sized to replace a day&apos;s use in December, the darkest month, from NREL&apos;s PVWatts model for your state, up to what the
               station accepts. We then pick the cheapest in-stock station from a brand we link to that holds the battery size and runs everything
-              you ticked at once.
+              you ticked at once. When no power station we track holds it, we pick the cheapest complete off-grid system that does, adding the
+              maker&apos;s own extra battery modules, with the panels that come in its box. A system like that is installed by a licensed
+              electrician; its cost is not in our total.
             </p>
             <p>
               <strong>Generator.</strong> Whatever the panels miss on an average December day, plus the storm days you choose, comes from a
@@ -420,6 +426,11 @@ export default function OffGridKitPage() {
             { ...SV.noaaFreeze },
             ...shown.map((p) => ({ name: `${AFFILIATES[p.brand].name} ${p.model} product page`, url: p.sourceUrl, detail: `checked ${formatDate(p.retrieved)}` })),
             ...SOLAR_PANELS.map((s) => ({ name: `${AFFILIATES[s.brand].name} ${s.model} product page`, url: s.sourceUrl, detail: `checked ${formatDate(s.retrieved)}` })),
+            ...systems.flatMap((s) => [
+              { name: `${AFFILIATES[s.brand].name} ${s.model} product page`, url: s.sourceUrl, detail: `${s.variant}; checked ${formatDate(s.retrieved)}` },
+              { name: `${AFFILIATES[s.brand].name} ${s.inverter.model} product page`, url: s.inverter.url, detail: `inverter specifications; checked ${formatDate(s.retrieved)}` },
+              { name: `${AFFILIATES[s.brand].name} ${s.addOn.model} product page`, url: s.addOn.url, detail: `checked ${formatDate(s.retrieved)}` },
+            ]),
           ]}
         />
         <RelatedLinks links={[{ href: "/off-grid", label: "Off grid and emergency prep", desc: "Every off-grid and prep tool" }, ...relatedFor(PATH)]} />

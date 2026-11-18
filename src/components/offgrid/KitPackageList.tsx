@@ -25,7 +25,8 @@ function Row({ title, children, price, testId }: { title: string; children: Reac
 /** The full 90-day package: priced power items, generator fuel, water, food and the honest caveats. */
 export default function KitPackageList({ k, stateName }: { k: KitPackage; stateName: string }) {
   const p = k.power;
-  const station = p ? PRODUCTS.find((x) => x.id === p.match.option.id)! : null;
+  const sys = p?.system ?? null;
+  const station = p && !sys ? PRODUCTS.find((x) => x.id === p.match.option.id)! : null;
   const g = k.generator;
   const s = k.supplies;
   const checked = (iso: string) => <span className="block text-xs text-muted font-normal">on the maker&apos;s site {formatDate(iso)}</span>;
@@ -33,7 +34,47 @@ export default function KitPackageList({ k, stateName }: { k: KitPackage; stateN
   return (
     <div data-testid="kit-package">
       <ul className="divide-y divide-black/8 bg-white rounded-2xl border border-black/8">
-        {p && station ? (
+        {p && sys ? (
+          <>
+            <Row
+              title="Complete off-grid system"
+              testId="kit-system"
+              price={<>{money(sys.priceUsd)}{checked(sys.retrieved)}</>}
+            >
+              <PartnerLink brand={sys.brand} productId={sys.id} productUrl={sys.url}>
+                {p.match.option.name}
+              </PartnerLink>{" "}
+              <span className="text-stone-700">({sys.variant})</span>
+              <span className="block text-stone-700">
+                {fmtKwh(sys.capacityWh)} of {sys.battery.chemistry === "LFP" ? "LiFePO4 " : ""}battery ({sys.battery.count} × {fmtKwh(sys.battery.moduleWh)}), a{" "}
+                {sys.acOutputW.toLocaleString("en-US")} W inverter
+                {sys.surgeW ? ` (${sys.surgeW.toLocaleString("en-US")} W peak)` : ""} at {sys.volts === "120/240V" ? "120/240 V split-phase" : "120 V"},
+                and {sys.panel.count} × {sys.panel.watts} W panels ({fmtW(p.panelW)}) in the box: about {fmtWh(p.solarWhDay)} a day on an average
+                December day in {stateName}.
+              </span>
+            </Row>
+            {p.match.addOns > 0 && (
+              <Row
+                title="Extra batteries"
+                testId="kit-addons"
+                price={<>{p.match.addOns} × {money(sys.addOn.priceUsd ?? 0)}{checked(sys.retrieved)}</>}
+              >
+                <PartnerLink brand={sys.brand} productUrl={sys.addOn.url}>
+                  {sys.addOn.model}
+                </PartnerLink>
+                <span className="block text-stone-700">
+                  {p.match.addOns} more, for {fmtKwh(p.match.totalWh)} in all
+                </span>
+              </Row>
+            )}
+            <Row title="Installation" testId="kit-install">
+              Not plug-and-play. The inverter is wired into your home&apos;s electrical panel, which is a job for a licensed electrician and
+              usually needs a permit and inspection from your county building department. Get a quote before you buy; it is not in the total.
+              See <Link href="/how-to-go-off-grid" className="underline">how to go off grid</Link> for permits and the{" "}
+              <Link href="/home-backup/hookup-picker" className="underline">hookup picker</Link> for the ways a battery connects to a house.
+            </Row>
+          </>
+        ) : p && station && p.panel ? (
           <>
             <Row
               title="Power station"
@@ -125,7 +166,7 @@ export default function KitPackageList({ k, stateName }: { k: KitPackage; stateN
         <p className="mt-3 text-base font-extrabold text-ink" data-testid="kit-total">
           Power items total: <span className="tabular-nums">{money(p.priceUsd)}</span>
           <span className="block text-xs text-muted font-normal">
-            Station, batteries and panels at the makers&apos; prices on the dates shown. Water, food, fuel, seeds and the generator are listed as amounts,
+            {sys ? "System and batteries at the maker's price on the date shown, before installation." : "Station, batteries and panels at the makers' prices on the dates shown."} Water, food, fuel, seeds and the generator are listed as amounts,
             not prices.{" "}
             {p.short
               ? `${KIT_BATTERY_DAYS} days of your ${fmtWh(k.whPerDay)} a day needs ${fmtKwh(k.size.batteryWh)} of battery; the biggest station we track holds ${fmtKwh(p.match.totalWh)}, so the generator does more.`

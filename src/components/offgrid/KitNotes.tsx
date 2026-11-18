@@ -28,10 +28,24 @@ export default function KitNotes({ k, stateName }: { k: KitPackage; stateName: s
           <Link href="/how-to-go-off-grid" className="underline">how to go off grid</Link>.
         </li>
       )}
+      {has("system-install") && (
+        <li data-note="system-install">
+          <strong>This is a house system, not a power station.</strong> These loads need more battery than any power station we track holds, so
+          the package uses a complete off-grid system: an inverter, a 48 V battery rack and a panel array. It is wired into your home&apos;s
+          electrical panel, which is a job for a licensed electrician and usually needs a permit and inspection. The panels also need mounts,
+          which are not in the box. See <Link href="/how-to-go-off-grid" className="underline">how to go off grid</Link>.
+        </li>
+      )}
+      {has("system-more-panels") && (
+        <li data-note="system-more-panels">
+          December in {stateName} needs more panels than come in the box. The maker says panels can be added later; until then the generator
+          makes up the rest.
+        </li>
+      )}
       {has("well-240v") && (
         <li data-note="well-240v">
-          <strong>240 V well pump:</strong> only a 120/240 V station can run it, so the package uses one. The pump is wired in, so a licensed
-          electrician connects the station through a transfer switch.{" "}
+          <strong>240 V well pump:</strong> only a station or system with 120/240 V output can run it, so the package uses one. The pump is wired in, so a licensed
+          electrician connects it through a transfer switch.{" "}
           {has("well-soft-start")
             ? `This station's specs do not cover the start of a ${EXAMPLE_PUMP_240.hp} HP, 230 V pump, so plan on a soft starter fitted by a licensed electrician or pump installer.`
             : ""}{" "}

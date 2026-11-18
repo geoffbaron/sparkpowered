@@ -48,6 +48,7 @@ const APPROVED: Partial<Record<BrandId, Rule>> = {
   naturesgenerator: { awin: 98409 },
   himiway: { awin: 128329 },
   engwe: { awin: 65774 },
+  ecoworthy: { awin: 73461 },
 };
 /** Approved on Awin but not used on this site yet: any link to them must still be wrapped. */
 const APPROVED_UNUSED: Record<string, number> = { "vatrer.com": 119703 };
