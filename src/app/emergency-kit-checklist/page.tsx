@@ -115,8 +115,8 @@ export default function EmergencyKitChecklistPage() {
               it as Public Alert certified with SAME county alerts. More in our <Link href="/noaa-weather-radio" className="underline">NOAA Weather Radio guide</Link>.
             </li>
             <li>
-              <strong>First aid kit:</strong> a ready-made kit from <PartnerLink brand="mymedic">MyMedic</PartnerLink> or{" "}
-              <PartnerLink brand="amk">Adventure Medical Kits</PartnerLink>, sized for your household. Add each person&apos;s own medicines.
+              <strong>First aid kit:</strong> a ready-made kit from <PartnerLink brand="mymedic">MyMedic</PartnerLink>,{" "}
+              <PartnerLink brand="amk">Adventure Medical Kits</PartnerLink> or <PartnerLink brand="survivex" productUrl="https://www.survive-x.com/products/large-first-aid-kit">SurviveX</PartnerLink>, sized for your household. Add each person&apos;s own medicines.
             </li>
             <li>
               <strong>Backup water treatment:</strong> a gravity purifier for a household, such as from{" "}

@@ -364,6 +364,16 @@ export default function LithiumRvBatteryPage() {
               you can use nearly all of it. Use a solar charge controller with a lithium setting.
             </p>
             <p>
+              <strong>One example of each.</strong> The{" "}
+              <PartnerLink brand="bougerv" productUrl="https://www.bougerv.com/products/200-watt-n-type-shade-power-rigid-solar-panel">BougeRV 200 W N-Type ShadePower rigid panel</PartnerLink>{" "}
+              is $219.99 on BougeRV&apos;s site (Nov 20, 2026; list $279.99). It measures 50.2 x 30.3 inches, so measure your roof space
+              around vents and the air conditioner first. For the fridge, the{" "}
+              <PartnerLink brand="bougerv" productUrl="https://www.bougerv.com/products/12v-fridge-for-rv-van">BougeRV CRS 42-quart 12 V fridge</PartnerLink>{" "}
+              is a compressor fridge-freezer (-4 to 68 °F) at $229.99, or $239.99 with wheels. Its power use depends on heat and how often
+              you open it, so check the maker&apos;s figures against your battery before relying on it. Run it from a fused 12 V circuit
+              with wire sized to the maker&apos;s manual.
+            </p>
+            <p>
               Wiring it yourself? Panels charge the battery through the controller, never straight. Connect the battery side
               first and the panels last, with a fuse on each positive cable (within 7 inches of the battery), wire sized for the current, the panels
               covered or their breaker open while you work, and the controller and inverter in a dry, ventilated spot:

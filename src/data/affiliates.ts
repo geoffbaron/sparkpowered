@@ -63,7 +63,9 @@ export type BrandId =
   | "readywise"
   | "mountainhouse"
   | "midland"
-  | "ecoworthy";
+  | "ecoworthy"
+  | "bougerv"
+  | "survivex";
 
 export interface BrandAffiliate {
   /** Display name. */
@@ -314,6 +316,28 @@ export const AFFILIATES: Record<BrandId, BrandAffiliate> = {
     cookieDays: 30,
     links: { home: "https://www.awin1.com/cread.php?awinmid=73461&awinaffid=3125360&ued=https%3A%2F%2Fwww.eco-worthy.com%2F" },
     deepLink: "https://www.awin1.com/cread.php?awinmid=73461&awinaffid=3125360&ued={url}",
+  },
+  // Approved Nov 20 2026 on Awin (BougeRV, MID 52765) for publisher 3125360. Shopify store at
+  // www.bougerv.com: 12 V compressor fridges and solar panels.
+  bougerv: {
+    name: "BougeRV",
+    homeUrl: "https://www.bougerv.com/",
+    tracked: true,
+    network: "Awin",
+    links: { home: "https://www.awin1.com/cread.php?awinmid=52765&awinaffid=3125360&ued=https%3A%2F%2Fwww.bougerv.com%2F" },
+    deepLink: "https://www.awin1.com/cread.php?awinmid=52765&awinaffid=3125360&ued={url}",
+  },
+  // Approved Nov 20 2026 on Awin (SurviveX, MID 124484) for publisher 3125360. 20% commission,
+  // 30-day cookie. Shopify store at www.survive-x.com (survivex.com does not resolve).
+  survivex: {
+    name: "SurviveX",
+    homeUrl: "https://www.survive-x.com/",
+    tracked: true,
+    network: "Awin",
+    commission: "20%",
+    cookieDays: 30,
+    links: { home: "https://www.awin1.com/cread.php?awinmid=124484&awinaffid=3125360&ued=https%3A%2F%2Fwww.survive-x.com%2F" },
+    deepLink: "https://www.awin1.com/cread.php?awinmid=124484&awinaffid=3125360&ued={url}",
   },
   // Applied, pending on Awin (plain links until approved): Jackery, EcoFlow, Oupes, Pecron,
   // and per-sale solar installers Momentum Solar, Solar Savings, Solar Simplified, Nautilus community solar.

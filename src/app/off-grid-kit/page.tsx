@@ -13,7 +13,7 @@ import { DATA_UPDATED, STATES, formatDate } from "@/lib/energy";
 import { decemberPerKwDay, fmtKwh, fmtWh, offGridStates, relatedFor, sourcesFor, typicalWinterState } from "@/lib/offgrid";
 import { EXAMPLE_GENERATOR, KIT_BATTERY_DAYS, KIT_DAYS, buildKit, homePreset, kitProductIds, kitSystemIds, presetKits } from "@/lib/offgrid-kit";
 import { GOAL_DAYS, PREP_SOURCES as P } from "@/lib/prep";
-import { COOK_MINUTES_PER_PERSON, EXAMPLE_STOVE, LIGHT_COMMS, MEDICAL_HYGIENE, STAPLES, SURVIVAL_READ, SURVIVAL_SOURCES as SV, fdcUrl } from "@/lib/survival-kit";
+import { COOK_MINUTES_PER_PERSON, EXAMPLE_STOVE, FIRST_AID_KITS, LIGHT_COMMS, MEDICAL_HYGIENE, STAPLES, SURVIVAL_READ, SURVIVAL_SOURCES as SV, fdcUrl } from "@/lib/survival-kit";
 import { money, productById } from "@/lib/products";
 import { JsonLd, pageMetadata, url } from "@/lib/seo";
 
@@ -388,6 +388,16 @@ export default function OffGridKitPage() {
                 <li key={i.id}>{i.text}</li>
               ))}
             </ul>
+            <p>
+              <strong>A ready-made first aid kit.</strong> For a household, the{" "}
+              <PartnerLink brand="survivex" productUrl={FIRST_AID_KITS.household.url}>{FIRST_AID_KITS.household.name}</PartnerLink>{" "}
+              has {FIRST_AID_KITS.household.supplies} supplies, including wound-closure strips, for {money(FIRST_AID_KITS.household.priceUsd)} on
+              SurviveX&apos;s site ({formatDate(FIRST_AID_KITS.checked)}; list {money(FIRST_AID_KITS.household.listUsd)}). For 1-2 people, their{" "}
+              <PartnerLink brand="survivex" productUrl={FIRST_AID_KITS.small.url}>{FIRST_AID_KITS.small.name}</PartnerLink>{" "}
+              has {FIRST_AID_KITS.small.supplies} supplies for {money(FIRST_AID_KITS.small.priceUsd)}. A kit only helps if someone knows how to
+              use it: a first aid class from the Red Cross or a local hospital is worth more than any extra item, and add each person&apos;s own
+              medicines and anything their doctor recommends.
+            </p>
             <p>
               Alerts come over <Link href="/noaa-weather-radio" className="underline">NOAA Weather Radio</Link>; find your station and county code
               there. The {KIT_DAYS}-day package&apos;s power station runs LED lights and charges phones and batteries. The 72-hour and 2-week basics
