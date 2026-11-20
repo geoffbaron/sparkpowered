@@ -14,7 +14,9 @@ test("every dated e-bike sale has a label and the brand's regular price", () => 
 });
 
 test("a sale price is dropped for the regular price once the sale ends", () => {
-  const a7 = bikes.find((b) => b.id === "himiway-a7-pro-commuter-ebike")!;
+  // A fixed example, so the rule stays tested after real sales end and are removed from the data.
+  const base = bikes.find((b) => b.id === "himiway-a7-pro-commuter-ebike")!;
+  const a7: Ebike = { ...base, price: 1999, saleEndsAt: "2026-11-15T00:00:00-08:00", saleEndsLabel: "Nov 14", regularPrice: 2899 };
   const during = withSaleEnded(a7, Date.parse("2026-11-14T23:00:00-08:00"));
   assert.equal(during.price, 1999);
   assert.equal(ebikeSaleNote(during), "Himiway's sale price through Nov 14");
