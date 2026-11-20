@@ -391,7 +391,7 @@ export default function OffGridKitPage() {
             <p>
               <strong>A ready-made first aid kit.</strong> For a household, the{" "}
               <PartnerLink brand="survivex" productUrl={FIRST_AID_KITS.household.url}>{FIRST_AID_KITS.household.name}</PartnerLink>{" "}
-              has {FIRST_AID_KITS.household.supplies} supplies, including wound-closure strips, for {money(FIRST_AID_KITS.household.priceUsd)} on
+              has {FIRST_AID_KITS.household.supplies} supplies, including wound-closure strips, for {money(FIRST_AID_KITS.household.priceUsd)}{" "}on
               SurviveX&apos;s site ({formatDate(FIRST_AID_KITS.checked)}; list {money(FIRST_AID_KITS.household.listUsd)}). For 1-2 people, their{" "}
               <PartnerLink brand="survivex" productUrl={FIRST_AID_KITS.small.url}>{FIRST_AID_KITS.small.name}</PartnerLink>{" "}
               has {FIRST_AID_KITS.small.supplies} supplies for {money(FIRST_AID_KITS.small.priceUsd)}. A kit only helps if someone knows how to
