@@ -4,9 +4,6 @@
   {
    "model": "Himiway D5 2.0 eBike",
    "url": "https://himiwaybike.com/products/himiway-d5",
-   "price": 1999,
-   "listPrice": 2199,
-   "priceNote": "15Ah battery (the only version on Himiway's page Nov 20)",
    "motorW": 750,
    "peakW": 1300,
    "torqueNm": 90,
@@ -30,16 +27,12 @@
    "fendersLightsRack": "fenders, integrated front/rear lights with turn signal, MIK rear rack",
    "suspension": "full (100mm fork / 130mm rear)",
    "inStock": true,
-   "saleSource": "Himiway Black Friday page read 2026-11-11 (up to $1,000 off select e-bikes Nov 1-15); D5 2.0 was $2,199 on our Nov 2 check, $1,999 on Nov 5, Nov 11 and Nov 20 (Black Friday, no end date shown on Nov 20)",
    "brand": "himiway",
    "id": "himiway-d5-2-0-ebike"
   },
   {
    "model": "Himiway D5 2.0 ST eBike",
    "url": "https://himiwaybike.com/products/himiway-d5-st",
-   "price": 1999,
-   "listPrice": 2199,
-   "priceNote": "15Ah. 15Ah+20Ah $2,399 (list $2,798)",
    "motorW": 750,
    "peakW": 1300,
    "torqueNm": 90,
@@ -69,8 +62,6 @@
   {
    "model": "Himiway A7 Pro Commuter eBike",
    "url": "https://himiwaybike.com/products/himiway-a7pro-commuter-ebike",
-   "price": 1999,
-   "listPrice": 2899,
    "motorW": 500,
    "peakW": null,
    "torqueNm": 130,
@@ -94,15 +85,12 @@
    "fendersLightsRack": "Rear rack and fender kit included in delivery; 48V LED light",
    "suspension": "full (120mm / 90mm)",
    "inStock": true,
-   "saleSource": "Himiway's Black Friday phase 1 (Nov 1-14) notice to Awin partners: A7 PRO $2,899 to $1,999. Still $1,999 on Himiway's site Nov 20 (Black Friday, no end date shown)",
    "brand": "himiway",
    "id": "himiway-a7-pro-commuter-ebike"
   },
   {
    "model": "C3 Cargo Ebike",
    "url": "https://himiwaybike.com/products/c3cargo-ebike",
-   "price": 1499,
-   "listPrice": 2199,
    "motorW": 750,
    "peakW": null,
    "torqueNm": null,
@@ -132,8 +120,6 @@
   {
    "model": "ENGWE EP-2 3.0",
    "url": "https://us.engwe.com/products/electric-commuter-bike-fast-electric-bike-engwe-ep-2-3-0",
-   "price": 1499,
-   "listPrice": 1899,
    "motorW": 750,
    "peakW": 1500,
    "torqueNm": 90,
@@ -163,8 +149,6 @@
   {
    "model": "ENGWE L20 3.0",
    "url": "https://us.engwe.com/products/comfort-ebike-full-suspension-ebike-engwe-l20-3-0",
-   "price": 1599,
-   "listPrice": 1999,
    "motorW": 750,
    "peakW": 1500,
    "torqueNm": 90,
@@ -194,8 +178,6 @@
   {
    "model": "ENGWE L20 2.0",
    "url": "https://us.engwe.com/products/l20-2-0",
-   "price": 699,
-   "listPrice": 1199,
    "motorW": 750,
    "peakW": 1125,
    "torqueNm": 75,
@@ -226,8 +208,6 @@
   {
    "model": "ENGWE E26 3.0",
    "url": "https://us.engwe.com/products/engwe-e26-3-0-2000-w-dual-motor-e-mountain-bike",
-   "price": 1799,
-   "listPrice": 2399,
    "motorW": 1200,
    "peakW": 2000,
    "torqueNm": 160,
@@ -256,8 +236,6 @@
   {
    "model": "Kingbull Trekker",
    "url": "https://www.kingbullbike.com/products/trekker-step-thru-electric-bike",
-   "price": 1199,
-   "listPrice": 1799,
    "motorW": 750,
    "peakW": 1400,
    "torqueNm": 90,
@@ -288,8 +266,6 @@
   {
    "model": "Kingbull Jumper Go",
    "url": "https://www.kingbullbike.com/products/jumper-go-20inch-electric-all-terrain-bike",
-   "price": 1249,
-   "listPrice": 1899,
    "motorW": 750,
    "peakW": 1400,
    "torqueNm": 90,
@@ -320,8 +296,6 @@
   {
    "model": "Kingbull EX Titan",
    "url": "https://www.kingbullbike.com/products/ex-titan-new-electric-mountain-bike",
-   "price": 1699,
-   "listPrice": 2199,
    "motorW": 750,
    "peakW": 1400,
    "torqueNm": 90,
@@ -351,8 +325,6 @@
   {
    "model": "Kingbull Voyager 2.0",
    "url": "https://www.kingbullbike.com/products/kingbull-voyager2-0-fat-tire-electric-cargo-bike",
-   "price": 1199,
-   "listPrice": 1499,
    "motorW": 750,
    "peakW": null,
    "torqueNm": 80,
@@ -384,8 +356,6 @@
   {
    "model": "Kingbull Dual Battery Voyager 2.0",
    "url": "https://www.kingbullbike.com/products/kingbull-dual-battery-voyager-2-0-long-range-step-thru-electric-bike",
-   "price": 1449,
-   "listPrice": 1699,
    "motorW": 750,
    "peakW": null,
    "torqueNm": null,
@@ -416,8 +386,6 @@
   {
    "model": "Kingbull Verve",
    "url": "https://www.kingbullbike.com/products/verve-folding-electric-bike",
-   "price": 1199,
-   "listPrice": 1799,
    "motorW": 750,
    "peakW": 1400,
    "torqueNm": 90,
@@ -448,8 +416,6 @@
   {
    "model": "Kingbull Literider 2.0",
    "url": "https://www.kingbullbike.com/products/kingbull-literider-2-0-all-terrain-folding-electric-fat-bike",
-   "price": 979,
-   "listPrice": 1399,
    "motorW": 750,
    "peakW": null,
    "torqueNm": 80,
@@ -480,8 +446,6 @@
   {
    "model": "Kingbull Discover 2.0",
    "url": "https://www.kingbullbike.com/products/kingbull-discover2-0-premium-off-road-city-electric-bike",
-   "price": 1199,
-   "listPrice": 1499,
    "motorW": 750,
    "peakW": null,
    "torqueNm": 80,
@@ -512,8 +476,6 @@
   {
    "model": "Kingbull Discover ST 2.0",
    "url": "https://www.kingbullbike.com/products/kingbull-discover-st2-0-premium-off-road-city-electric-bike",
-   "price": 1199,
-   "listPrice": 1499,
    "motorW": 750,
    "peakW": null,
    "torqueNm": 80,
@@ -547,8 +509,6 @@
    "brand": "Lectric eBikes",
    "model": "XP Trike2 750",
    "url": "https://lectricebikes.com/products/xp-trike-white-long-range",
-   "price": 1799,
-   "listPrice": 2254,
    "keySpec": "415 lb payload, max rider weight 330 lb (stated), 750W/1310W peak, 48V 17.5Ah 840Wh, torque + cadence sensor, folds to 36.5 x 38 x 26 in, Class 1 or 2, top speed 17 mph",
    "whenBetter": "Better for heavy riders who want three-wheel stability and a clearly stated 330 lb rider limit, and who don't need speed."
   },
@@ -556,8 +516,6 @@
    "brand": "Aventon",
    "model": "Level 4 ADV Ebike",
    "url": "https://www.aventon.com/products/level-4-adv-ebike",
-   "price": 2699,
-   "listPrice": 2799,
    "keySpec": "Aventon Ultro S mid-drive, 100 Nm, 750W peak, 36V 20Ah 800Wh, up to 110 miles, 61 lb, Shimano CUES 10-speed, Class 1 (convertible to 2/3), 300 lb total weight limit, throttle compatible but not included",
    "whenBetter": "Better for riders who climb long, steep grades regularly and want a mid-drive that uses the gears and a 61 lb bike, if they weigh well under its 300 lb limit and don't need a throttle out of the box."
   },
@@ -565,9 +523,6 @@
    "brand": "Lectric eBikes",
    "model": "XPress2 Commuter",
    "url": "https://lectricebikes.com/products/xpress-750-high-step-black-ebike",
-   "price": 1399,
-   "listPrice": 1735,
-   "listPriceNote": "compare-at in store data; product page showed $1,399 only",
    "keySpec": "750W/1310W peak, 85 Nm, torque sensor, 48V 14Ah 672Wh, up to 60 miles, 27.5 x 2.1 slick tires, integrated front and tail light, Class 1/2/3, 28 mph, 60 lb without the 6 lb battery, 330 lb payload; rear rack and fenders offered free in bundle listings",
    "whenBetter": "Better for pavement commuters who want a lighter bike on narrow, faster-rolling tires instead of 4 in fat tires."
   },
@@ -575,8 +530,6 @@
    "brand": "Lectric eBikes",
    "model": "XP4 750",
    "url": "https://lectricebikes.com/products/xp-black-long-range",
-   "price": 1299,
-   "listPrice": 1664,
    "keySpec": "Folds to 37 x 17 x 29 in; 62 lb with battery removed (9 lb battery); 330 lb payload; 750W; 48V 17.5Ah 840Wh; up to 85 miles; torque sensor; Class 1/2/3, 28 mph; integrated 150 lb rear rack and fenders in the box",
    "whenBetter": "Better for apartment riders who lift the bike often, since the battery comes out and the frame is 62 lb, and for anyone who wants a stated Class 1/2/3 setting."
   }

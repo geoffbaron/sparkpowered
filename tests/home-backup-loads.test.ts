@@ -45,9 +45,9 @@ test("a 230 V pump never fits a 120 V station; the Apex 300 runs it but doesn't 
   assert.equal(pumpFit(pumpLoad(pumpMotor("1-2hp-115v-3w")), motorStation(productById("anker-solix-f3000"))), "runs");
 });
 
-test("load pages compare only in-stock, priced, non-Nature's Generator stations", () => {
+test("load pages compare only in-stock, unpriced, non-Nature's Generator stations", () => {
   for (const p of loadPageProducts()) {
-    assert.ok(!p.soldOut && p.priceUsd != null && p.install === "diy", p.id);
+    assert.ok(!p.soldOut && !("priceUsd" in p) && p.install === "diy", p.id);
     assert.notEqual(p.brand, "naturesgenerator");
   }
 });

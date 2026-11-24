@@ -23,7 +23,6 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { AFFILIATES, bareHost, brandForUrl, citationUrl, isHomePage, partnerUrl, type BrandId } from "../src/data/affiliates";
 import { Sources } from "../src/components/content";
 import { PlainLink } from "../src/components/guide-ui";
-import { RedodoDealBox } from "../src/components/RedodoDeal";
 
 const AWIN_ID = "3125360";
 const RAKUTEN_ID = "2P5eyfaQKtI";
@@ -233,17 +232,6 @@ test("a plain link that turns out to be an approved store is tracked; others sta
   const jackery = "https://www.jackery.com/products/jackery-explorer-1000-v2";
   const plain = renderToStaticMarkup(createElement(PlainLink, { href: jackery, children: "Jackery" }));
   assert.ok(plain.includes(`href="${jackery}"`) && plain.includes('data-partner="none"'));
-});
-
-test("the Redodo code note lands on a product, never the home page", () => {
-  const html = renderToStaticMarkup(createElement(RedodoDealBox, { now: Date.parse("2026-10-30T12:00:00Z") }));
-  const href = html.match(/href="([^"]+)"/)![1].replaceAll("&amp;", "&");
-  const ued = new URL(href).searchParams.get("ued")!;
-  assert.ok(!isHomePage(ued), ued);
-  const custom = renderToStaticMarkup(
-    createElement(RedodoDealBox, { now: Date.parse("2026-10-30T12:00:00Z"), product: { name: "Redodo 12V 50Ah", url: "https://www.redodopower.com/products/12v-50ah-smart-bluetooth-lithium-battery" } }),
-  );
-  assert.match(custom, /12v-50ah-smart-bluetooth-lithium-battery/);
 });
 
 test("source citations to approved stores are tracked and marked sponsored; others stay plain", () => {

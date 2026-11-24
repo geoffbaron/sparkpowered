@@ -38,8 +38,6 @@ export const LOAD_COUNTS: Partial<Record<PickerLoadId, number>> = { led: 4, phon
 /** Loads that are wired in, not plugged in: only transfer equipment at the panel can power them. */
 export const HARDWIRED: readonly string[] = ["well", "furnace"];
 
-export const BUDGET_USD: Record<Budget, number> = { "1500": 1500, "3000": 3000, "5000": 5000, any: Infinity };
-
 export const METHOD_LABEL: Record<Method, string> = {
   cords: "Extension cords to each appliance",
   interlock: "Inlet box and interlock kit",
@@ -57,17 +55,15 @@ export interface Candidate {
   units: 1 | 2;
   /** Battery in the setup before add-ons. */
   capacityWh: number;
-  addOn: { model: string; capacityWh: number; usd: number; max: number } | null;
-  /** Equipment price before add-ons: unit(s) plus the hub for a pair. */
-  priceUsd: number;
+  addOn: { model: string; capacityWh: number; max: number } | null;
   acOutputW: number;
   /** Watts available to start a motor (can-it-run's motorSurgeW; a pair is held to its continuous rating). */
   motorSurgeW: number;
   has240: boolean;
   /** The 30 A+ outlet an inlet box or transfer switch connects to, if we have read it on the maker's page. */
   outlet: string | null;
-  smartPanel: { name: string; usd: number; url: string; retrieved: string; note: string } | null;
-  hub: { name: string; usd: number; url: string; retrieved: string; outlet: string } | null;
+  smartPanel: { name: string; url: string; retrieved: string; note: string } | null;
+  hub: { name: string; url: string; retrieved: string; outlet: string } | null;
   url: string;
   retrieved: string;
 }
@@ -98,16 +94,11 @@ export interface Match {
   c: Candidate;
   addOns: number;
   totalWh: number;
-  /** Equipment at the maker's listed prices: unit(s), hub, add-ons and the maker's panel kit if the method uses it. */
-  equipmentUsd: number;
-  /** Equipment plus the parts list, low and high. */
-  totalUsd: [number, number];
   /** Hours the setup runs the covered loads with no recharging. */
   hours: number;
   reachesNeed: boolean;
   /** Running watts plus the biggest motor start fit under the setup's motor surge. */
   startOk: boolean;
-  overBudget: boolean;
 }
 
 export interface HookupResult {
@@ -140,7 +131,7 @@ export function partsFor(method: Method, circuits: number): Part[] {
   if (method === "cords") return [PARTS.cords];
   if (method === "interlock") return [PARTS.interlock, PARTS.inlet, PARTS.inletCord, PARTS.supplies, PARTS.interlockLabor, PARTS.permit];
   if (method === "switch") return [circuits <= 6 ? PARTS.switch6 : PARTS.switch10, PARTS.inlet, PARTS.inletCord, PARTS.switchLabor, PARTS.permit];
-  // The maker's kit is equipment (priced on the match); the electrician's time and permit are parts.
+  // The maker's kit is equipment (linked on the match, no price); the electrician's time and permit are parts.
   return [PARTS.switchLabor, PARTS.permit];
 }
 
@@ -159,8 +150,7 @@ function chooseMethod(inp: HookupInput, hardwired: boolean, loadCount: number, d
   return "switch";
 }
 
-function matchesFor(method: Method, inp: HookupInput, data: HookupData, needWh: number, runningW: number, peakW: number, partsUsd: [number, number], hourlyW: number): Match[] {
-  const limit = BUDGET_USD[inp.budget];
+function matchesFor(method: Method, inp: HookupInput, data: HookupData, needWh: number, runningW: number, peakW: number, hourlyW: number): Match[] {
   const out: Match[] = [];
   for (const c of data.candidates) {
     if (inp.volts === "240" && !c.has240) continue;
@@ -172,30 +162,25 @@ function matchesFor(method: Method, inp: HookupInput, data: HookupData, needWh: 
     let addOns = 0;
     if (c.capacityWh < needWh && c.addOn) addOns = Math.min(c.addOn.max, Math.ceil((needWh - c.capacityWh) / c.addOn.capacityWh));
     const totalWh = c.capacityWh + addOns * (c.addOn?.capacityWh ?? 0);
-    const equipmentUsd = c.priceUsd + addOns * (c.addOn?.usd ?? 0) + (method === "panel" && c.smartPanel ? c.smartPanel.usd : 0);
-    const totalUsd: [number, number] = [equipmentUsd + partsUsd[0], equipmentUsd + partsUsd[1]];
     out.push({
       c,
       addOns,
       totalWh,
-      equipmentUsd,
-      totalUsd,
       hours: hourlyW > 0 ? (totalWh * USABLE_FRACTION) / hourlyW : Infinity,
       reachesNeed: totalWh >= needWh,
       startOk: peakW <= c.motorSurgeW,
-      overBudget: totalUsd[0] > limit,
     });
   }
-  // Fits the need, starts the motors, within budget; then within budget; then cheapest. One setup per brand.
+  // Fits the need and starts the motors first; then the closest fit (least spare battery). One setup per brand.
   out.sort(
     (a, b) =>
-      Number(b.reachesNeed && b.startOk && !b.overBudget) - Number(a.reachesNeed && a.startOk && !a.overBudget) ||
-      Number(a.overBudget) - Number(b.overBudget) ||
+      Number(b.reachesNeed && b.startOk) - Number(a.reachesNeed && a.startOk) ||
       Number(b.reachesNeed) - Number(a.reachesNeed) ||
       Number(b.startOk) - Number(a.startOk) ||
       // Neither reaches the size: the bigger battery first.
       (!a.reachesNeed && !b.reachesNeed ? b.totalWh - a.totalWh : 0) ||
-      a.totalUsd[0] - b.totalUsd[0],
+      a.totalWh - b.totalWh ||
+      a.addOns - b.addOns,
   );
   const seen = new Set<string>();
   return out.filter((m) => (seen.has(m.c.brand) ? false : (seen.add(m.c.brand), true))).slice(0, 3);
@@ -217,7 +202,7 @@ export function pick(inp: HookupInput, data: HookupData): HookupResult {
   const build = (m: Method) => {
     const parts = partsFor(m, coveredIds.length);
     const partsUsd = sum(parts);
-    return { parts, partsUsd, matches: matchesFor(m, inp, data, needWh, running, peak, partsUsd, wh / 24) };
+    return { parts, partsUsd, matches: matchesFor(m, inp, data, needWh, running, peak, wh / 24) };
   };
   let r = build(method);
   // No model takes the maker's panel kit for these answers: fall back to a transfer switch.

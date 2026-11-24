@@ -8,7 +8,7 @@ import { HubHero, OurPick, PhotoCredit } from "@/components/ui";
 import { whatItRunsPath } from "@/lib/can-it-run";
 import { formatDate } from "@/lib/energy";
 import { NEC_COLD_FACTORS, OFFGRID_SOURCES, coldVoc, pvLayout, type PvInput, type PvPanel } from "@/lib/offgrid";
-import { fullName, money, productById } from "@/lib/products";
+import { fullName, productById } from "@/lib/products";
 import { JsonLd, pageMetadata, url } from "@/lib/seo";
 
 const PATH = "/home-backup/bluetti-elite-200-v2-solar-panels";
@@ -65,7 +65,7 @@ const LAYOUTS: [number, number][] = [
 
 const DOCS: CheckedSource[] = [
   { name: "BLUETTI Elite 200 V2 user manual V1.0", url: MANUAL, read: READ, what: "solar input 12-60 V, 20 A, 1,000 W; XT60 input; MC4-to-XT60 cable; series and parallel rules; 8.2 A low-voltage limit" },
-  { name: "BLUETTI Elite 200 V2 product page (specifications)", url: "https://www.bluettipower.com/products/elite-200-v2-portable-power-station", read: READ, what: "solar input 1,000 W, 12 V to 60 V, 20 A; price and stock" },
+  { name: "BLUETTI Elite 200 V2 product page (specifications)", url: "https://www.bluettipower.com/products/elite-200-v2-portable-power-station", read: READ, what: "solar input 1,000 W, 12 V to 60 V, 20 A; stock" },
   ...PANELS.map((p) => ({ name: `BLUETTI ${p.name} product page`, url: p.url, read: READ, what: `Voc ${p.vocV} V, Isc ${p.iscA} A, ${p.connector} connector` })),
   { name: OFFGRID_SOURCES.iaeiPv.name, url: OFFGRID_SOURCES.iaeiPv.url, read: READ, what: "the temperature-coefficient method and NEC Table 690.7(A) factors" },
 ];
@@ -313,7 +313,6 @@ export default function EliteSolarPage() {
             name={fullName(e200)}
             why={`About 2 kWh of LFP battery with a ${INPUT.maxW.toLocaleString("en-US")} W solar input, which Bluetti says refills it in about 2.4 hours of steady full sun. It can't take extra batteries, so solar is how you stretch it through a long outage.`}
             life={[`${INPUT.minV}-${INPUT.maxV} V, ${INPUT.maxA} A solar input`, `${e200.upsMs} ms switchover`]}
-            priceUsd={e200.priceUsd}
             brand={e200.brand}
             productId={e200.id}
             productUrl={e200.url}
@@ -322,7 +321,7 @@ export default function EliteSolarPage() {
             moreLabel="What it runs"
             disclose
           />
-          <p className="text-xs text-muted mt-2">*Price on Bluetti&apos;s US site when we checked on {formatDate(e200.retrieved)} ({money(e200.priceUsd!)}); prices change often.</p>
+          <p className="text-xs text-muted mt-2">Specs checked on {formatDate(e200.retrieved)}. The button goes to the maker&apos;s page for today&apos;s price.</p>
         </section>
 
         <Faq items={faqs} path={PATH} />
@@ -334,7 +333,7 @@ export default function EliteSolarPage() {
             { href: "/home-backup", label: "Home backup: the four ways to connect", desc: "Cords, inlet and interlock, transfer switch, smart panel" },
             { href: whatItRunsPath(e200.id), label: "What the Elite 200 V2 runs", desc: "Run times for 15 household loads" },
             { href: "/power-outage-backup-calculator", label: "Power outage backup calculator", desc: "How much solar keeps it topped up in winter, by state" },
-            { href: "/best-portable-power-stations", label: "Best portable power stations", desc: "Every model we list, with dated prices" },
+            { href: "/best-portable-power-stations", label: "Best portable power stations", desc: "Every model we list, by spec" },
           ]}
         />
         <PhotoCredit name="solar-roof" />

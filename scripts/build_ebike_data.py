@@ -1,6 +1,7 @@
 """Copy the e-bike models our pages use from the researched spec file into
 src/data/ebikes.json, unchanged. Specs were read on each maker's own US site
-(readDate in the source); re-run after re-checking prices.
+(readDate in the source); re-run after re-checking specs. Price and sale
+fields are dropped: the site shows no prices (links go to today's price).
 
   python3 scripts/build_ebike_data.py ~/Grant/marketing/sparkpowered-ebikes/specs.json
 """
@@ -14,16 +15,19 @@ USE = {
                  "Kingbull Dual Battery Voyager 2.0", "Kingbull Verve", "Kingbull Literider 2.0",
                  "Kingbull Discover 2.0", "Kingbull Discover ST 2.0"],
 }
+NO_PRICE = re.compile(r"price|sale", re.I)
+def strip_prices(d):
+    return {k: v for k, v in d.items() if not NO_PRICE.search(k)}
 def slug(s):
     return re.sub(r"[^a-z0-9]+", "-", s.lower()).strip("-")
 out = []
 for brand, names in USE.items():
     by = {m["model"]: m for m in src["brands"][brand]}
     for n in names:
-        m = dict(by[n])
+        m = strip_prices(by[n])
         m["brand"] = brand
         m["id"] = slug(n if n.lower().startswith(brand) else f"{brand} {n}")
         out.append(m)
-alts = {k: v["alternative"] for k, v in src["categories"].items()}
+alts = {k: strip_prices(v["alternative"]) for k, v in src["categories"].items()}
 json.dump({"retrieved": src["readDate"], "bikes": out, "alternatives": alts}, open("src/data/ebikes.json", "w"), indent=1)
 print(len(out), "bikes")

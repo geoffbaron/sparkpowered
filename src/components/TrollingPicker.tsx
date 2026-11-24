@@ -6,9 +6,6 @@ import { pillClass } from "@/components/guide-ui";
 import { LEAD_ACID_REF, type DeepCycleBattery } from "@/data/batteries";
 import { TROLLING_CHOICE, leadAcidFor, type Volts } from "@/lib/trolling";
 
-const money = (n: number) =>
-  n.toLocaleString("en-US", { style: "currency", currency: "USD", minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: n % 1 ? 2 : 0 });
-
 export default function TrollingPicker({ batteries }: { batteries: DeepCycleBattery[] }) {
   const [volts, setVolts] = useState<Volts>(24);
   const [long, setLong] = useState(false);
@@ -47,7 +44,6 @@ export default function TrollingPicker({ batteries }: { batteries: DeepCycleBatt
         <p className="text-xs font-bold uppercase tracking-wide text-spark-amber">Your battery</p>
         <p className="text-2xl font-extrabold text-ink mt-1" data-testid="trolling-pick">Redodo {b.short}</p>
         <ul className="mt-3 space-y-1 text-sm text-stone-800">
-          <li><strong>{money(b.priceUsd)}</strong> on Redodo&apos;s site when we checked</li>
           <li>
             <strong>{b.weightLb} lb</strong> in place of {agm} lead-acid batter{agm > 1 ? "ies" : "y"} at about {agmLb} lb
             {agm > 1 ? " wired together" : ""}
@@ -61,7 +57,7 @@ export default function TrollingPicker({ batteries }: { batteries: DeepCycleBatt
         </ul>
         <div className="mt-4">
           <PartnerLink brand="redodo" productId={b.id} productUrl={b.url} className="btn btn-primary">
-            Check price on Redodo
+            See today&apos;s price at Redodo
           </PartnerLink>
         </div>
         <p className="text-xs text-muted mt-3">AGM figures: Renogy 12V 100Ah AGM, {LEAD_ACID_REF.weightLb} lb, run to 50% as Renogy advises.</p>

@@ -5,7 +5,7 @@
  */
 
 import { AFFILIATES } from "@/data/affiliates";
-import { INSTALLED_BATTERY_COST, PRODUCTS, type Product } from "@/data/products";
+import { PRODUCTS, type Product } from "@/data/products";
 
 export function productById(id: string): Product {
   const p = PRODUCTS.find((x) => x.id === id);
@@ -31,9 +31,6 @@ export const money = (n: number) => {
   });
 };
 
-/** Dollars per kWh of capacity at the listed price. */
-export const perKwh = (p: Product) => (p.priceUsd ? p.priceUsd / (p.capacityWh / 1000) : null);
-
 /** Largest capacity the system can reach with the maker's own add-on batteries. */
 export const maxWh = (p: Product) => p.maxCapacityWh ?? p.capacityWh;
 
@@ -43,14 +40,7 @@ export interface SizerConfig {
   /** The maker's add-on batteries for plug-in systems. */
   addOns: number;
   totalWh: number;
-  /** Equipment total at listed prices, if every part has a listed price. */
-  equipmentUsd: number | null;
-  /** Typical installed cost for professionally installed systems (EnergySage $/kWh × kWh). */
-  installedUsd: number | null;
 }
-
-/** Installed $/kWh for a professionally installed product. */
-export const installedPerKwh = (p: Product) => p.installedPerKwh?.usd ?? INSTALLED_BATTERY_COST.medianPerKwh;
 
 /** Smallest configuration of a product that reaches `neededKwh`. */
 export function sizerConfig(p: Product, neededKwh: number): SizerConfig {
@@ -62,8 +52,6 @@ export function sizerConfig(p: Product, neededKwh: number): SizerConfig {
       units,
       addOns: 0,
       totalWh,
-      equipmentUsd: null,
-      installedUsd: Math.round(((totalWh / 1000) * installedPerKwh(p)) / 100) * 100,
     };
   }
   let addOns = 0;
@@ -71,30 +59,21 @@ export function sizerConfig(p: Product, neededKwh: number): SizerConfig {
     addOns = Math.min(p.addOn.maxUnits, Math.ceil((need - p.capacityWh) / p.addOn.capacityWh));
   }
   const totalWh = p.capacityWh + addOns * (p.addOn?.capacityWh ?? 0);
-  const addOnCost = addOns === 0 ? 0 : p.addOn?.priceUsd != null ? addOns * p.addOn.priceUsd : null;
-  return {
-    units: 1,
-    addOns,
-    totalWh,
-    equipmentUsd: p.priceUsd != null && addOnCost != null ? p.priceUsd + addOnCost : null,
-    installedUsd: null,
-  };
+  return { units: 1, addOns, totalWh };
 }
 
-/** Cost figure used to rank and budget-check a configuration. */
-export function configCost(c: SizerConfig) {
-  return c.equipmentUsd ?? c.installedUsd ?? Infinity;
-}
+/** Spare capacity beyond the need, used to rank configurations (closest fit first). */
+const spareWh = (c: SizerConfig, neededKwh: number) => c.totalWh - neededKwh * 1000;
 
 /**
  * 2-4 products for the Battery Sizer: every DIY or installed system that can
- * reach `neededKwh`, cheapest configuration first, one per brand, always
+ * reach `neededKwh`, closest fit first (least spare capacity), one per brand, always
  * including at least one installed whole-home option when the need is large
  * enough that a portable stack is unusual (over 15 kWh).
  */
 export function sizerMatches(
   neededKwh: number,
-  opts: { excludeBrands?: string[]; limit?: number; budgetUsd?: number } = {},
+  opts: { excludeBrands?: string[]; limit?: number } = {},
 ) {
   const limit = opts.limit ?? 4;
   const pool = PRODUCTS.filter(
@@ -110,16 +89,15 @@ export function sizerMatches(
   const scored = pool
     .map((product) => {
       const config = sizerConfig(product, neededKwh);
-      return { product, config, cost: configCost(config) };
+      return { product, config, spare: spareWh(config, neededKwh) };
     })
     .filter(
       (x) =>
         x.config.totalWh >= neededKwh * 1000 &&
-        x.cost < Infinity &&
         // Installed systems: stay within the maker's stated maximum, or 4 units if none is stated.
         (x.product.install === "diy" || x.config.totalWh <= (x.product.maxCapacityWh ?? x.product.capacityWh * 4)),
     );
-  scored.sort((a, b) => a.cost - b.cost || a.config.totalWh - b.config.totalWh);
+  scored.sort((a, b) => a.spare - b.spare || a.config.addOns - b.config.addOns);
 
   const out: typeof scored = [];
   const seen = new Set<string>();
@@ -136,5 +114,5 @@ export function sizerMatches(
   }
   for (const x of scored.filter((x) => x.product.install === "professional")) add(x);
   for (const x of scored) add(x);
-  return out.sort((a, b) => a.cost - b.cost);
+  return out.sort((a, b) => a.spare - b.spare);
 }

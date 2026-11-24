@@ -3,11 +3,11 @@
  * solar kits sold in the US.
  *
  * RULES (enforced by tests/products.test.ts):
- *   - Every spec and price is copied from the manufacturer's own US product
+ *   - Every spec is copied from the manufacturer's own US product
  *     page or datasheet, and `sourceUrl` + `retrieved` say where and when.
  *   - Use null for anything the manufacturer does not publish. Never estimate.
- *   - Prices are the price shown on the manufacturer's US site that day
- *     (`listPriceUsd` is the crossed-out regular price, if one was shown).
+ *   - No prices: they change too often. Pages link to the maker's own page
+ *     ("See today's price at ...") instead; tests/no-prices.test.ts guards it.
  *   - No ratings or reviews: we have not collected any.
  * Outbound links are built from `url` by src/data/affiliates.ts.
  */
@@ -20,8 +20,6 @@ export type ProductCategory = "portable" | "home";
 export interface AddOnBattery {
   model: string;
   capacityWh: number;
-  priceUsd: number | null;
-  listPriceUsd?: number | null;
   url: string;
   /** Most add-on batteries one main unit accepts. */
   maxUnits: number;
@@ -38,7 +36,7 @@ export interface Product {
   url: string;
   /** Page or datasheet the specs were read from (often the same as url). */
   sourceUrl: string;
-  /** YYYY-MM-DD the specs and price were checked. */
+  /** YYYY-MM-DD the specs were checked. */
   retrieved: string;
   /** Rated capacity in watt-hours (usable capacity for installed home batteries). */
   capacityWh: number;
@@ -65,18 +63,11 @@ export interface Product {
   warrantyYears: number | null;
   volts: "120V" | "120/240V";
   install: "diy" | "professional";
-  /** Price on the manufacturer's US site on `retrieved`, or null if sold by quote. */
-  priceUsd: number | null;
-  listPriceUsd: number | null;
-  /** Sold out on the maker's US site at the last check: the price is the last one shown, and calculators and picks skip it. */
+  /** Sold out on the maker's US site at the last check: calculators and picks skip it. */
   soldOut?: boolean;
-  /** Shown instead of a price when priceUsd is null. */
-  priceNote?: string;
   /** Short factual notes taken from the product page. */
   notes: string[];
   certifications?: string[];
-  /** Installed systems: EnergySage's average installed cost per kWh for this brand. */
-  installedPerKwh?: { usd: number; source: string; url: string; retrieved: string };
 }
 
 /** Plug-in ("balcony") solar kits sold to US addresses. */
@@ -93,15 +84,11 @@ export interface PluginKit {
   inverterW: number;
   batteryWh: number | null;
   certifications: string[];
-  priceUsd: number;
-  listPriceUsd: number | null;
   /** States the seller ships to or says it is permitted in, if it limits them. */
   states?: string[];
   notes: string[];
 }
 
-const ES_BATTERY_COST = "https://www.energysage.com/energy-storage/how-much-do-batteries-cost/";
-const ES_SOURCE = "EnergySage Marketplace quotes, first half of 2026";
 
 /** Home batteries: professionally installed systems and plug-in whole-home kits. */
 const HOME: Product[] = [
@@ -114,9 +101,7 @@ const HOME: Product[] = [
     expansion: "up to 3 Powerwall 3 Expansion units (13.5 kWh each) per Powerwall 3, 7 units in total",
     acOutputW: 11500, surgeW: null, chemistry: null, cycles: null, weightLb: null, solarInputW: null,
     acOutlets: null, upsMs: null, warrantyYears: 10, volts: "120/240V", install: "professional",
-    priceUsd: null, listPriceUsd: null, priceNote: "Installed price by quote",
     certifications: ["UL 1741", "UL 9540", "UL 9540A", "UL 3741"],
-    installedPerKwh: { usd: 967, source: ES_SOURCE, url: ES_BATTERY_COST, retrieved: "2026-10-15" },
     notes: [
       "Built-in solar inverter, so one box handles both panels and storage.",
       "Continuous output is configurable (5.8, 7.6, 10 or 11.5 kW) per Tesla's datasheet.",
@@ -131,8 +116,6 @@ const HOME: Product[] = [
     capacityWh: 5000, maxCapacityWh: null,
     acOutputW: 3840, surgeW: 7680, chemistry: "LFP", cycles: 6000, cyclesTo: null, weightLb: null, solarInputW: null,
     acOutlets: null, upsMs: null, warrantyYears: 15, volts: "120/240V", install: "professional",
-    priceUsd: null, listPriceUsd: null, priceNote: "Installed price by quote",
-    installedPerKwh: { usd: 1429, source: ES_SOURCE, url: ES_BATTERY_COST, retrieved: "2026-10-15" },
     notes: [
       "Warranty is 15 years or 6,000 cycles, the longest of the batteries we list.",
       "Small 5 kWh units stack, so you can start small and add more.",
@@ -147,9 +130,7 @@ const HOME: Product[] = [
     capacityWh: 10000, maxCapacityWh: null,
     acOutputW: 7080, surgeW: null, chemistry: "LFP", cycles: 6000, cyclesTo: 60, weightLb: null, solarInputW: null,
     acOutlets: null, upsMs: null, warrantyYears: 15, volts: "120/240V", install: "professional",
-    priceUsd: null, listPriceUsd: null, priceNote: "Installed price by quote",
     certifications: ["UL 9540", "UL 9540A", "UL 1741-SA/SB", "IEEE 1547:2018"],
-    installedPerKwh: { usd: 1429, source: ES_SOURCE, url: ES_BATTERY_COST, retrieved: "2026-10-15" },
     notes: [
       "Newer, larger Enphase battery (datasheet dated July 2026): two 5 kWh halves in one unit.",
       "Warranty: 15 years or 6,000 cycles, to 60% of capacity.",
@@ -163,9 +144,7 @@ const HOME: Product[] = [
     capacityWh: 15000, maxCapacityWh: 225000, expansion: "up to 15 units on one aGate controller",
     acOutputW: 10000, surgeW: 15000, chemistry: "LFP", cycles: null, weightLb: null, solarInputW: null,
     acOutlets: null, upsMs: null, warrantyYears: 15, volts: "120/240V", install: "professional",
-    priceUsd: null, listPriceUsd: null, priceNote: "Installed price by quote",
     certifications: ["UL 9540", "UL 9540A", "UL 1973", "UL 1741 SB"],
-    installedPerKwh: { usd: 1232, source: ES_SOURCE, url: ES_BATTERY_COST, retrieved: "2026-10-15" },
     notes: [
       "15 kWh per unit, the most of any single battery we list.",
       "Warranty: 15 years or 60 MWh of throughput.",
@@ -179,19 +158,17 @@ const HOME: Product[] = [
     retrieved: "2026-11-06",
     capacityWh: 6144, maxCapacityWh: 30720, expansion: "with up to four extra batteries per inverter (90 kWh with three inverters and a Smart Home Panel 2)",
     addOn: {
-      model: "DELTA Pro Ultra Extra Battery", capacityWh: 6144, priceUsd: 2000, listPriceUsd: null,
-      url: "https://us.ecoflow.com/products/delta-pro-ultra", maxUnits: 4, soldOut: true
+      model: "DELTA Pro Ultra Extra Battery", capacityWh: 6144, url: "https://us.ecoflow.com/products/delta-pro-ultra", maxUnits: 4, soldOut: true
     },
     acOutputW: 7200, surgeW: 10800, chemistry: "LFP", cycles: 3500, cyclesTo: 80, weightLb: 181.8, solarInputW: 5600,
     acOutlets: null, upsMs: 20, warrantyYears: 5, volts: "120/240V", install: "diy",
     soldOut: true,
-    priceUsd: 4199, listPriceUsd: 5799,
     certifications: ["UL 1973", "UL 9540"],
     notes: [
-      "Sold out on EcoFlow's US site on Nov 6 2026; the price is the last one shown.",
+      "Sold out on EcoFlow's US site on Nov 6 2026.",
       "Weight is the inverter (70 lb) plus one battery (111.8 lb); they are separate pieces.",
       "Plugs in without an installer; connecting it to your home's circuits needs EcoFlow's Smart Home Panel 2, installed by an electrician.",
-      "Add-on price is the difference in EcoFlow's own bundle ($6,199 for one inverter and two batteries).",
+      
     ],
   },
   {
@@ -201,16 +178,14 @@ const HOME: Product[] = [
     retrieved: "2026-11-05",
     capacityWh: 10496, maxCapacityWh: 73472, expansion: "with up to six more MyGrid 10K Solar Batteries",
     addOn: {
-      model: "MyGrid 10K Solar Battery", capacityWh: 10496, priceUsd: 2999.99, listPriceUsd: null,
-      url: "https://naturesgenerator.com/products/mygrid-solar-battery", maxUnits: 6,
+      model: "MyGrid 10K Solar Battery", capacityWh: 10496, url: "https://naturesgenerator.com/products/mygrid-solar-battery", maxUnits: 6,
     },
     acOutputW: 10000, surgeW: 20000, chemistry: "LFP", cycles: 6000, cyclesTo: 70, weightLb: 365, solarInputW: 12000,
     acOutlets: null, upsMs: 20, warrantyYears: 5, volts: "120/240V", install: "diy",
-    priceUsd: 5599.99, listPriceUsd: 6999.99,
     certifications: ["UL 1741 (inverter)", "UL 1973 (battery)"],
     notes: [
       "Weight is the inverter (152 lb) plus the battery in the box (213 lb); they are separate pieces.",
-      "Wired to your home through a transfer switch installed by a licensed electrician; with a 50 A automatic switch it is $5,999.99 on Nature's Generator's site. Never feed your house through a wall or dryer outlet.",
+      "Wired to your home through a transfer switch installed by a licensed electrician; Nature's Generator also sells it with a 50 A automatic switch. Never feed your house through a wall or dryer outlet.",
       "Ships by freight, curbside only.",
     ],
   },
@@ -239,8 +214,6 @@ const PORTABLE: Product[] = [
     warrantyYears: 5,
     volts: "120V",
     install: "diy",
-    priceUsd: 579,
-    listPriceUsd: 699,
     notes: [
       "Six AC outlets and a sub-10 ms UPS switchover.",
       "Reaching 5 kWh requires EcoFlow's 4 kWh DELTA Pro 3 extra battery."
@@ -269,8 +242,6 @@ const PORTABLE: Product[] = [
     warrantyYears: 5,
     volts: "120V",
     install: "diy",
-    priceUsd: 719,
-    listPriceUsd: 799,
     notes: [
       "Same battery as the DELTA 3 but with two solar inputs (1,000 W total).",
       "EcoFlow says a full AC recharge takes 56 minutes."
@@ -299,8 +270,6 @@ const PORTABLE: Product[] = [
     warrantyYears: 5,
     volts: "120V",
     install: "diy",
-    priceUsd: 879,
-    listPriceUsd: 1199,
     notes: [
       "Warranty is 3 years plus 2 more when you register in EcoFlow's app.",
       "EcoFlow does not state whether it takes extra batteries."
@@ -328,10 +297,8 @@ const PORTABLE: Product[] = [
     warrantyYears: 5,
     volts: "120V",
     install: "diy",
-    priceUsd: 1149,
-    listPriceUsd: 1599,
     notes: [
-      "Expands from 2 kWh to 10 kWh with 2 kWh extra batteries ($859 each when checked).",
+      "Expands from 2 kWh to 10 kWh with 2 kWh extra batteries.",
       "Warranty is 3 years plus 2 more when you register in EcoFlow's app."
     ],
     expansion: "with DELTA 3 Max Plus extra batteries"
@@ -359,10 +326,8 @@ const PORTABLE: Product[] = [
     volts: "120/240V",
     install: "diy",
     soldOut: true,
-    priceUsd: 2799,
-    listPriceUsd: 3299,
     notes: [
-      "Sold out on EcoFlow's US site on Nov 6 2026; the price is the last one shown.",
+      "Sold out on EcoFlow's US site on Nov 6 2026.",
       "120/240 V output with a 30 A twist-lock (L14-30R) outlet for a transfer switch installed by a licensed electrician. Never feed your house through a wall or dryer outlet.",
       "Carried by two wheels and a handle; at 113.5 lb it is a roll-around unit, not a carry-around one.",
       "Up to 2,600 W of solar input across two ports."
@@ -371,8 +336,6 @@ const PORTABLE: Product[] = [
     addOn: {
       model: "DELTA Pro 3 Smart Extra Battery",
       capacityWh: 4096,
-      priceUsd: 1899,
-      listPriceUsd: null,
       url: "https://us.ecoflow.com/products/delta-pro-3-extra-battery",
       maxUnits: 2, soldOut: true
     }
@@ -401,10 +364,8 @@ const PORTABLE: Product[] = [
     volts: "120V",
     install: "diy",
     soldOut: true,
-    priceUsd: 559,
-    listPriceUsd: null,
     notes: [
-      "Sold out on Jackery's US site on Nov 6 2026; the price is the last one shown.",
+      "Sold out on Jackery's US site on Nov 6 2026.",
       "Warranty is 3 years plus 2 when registered.",
       "Jackery rates cycles to 70% capacity, a lower bar than the 80% most rivals use."
     ]
@@ -431,8 +392,6 @@ const PORTABLE: Product[] = [
     warrantyYears: 5,
     volts: "120V",
     install: "diy",
-    priceUsd: 619,
-    listPriceUsd: 699,
     notes: [
       "Expands to about 5 kWh with up to three Battery Pack 1000 Plus units.",
       "The battery pack was listed as unavailable on the day we checked."
@@ -441,8 +400,6 @@ const PORTABLE: Product[] = [
     addOn: {
       model: "Jackery Battery Pack 1000 Plus",
       capacityWh: 1264,
-      priceUsd: 599,
-      listPriceUsd: null,
       url: "https://www.jackery.com/products/jackery-battery-pack-1000-plus",
       maxUnits: 3, soldOut: true
     }
@@ -470,8 +427,6 @@ const PORTABLE: Product[] = [
     warrantyYears: 5,
     volts: "120V",
     install: "diy",
-    priceUsd: 999,
-    listPriceUsd: null,
     notes: [
       "Not expandable, per Jackery's FAQ.",
       "Cycle rating is to 70% capacity."
@@ -500,11 +455,9 @@ const PORTABLE: Product[] = [
     volts: "120/240V",
     install: "diy",
     soldOut: true,
-    priceUsd: 3499,
-    listPriceUsd: null,
     notes: [
-      "Jackery was still selling it in bundles, from $5,899 with a Battery Pack 5000 Plus.",
-      "Sold out on Jackery's US site on Nov 6 2026; the price is the last one shown.",
+      "Jackery was still selling it in bundles with a Battery Pack 5000 Plus.",
+      "Sold out on Jackery's US site on Nov 6 2026.",
       "120/240 V output, 7,200 W continuous, for well pumps and home circuits through a transfer switch installed by a licensed electrician.",
       "Jackery says it scales to 60 kWh with battery packs and a second unit."
     ],
@@ -533,10 +486,7 @@ const PORTABLE: Product[] = [
     warrantyYears: null,
     volts: "120V",
     install: "diy",
-    priceUsd: 529.99,
-    listPriceUsd: 699.99,
     notes: [
-      "Price is the Black Friday Early Access price Anker showed on Nov 17 2026 (regular $699.99); Anker's banner gave the sale as Nov 10 to 18.",
       "Anker says a full AC recharge takes 49 minutes.",
       "Not expandable; Anker's US page does not state the battery chemistry."
     ]
@@ -563,10 +513,7 @@ const PORTABLE: Product[] = [
     warrantyYears: null,
     volts: "120V",
     install: "diy",
-    priceUsd: 949.99,
-    listPriceUsd: 1199.99,
     notes: [
-      "Price is the Black Friday Early Access price Anker showed on Nov 17 2026 (regular $1,199.99); Anker's banner gave the sale as Nov 10 to 18.",
       "The BP2000 expansion battery was sold out on Anker's US site on Nov 17 2026.",
       "Doubles to 4 kWh with one BP2000 expansion battery.",
       "Replaces the SOLIX F2000 on Anker's US site."
@@ -575,8 +522,6 @@ const PORTABLE: Product[] = [
     addOn: {
       model: "Anker SOLIX BP2000 Expansion Battery (Gen 2)",
       capacityWh: 2048,
-      priceUsd: 749.99,
-      listPriceUsd: 899.99,
       url: "https://www.ankersolix.com/products/c2000-gen2-expansion-battery",
       maxUnits: 1,
       soldOut: true
@@ -604,20 +549,14 @@ const PORTABLE: Product[] = [
     warrantyYears: null,
     volts: "120V",
     install: "diy",
-    priceUsd: 1699.99,
-    listPriceUsd: 1899.99,
     notes: [
-      "Price after Anker's auto-applied $200 code, shown on its page Nov 6 and Nov 14 2026 (regular $1,899.99).",
       "120 V only on its own; 240 V needs two units and Anker's Double Voltage Hub.",
       "TT-30 RV outlet delivers the full 3,600 W.",
-      "The BP3000 expansion battery was in stock on Nov 14 2026 at $999.99 after Anker's auto-applied $300 code (regular $1,299.99); it was sold out on Nov 6."
     ],
     expansion: "with up to three BP3000 expansion batteries",
     addOn: {
       model: "Anker SOLIX BP3000 Expansion Battery",
       capacityWh: 3072,
-      priceUsd: 999.99,
-      listPriceUsd: 1299.99,
       url: "https://www.ankersolix.com/products/bp3000-expansion-battery-for-f3000",
       maxUnits: 3,
     }
@@ -645,10 +584,8 @@ const PORTABLE: Product[] = [
     volts: "120/240V",
     install: "diy",
     soldOut: true,
-    priceUsd: 2399.99,
-    listPriceUsd: 2999.99,
     notes: [
-      "Price after Anker's auto-applied $600 code, shown on its page Nov 14 2026 (regular $2,999.99). Sold out on Anker's US site on Nov 6 and again on Nov 14 2026; the F3800 Plus + Smart Home Power Kit bundle was in stock.",
+      "Sold out on Anker's US site on Nov 6 and again on Nov 14 2026; the F3800 Plus + Smart Home Power Kit bundle was in stock.",
       "6,000 W at 120/240 V, tied with the Nature's Generator L6000 for the most of any power station we list.",
       "Up to 3,200 W of solar input.",
       "Anker quotes 53.8 kWh for two linked units; one unit reaches 26.9 kWh."
@@ -657,8 +594,6 @@ const PORTABLE: Product[] = [
     addOn: {
       model: "Anker SOLIX BP3800 Expansion Battery",
       capacityWh: 3840,
-      priceUsd: 1799.99,
-      listPriceUsd: 1999.99,
       url: "https://www.ankersolix.com/products/bp3800-expansion-battery",
       maxUnits: 6
     }
@@ -685,8 +620,6 @@ const PORTABLE: Product[] = [
     warrantyYears: 5,
     volts: "120V",
     install: "diy",
-    priceUsd: 549,
-    listPriceUsd: null,
     notes: [
       "Back in stock on Bluetti's US site on Oct 19 2026, after being out of stock on Oct 15.",
       "Its 2,700 W figure is Bluetti's Power Lifting mode for heating-type loads (kettles, space heaters), not a motor-start surge."
@@ -714,8 +647,6 @@ const PORTABLE: Product[] = [
     warrantyYears: 5,
     volts: "120V",
     install: "diy",
-    priceUsd: 499,
-    listPriceUsd: null,
     notes: [
       "Up to 1,000 W of solar input, unusually high for a 1 kWh unit.",
       "In stock on Bluetti's US site on Oct 19 2026; Bluetti lists a 3,600 W surge and a 5-year warranty."
@@ -744,8 +675,6 @@ const PORTABLE: Product[] = [
     warrantyYears: 5,
     volts: "120V",
     install: "diy",
-    priceUsd: 899,
-    listPriceUsd: null,
     notes: [
       "Rated for 6,000 cycles to 80%, the highest rating among the 2 kWh units we list.",
       "Its surge figure applies to heating-type loads only (Bluetti's Power Lifting mode). Not expandable.",
@@ -775,8 +704,6 @@ const PORTABLE: Product[] = [
     warrantyYears: 5,
     volts: "120V",
     install: "diy",
-    priceUsd: 299.99,
-    listPriceUsd: null,
     notes: [
       "Under 10 lb and rated under 30 dB at light loads, quiet enough for a bedroom.",
       "Bluetti quotes 4.5 W standby draw; 1,500 W lifting power applies to heating-type loads only.",
@@ -805,11 +732,8 @@ const PORTABLE: Product[] = [
     warrantyYears: 5,
     volts: "120V",
     install: "diy",
-    priceUsd: 1199,
-    listPriceUsd: null,
     notes: [
-      "3 kWh for $1,199, about $398 per kWh, with an RV (TT-30) outlet and a 12 V/30 A port.",
-      "In stock on Bluetti's US site at $1,199 on Nov 9 2026 (it was $1,699 on Oct 26)."
+      "3 kWh with an RV (TT-30) outlet and a 12 V/30 A port.",
     ]
   },
   {
@@ -834,10 +758,8 @@ const PORTABLE: Product[] = [
     warrantyYears: 5,
     volts: "120V",
     install: "diy",
-    priceUsd: 1499,
-    listPriceUsd: null,
     notes: [
-      "3.84 kWh on wheels with a telescopic handle, for $1,499 (about $390 per kWh).",
+      "3.84 kWh on wheels with a telescopic handle.",
       "In stock on Bluetti's US site on Nov 9 2026; Bluetti gives no cycle rating on the page."
     ]
   },
@@ -864,8 +786,6 @@ const PORTABLE: Product[] = [
     warrantyYears: 5,
     volts: "120V",
     install: "diy",
-    priceUsd: 899,
-    listPriceUsd: null,
     soldOut: true,
     certifications: ["UL 2743"],
     notes: [
@@ -895,8 +815,6 @@ const PORTABLE: Product[] = [
     warrantyYears: null,
     volts: "120/240V",
     install: "diy",
-    priceUsd: 1499,
-    listPriceUsd: 1699,
     notes: [
       "120/240 V with a 50 A (14-50R) outlet; built as a home backup battery.",
       "Bluetti lists a 0 ms switchover in online UPS mode and 20 ms otherwise.",
@@ -907,8 +825,6 @@ const PORTABLE: Product[] = [
     addOn: {
       model: "BLUETTI B300K Expansion Battery for Apex 300",
       capacityWh: 2764.8,
-      priceUsd: 1099,
-      listPriceUsd: 1199,
       url: "https://www.bluettipower.com/products/apex-300-b300k-expansion-battery",
       maxUnits: 6
     }
@@ -935,17 +851,14 @@ const PORTABLE: Product[] = [
     warrantyYears: null,
     volts: "120V",
     install: "diy",
-    priceUsd: 699,
-    listPriceUsd: null,
     notes: [
       "Two 140 W USB-C ports and a quiet 26 dB rating, per DJI.",
-      "Expands to about 11.3 kWh with DJI's 2 kWh expansion batteries (price not shown when we checked)."
+      "Expands to about 11.3 kWh with DJI's 2 kWh expansion batteries."
     ],
     expansion: "with DJI Power Expansion Battery 2000 units"
   },
   // ALLPOWERS and Growatt, read on their US stores Nov 4 2026 (iallpowers.com, growattportable.com).
   // Pre-order and sold-out models are left out so no calculator recommends a unit that can't ship.
-  // ALLPOWERS shows a large crossed-out price on every unit; we list only the price you pay.
   {
     id: "allpowers-r1500",
     brand: "allpowers",
@@ -969,8 +882,6 @@ const PORTABLE: Product[] = [
     warrantyYears: 5,
     volts: "120V",
     install: "diy",
-    priceUsd: 539,
-    listPriceUsd: null,
     notes: [
       "ALLPOWERS does not say what capacity its 3,500 cycles are rated to.",
       "In stock on ALLPOWERS' US site on Nov 4 2026.",
@@ -999,8 +910,6 @@ const PORTABLE: Product[] = [
     warrantyYears: 5,
     volts: "120V",
     install: "diy",
-    priceUsd: 549,
-    listPriceUsd: null,
     notes: [
       "NMC cells: lighter for the capacity than LFP, but fewer rated cycles.",
       "Its spec table lists 1,000 W of solar input; its FAQ says 650 W.",
@@ -1030,8 +939,6 @@ const PORTABLE: Product[] = [
     warrantyYears: 5,
     volts: "120V",
     install: "diy",
-    priceUsd: 1199,
-    listPriceUsd: null,
     notes: [
       "120 V only, so it can't run a 240 V well pump.",
       "In stock on ALLPOWERS' US site on Nov 14 2026.",
@@ -1051,7 +958,6 @@ const PORTABLE: Product[] = [
     addOn: {
       model: "INFINITY 2000 PRO Extra Battery",
       capacityWh: 2048,
-      priceUsd: null,
       url: "https://growattportable.com/products/growatt-infinity-2000-pro-portable-power-station",
       maxUnits: 2,
       soldOut: true,
@@ -1068,8 +974,6 @@ const PORTABLE: Product[] = [
     warrantyYears: 5,
     volts: "120V",
     install: "diy",
-    priceUsd: 799,
-    listPriceUsd: null,
     notes: [
       "Growatt's pages give both 2,200 W and 2,400 W for continuous output, and two different surge figures.",
       "In stock on Growatt's US site on Nov 4 2026.",
@@ -1089,7 +993,6 @@ const PORTABLE: Product[] = [
     addOn: {
       model: "HELIOS 3600 Extra Battery",
       capacityWh: 3600,
-      priceUsd: 1589,
       url: "https://growattportable.com/products/growatt-helios-3600-portable-power-station",
       maxUnits: 4,
       soldOut: true,
@@ -1106,8 +1009,6 @@ const PORTABLE: Product[] = [
     warrantyYears: 5,
     volts: "120V",
     install: "diy",
-    priceUsd: 1599,
-    listPriceUsd: null,
     notes: [
       "120 V from one unit. Growatt says 240 V (7,200 W) needs two units joined with its Split-phase Connector.",
       "Growatt gives both 15 ms and 20 ms for its switchover time; we use the slower figure.",
@@ -1137,8 +1038,6 @@ const PORTABLE: Product[] = [
     warrantyYears: 1,
     volts: "120V",
     install: "diy",
-    priceUsd: 1299.99,
-    listPriceUsd: 1999.99,
     notes: [
       "120 V only; 240 V needs two units paired.",
       "1-year warranty, shorter than most power stations we list.",
@@ -1159,7 +1058,6 @@ const PORTABLE: Product[] = [
     addOn: {
       model: "Lithium 6000 Power Pod",
       capacityWh: 3840,
-      priceUsd: 1499.99,
       url: "https://naturesgenerator.com/products/lithium-6000-power-pod",
       maxUnits: 5,
     },
@@ -1175,8 +1073,6 @@ const PORTABLE: Product[] = [
     warrantyYears: 1,
     volts: "120/240V",
     install: "diy",
-    priceUsd: 2099.99,
-    listPriceUsd: 2999.99,
     notes: [
       "6,000 W at 120/240 V with a 30 A twist-lock (L14-30R) outlet for a transfer switch installed by a licensed electrician.",
       "1-year warranty on the main unit (the Power Pod has 3 + 2 years), shorter than most power stations we list.",
@@ -1194,9 +1090,9 @@ export const PLUGIN_KITS: PluginKit[] = [
     url: "https://us.ecoflow.com/products/stream-microinverter",
     sourceUrl: "https://us.ecoflow.com/products/stream-microinverter", retrieved: "2026-10-15",
     panelW: 400, inverterW: 1200, batteryWh: null, certifications: ["UL 1741"],
-    priceUsd: 799, listPriceUsd: null, states: ["UT", "MD", "CT", "CO"],
+    states: ["UT", "MD", "CT", "CO"],
     notes: [
-      "Inverter alone is $369 if you already have panels.",
+      "The inverter is also sold alone if you already have panels.",
       "EcoFlow's page says plug-in installation is currently permitted in Utah, Maryland, Connecticut and Colorado.",
       "No UL 3700 listing stated on the product page.",
     ],
@@ -1207,9 +1103,9 @@ export const PLUGIN_KITS: PluginKit[] = [
     sourceUrl: "https://www.brightsaver.org/balcony-solar-kits", retrieved: "2026-10-15",
     panelW: 360, inverterW: 360, batteryWh: null,
     certifications: ["UL 1741 (inverter)", "UL 3700 subassembly certification (inverter)"],
-    priceUsd: 414.17, listPriceUsd: null, states: ["UT", "VA", "CO", "MD", "CT", "NH", "NJ"],
+    states: ["UT", "VA", "CO", "MD", "CT", "NH", "NJ"],
     notes: [
-      "Sold at member price by Bright Saver, the nonprofit behind many state plug-in solar bills; a 180 W kit is $285.30.",
+      "Sold by Bright Saver, the nonprofit behind many state plug-in solar bills; a 180 W kit is also available.",
       "Uses a Hoymiles microinverter. Ships only to states with a plug-in solar law (listed on its page).",
       "Bright Saver says to plug it into a GFCI-protected outlet.",
     ],
@@ -1220,10 +1116,9 @@ export const PLUGIN_KITS: PluginKit[] = [
     sourceUrl: "https://pluggedsolar.com/products/800w-plug-in-balcony-solar-kit-4-panel-grid-tie-plug-and-play-system-with-apsystems-microinverter-wifi-monitoring-ul-3700-certification",
     retrieved: "2026-10-15",
     panelW: 800, inverterW: 800, batteryWh: null, certifications: ["UL 1741", "UL 3700 (claimed by seller)"],
-    priceUsd: 1595, listPriceUsd: null,
     notes: [
-      "Four 200 W panels with an APsystems 800 W microinverter and Wi-Fi monitoring; mounts not included at this price.",
-      "Also sold as 400 W ($1,195), 1,200 W ($2,390) and 1,600 W ($3,190) kits.",
+      "Four 200 W panels with an APsystems 800 W microinverter and Wi-Fi monitoring; mounts not included.",
+      "Also sold as 400 W, 1,200 W and 1,600 W kits.",
     ],
   },
   {
@@ -1231,7 +1126,6 @@ export const PLUGIN_KITS: PluginKit[] = [
     url: "https://craftstrom.com/product/1200-watt-eco-line-plugplay-solar/",
     sourceUrl: "https://craftstrom.com/product/1200-watt-eco-line-plugplay-solar/", retrieved: "2026-10-15",
     panelW: 1200, inverterW: 1200, batteryWh: null, certifications: ["UL-certified inverter (seller's claim)"],
-    priceUsd: 2250, listPriceUsd: null,
     notes: [
       "Three 400 W inverters. Houston-based seller.",
       "The seller says it is available in all 50 states with no permits needed; that is not what state law says, so check the rules for your state first.",
@@ -1243,7 +1137,6 @@ export const PLUGIN_KITS: PluginKit[] = [
     sourceUrl: "https://www.mangopower.com/products/mango-power-s-pipv-1200w-kit", retrieved: "2026-10-15",
     panelW: 1200, inverterW: 1200, batteryWh: null,
     certifications: ["UL 1741-SA/SB", "IEEE 1547:2018", "CA Rule 21"],
-    priceUsd: 2698, listPriceUsd: 2925,
     notes: [
       "Includes panels, stand, cables and a zero-export gateway that stops power flowing out to the grid.",
       "Four microinverters with a 25-year warranty, per Mango Power.",
@@ -1275,7 +1168,7 @@ export const ROOFTOP_SOLAR_COST = {
 
 /**
  * Portable solar panels for the off-grid kit, one per brand whose stations the
- * kit can pick. Same rules as PRODUCTS: price and stock from the maker's US
+ * kit can pick. Same rules as PRODUCTS: specs and stock from the maker's US
  * store on `retrieved`. Each panel is one the maker sells for its own stations.
  */
 export interface SolarPanel {
@@ -1286,8 +1179,6 @@ export interface SolarPanel {
   url: string;
   sourceUrl: string;
   retrieved: string;
-  priceUsd: number;
-  listPriceUsd: number | null;
   soldOut?: boolean;
   notes: string[];
 }
@@ -1301,10 +1192,7 @@ export const SOLAR_PANELS: SolarPanel[] = [
     url: "https://www.ankersolix.com/products/ps400-bifacial-portable-solar-panel",
     sourceUrl: "https://www.ankersolix.com/products/ps400-bifacial-portable-solar-panel",
     retrieved: "2026-11-17",
-    priceUsd: 599.99,
-    listPriceUsd: 799.99,
     notes: [
-      "Black Friday Early Access price Anker showed on Nov 17 2026 (regular $799.99); Anker's banner gave the sale as Nov 10 to 18.",
       "The non-bifacial PS400 was sold out on Nov 17 2026.",
     ],
   },
@@ -1316,8 +1204,6 @@ export const SOLAR_PANELS: SolarPanel[] = [
     url: "https://www.bluettipower.com/products/350w-solar-panel",
     sourceUrl: "https://www.bluettipower.com/products/350w-solar-panel",
     retrieved: "2026-11-17",
-    priceUsd: 649,
-    listPriceUsd: null,
     notes: ["Bluetti sells this panel in bundles with the AC180, Elite 200 V2 and Apex 300 (store listings, Nov 17 2026)."],
   },
 ];
@@ -1326,7 +1212,7 @@ export const SOLAR_PANELS: SolarPanel[] = [
  * Complete off-grid systems: an installed inverter, a 48 V battery bank and a
  * panel array sold as one kit. Bigger than any power station we track, and not
  * plug-and-play: the inverter is wired to the house, which takes an electrician
- * and usually a permit. Same rules as PRODUCTS: specs and price from the maker's
+ * and usually a permit. Same rules as PRODUCTS: specs from the maker's
  * own US store on `retrieved`, null for anything it does not state.
  */
 export interface OffGridSystem {
@@ -1353,8 +1239,6 @@ export interface OffGridSystem {
   solarInputW: number;
   /** Panels in the box. */
   panel: { model: string; watts: number; count: number; warrantyYears: number | null };
-  priceUsd: number;
-  listPriceUsd: number | null;
   soldOut?: boolean;
   notes: string[];
 }
@@ -1380,8 +1264,6 @@ export const OFFGRID_SYSTEMS: OffGridSystem[] = [
     addOn: {
       model: "Cubix100 51.2V 100Ah LiFePO4 server rack battery (5.12 kWh)",
       capacityWh: 5120,
-      priceUsd: 889.99,
-      listPriceUsd: 1299.99,
       url: "https://www.eco-worthy.com/products/eco-worthy-51-2v-100ah-lifepo4-lithium-battery-5-12kwh-capacity-server-rack-battery",
       // Eco-Worthy: up to 32 batteries in parallel; the kit has 4.
       maxUnits: 28,
@@ -1397,8 +1279,6 @@ export const OFFGRID_SYSTEMS: OffGridSystem[] = [
     volts: "120/240V",
     solarInputW: 11000,
     panel: { model: "590W N-type monocrystalline panel", watts: 590, count: 9, warrantyYears: 12 },
-    priceUsd: 7999.99,
-    listPriceUsd: 10999.99,
     notes: [
       "Inverter: 10,000 W rated, 20,000 W peak, 120/240 V split-phase or 120 V single-phase, rated for a 6 HP motor load, 11,000 W of solar input, indoor use only (IP20), per Eco-Worthy's inverter page on Nov 18 2026.",
       "In the box: 9 × 590 W panels, the inverter, 4 × 51.2 V 100 Ah batteries and a 6-layer rack with busbar. Mounts and wiring to the house are not included.",

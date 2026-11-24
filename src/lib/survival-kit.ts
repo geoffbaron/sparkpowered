@@ -267,9 +267,9 @@ export const LIGHT_COMMS: SupplyItem[] = [
   { id: "documents", text: "Important documents in a waterproof container, and some cash" },
 ];
 
-/** Ready-made first aid kits we link (SurviveX, Awin). Prices copied from survive-x.com on the date shown. */
+/** Ready-made first aid kits we link (SurviveX, Awin). Details copied from survive-x.com on the date shown. */
 export const FIRST_AID_KITS = {
   checked: "2026-11-20",
-  household: { name: "SurviveX Large First Aid Kit", url: "https://www.survive-x.com/products/large-first-aid-kit", supplies: 250, priceUsd: 134.99, listUsd: 159.99 },
-  small: { name: "Small First Aid Kit", url: "https://www.survive-x.com/products/small-first-aid-kit", supplies: 126, priceUsd: 60.99 },
+  household: { name: "SurviveX Large First Aid Kit", url: "https://www.survive-x.com/products/large-first-aid-kit", supplies: 250 },
+  small: { name: "Small First Aid Kit", url: "https://www.survive-x.com/products/small-first-aid-kit", supplies: 126 },
 };

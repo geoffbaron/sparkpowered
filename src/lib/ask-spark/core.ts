@@ -142,7 +142,7 @@ export function checkInput(body: unknown): CheckedInput {
 export type Inline =
   | { t: "text"; text: string }
   | { t: "link"; text: string; href: string }
-  | { t: "product"; id: string; name: string; href: string; price: string | null; note: string };
+  | { t: "product"; id: string; name: string; href: string; note: string };
 
 export interface Para {
   kind: "p" | "li";
@@ -153,7 +153,6 @@ export interface ProductInfo {
   id: string;
   name: string;
   href: string;
-  priceText: string | null;
 }
 
 export interface RenderContext {
@@ -193,7 +192,7 @@ function inline(line: string, ctx: RenderContext, used: Set<string>, pagesOut: S
       const p = ctx.product(m[1]);
       if (!p) continue; // unknown product: drop it rather than invent one
       used.add(p.id);
-      out.push({ t: "product", id: p.id, name: p.name, href: p.href, price: p.priceText, note: ctx.commissionNote });
+      out.push({ t: "product", id: p.id, name: p.name, href: p.href, note: ctx.commissionNote });
     } else {
       const label = m[2].replace(/\*\*|__/g, "");
       const path = sitePath(m[3], ctx.pages);

@@ -45,7 +45,6 @@ export interface Recommendation {
   battery: DeepCycleBattery;
   count: number;
   totalWh: number;
-  totalUsd: number;
   totalLb: number;
   /** Lead-acid batteries (at 50% depth of discharge) needed for the same usable energy. */
   leadAcidCount: number;
@@ -79,7 +78,6 @@ export function recommend(whDay: number, days: number): Recommendation {
     battery,
     count,
     totalWh,
-    totalUsd: Math.round(battery.priceUsd * count * 100) / 100,
     totalLb: Math.round(battery.weightLb * count),
     leadAcidCount,
     leadAcidLb: Math.round(leadAcidCount * LEAD_ACID_REF.weightLb),
@@ -89,28 +87,29 @@ export function recommend(whDay: number, days: number): Recommendation {
 /** Days a setup lasts on `whDay`, keeping the reserve. */
 export const daysOn = (totalWh: number, whDay: number) => (whDay > 0 ? (totalWh * RESERVE) / whDay : Infinity);
 
-export interface LifetimeCost {
+export interface LifetimeCompare {
   nightsPerYear: number;
-  leadAcid: { units: number; usd: number; years: number; perYear: number };
-  lithium: { usd: number; years: number; perYear: number };
+  /** AGMs needed for the same usable energy, how long a set lasts, and how many sets wear out over the lithium's life. */
+  leadAcid: { units: number; years: number; sets: number };
+  lithium: { years: number };
 }
 
 /**
- * Cost per year for about the same usable energy as one 12V 100Ah lithium battery,
- * assuming one full use (cycle) per night away. Lead-acid life here counts
- * cycles only, which flatters it: real AGM batteries also wear out with age.
+ * How long one 12V 100Ah lithium lasts against the AGMs that match it,
+ * assuming one full use (cycle) per night away. No prices: readers see today's
+ * price on the makers' pages. Lead-acid life here counts cycles only, which
+ * flatters it: real AGM batteries also wear out with age.
  */
-export function lifetimeCost(nightsPerYear: number): LifetimeCost {
+export function lifetimeCompare(nightsPerYear: number): LifetimeCompare {
   const li = BATTERIES.find((b) => b.id === "redodo-12v-100ah")!;
   // Two 100 Ah AGMs at half depth (1,200 Wh) is the usual like-for-like swap for one 1,280 Wh lithium.
   const units = Math.round(li.energyWh / leadAcidUsableWh());
-  const laYears = LEAD_ACID_REF.cycles / nightsPerYear;
   const liYears = Math.min(li.lifeYears ?? 10, li.cycles / nightsPerYear);
-  const laUsd = units * LEAD_ACID_REF.priceUsd;
+  const laYears = Math.min(LEAD_ACID_REF.cycles / nightsPerYear, li.lifeYears ?? 10);
   return {
     nightsPerYear,
-    leadAcid: { units, usd: laUsd, years: laYears, perYear: laUsd / Math.min(laYears, li.lifeYears ?? 10) },
-    lithium: { usd: li.priceUsd, years: liYears, perYear: li.priceUsd / liYears },
+    leadAcid: { units, years: laYears, sets: Math.max(1, Math.ceil(liYears / laYears - 1e-9)) },
+    lithium: { years: liYears },
   };
 }
 

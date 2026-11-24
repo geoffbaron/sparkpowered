@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AffiliateDisclosure, PartnerLink } from "@/components/affiliate";
+import { AFFILIATES } from "@/data/affiliates";
 import { Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
 import { HubHero, MythCallout, OurPick, PhotoCredit } from "@/components/ui";
 import { lite } from "@/data/myths";
@@ -8,13 +9,13 @@ import { lifeSummary } from "@/lib/everyday";
 import { PriceFootnote, ProductListJsonLd, SpecTable } from "@/components/products";
 import { INSTALLED_BATTERY_COST, PRODUCTS, type Product } from "@/data/products";
 import { NATIONAL, POWERWALL_3_KWH, SOURCES, formatDate, num } from "@/lib/energy";
-import { fullName, installedPerKwh, kwh, maxWh, money, productById, watts } from "@/lib/products";
+import { fullName, kwh, maxWh, money, productById, watts } from "@/lib/products";
 import { pageMetadata } from "@/lib/seo";
 
 const PATH = "/home-battery-backup";
 const TITLE = "Home Battery Backup: Whole-Home vs Portable, Real Costs (2026)";
 const DESCRIPTION =
-  "Whole-home batteries like Powerwall 3 and Enphase vs plug-in systems like EcoFlow DELTA Pro Ultra and portable power stations: real specs, 2026 prices and installed costs, and how to size one.";
+  "Whole-home batteries like Powerwall 3 and Enphase vs plug-in systems like EcoFlow DELTA Pro Ultra and portable power stations: real specs, what each can run, and how to size one.";
 
 export const metadata: Metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH, type: "article" });
 
@@ -32,8 +33,7 @@ function InstalledTable({ products }: { products: Product[] }) {
             <th scope="col" className="p-3 font-semibold text-right">Continuous power</th>
             <th scope="col" className="p-3 font-semibold">Chemistry</th>
             <th scope="col" className="p-3 font-semibold text-right">Warranty</th>
-            <th scope="col" className="p-3 font-semibold text-right">Avg installed $/kWh†</th>
-            <th scope="col" className="p-3 font-semibold text-right">One unit, installed†</th>
+            <th scope="col" className="p-3 font-semibold text-right">Price</th>
           </tr>
         </thead>
         <tbody>
@@ -46,8 +46,12 @@ function InstalledTable({ products }: { products: Product[] }) {
               <td className="p-3 text-right tabular-nums">{watts(p.acOutputW)}</td>
               <td className="p-3">{p.chemistry ?? "Not stated"}</td>
               <td className="p-3 text-right tabular-nums">{p.warrantyYears ? `${p.warrantyYears} yr` : "—"}</td>
-              <td className="p-3 text-right tabular-nums">{money(installedPerKwh(p))}</td>
-              <td className="p-3 text-right tabular-nums">about {money(Math.round((installedPerKwh(p) * p.capacityWh) / 1000 / 100) * 100)}</td>
+              <td className="p-3 text-right">
+                By quote:{" "}
+                <PartnerLink brand={p.brand} productId={p.id} productUrl={p.url} category="battery">
+                  {AFFILIATES[p.brand].name}
+                </PartnerLink>
+              </td>
             </tr>
           ))}
         </tbody>
@@ -61,15 +65,14 @@ export default function HomeBatteryBackupPage() {
   const plugInHome = PRODUCTS.filter((p) => p.install === "diy" && (p.category === "home" || p.capacityWh >= 3000))
     .sort((a, b) => b.capacityWh - a.capacityWh);
   const portable = PRODUCTS.filter((p) => p.category === "portable" && p.capacityWh < 3000 && p.capacityWh >= 1000)
-    .sort((a, b) => (a.priceUsd ?? 0) - (b.priceUsd ?? 0));
+    .sort((a, b) => a.capacityWh - b.capacityWh);
   const usDaily = NATIONAL.avgMonthlyKwh / (365 / 12);
-  const cheapestPortable = portable[0];
   const priced = [...plugInHome, ...portable];
   const essentials = productById("ecoflow-delta-3-max");
   const wholeHome = productById("anker-solix-f3800-plus");
   const installedPick = productById("tesla-powerwall-3");
   const tiers = [
-    { label: "2 kWh power station", life: lifeSummary(2048), note: `Like the ${fullName(essentials)}. No install, about ${money(essentials.priceUsd!)}.` },
+    { label: "2 kWh power station", life: lifeSummary(2048), note: `Like the ${fullName(essentials)}. No install.` },
     { label: `${kwh(wholeHome.capacityWh)} home system`, life: lifeSummary(wholeHome.capacityWh), note: "Plug-in system plus an electrician for home circuits." },
     { label: `${POWERWALL_3_KWH} kWh installed battery`, life: lifeSummary(POWERWALL_3_KWH * 1000 / 0.85), note: "Usable capacity of one Powerwall 3; automatic, whole-home." },
   ];
@@ -77,7 +80,7 @@ export default function HomeBatteryBackupPage() {
   const faqs = [
     {
       q: "How much does a whole-home battery backup cost in 2026?",
-      a: `EnergySage put home battery prices at about ${money(INSTALLED_BATTERY_COST.medianPerKwh)} per kWh of capacity in the first half of 2026, before incentives, so one ${POWERWALL_3_KWH} kWh battery comes to about ${money(INSTALLED_BATTERY_COST.medianPerKwh * POWERWALL_3_KWH)} at that price. Backing up a whole home for longer outages often takes two or more units. Plug-in systems cost less per kWh at listed prices but need an electrician to connect them to your home's circuits.`,
+      a: `EnergySage put home battery prices at about ${money(INSTALLED_BATTERY_COST.medianPerKwh)} per kWh of capacity in the first half of 2026, before incentives, so a 10 kWh system comes to about ${money(INSTALLED_BATTERY_COST.medianPerKwh * 10)} at that market average; your installer's quote is the real number. Backing up a whole home for longer outages often takes two or more units. Plug-in systems usually cost less per kWh but need an electrician to connect them to your home's circuits.`,
     },
     {
       q: "Can a portable power station back up my house?",
@@ -108,7 +111,7 @@ export default function HomeBatteryBackupPage() {
         sub={
           <>
             A home battery switches on by itself when the grid goes down. The fridge stays cold, the Wi-Fi stays up and the
-            house stays quiet: no generator to start, no fuel to store, no fumes. Start with a $900 battery for the
+            house stays quiet: no generator to start, no fuel to store, no fumes. Start with a 2 kWh battery for the
             essentials or go whole-home.
           </>
         }
@@ -139,7 +142,6 @@ export default function HomeBatteryBackupPage() {
           name={fullName(essentials)}
           why="Plug the fridge, router and a lamp straight into it (no power strip or light extension cord) and leave them there. When the power cuts out it takes over in about a hundredth of a second. No electrician needed, as long as you never connect it to your house wiring."
           life={[`Fridge alone: ${lifeSummary(essentials.capacityWh).fridge}`, `CPAP: ${lifeSummary(essentials.capacityWh).cpap}`]}
-          priceUsd={essentials.priceUsd}
           brand={essentials.brand}
           productId={essentials.id}
           productUrl={essentials.url}
@@ -150,7 +152,6 @@ export default function HomeBatteryBackupPage() {
           name={fullName(wholeHome)}
           why="240-volt power for a well pump or home circuits, room to grow into days of backup, and lots of solar input. An electrician connects it through a transfer switch or smart panel."
           life={[`Fridge, Wi-Fi and lights: ${lifeSummary(wholeHome.capacityWh).essentials}`, `Expands to ${lifeSummary(maxWh(wholeHome)).essentials}`]}
-          priceUsd={wholeHome.priceUsd}
           brand={wholeHome.brand}
           productId={wholeHome.id}
           productUrl={wholeHome.url}
@@ -162,14 +163,13 @@ export default function HomeBatteryBackupPage() {
           icon="home"
           why="One box that handles both solar and storage, switches over automatically, and is covered for 10 years. Sold through Tesla and certified installers."
           life={[`Whole-home: ${Math.round((POWERWALL_3_KWH / usDaily) * 24)} hours of average use`, `Essentials: ${lifeSummary(installedPick.capacityWh).essentials}`]}
-          priceNote={`About ${money(Math.round((installedPerKwh(installedPick) * installedPick.capacityWh) / 1000 / 100) * 100)} installed (EnergySage average)`}
+          priceNote="Installed price by quote"
           brand={installedPick.brand}
           productId={installedPick.id}
           productUrl={installedPick.url}
           category="battery"
-          cta="See Powerwall"
+          cta="Get a Powerwall quote from Tesla"
         />
-        <p className="text-xs text-muted">*Prices on the makers&apos; US sites when we checked on {formatDate(essentials.retrieved)}; prices change often.</p>
       </section>
 
       <MythCallout m={lite("battery-without-solar")} className="mt-8" />
@@ -206,10 +206,10 @@ export default function HomeBatteryBackupPage() {
                 <td className="p-3">Certified installer, permit</td>
               </tr>
               <tr className="border-t border-black/6">
-                <th scope="row" className="p-3 font-medium">Cost (examples below)</th>
-                <td className="p-3">{cheapestPortable?.priceUsd ? `From ${money(cheapestPortable.priceUsd)}` : "—"} for 1 kWh+</td>
-                <td className="p-3">From {money(Math.min(...plugInHome.filter((p) => p.priceUsd).map((p) => p.priceUsd!)))} plus electrician</td>
-                <td className="p-3">About {money(INSTALLED_BATTERY_COST.medianPerKwh)} per kWh†</td>
+                <th scope="row" className="p-3 font-medium">Cost</th>
+                <td className="p-3">The unit only; see today&apos;s prices on the makers&apos; pages below</td>
+                <td className="p-3">The system plus an electrician</td>
+                <td className="p-3">Market average about {money(INSTALLED_BATTERY_COST.medianPerKwh)} per kWh installed†</td>
               </tr>
               <tr className="border-t border-black/6">
                 <th scope="row" className="p-3 font-medium">Takes solar?</th>
@@ -225,22 +225,20 @@ export default function HomeBatteryBackupPage() {
           <Link href="/battery-calculator" className="text-spark-orange font-semibold underline underline-offset-2">
             Use the battery sizer
           </Link>
-          : five questions, then real systems that reach your size with their prices.
+          : five questions, then real systems that reach your size.
         </p>
       </Section>
 
       <Section title="Installed whole-home batteries" id="installed">
         <p className="text-stone-700 leading-relaxed max-w-3xl mb-4">
-          These are sold through installers, so makers don&apos;t publish a price. The cost column uses EnergySage&apos;s
-          average installed price per kWh for each brand from its first-half 2026 marketplace quotes, before
-          incentives. Expect a quote to differ with your electrical panel, permits and whether solar is installed at
-          the same time.
+          These are sold through installers, so makers don&apos;t publish a price: you get a quote. Expect it to depend on
+          your electrical panel, permits and whether solar is installed at the same time.
         </p>
         <InstalledTable products={installed} />
         <p className="text-xs text-muted mt-2 max-w-3xl">
-          †EnergySage brand averages, first half of 2026 (
-          <a href={ES_COST_URL} className="underline" rel="noopener">source</a>); for brands without one we use
-          EnergySage&apos;s reported price of {money(INSTALLED_BATTERY_COST.medianPerKwh)}/kWh. EnergySage says
+          †EnergySage&apos;s market-wide average for home batteries, first half of 2026 (
+          <a href={ES_COST_URL} className="underline" rel="noopener">source</a>), before incentives; not a price for any one
+          brand. EnergySage says
           whole-home backup with several batteries can run $34,000 or more. Specs are from each maker&apos;s US
           datasheet, checked {formatDate(installed[0].retrieved)}.
         </p>
@@ -305,8 +303,8 @@ export default function HomeBatteryBackupPage() {
 
       <Faq items={faqs} path={PATH} />
       <Disclaimer>
-        Specifications and prices are copied from manufacturers&apos; US websites on the dates shown; installed costs
-        are marketplace averages. Batteries connected to home wiring must be installed by a licensed electrician under
+        Specifications are copied from manufacturers&apos; US websites on the dates shown; installed costs
+        are marketplace averages, not product prices. Batteries connected to home wiring must be installed by a licensed electrician under
         local codes.
       </Disclaimer>
       <Sources

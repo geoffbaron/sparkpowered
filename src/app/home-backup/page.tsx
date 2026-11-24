@@ -61,7 +61,7 @@ export default function HomeBackupHub() {
     },
     {
       q: "How much does it cost to hook a battery up to a house?",
-      a: `Cords: ${usd(PARTS.cords.usd)} for one to three 12-gauge outdoor cords. An interlock kit installed: ${range(C.interlock)}. A manual transfer switch installed: ${range(C.manualSwitch)}, plus a permit (${range(C.permit)}). Those are HomeGuide's ranges, last updated ${formatDate(C.interlock.sourceUpdated)}. The makers' smart panels cost more: Anker's Home Power Panel kit lists at ${money(P.ankerHpp.listPriceUsd)} before installation.`,
+      a: `Cords: ${usd(PARTS.cords.usd)} for one to three 12-gauge outdoor cords. An interlock kit installed: ${range(C.interlock)}. A manual transfer switch installed: ${range(C.manualSwitch)}, plus a permit (${range(C.permit)}). Those are HomeGuide's ranges, last updated ${formatDate(C.interlock.sourceUpdated)}. The makers' smart panels cost more; see each maker's page for today's price.`,
     },
   ];
 
@@ -143,8 +143,8 @@ export default function HomeBackupHub() {
                   <th scope="row" className="p-3 font-semibold">3. Manual transfer switch</th>
                   <td className="p-3">A fixed set of circuits (often 6 or 10) wired to the switch, each flipped to grid or battery.</td>
                   <td className="p-3">
-                    Installed {range(C.manualSwitch)}, plus permit. Anker&apos;s 10-circuit switch lists at {money(P.ankerMts30.listPriceUsd)} before
-                    installation.
+                    Installed {range(C.manualSwitch)}, plus permit. Anker also sells a 10-circuit switch; see its page for
+                    today&apos;s price.
                   </td>
                   <td className="p-3"><strong>Yes, always.</strong></td>
                 </tr>
@@ -152,7 +152,7 @@ export default function HomeBackupHub() {
                   <th scope="row" className="p-3 font-semibold">4. The maker&apos;s smart panel</th>
                   <td className="p-3">A backed-up subpanel that switches over automatically when the grid fails; some also manage solar and a generator.</td>
                   <td className="p-3">
-                    From the maker&apos;s list price (right) plus installation; Anker also sells its own install service at {money(P.ankerHppInstall.listPriceUsd)}, permit not included
+                    The maker&apos;s price (right) plus installation; Anker also sells its own install service, permit not included
                   </td>
                   <td className="p-3"><strong>Yes, always.</strong> Anker says a licensed electrician is required.</td>
                   <td className="p-3">
@@ -160,10 +160,10 @@ export default function HomeBackupHub() {
                       {smartPanels.map((m) => (
                         <li key={m.productId}>
                           {fullName(productById(m.productId))}
-                          {stock(productById(m.productId))}: {m.smartPanel!.name} ({money(m.smartPanel!.usd)})
+                          {stock(productById(m.productId))}: {m.smartPanel!.name}
                         </li>
                       ))}
-                      <li>{fullName(apex)}: {P.bluettiAt1.name} ({money(P.bluettiAt1.listPriceUsd)}), automatic</li>
+                      <li>{fullName(apex)}: {P.bluettiAt1.name}, automatic</li>
                       <li>{fullName(ultra)}{stock(ultra)}: EcoFlow Smart Home Panel 2</li>
                     </ul>
                   </td>
@@ -173,8 +173,8 @@ export default function HomeBackupHub() {
           </div>
           <p className="text-xs text-muted mt-2 max-w-3xl">
             *Installed ranges are HomeGuide&apos;s (figures last updated {formatDate(C.interlock.sourceUpdated)}, read {formatDate(C.interlock.retrieved)});
-            your electrician&apos;s quote is the real number. Maker prices are the regular price on each maker&apos;s US store on{" "}
-            {formatDate(P.ankerHpp.retrieved)}, before any timed discount code.
+            your electrician&apos;s quote is the real number. Maker parts checked on each maker&apos;s US store on{" "}
+            {formatDate(P.ankerHpp.retrieved)}; we don&apos;t list their prices.
           </p>
         </Section>
 
@@ -209,7 +209,7 @@ export default function HomeBackupHub() {
             <Link href="/power-outage-backup-calculator" className="text-spark-orange underline underline-offset-2">power outage backup calculator</Link>{" "}
             adds up your appliances and outage length, and{" "}
             <Link href="/best-portable-power-stations" className="text-spark-orange underline underline-offset-2">best portable power stations</Link>{" "}
-            compares every model with dated prices.
+            compares every model by spec.
           </p>
         </Section>
 
@@ -244,7 +244,7 @@ export default function HomeBackupHub() {
             <PartnerLink brand="bluetti" productId={apex.id} productUrl={apex.url} disclose>
               {fullName(apex)}
             </PartnerLink>{" "}
-            ({money(apex.priceUsd!)} on Bluetti&apos;s US site on {formatDate(apex.retrieved)}) gives 120/240 V from one unit through a 50 A outlet
+            (checked on Bluetti&apos;s US site on {formatDate(apex.retrieved)}) gives 120/240 V from one unit through a 50 A outlet
             and works with Bluetti&apos;s AT1 panel. See the{" "}
             <Link href="/home-backup/bluetti-apex-300-hookup" className="underline underline-offset-2">Apex 300 hookup guide</Link> first.
           </p>
@@ -261,9 +261,9 @@ export default function HomeBackupHub() {
             { name: "HomeGuide, Generator transfer switch installation cost", url: C.interlock.url, read: C.interlock.retrieved, what: `installed-cost ranges (figures dated ${formatDate(C.interlock.sourceUpdated)})` },
             { name: "Anker SOLIX support, F3800 & F3800 Plus: your top questions answered", url: "https://support.ankersolix.com/s/article/F3800-F3800-Plus-Your-Top-Questions-Answered", read: "2026-11-14", what: "Home Power Panel backs up 25 A with one unit, 50 A with two" },
             { name: "Anker SOLIX support, Can I connect the F3800 to my generator's transfer switch or inlet box?", url: "https://support.ankersolix.com/s/article/Can-I-connect-Anker-SOLIX-F3800-to-the-same-transfer-switch-inlet-box-I-used-for-my-gas-generator-to-back-up-my-home", read: "2026-11-14", what: "neutral and ground must be connected" },
-            { name: P.ankerHpp.name, url: P.ankerHpp.url, read: P.ankerHpp.retrieved, what: "price; licensed electrician required" },
-            { name: P.ankerMts30.name, url: P.ankerMts30.url, read: P.ankerMts30.retrieved, what: "price; UL 1008 listed" },
-            { name: P.bluettiAt1.name, url: P.bluettiAt1.url, read: P.bluettiAt1.retrieved, what: "price; compatible with Apex 300" },
+            { name: P.ankerHpp.name, url: P.ankerHpp.url, read: P.ankerHpp.retrieved, what: "licensed electrician required" },
+            { name: P.ankerMts30.name, url: P.ankerMts30.url, read: P.ankerMts30.retrieved, what: "UL 1008 listed" },
+            { name: P.bluettiAt1.name, url: P.bluettiAt1.url, read: P.bluettiAt1.retrieved, what: "compatible with Apex 300" },
             { name: "Bluetti, How to hook up a generator to the house (Oct 29 2026)", url: "https://www.bluettipower.com/blogs/articles/how-to-hook-up-a-generator-to-the-house-safely-and-efficiently", read: "2026-11-14", what: "listed transfer equipment or an approved interlock; neutral bonding" },
             { name: "Bluetti Apex 300 user manual V3.1 (PDF)", url: "https://s4.bluettipower.com/bluetti/purchasePageBiz/2025/12/Apex%20300%20User%20%20Manual%20US%20EN-FR-1764555919287-cde9.pdf", read: "2026-11-14", what: "14-50R and TT-30R outlet ratings" },
             { name: `${P.growattHub.name} product page`, url: P.growattHub.url, read: P.growattHub.retrieved, what: "two HELIOS 3600 units for 240 V" },
@@ -273,13 +273,13 @@ export default function HomeBackupHub() {
         />
 
         <Disclaimer>
-          General information, not electrical advice. Codes and what inspectors accept differ by city and county. Prices and specifications are
-          copied from makers&apos; US websites on the dates shown and change often.
+          General information, not electrical advice. Codes and what inspectors accept differ by city and county. Specifications are
+          copied from makers&apos; US websites on the dates shown. We don&apos;t list product prices; the links go to each maker for today&apos;s price.
         </Disclaimer>
         <RelatedLinks
           links={[
             { href: "/power-outage-backup-calculator", label: "Power outage backup calculator", desc: "How big a battery your outage needs" },
-            { href: "/best-portable-power-stations", label: "Best portable power stations", desc: "Every model compared, with dated prices" },
+            { href: "/best-portable-power-stations", label: "Best portable power stations", desc: "Every model compared by spec" },
             { href: "/home-battery-backup", label: "Home battery backup", desc: "Installed whole-home batteries instead" },
             { href: "/generator-runtime-calculator", label: "Generator runtime calculator", desc: "If you add a gas generator for long outages" },
           ]}

@@ -8,9 +8,42 @@
  */
 
 import Link from "next/link";
-import { DISCLOSURE_TEXT, partnerUrl, solarQuotesUrl, type BrandId } from "@/data/affiliates";
+import { AFFILIATES, DISCLOSURE_TEXT, partnerUrl, solarQuotesUrl, type BrandId } from "@/data/affiliates";
 
 export const PARTNER_REL = "sponsored nofollow noopener";
+
+/** Store name for "See today's price at ..." links. */
+export const storeName = (brand: BrandId) => AFFILIATES[brand].name;
+
+/**
+ * "See today's price at <store>": we show no prices (they change too often), so
+ * every product gets this link to the maker's or store's own page instead.
+ * Goes through PartnerLink, so tracking stays on.
+ */
+export function PriceLink({
+  brand,
+  productId,
+  productUrl,
+  store,
+  variant = "text",
+  className,
+  disclose = false,
+}: {
+  brand: BrandId;
+  productId?: string;
+  productUrl?: string;
+  /** Override the store name, for a dealer that is not the brand. */
+  store?: string;
+  variant?: "text" | "button";
+  className?: string;
+  disclose?: boolean;
+}) {
+  return (
+    <PartnerLink brand={brand} productId={productId} productUrl={productUrl} variant={variant} className={className} disclose={disclose}>
+      See today&apos;s price at {store ?? storeName(brand)}
+    </PartnerLink>
+  );
+}
 
 /** Short note shown right next to a product link (`disclose` on PartnerLink). */
 export const LINK_DISCLOSURE = "We earn a commission if you buy through this link.";

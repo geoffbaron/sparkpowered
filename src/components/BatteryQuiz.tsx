@@ -4,8 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { useNoTesla } from "@/hooks/useNoTesla";
 import { AffiliateDisclosure, PartnerLink } from "@/components/affiliate";
-import { INSTALLED_BATTERY_COST } from "@/data/products";
-import { fullName, kwh, money, sizerMatches, watts } from "@/lib/products";
+import { AFFILIATES } from "@/data/affiliates";
+import { fullName, kwh, sizerMatches, watts } from "@/lib/products";
 
 // ── Estimation logic ──────────────────────────────────────────────────────────
 
@@ -13,21 +13,12 @@ type Goal = "backup" | "savings" | "solar" | "all";
 type Coverage = "essentials" | "major" | "whole";
 type Duration = "hours4" | "hours12" | "day1" | "days3";
 type SolarStatus = "have" | "planning" | "none";
-type Budget = "under5k" | "5kto10k" | "10kto20k" | "over20k";
-
-const BUDGET_MAX: Record<Budget, number> = {
-  under5k:  5000,
-  "5kto10k":  10000,
-  "10kto20k": 20000,
-  over20k:  Infinity,
-};
 
 interface QuizState {
   goal: Goal | null;
   coverage: Coverage | null;
   duration: Duration | null;
   solar: SolarStatus | null;
-  budget: Budget | null;
 }
 
 const DAILY_KWH: Record<Coverage, number> = {
@@ -106,17 +97,6 @@ const STEPS = [
       { value: "none",     label: "No solar (yet!)",        icon: "power",     desc: "Grid-only or want to explore options" },
     ],
   },
-  {
-    id: "budget",
-    question: "What's your installation budget?",
-    subtitle: "Includes equipment and professional installation.",
-    options: [
-      { value: "under5k",   label: "Under $5,000",    icon: "eco",          desc: "Entry-level backup for essentials" },
-      { value: "5kto10k",   label: "$5,000–$10,000",  icon: "savings",      desc: "Most popular range for a single unit" },
-      { value: "10kto20k",  label: "$10,000–$20,000", icon: "trending_up",  desc: "Room for a multi-battery system" },
-      { value: "over20k",   label: "$20,000+",        icon: "home",         desc: "Full whole-home backup & expansion" },
-    ],
-  },
 ] as const;
 
 type StepId = (typeof STEPS)[number]["id"];
@@ -126,7 +106,7 @@ type StepId = (typeof STEPS)[number]["id"];
 export default function BatteryQuiz() {
   const [step, setStep] = useState(0);
   const [quiz, setQuiz] = useState<QuizState>({
-    goal: null, coverage: null, duration: null, solar: null, budget: null,
+    goal: null, coverage: null, duration: null, solar: null,
   });
   const [showResults, setShowResults] = useState(false);
   const [noTesla, setNoTesla] = useNoTesla();
@@ -145,25 +125,16 @@ export default function BatteryQuiz() {
   }
 
   function restart() {
-    setQuiz({ goal: null, coverage: null, duration: null, solar: null, budget: null });
+    setQuiz({ goal: null, coverage: null, duration: null, solar: null });
     setStep(0);
     setShowResults(false);
   }
 
   // ── Results ──
 
-  if (showResults && quiz.coverage && quiz.duration && quiz.budget) {
+  if (showResults && quiz.coverage && quiz.duration && quiz.solar) {
     const needed = calcNeededKwh(quiz.coverage, quiz.duration);
-    const budgetMax = BUDGET_MAX[quiz.budget];
     const matches = sizerMatches(needed, { excludeBrands: noTesla ? ["tesla"] : [] });
-    const fits = (cost: number) => cost <= budgetMax;
-    const anyFits = matches.some((m) => fits(m.cost));
-    const costText = (m: (typeof matches)[number]) =>
-      m.config.equipmentUsd != null
-        ? money(m.config.equipmentUsd)
-        : m.config.installedUsd
-          ? `about ${money(m.config.installedUsd)}`
-          : "Price by quote";
     const configText = (m: (typeof matches)[number]) => {
       const p = m.product;
       if (p.install === "professional") return `${m.config.units} × ${p.model} = ${kwh(m.config.totalWh)}`;
@@ -184,7 +155,7 @@ export default function BatteryQuiz() {
               <span className="text-spark-orange">{DURATION_PHRASE[quiz.duration ?? "hours12"]}</span>
             </h1>
             <p className="text-muted text-lg">
-              That takes about {needed} kWh of storage. Here are {matches.length} real systems that get you there, cheapest first.
+              That takes about {needed} kWh of storage. Here are {matches.length} real systems that get you there, closest fit first.
             </p>
           </div>
         </div>
@@ -196,18 +167,11 @@ export default function BatteryQuiz() {
           <div className="bg-amber-50 border border-amber-200 rounded-2xl p-4 text-sm text-amber-800">
             <strong>The 30% federal credit has ended for homeowners:</strong> the Residential Clean
             Energy Credit (25D) covered 30% of a home battery, but the IRS says it is not allowed for
-            expenditures made after 31 December 2025, so prices shown here are what a cash buyer pays.
+            expenditures made after 31 December 2025.
             Some states and utilities run their own storage rebates.{" "}
             <Link href="/incentives" className="underline font-semibold">See what is still available</Link>.
           </div>
 
-          {!anyFits && (
-            <div className="bg-sky-50 border border-sky-200 rounded-2xl p-4 text-sm text-sky-800">
-              <strong>Heads up:</strong> none of these reaches {needed} kWh within your{" "}
-              {budgetMax === Infinity ? "budget" : `${money(budgetMax)} budget`}. Backing up fewer circuits or
-              for a shorter time shrinks the battery quickly; try the sizer again with &quot;Essentials only&quot;.
-            </div>
-          )}
 
           {/* Product cards */}
           <div>
@@ -230,7 +194,6 @@ export default function BatteryQuiz() {
             <div className="space-y-4">
               {matches.map((m, i) => {
                 const p = m.product;
-                const inBudget = fits(m.cost);
                 return (
                   <div
                     key={p.id}
@@ -242,11 +205,6 @@ export default function BatteryQuiz() {
                       <span className="inline-flex items-center bg-surface-light border border-black/8 text-xs font-semibold px-3 py-1 rounded-full">
                         {p.install === "professional" ? "Professionally installed" : "Plugs in yourself; feeding home circuits needs an electrician"}
                       </span>
-                      {inBudget && (
-                        <span className="inline-flex items-center gap-1 bg-green-100 text-green-700 border border-green-200 text-xs font-semibold px-3 py-1 rounded-full">
-                          <span aria-hidden="true" translate="no" className="material-symbols-outlined" style={{ fontSize: 14 }}>check_circle</span> Within your budget
-                        </span>
-                      )}
                     </div>
                     <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                       <div className="flex-1">
@@ -263,14 +221,8 @@ export default function BatteryQuiz() {
                         {p.notes[0] && <p className="mt-3 text-sm text-muted">{p.notes[0]}</p>}
                       </div>
                       <div className="sm:text-right shrink-0 flex flex-col gap-2 sm:max-w-[14rem]">
-                        <div>
-                          <div className="text-sm text-muted">
-                            {m.config.equipmentUsd != null ? "Listed price, this setup" : "Typical installed cost"}
-                          </div>
-                          <div className="text-xl font-bold">{costText(m)}</div>
-                        </div>
                         <PartnerLink brand={p.brand} productId={p.id} productUrl={p.url} category="battery" variant="button">
-                          {p.install === "professional" ? `See ${p.model}` : `Check price`}
+                          {p.install === "professional" ? `Get a quote from ${AFFILIATES[p.brand].name}` : `See today's price at ${AFFILIATES[p.brand].name}`}
                         </PartnerLink>
                       </div>
                     </div>
@@ -299,12 +251,10 @@ export default function BatteryQuiz() {
           )}
 
           <p className="text-xs text-muted text-center pb-2">
-            Prices for plug-in systems are each maker&apos;s listed US price for the setup shown, checked on the
-            date on our{" "}
+            Specs are each maker&apos;s own, as on our{" "}
             <Link href="/best-portable-power-stations" className="underline">power station guide</Link>; add-on
-            batteries are the maker&apos;s own. Installed costs multiply the kWh by EnergySage&apos;s average installed price
-            per kWh for that brand in the first half of 2026 (or {INSTALLED_BATTERY_COST.source}) and vary
-            with your home and installer, so get several quotes. Storage needed assumes about 85% of a
+            batteries are the maker&apos;s own. We don&apos;t list prices: each link goes to the maker&apos;s page for
+            today&apos;s price, and installed systems are priced by quote, so get several. Storage needed assumes about 85% of a
             battery&apos;s rated capacity is usable in practice.
           </p>
 

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { DealsStrip } from "@/components/DealsStrip";
 import { AffiliateDisclosure } from "@/components/affiliate";
 import { Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
 import { QuickAnswer } from "@/components/guide-ui";
@@ -31,14 +30,13 @@ const DESCRIPTION =
 export const metadata: Metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH, type: "article" });
 
 const GUIDES = [
-  { href: "/commuter-e-bike-under-1500", title: "Commuter e-bike under $1,500", desc: "Racks, lights and fenders in the box", icon: "bike" },
+  { href: "/commuter-e-bike-under-1500", title: "Commuter e-bikes", desc: "Racks, lights and fenders in the box", icon: "bike" },
   { href: "/e-bike-for-hills", title: "E-bike for hills", desc: "Torque, mid-drives and torque sensors", icon: "bolt" },
   { href: "/e-bike-for-heavy-riders", title: "E-bike for heavy riders", desc: "400 to 450 lb rated bikes", icon: "check" },
   { href: "/folding-e-bike", title: "Folding e-bike", desc: "For apartments, RVs and trunks", icon: "home" },
 ];
 
 export default function EbikesHubPage() {
-  const cheapest = Math.min(...EBIKES.map((b) => b.price));
   const tenMileDay = (EBIKE_CENTS_PER_MILE * 10 * 250) / 100;
   const gasTenMileDay = (AAA_FUEL_CENTS_PER_MILE * 10 * 250) / 100;
   const whs = EBIKES.map((b) => b.batteryWh).filter((x): x is number => x != null);
@@ -84,7 +82,6 @@ export default function EbikesHubPage() {
           />
         }
       />
-      <DealsStrip />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <AffiliateDisclosure className="mb-8" />
@@ -103,7 +100,7 @@ export default function EbikesHubPage() {
             drives, and for some households the second car.
           </p>
           <p>
-            Bikes from the brands we link to start at {money(cheapest)} when we checked. Pick by the job:{" "}
+            Pick by the job:{" "}
             <Link href="#guides" className="underline">commuting, hills, a heavier rider or folding</Link>.
           </p>
         </QuickAnswer>
@@ -229,7 +226,7 @@ export default function EbikesHubPage() {
 
         <Faq items={faqs} path={PATH} />
         <Disclaimer>
-          Cost per mile is our arithmetic from the sources below. Bike specs and prices are from makers&apos; US websites on {formatDate(EBIKES_CHECKED)};
+          Cost per mile is our arithmetic from the sources below. Bike specs are from makers&apos; US websites on {formatDate(EBIKES_CHECKED)}, and we don&apos;t list prices;
           we have not ridden these bikes. Some bike links on the guides earn us a commission.
         </Disclaimer>
         <Sources items={[...Object.values(EBIKE_SOURCES), ...EBIKE_PROGRAMS.map((p) => ({ name: `${p.place}: ${p.name}`, url: p.url }))]} />

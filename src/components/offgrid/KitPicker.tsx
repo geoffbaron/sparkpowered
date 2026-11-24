@@ -4,9 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { AffiliateDisclosure, PARTNER_REL, PartnerLink } from "@/components/affiliate";
 import { AFFILIATES, partnerUrl } from "@/data/affiliates";
-import { KITS_CHECKED, type Kit, type KitExtra } from "@/data/kits";
+import { type Kit, type KitExtra } from "@/data/kits";
 import {
-  checkedLabel,
   configTotals,
   coverage,
   kitCartLink,
@@ -19,9 +18,7 @@ import {
   type KitPick,
 } from "@/lib/kits";
 import { fmtKwh, fmtW } from "@/lib/offgrid";
-import { money } from "@/lib/products";
 
-const CHECKED = checkedLabel(KITS_CHECKED);
 const brandName = (k: Kit) => AFFILIATES[k.brand].name;
 
 type Extras = Record<string, { b: number; p: number }>;
@@ -68,7 +65,7 @@ export default function KitPicker({ need, heading = "Kits you can buy for this",
 
   const copyList = async () => {
     if (!selected) return;
-    const text = shoppingListText(selected, brandName(selected.kit), CHECKED);
+    const text = shoppingListText(selected, brandName(selected.kit));
     try {
       await navigator.clipboard.writeText(text);
       setCopied("Shopping list copied.");
@@ -93,7 +90,7 @@ export default function KitPicker({ need, heading = "Kits you can buy for this",
       <h3 id={`${idPrefix}-kits-h`} className="text-xl sm:text-2xl font-extrabold text-ink">{heading}</h3>
       <p className="text-sm text-stone-700 mt-1 max-w-3xl">
         Complete kits from each brand&apos;s own store: the power station, batteries and that brand&apos;s own panels. One button puts every item in
-        the brand&apos;s cart; you review and check out on their site. Prices checked {CHECKED} and they change.
+        the brand&apos;s cart; you see today&apos;s prices there, review and check out on their site.
       </p>
       <AffiliateDisclosure className="mt-3 print:hidden" />
 
@@ -139,7 +136,7 @@ export default function KitPicker({ need, heading = "Kits you can buy for this",
           <div className="flex items-center gap-3 max-w-5xl mx-auto">
             <div className="min-w-0 flex-1">
               <p className="text-xs text-stone-700 truncate">{selected.kit.name}</p>
-              <p className="text-lg font-extrabold text-ink tabular-nums">{money(selectedTotals.priceUsd)}</p>
+              <p className="text-sm font-bold text-ink">{selectedTotals.itemCount} items · today&apos;s price at {brandName(selected.kit)}</p>
             </div>
             <a
               href={selectedLink.href}
@@ -216,7 +213,6 @@ function KitCard({
               {i.label}
               <span className="sr-only"> (opens in a new tab)</span>
             </a>
-            <span className="tabular-nums text-stone-800 shrink-0">{money(i.unitPriceUsd * i.qty)}</span>
           </li>
         ))}
       </ul>
@@ -237,9 +233,8 @@ function KitCard({
       <div className="mt-auto pt-4">
         <div className="flex items-baseline justify-between gap-3 border-t border-black/10 pt-3" aria-live="polite">
           <span className="text-sm text-stone-700">
-            Total, {t.itemCount} {t.itemCount === 1 ? "item" : "items"}
+            In the cart: {t.itemCount} {t.itemCount === 1 ? "item" : "items"}
           </span>
-          <span className="text-2xl font-extrabold text-ink tabular-nums" data-testid="kit-total">{money(t.priceUsd)}</span>
         </div>
         <p className="text-xs text-stone-700 text-right">
           {fmtKwh(t.batteryWh)} battery · {t.panelW > 0 ? `${fmtW(t.panelW)} of panels` : "no panels"}
@@ -258,7 +253,7 @@ function KitCard({
           <span className="sr-only"> (opens in a new tab)</span>
         </a>
         <p className="mt-2 text-xs text-stone-700">
-          Opens {brand}&apos;s own cart with all {t.itemCount} items. You check out on their site. Prices checked {CHECKED}.
+          Opens {brand}&apos;s own cart with all {t.itemCount} items. You see today&apos;s price there before you check out.
         </p>
         {kit.notes?.map((n) => (
           <p key={n} className="mt-1 text-xs text-muted">{n}</p>
@@ -294,7 +289,7 @@ function Stepper({ id, label, extra, value, onChange }: { id: string; label: str
         </button>
       </div>
       <p className="text-xs text-stone-700 mt-1">
-        {extra.label}, {money(extra.unitPriceUsd)} each. Up to {extra.max} ({extra.basis}).
+        {extra.label}. Up to {extra.max} ({extra.basis}).
       </p>
     </div>
   );

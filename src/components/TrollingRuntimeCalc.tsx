@@ -67,7 +67,6 @@ export default function TrollingRuntimeCalc() {
         <ul className="mt-4 space-y-1 text-sm text-stone-800">
           <li><strong>{battery.usableAh} Ah</strong> you can use from this battery{battery.leadAcid ? " (half its rating)" : " (all of it)"}</li>
           {battery.weightLb != null && <li><strong>{Math.round(battery.weightLb)} lb</strong> to carry to the boat</li>}
-          {battery.priceUsd != null && <li><strong>${battery.priceUsd.toLocaleString("en-US", { minimumFractionDigits: 2 })}</strong> when we checked</li>}
         </ul>
         {fullDay && fullDay.id !== battery.id && (
           <p className="text-sm text-stone-800 mt-4">
@@ -77,7 +76,7 @@ export default function TrollingRuntimeCalc() {
         {!battery.leadAcid && battery.url && (
           <div className="mt-4">
             <PartnerLink brand="redodo" productId={battery.id} productUrl={battery.url} className="btn btn-primary">
-              Check price on Redodo
+              See today&apos;s price at Redodo
             </PartnerLink>
           </div>
         )}

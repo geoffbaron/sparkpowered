@@ -32,7 +32,6 @@ function track(name: string, data?: Record<string, string | number>) {
 }
 
 const money = (n: number) => n.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
-const price = (n: number) => n.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: n % 1 ? 2 : 0, minimumFractionDigits: n % 1 ? 2 : 0 });
 const r10 = (n: number, up = false) => (n < 100 ? (up ? Math.ceil(n) : Math.floor(n)) : up ? Math.ceil(n / 10) * 10 : Math.floor(n / 10) * 10);
 const range = ([lo, hi]: [number, number]) => `${money(r10(lo))} to ${money(r10(hi, true))}`;
 const shortDate = (iso: string) => new Date(`${iso}T12:00:00Z`).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
@@ -225,7 +224,7 @@ export default function HookupPicker({ data }: { data: HookupData }) {
 
         {step === 3 && (
           <fieldset>
-            <legend className="text-lg font-extrabold text-ink mb-3">Budget for the battery and the hookup</legend>
+            <legend className="text-lg font-extrabold text-ink mb-3">Budget for the hookup: parts, electrician and permit</legend>
             <div className="grid gap-2">
               {BUDGETS.map((o) => (
                 <button
@@ -390,18 +389,14 @@ function Stat({ label, value, note }: { label: string; value: string; note: stri
 
 function MatchCard({ m, first, method }: { m: Match; first: boolean; method: Method }) {
   const { c } = m;
-  const unit = c.units === 2 ? `two at ${price((c.priceUsd - (c.hub?.usd ?? 0)) / 2)} each` : price(c.priceUsd);
   return (
     <li className={`rounded-2xl border p-4 ${first ? "border-amber-300 bg-gradient-to-br from-amber-50 to-orange-50" : "border-black/10"}`}>
       <p className="font-extrabold text-ink">
-        {c.name}{" "}
-        <span className="text-sm font-semibold text-muted whitespace-nowrap">
-          {unit} on the maker&apos;s site, {shortDate(c.retrieved)}
-        </span>
+        {c.name}
       </p>
       <p className="text-sm text-stone-700 mt-1">
         {fmtWh(m.totalWh)}
-        {m.addOns > 0 && c.addOn ? ` with ${m.addOns} ${c.addOn.model} (${price(c.addOn.usd)} each)` : ""}, {fmtW(c.acOutputW)} output
+        {m.addOns > 0 && c.addOn ? ` with ${m.addOns} ${c.addOn.model}` : ""}, {fmtW(c.acOutputW)} output
         {c.has240 ? ", 120/240 V" : ", 120 V"}
         {method !== "cords" && c.outlet ? `, connects through its ${c.outlet} outlet` : ""}. Runs your list {runFor(m.hours)}.
       </p>
@@ -410,21 +405,22 @@ function MatchCard({ m, first, method }: { m: Match; first: boolean; method: Met
           240 V comes from two units joined by the{" "}
           <PartnerLink brand={c.brand} productUrl={c.hub.url}>
             {c.hub.name}
-          </PartnerLink>{" "}
-          ({price(c.hub.usd)}, {shortDate(c.hub.retrieved)}), the maker&apos;s own way to do it.
+          </PartnerLink>
+          , the maker&apos;s own way to do it.
         </p>
       )}
       {method === "panel" && c.smartPanel && (
         <p className="text-sm text-stone-700 mt-1">
-          Panel kit: {c.smartPanel.name}, {price(c.smartPanel.usd)} ({shortDate(c.smartPanel.retrieved)}). {c.smartPanel.note}
+          Panel kit:{" "}
+          <PartnerLink brand={c.brand} productUrl={c.smartPanel.url}>
+            {c.smartPanel.name}
+          </PartnerLink>
+          . {c.smartPanel.note}
         </p>
       )}
-      <p className="text-sm text-stone-800 mt-1">
-        Battery{method === "panel" ? " and panel kit" : ""}: <strong>{price(m.equipmentUsd)}</strong>. With the hookup: about <strong>{range(m.totalUsd)}</strong>.
-      </p>
-      {(!m.reachesNeed || !m.startOk || m.overBudget) && (
+      {(!m.reachesNeed || !m.startOk) && (
         <p className="text-sm text-amber-900 mt-1">
-          {[!m.reachesNeed && (c.addOn ? "Short of the size you need, even with every add-on battery" : "Short of the size you need; no add-on battery is in stock for this setup"), !m.startOk && "Start not confirmed by the maker's specs", m.overBudget && "Over your budget"]
+          {[!m.reachesNeed && (c.addOn ? "Short of the size you need, even with every add-on battery" : "Short of the size you need; no add-on battery is in stock for this setup"), !m.startOk && "Start not confirmed by the maker's specs"]
             .filter(Boolean)
             .join(". ")}
           .
@@ -433,7 +429,7 @@ function MatchCard({ m, first, method }: { m: Match; first: boolean; method: Met
       <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1">
         <span onClick={() => track("hookup_picker_product_click", { product: c.key, method })}>
           <PartnerLink brand={c.brand} productId={c.productId} productUrl={c.url} variant="button">
-            Check price at {AFFILIATES[c.brand].name}
+            See today&apos;s price at {AFFILIATES[c.brand].name}
           </PartnerLink>
         </span>
         <span className="text-xs text-muted" data-testid="product-disclosure">

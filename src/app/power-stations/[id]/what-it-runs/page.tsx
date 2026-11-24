@@ -26,7 +26,7 @@ import {
 } from "@/lib/can-it-run";
 import { formatDate } from "@/lib/energy";
 import { OFFGRID_SOURCES } from "@/lib/offgrid";
-import { fullName, kwh, maxWh, money, productById, watts } from "@/lib/products";
+import { fullName, kwh, maxWh, productById, watts } from "@/lib/products";
 import { JsonLd, pageMetadata } from "@/lib/seo";
 
 export function generateStaticParams() {
@@ -45,7 +45,7 @@ const ANGLE: Record<(typeof CAN_IT_RUN_IDS)[number], { short: string; who: strin
   },
   "bluetti-ac180": {
     short: "AC180",
-    who: "The cheapest station here, with a bit more battery than the 1 kWh units. Its limit is starting motors: the 2,700 W figure is Bluetti's Power Lifting mode for heaters and kettles, not a motor surge.",
+    who: "The longtime best seller here, with a bit more battery than the 1 kWh units. Its limit is starting motors: the 2,700 W figure is Bluetti's Power Lifting mode for heaters and kettles, not a motor surge.",
   },
   "bluetti-elite-200-v2": {
     short: "Elite 200 V2",
@@ -69,7 +69,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const cpap = runText(p, appliance("cpap"));
   return pageMetadata({
     title: `What Can the ${fullName(p)} Run? Fridge, CPAP, Space Heater Run Times`,
-    description: `${fullName(p)} (${kwh(p.capacityWh)}, ${watts(p.acOutputW)}): runs a typical fridge ${fridge}, a CPAP ${cpap}. Run times for 15 appliances, what it cannot run, and the price checked ${formatDate(p.retrieved)}.`,
+    description: `${fullName(p)} (${kwh(p.capacityWh)}, ${watts(p.acOutputW)}): runs a typical fridge ${fridge}, a CPAP ${cpap}. Run times for 15 appliances, what it cannot run, from specs checked ${formatDate(p.retrieved)}.`,
     path: whatItRunsPath(id),
     type: "article",
   });
@@ -103,7 +103,6 @@ export default async function WhatItRunsPage({ params }: Props) {
   const angle = ANGLE[id];
   const rows = runTable(p);
   const name = fullName(p);
-  const price = p.priceUsd!;
   const checked = formatDate(p.retrieved);
   const usable = Math.round(usableWh(p));
 
@@ -154,7 +153,7 @@ export default async function WhatItRunsPage({ params }: Props) {
     },
     {
       q: `How can I make the ${name} last longer?`,
-      a: `${expanded ? `Add the ${p.addOn!.model} (${money(p.addOn!.priceUsd!)} when checked) to reach ${kwh(expanded)}, which runs a typical fridge ${runText(p, fridge, expanded)}. ` : p.notExpandable ? "It is not expandable, so the only way is to recharge it. " : ""}${p.solarInputW ? `It takes up to ${watts(p.solarInputW)} of solar, so panels can refill it during the day. ` : ""}Run only what you need, and switch the fridge on and off in shifts.`,
+      a: `${expanded ? `Add the ${p.addOn!.model} to reach ${kwh(expanded)}, which runs a typical fridge ${runText(p, fridge, expanded)}. ` : p.notExpandable ? "It is not expandable, so the only way is to recharge it. " : ""}${p.solarInputW ? `It takes up to ${watts(p.solarInputW)} of solar, so panels can refill it during the day. ` : ""}Run only what you need, and switch the fridge on and off in shifts.`,
     },
   ];
 
@@ -190,9 +189,9 @@ export default async function WhatItRunsPage({ params }: Props) {
           )}
         </p>
         <p>
-          {money(price)} on {p.brand === "anker" ? "Anker's" : "Bluetti's"} US site when we checked on {checked}.{" "}
+          Specs checked on {checked}.{" "}
           <PartnerLink brand={p.brand} productId={p.id} productUrl={p.url} category="battery" disclose>
-            Check today&apos;s price
+            See today&apos;s price at {p.brand === "anker" ? "Anker" : "Bluetti"}
           </PartnerLink>
         </p>
       </QuickAnswer>
@@ -280,7 +279,7 @@ export default async function WhatItRunsPage({ params }: Props) {
                   {fullName(sameSize)}
                 </PartnerLink>
               )}{" "}
-              ({money(sameSize.priceUsd!)}, checked {formatDate(sameSize.retrieved)}) has {kwh(sameSize.capacityWh)}
+              (checked {formatDate(sameSize.retrieved)}) has {kwh(sameSize.capacityWh)}
               {sameSize.capacityWh === p.capacityWh ? ", so every run time above is the same" : `: a fridge ${runText(sameSize, fridge)}`}. It has{" "}
               {watts(sameSize.acOutputW)} of output to the {name}&apos;s {watts(p.acOutputW)}, a {watts(sameSize.surgeW!)} surge
               {surgeIsHeatingOnly(sameSize) ? " for heating-type loads only" : ""} to the {name}&apos;s {watts(p.surgeW!)}
@@ -293,20 +292,20 @@ export default async function WhatItRunsPage({ params }: Props) {
           )}
           {smaller && (
             <li>
-              Smaller: the <Link href={whatItRunsPath(smaller.id)} className="underline text-spark-orange">{fullName(smaller)}</Link> ({money(smaller.priceUsd!)})
+              Smaller: the <Link href={whatItRunsPath(smaller.id)} className="underline text-spark-orange">{fullName(smaller)}</Link> 
               runs a fridge {runText(smaller, fridge)}{fitFor(smaller, fridge) !== fitFor(p, fridge) ? (fitFor(smaller, fridge) === "runs" ? " and its specs do cover the fridge start" : ", but its specs do not confirm the fridge start") : ""}.
             </li>
           )}
           {bigger && (
             <li>
-              Bigger: for {money(bigger.priceUsd! - price)} more, the{" "}
+              Bigger: the{" "}
               <Link href={whatItRunsPath(bigger.id)} className="underline text-spark-orange">{fullName(bigger)}</Link> runs a fridge {runText(bigger, fridge)}{" "}
               and a CPAP {runText(bigger, cpap)}{fitFor(bigger, sump) === "runs" && fitFor(p, sump) !== "runs" ? ", and its specs cover a sump pump start" : ""}.
             </li>
           )}
           {expanded && (
             <li>
-              Expanded: with the {p.addOn!.model} ({money(p.addOn!.priceUsd!)} when checked) it reaches {kwh(expanded)}: a fridge{" "}
+              Expanded: with the {p.addOn!.model} it reaches {kwh(expanded)}: a fridge{" "}
               {runText(p, fridge, expanded)}, a CPAP {runText(p, cpap, expanded)}.
             </li>
           )}
@@ -318,7 +317,7 @@ export default async function WhatItRunsPage({ params }: Props) {
         </ul>
       </Section>
 
-      <Section title={`${name} specs and price`} id="specs">
+      <Section title={`${name} specs`} id="specs">
         <dl className="grid sm:grid-cols-2 gap-x-8 gap-y-2 max-w-3xl text-sm">
           {[
             ["Capacity", kwh(p.capacityWh)],
@@ -328,7 +327,7 @@ export default async function WhatItRunsPage({ params }: Props) {
             ["Solar input", p.solarInputW ? watts(p.solarInputW) : "Not stated"],
             ["UPS switchover", p.upsMs ? `${p.upsMs} ms` : "Not stated"],
             ["Weight", p.weightLb ? `${p.weightLb} lb` : "Not stated"],
-            ["Price", `${money(price)} on ${checked}${p.listPriceUsd ? ` (regular ${money(p.listPriceUsd)})` : ""}`],
+            ["Specs checked", checked],
           ].map(([k, v]) => (
             <div key={k} className="flex justify-between gap-4 border-b border-black/8 py-1.5">
               <dt className="text-muted">{k}</dt>
@@ -363,7 +362,7 @@ export default async function WhatItRunsPage({ params }: Props) {
 
       <Sources
         items={[
-          { name: `${name} product page`, url: p.sourceUrl, detail: `specs and price, checked ${checked}` },
+          { name: `${name} product page`, url: p.sourceUrl, detail: `specs, checked ${checked}` },
           ...(sameSize ? [{ name: `${fullName(sameSize)} product page`, url: sameSize.sourceUrl, detail: `checked ${formatDate(sameSize.retrieved)}` }] : []),
           ...APPLIANCE_SOURCES.map((s) => ({ name: s.name, url: s.url, detail: s.detail })),
           OFFGRID_SOURCES.foodsafety,
@@ -376,12 +375,12 @@ export default async function WhatItRunsPage({ params }: Props) {
       <HomeBackupLinks />
       <RelatedLinks
         links={[
-          ...others.map((o) => ({ href: whatItRunsPath(o.id), label: `What the ${fullName(o)} runs`, desc: `${kwh(o.capacityWh)}, ${money(o.priceUsd!)}: a fridge ${runText(o, fridge)}` })),
+          ...others.map((o) => ({ href: whatItRunsPath(o.id), label: `What the ${fullName(o)} runs`, desc: `${kwh(o.capacityWh)}: a fridge ${runText(o, fridge)}` })),
           { href: "/power-outage-backup-calculator", label: "Power outage backup calculator", desc: "Your own appliances, your outage length" },
           { href: "/power-station-for-refrigerator", label: "Power station for a refrigerator", desc: "Hours of fridge for every model we list" },
           { href: "/best-power-station-for-cpap", label: "Best power station for CPAP", desc: "Nights of CPAP, humidifier on and off" },
           { href: "/space-heater-cost", label: "Space heater cost by state", desc: "What 1,500 W costs an hour where you live" },
-          { href: "/best-portable-power-stations", label: "Best portable power stations", desc: "Every model compared, with dated prices" },
+          { href: "/best-portable-power-stations", label: "Best portable power stations", desc: "Every model compared by spec" },
         ]}
       />
     </article>

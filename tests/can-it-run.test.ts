@@ -14,7 +14,7 @@ test("what-it-runs pages: tracked, in stock, never Nature's Generator", () => {
     assert.ok(AFFILIATES[p.brand].tracked, p.id);
     assert.notEqual(p.brand, "naturesgenerator");
     assert.ok(!p.soldOut, p.id);
-    assert.ok(p.priceUsd && p.priceUsd > 0, p.id);
+    assert.ok(!("priceUsd" in p), `${p.id} carries no price`);
   }
 });
 

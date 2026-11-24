@@ -6,12 +6,11 @@ import LocalNote from "@/components/LocalNote";
 import { useChooseState, useVisitorState } from "@/hooks/useVisitorState";
 import { NATIONAL_CHOICE } from "@/lib/visitor-state";
 import { pillClass } from "@/components/guide-ui";
-import type { BrandId } from "@/data/affiliates";
+import { AFFILIATES, type BrandId } from "@/data/affiliates";
 
 export interface ChargerChoice {
   id: string;
   label: string;
-  priceUsd: number;
   brand: BrandId | null;
   url: string;
 }
@@ -21,9 +20,10 @@ const money = (n: number) => n.toLocaleString("en-US", { style: "currency", curr
 type Extra = "longRun" | "subpanel" | "serviceUpgrade";
 
 /**
- * State + setup -> what a home charger costs, installed. The state figure is
+ * State + setup -> what installing a home charger costs. The state figure is
  * Qmerit's 2026 average installation price (EnergySage); extras are
- * EnergySage's published ranges.
+ * EnergySage's published ranges. The charger itself is not priced: the link
+ * goes to the maker's page for today's price.
  */
 export default function InstallCostCalc({
   states,
@@ -59,8 +59,8 @@ export default function InstallCostCalc({
   const keys = (Object.keys(extras) as Extra[]).filter((k) => !hasOutlet && on[k]);
   const extraLow = keys.reduce((s, k) => s + extras[k].range[0], 0);
   const extraHigh = keys.reduce((s, k) => s + extras[k].range[1], 0);
-  const low = charger.priceUsd + install + extraLow;
-  const high = charger.priceUsd + install + extraHigh;
+  const low = install + extraLow;
+  const high = install + extraHigh;
 
   return (
     <div className="rounded-3xl border border-black/10 bg-white shadow-sm overflow-hidden grid lg:grid-cols-2" data-testid="install-calc">
@@ -116,18 +116,18 @@ export default function InstallCostCalc({
             className="mt-2 block w-full rounded-lg border border-black/20 px-3 py-2 bg-white"
           >
             {chargers.map((c) => (
-              <option key={c.id} value={c.id}>{c.label} ({money(c.priceUsd)})</option>
+              <option key={c.id} value={c.id}>{c.label}</option>
             ))}
           </select>
         </label>
       </div>
       <div className="p-5 sm:p-6 bg-gradient-to-br from-amber-50 to-orange-50" aria-live="polite">
-        <p className="text-xs font-bold uppercase tracking-wide text-spark-amber">Your estimate, installed</p>
+        <p className="text-xs font-bold uppercase tracking-wide text-spark-amber">Installation estimate, before the charger</p>
         <p className="text-3xl sm:text-4xl font-extrabold text-ink mt-1 tabular-nums" data-testid="install-total">
           {low === high ? money(low) : `${money(low)} to ${money(high)}`}
         </p>
         <ul className="mt-3 space-y-1 text-sm text-stone-800">
-          <li>Charger: <strong>{money(charger.priceUsd)}</strong></li>
+          <li>Charger: not included; see today&apos;s price below</li>
           <li>
             Installation: <strong>{money(install)}</strong>{" "}
             {hasOutlet ? "(plug it into the outlet you have)" : `(${st ? st.name : "US"} average, labor and materials)`}
@@ -139,7 +139,7 @@ export default function InstallCostCalc({
         {charger.brand && (
           <div className="mt-4">
             <PartnerLink brand={charger.brand} productId={charger.id} productUrl={charger.url} className="btn btn-primary btn-sm" disclose>
-              Check the charger price
+              See today&apos;s price at {AFFILIATES[charger.brand].name}
             </PartnerLink>
           </div>
         )}

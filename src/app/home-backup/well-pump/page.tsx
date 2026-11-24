@@ -9,7 +9,7 @@ import { HubHero, OurPick, PhotoCredit } from "@/components/ui";
 import { CAN_IT_RUN_IDS, hoursText, loadPageProducts, motorStation, whatItRunsPath } from "@/lib/can-it-run";
 import { formatDate } from "@/lib/energy";
 import { OFFGRID_SOURCES, PUMP_MOTORS, fmtW, pumpFit, pumpLoad, pumpMotor, type MotorStation } from "@/lib/offgrid";
-import { fullName, money, productById } from "@/lib/products";
+import { fullName, productById } from "@/lib/products";
 import { JsonLd, pageMetadata, url } from "@/lib/seo";
 
 const PATH = "/home-backup/well-pump";
@@ -54,7 +54,7 @@ export default function WellPumpPage() {
   const ranked = stations
     .filter((s) => s.tracked)
     .map(score)
-    .sort((a, b) => b.running - a.running || b.starts - a.starts || a.s.priceUsd - b.s.priceUsd);
+    .sort((a, b) => b.running - a.running || b.starts - a.starts || a.s.usableWh - b.s.usableWh);
   const pick = productById(ranked[0].s.id);
   const pickStation = ranked[0].s;
   const pickFit = pumpFit(exLoad, pickStation);
@@ -248,14 +248,13 @@ export default function WellPumpPage() {
                 : `Its specs don't cover the full start of a ${example.hp} HP pump (${fmtW(exLoad.startTotalW)}), so ask its maker and your pump installer about a soft starter before you rely on it.`
             } About ${hoursText(pickHours).replace("about ", "")} of pumping on a full charge.`}
             life={[`${pick.volts} output`, `${(pick.capacityWh / 1000).toFixed(1)} kWh`]}
-            priceUsd={pick.priceUsd}
             brand={pick.brand}
             productId={pick.id}
             productUrl={pick.url}
             category="home"
             disclose
           />
-          <p className="text-xs text-muted mt-2">*Price on the maker&apos;s US site when we checked on {formatDate(pick.retrieved)} ({money(pick.priceUsd!)}); prices change often.</p>
+          <p className="text-xs text-muted mt-2">Specs checked on {formatDate(pick.retrieved)}. The button goes to the maker&apos;s page for today&apos;s price.</p>
         </section>
 
         <Faq items={faqs} path={PATH} />
@@ -269,7 +268,7 @@ export default function WellPumpPage() {
             ...(CAN_IT_RUN_IDS.includes(pick.id as (typeof CAN_IT_RUN_IDS)[number])
               ? [{ href: whatItRunsPath(pick.id), label: `What the ${fullName(pick)} runs`, desc: "Run times for 15 household loads" }]
               : []),
-            { href: "/best-portable-power-stations", label: "Best portable power stations", desc: "Every model we list, with dated prices" },
+            { href: "/best-portable-power-stations", label: "Best portable power stations", desc: "Every model we list, by spec" },
           ]}
         />
         <PhotoCredit name="outage" />

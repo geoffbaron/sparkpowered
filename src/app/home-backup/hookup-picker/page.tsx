@@ -46,7 +46,7 @@ export default function HookupPickerPage() {
     {
       m: "panel",
       powers: "Chosen circuits, switched and shown in the maker's app",
-      cost: `${inStockKits.map((h) => `${money(h.smartPanel!.usd)} (${productById(h.productId).model} kit)`).join(", ") || "kit price"} plus labor ${range(PARTS.switchLabor.usd)} and permit`,
+      cost: `The maker's kit (${inStockKits.map((h) => productById(h.productId).model).join(", ") || "see the maker"}; today's price on its site) plus labor ${range(PARTS.switchLabor.usd)} and permit`,
       electrician: "Yes, with a permit",
       who: "Owners buying a model the maker sells a panel kit for",
     },
@@ -63,7 +63,7 @@ export default function HookupPickerPage() {
     },
     {
       q: "Do I need 240 volts for a well pump?",
-      a: `Many well pumps are 240 V; the nameplate says. A 240 V pump needs a 120/240 V power station or two 120 V units joined by the maker's own hub (${pairs.map((h) => `${h.pair240!.name} for the ${productById(h.productId).model}, ${money(h.pair240!.usd)}`).join("; ")}), connected through a transfer switch by a licensed electrician. For a 1/3 HP pump plus a fridge, the picker's top fit today is the ${well240.matches[0] ? well240.matches[0].c.name : "none of our partners' models"}.`,
+      a: `Many well pumps are 240 V; the nameplate says. A 240 V pump needs a 120/240 V power station or two 120 V units joined by the maker's own hub (${pairs.map((h) => `${h.pair240!.name} for the ${productById(h.productId).model}`).join("; ")}), connected through a transfer switch by a licensed electrician. For a 1/3 HP pump plus a fridge, the picker's top fit today is the ${well240.matches[0] ? well240.matches[0].c.name : "none of our partners' models"}.`,
     },
     {
       q: "I rent. Can I still use a power station in an outage?",
@@ -77,11 +77,11 @@ export default function HookupPickerPage() {
 
   const productSources = [...new Set(data.candidates.map((c) => c.productId))].map((id) => {
     const p = productById(id);
-    return { name: `${fullName(p)} product page`, url: p.sourceUrl, detail: `price and specs checked ${formatDate(p.retrieved)}` };
+    return { name: `${fullName(p)} product page`, url: p.sourceUrl, detail: `specs checked ${formatDate(p.retrieved)}` };
   });
   const kitSources = MODEL_HOOKUPS.flatMap((h) => [
-    ...(h.smartPanel ? [{ name: `${h.smartPanel.name} (maker's store)`, url: h.smartPanel.url, detail: `${money(h.smartPanel.usd)}, checked ${formatDate(h.smartPanel.retrieved)}` }] : []),
-    ...(h.pair240 ? [{ name: `${h.pair240.name} (maker's store)`, url: h.pair240.url, detail: `${money(h.pair240.usd)}, ${h.pair240.outputW.toLocaleString("en-US")} W from two units, checked ${formatDate(h.pair240.retrieved)}` }] : []),
+    ...(h.smartPanel ? [{ name: `${h.smartPanel.name} (maker's store)`, url: h.smartPanel.url, detail: `checked ${formatDate(h.smartPanel.retrieved)}` }] : []),
+    ...(h.pair240 ? [{ name: `${h.pair240.name} (maker's store)`, url: h.pair240.url, detail: `${h.pair240.outputW.toLocaleString("en-US")} W from two units, checked ${formatDate(h.pair240.retrieved)}` }] : []),
   ]);
 
   return (
@@ -193,7 +193,7 @@ export default function HookupPickerPage() {
               <strong>Models:</strong> only models in stock on the maker&apos;s US site at our last check, from brands we partner with (Anker
               SOLIX, Bluetti, Growatt and ALLPOWERS). Panel methods only show models whose 30 A or larger outlet we read on the maker&apos;s page.
               For 240 V we show 120/240 V models, or two 120 V units on the maker&apos;s own hub. We have not tested these units ourselves; every
-              spec and price is from the maker&apos;s US store on the date shown.
+              spec is from the maker&apos;s US store on the date shown, and each link goes there for today&apos;s price.
             </p>
           </div>
         </Section>
@@ -201,7 +201,7 @@ export default function HookupPickerPage() {
         <Faq items={faqs} path={PATH} />
         <Disclaimer>
           General information, not electrical advice. Part and labor costs are published averages, not quotes, and vary by panel, area and
-          store. Prices change often and are from the makers&apos; US sites on the dates shown.
+          store. We don&apos;t list product prices; the links go to each maker for today&apos;s price.
         </Disclaimer>
         <Sources
           items={[
@@ -218,7 +218,7 @@ export default function HookupPickerPage() {
           links={[
             { href: "/home-backup", label: "Run your house from a portable battery", desc: "The four ways to connect one, in detail" },
             { href: "/power-outage-backup-calculator", label: "Power outage backup calculator", desc: "Size a battery for your own list and days" },
-            { href: "/best-portable-power-stations", label: "Best portable power stations", desc: "Every model we track, specs and dated prices" },
+            { href: "/best-portable-power-stations", label: "Best portable power stations", desc: "Every model we track, by spec" },
             { href: "/home-battery-backup", label: "Home battery backup", desc: "Installed whole-home batteries vs portable" },
           ]}
         />

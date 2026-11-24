@@ -7,9 +7,6 @@ import { RV_LOADS, daysOn, recommend } from "@/lib/rv-battery";
 const DAY_OPTIONS = [1, 2, 3, 4, 7];
 const SOLAR_OPTIONS = [0, 200, 400, 800];
 
-const usd = (n: number) =>
-  n.toLocaleString("en-US", { style: "currency", currency: "USD", minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: n % 1 ? 2 : 0 });
-
 function daysText(d: number) {
   if (!Number.isFinite(d)) return "indefinitely";
   if (d < 1) return `about ${Math.max(1, Math.round(d * 24))} hours`;
@@ -113,9 +110,6 @@ export default function RvBatteryPicker({ solarWhPerKwDay }: { solarWhPerKwDay: 
               )}
               <ul className="mt-3 space-y-1 text-sm text-stone-800">
                 <li>
-                  <strong>{usd(rec.totalUsd)}</strong> on Redodo&apos;s site when we checked
-                </li>
-                <li>
                   <strong>{rec.totalLb} lb</strong>, versus about {rec.leadAcidLb} lb for the {rec.leadAcidCount} lead-acid (AGM)
                   batteries it would take to match it
                 </li>
@@ -129,7 +123,7 @@ export default function RvBatteryPicker({ solarWhPerKwDay }: { solarWhPerKwDay: 
               </ul>
               <div className="mt-4">
                 <PartnerLink brand="redodo" productId={rec.battery.id} productUrl={rec.battery.url} variant="button" className="btn btn-primary">
-                  Check price on Redodo
+                  See today&apos;s price at Redodo
                 </PartnerLink>
               </div>
               <p className="text-xs text-muted mt-3">

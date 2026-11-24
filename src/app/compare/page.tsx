@@ -8,7 +8,7 @@ import { JsonLd, pageMetadata, url } from "@/lib/seo";
 const PATH = "/compare";
 const TITLE = "Portable Power Station & Home Battery Comparisons";
 const DESCRIPTION =
-  "Side-by-side comparisons of EcoFlow, Anker SOLIX, Jackery and Bluetti power stations and home batteries, using the makers' published specs and current prices.";
+  "Side-by-side comparisons of EcoFlow, Anker SOLIX, Jackery and Bluetti power stations and home batteries, using the makers' published specs, with links to each maker's page for today's price.";
 
 export const metadata: Metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH });
 

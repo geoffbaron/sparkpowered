@@ -131,9 +131,10 @@ export default function MethodologyPage() {
             does not publish a figure we show it as not stated rather than estimate it.
           </li>
           <li>
-            <strong>Battery Sizer matches</strong> are the cheapest configurations of those products that reach the
-            computed size: one unit plus the maker&apos;s own add-on batteries for plug-in systems, at listed prices; or
-            whole units for installed batteries, priced at EnergySage&apos;s average installed cost per kWh for the brand.
+            <strong>Battery Sizer matches</strong> are the closest-fitting configurations of those products that reach the
+            computed size, with the least spare capacity: one unit plus the maker&apos;s own add-on batteries for plug-in
+            systems, or whole units for installed batteries. We don&apos;t list product prices; each link goes to the maker for
+            today&apos;s price.
           </li>
           <li>
             <strong>Plug-in solar output</strong> uses the same PVWatts v8 model and NASA weather as our rooftop figures,

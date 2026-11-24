@@ -14,7 +14,7 @@ import { pageMetadata } from "@/lib/seo";
 const PATH = "/ev-charger-picker";
 const TITLE = "Which Home EV Charger Do I Need? A 1-Minute Charger Picker";
 const DESCRIPTION =
-  "Answer five quick questions (your car's plug, daily miles, your panel, plug-in or hardwired, off-peak rates) and get the charger spec you actually need, matching picks with prices, and your state's installation cost. No sign-up.";
+  "Answer five quick questions (your car's plug, daily miles, your panel, plug-in or hardwired, off-peak rates) and get the charger spec you actually need, matching picks, and your state's installation cost. No sign-up.";
 
 export const metadata: Metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH, type: "article" });
 
@@ -31,9 +31,6 @@ export default function EvChargerPickerPage() {
   const l1 = kwhDay / LEVEL1_KW;
   const mph40 = Math.round(milesPerHour(kwAt(40), typical.kwhPer100mi));
   const lj = chargerById("lectron-nexus-j1772");
-  const a40 = chargerById("autel-elite-home-40a");
-  const ej = chargerById("eviqo-l2-j1772");
-  const en = chargerById("eviqo-nacs-40a");
 
   const faqs = [
     {
@@ -93,13 +90,13 @@ export default function EvChargerPickerPage() {
             </p>
             <p>
               <strong>Which charger:</strong> we only link chargers from brands we have checked and partner with ({HOME_CHARGERS.length} models
-              from Lectron, Autel and EVIQO, prices read from their US sites on {formatDate(lj.retrieved)}). When none of them fits your answers, the
+              from Lectron, Autel and EVIQO, specs read from their US sites on {formatDate(lj.retrieved)}; the links show today&apos;s price). When none of them fits your answers, the
               picker tells you the spec to look for and links nothing. For more brands, including Grizzl-E, Emporia, ChargePoint and Tesla, see
               the <Link href="/best-home-ev-charger#compare" className="underline underline-offset-2 text-spark-orange">full comparison</Link>.
             </p>
             <p>
-              <strong>Smart scheduling:</strong> EVIQO&apos;s chargers (J1772 {money(ej.priceUsd)}, Tesla / NACS {money(en.priceUsd)}) and the
-              Autel ({money(a40.priceUsd)}) have an app that charges only in your utility&apos;s cheaper hours. We rank them by price and
+              <strong>Smart scheduling:</strong> EVIQO&apos;s chargers (J1772 and Tesla / NACS) and the
+              Autel have an app that charges only in your utility&apos;s cheaper hours. We rank them by
               spec; which brand pays us more never changes the order. <Link href="/ev-charging-cost" className="underline underline-offset-2 text-spark-orange">See what home charging costs in your state</Link>.
             </p>
           </div>
@@ -108,7 +105,7 @@ export default function EvChargerPickerPage() {
         <Faq items={faqs} path={PATH} />
         <Disclaimer>
           General information, not electrical advice. Charging speed depends on your car&apos;s built-in charger. Use a licensed electrician
-          and check local permit rules. Prices change often and are from the makers&apos; US sites on the dates shown; installation figures
+          and check local permit rules. We don&apos;t list charger prices (the links show today&apos;s); installation figures
           are averages, not quotes.
         </Disclaimer>
         <Sources
@@ -126,7 +123,7 @@ export default function EvChargerPickerPage() {
         <RelatedLinks
           links={[
             { href: "/ev-charger-installation-cost", label: "EV charger installation cost", desc: "Your state's average and what adds to it" },
-            { href: "/best-home-ev-charger", label: "Best home EV charger", desc: "Every charger compared on price and speed" },
+            { href: "/best-home-ev-charger", label: "Best home EV charger", desc: "Every charger compared on speed, plug and app" },
             { href: "/ev-charging-cost", label: "EV charging cost calculator", desc: "What charging costs in your state vs gas" },
             { href: "/questions/ev-charging", label: "Home charging questions", desc: "Breakers, dryer outlets, permits, Level 1 vs 2" },
           ]}

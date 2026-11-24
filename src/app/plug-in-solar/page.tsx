@@ -10,21 +10,20 @@ import { PLUGIN_KITS, ROOFTOP_SOLAR_COST, type PluginKit } from "@/data/products
 import { NATIONAL, SOURCES, STATES, formatDate, num, stateByAbbr, usd } from "@/lib/energy";
 import { MOUNTING_LABEL, REFERENCE_KIT_W, pluginFigures, pluginModel } from "@/lib/plugin-solar";
 import { AFFILIATES } from "@/data/affiliates";
-import { KITS_CHECKED, kitById } from "@/data/kits";
+import { kitById } from "@/data/kits";
 import { JsonLd, pageMetadata, url } from "@/lib/seo";
 import { productList, reviewedProduct } from "@/lib/structured-data";
 
 const PATH = "/plug-in-solar";
-const TITLE = "Plug-In Solar (Balcony Solar) in the US: State Laws, Kits & Payback";
+const TITLE = "Plug-In Solar (Balcony Solar) in the US: State Laws, Kits & What It Saves";
 const DESCRIPTION =
-  "Is plug-in balcony solar legal in your state? A state-by-state table of 2025-2026 laws, how much an 800 W kit really makes in every state, safety rules, and real US kits with prices.";
+  "Is plug-in balcony solar legal in your state? A state-by-state table of 2025-2026 laws, how much an 800 W kit really makes in every state, safety rules, and the real kits sold in the US.";
 
 export const metadata: Metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH, type: "article" });
 
-const perWatt = (k: PluginKit) => (k.panelW > 0 ? k.priceUsd / k.panelW : null);
 const kitName = (k: PluginKit) => `${AFFILIATES[k.brand].name} ${k.name}`;
 
-/** A real 800 W kit used as the payback example everywhere on this page. */
+/** A real 800 W kit: our pick for most people. */
 const EXAMPLE_KIT = PLUGIN_KITS.find((k) => k.id === "pluggedsolar-800w-kit")!;
 const BUDGET_KIT = PLUGIN_KITS.find((k) => k.id === "brightsaver-360w-kit")!;
 /** For states with no plug-in law yet, and for blackouts: panels that charge a battery, not the home's wiring. */
@@ -35,7 +34,6 @@ const US_PLUGIN_KWH_PER_KW = STATES.reduce((n, s) => n + pluginModel(s.abbr).til
 const usValue = (k: PluginKit) => ((US_PLUGIN_KWH_PER_KW * k.panelW) / 1000) * (NATIONAL.residentialCentsPerKwhYtd / 100);
 
 function KitCard({ k }: { k: PluginKit }) {
-  const pw = perWatt(k);
   const value = usValue(k);
   return (
     <article className="bg-surface rounded-3xl border border-black/8 p-5 sm:p-6 shadow-sm" id={`kit-${k.id}`}>
@@ -45,8 +43,7 @@ function KitCard({ k }: { k: PluginKit }) {
         <div>
           {value > 0 && (
             <p className="text-stone-800">
-              <strong className="text-leaf text-lg">Up to {usd(value)} a year</strong> off a typical US bill
-              {value > 0 ? `, paying for itself in about ${Math.round(k.priceUsd / value)} years` : ""}.
+              <strong className="text-leaf text-lg">Up to {usd(value)} a year</strong> off a typical US bill, at average electricity prices.
             </p>
           )}
           <ul className="list-disc pl-5 mt-2 text-sm text-stone-700 space-y-1">
@@ -65,12 +62,6 @@ function KitCard({ k }: { k: PluginKit }) {
               <dd className="font-medium">{k.batteryWh ? `${num(k.batteryWh)} Wh` : "None"}</dd>
               <dt className="text-muted">Certifications stated</dt>
               <dd className="font-medium">{k.certifications.join(", ")}</dd>
-              {pw && (
-                <>
-                  <dt className="text-muted">Price per watt</dt>
-                  <dd className="font-medium">{usd(pw, 2)}</dd>
-                </>
-              )}
               {k.states && (
                 <>
                   <dt className="text-muted">Sold for</dt>
@@ -81,17 +72,8 @@ function KitCard({ k }: { k: PluginKit }) {
           </details>
         </div>
         <div className="sm:text-right">
-          <div className="text-2xl font-extrabold text-ink">
-            {usd(k.priceUsd, k.priceUsd % 1 ? 2 : 0)}
-            {k.listPriceUsd && (
-              <span className="block text-xs font-normal text-muted">
-                list <s>{usd(k.listPriceUsd)}</s>
-              </span>
-            )}
-          </div>
-          <div className="text-xs text-muted mb-2">when we checked*</div>
           <PartnerLink brand={k.brand} productId={k.id} productUrl={k.url} category="solar" className="btn btn-primary btn-sm">
-            Check price
+            See today&apos;s price at {AFFILIATES[k.brand].name}
           </PartnerLink>
         </div>
       </div>
@@ -105,21 +87,21 @@ export default function PluginSolarPage() {
   const upcoming = laws.filter((l) => l.effective && l.effective > LAW_REVIEWED);
   const pending = STATE_LAWS.filter((l) => l.status === "pending");
   const ut = stateByAbbr("UT")!;
-  const utF = pluginFigures(ut, REFERENCE_KIT_W, "tilted", EXAMPLE_KIT.priceUsd);
+  const utF = pluginFigures(ut, REFERENCE_KIT_W, "tilted");
   const rows = [...STATES]
     .map((s) => ({
       s,
       law: lawFor(s.abbr),
-      tilted: pluginFigures(s, REFERENCE_KIT_W, "tilted", EXAMPLE_KIT.priceUsd),
+      tilted: pluginFigures(s, REFERENCE_KIT_W, "tilted"),
       railing: pluginFigures(s, REFERENCE_KIT_W, "vertical_s"),
       ew: pluginFigures(s, REFERENCE_KIT_W, "vertical_ew"),
     }))
     .sort((a, b) => a.s.name.localeCompare(b.s.name));
-  const byPayback = [...rows].sort((a, b) => a.tilted.paybackYears! - b.tilted.paybackYears!);
-  const best = byPayback[0];
-  const worst = byPayback[byPayback.length - 1];
+  const byValue = [...rows].sort((a, b) => b.tilted.valueYear - a.tilted.valueYear);
+  const best = byValue[0];
+  const worst = byValue[byValue.length - 1];
   const nameOf = (abbr: string) => stateByAbbr(abbr)!.name;
-  const medianRow = byPayback[Math.floor(byPayback.length / 2)];
+  const medianRow = byValue[Math.floor(byValue.length / 2)];
   const list = (xs: { abbr: string }[]) => xs.map((x) => nameOf(x.abbr)).join(", ");
 
   const faqs = [
@@ -132,8 +114,8 @@ export default function PluginSolarPage() {
       a: `Between about ${num(Math.min(...rows.map((r) => r.tilted.kwhYear)))} and ${num(Math.max(...rows.map((r) => r.tilted.kwhYear)))} kWh a year on a south-facing stand, depending on the state, in our PVWatts model on ten years of NASA weather. Hung flat on a south-facing railing it makes roughly a third less, and on an east- or west-facing railing about half as much. The average US home uses about ${num(NATIONAL.avgMonthlyKwh * 12)} kWh a year, so a kit covers a small slice of the bill.`,
     },
     {
-      q: "How long does plug-in solar take to pay for itself?",
-      a: `For an 800 W kit costing ${usd(EXAMPLE_KIT.priceUsd)}, simple payback ranges from about ${best.tilted.paybackYears!.toFixed(0)} years in ${best.s.name} to about ${worst.tilted.paybackYears!.toFixed(0)} years in ${worst.s.name} at average electricity prices, and only if you use every kWh it makes at the moment it makes it. Power your home doesn't use flows to the grid, usually for no credit, so real payback is longer unless your daytime use is steady or the kit has a battery.`,
+      q: "How much money does plug-in solar save?",
+      a: `An 800 W kit on a south-facing stand is worth up to about ${usd(best.tilted.valueYear)} a year in ${best.s.name} and about ${usd(worst.tilted.valueYear)} a year in ${worst.s.name} at average electricity prices, and only if you use every kWh it makes at the moment it makes it. Power your home doesn't use flows to the grid, usually for no credit, so real savings are lower unless your daytime use is steady or the kit has a battery. To work out how long a kit takes to pay for itself, divide today's price on the seller's site by the yearly value for your state.`,
     },
     {
       q: "Can I plug a solar panel into any outlet?",
@@ -180,7 +162,6 @@ export default function PluginSolarPage() {
                   k.panelW > 0
                     ? `Plug-in solar kit with ${k.panelW.toLocaleString("en-US")} W of panels and a ${k.inverterW.toLocaleString("en-US")} W inverter.`
                     : `Plug-in solar inverter rated at ${k.inverterW.toLocaleString("en-US")} W (no panels included).`,
-                priceUsd: k.priceUsd,
               }),
             ),
           ),
@@ -212,8 +193,8 @@ export default function PluginSolarPage() {
 
       <section aria-label="What you get" className="grid sm:grid-cols-3 gap-3">
         <BigStat tone="leaf" value={`${usd(medianRow.tilted.valueYear)}/yr`} label="Off your bill, typical state" note={`An 800 W kit on a stand in ${medianRow.s.name}, if you use what it makes`} />
-        <BigStat value={`${Math.round(medianRow.tilted.paybackYears!)} years`} label="To pay for itself" note={`The ${usd(EXAMPLE_KIT.priceUsd)} kit below; ${Math.round(best.tilted.paybackYears!)} years in ${best.s.name}`} />
-        <BigStat tone="orange" value={`From ${usd(Math.min(...PLUGIN_KITS.map((k) => k.priceUsd)))}`} label="To get started" note="Smallest kit we list, at the seller's price" />
+        <BigStat value={`${usd(best.tilted.valueYear)}/yr`} label={`Off your bill in ${best.s.name}`} note="The best state for an 800 W kit, at average electricity prices" />
+        <BigStat tone="orange" value={`${laws.length} states`} label="Allow it without utility paperwork" note={`Laws checked ${formatDate(LAW_REVIEWED)}`} />
       </section>
 
       <h2 className="sr-only">Our picks</h2>
@@ -224,7 +205,6 @@ export default function PluginSolarPage() {
           icon="sun"
           why={`800 W fits under every state's cap, the seller lists the UL 3700 plug-in safety standard, and the app shows what you're making. In a sunny state it can knock ${usd(utF.valueYear)} a year off your bill.`}
           life={[`Up to ${usd(utF.valueYear)} a year in Utah`, `Covers your fridge and Wi-Fi in daylight`, "Moves with you", "No installer"]}
-          priceUsd={EXAMPLE_KIT.priceUsd}
           brand={EXAMPLE_KIT.brand}
           productId={EXAMPLE_KIT.id}
           productUrl={EXAMPLE_KIT.url}
@@ -234,8 +214,7 @@ export default function PluginSolarPage() {
           label="Our pick on a budget"
           name={kitName(BUDGET_KIT)}
           icon="plug"
-          why="The cheapest way in, from the nonprofit behind many of the state plug-in solar laws. It only ships to states with a law, so you know it's allowed where it lands."
-          priceUsd={BUDGET_KIT.priceUsd}
+          why="A small, simple way in, from the nonprofit behind many of the state plug-in solar laws. It only ships to states with a law, so you know it's allowed where it lands."
           brand={BUDGET_KIT.brand}
           productId={BUDGET_KIT.id}
           productUrl={BUDGET_KIT.url}
@@ -249,7 +228,6 @@ export default function PluginSolarPage() {
           icon="battery"
           why={`A different kind of solar: the panel charges a ${num(STATION_KIT.batteryWh)} Wh power station and you plug things into the station, so nothing connects to your home's wiring and no utility approval is needed in any state. It keeps running in an outage, which a plug-in kit without a battery does not. It trims your bill less than a plug-in kit, because only what you plug into it runs on sun.`}
           life={["Allowed in every state", "Works in a blackout", "Phones, lights, Wi-Fi and a fridge for hours", "Moves with you"]}
-          priceUsd={STATION_KIT.priceUsd}
           brand={STATION_KIT.brand}
           productUrl={STATION_KIT.lines[0].url}
           category="solar"
@@ -257,7 +235,7 @@ export default function PluginSolarPage() {
           moreLabel="Compare power stations"
         />
       </div>
-      <p className="text-xs text-muted mt-2">*Price on the seller&apos;s site when we checked on {formatDate(EXAMPLE_KIT.retrieved)} ({STATION_KIT.name}: {formatDate(KITS_CHECKED)}).</p>
+      <p className="text-xs text-muted mt-2">We don&apos;t list prices: they change often, so each link opens the seller&apos;s page with today&apos;s price.</p>
 
       <div className="mt-8 grid gap-3">
         <MythCallout m={lite("need-whole-system")} />
@@ -276,7 +254,7 @@ export default function PluginSolarPage() {
           {[
             ["#what", "What it is"],
             ["#output", "Output by state"],
-            ["#cost", "Cost and payback"],
+            ["#cost", "Cost and savings"],
             ["#safety", "Safety"],
             ["#laws", "State laws"],
             ["#kits", "Kits you can buy"],
@@ -339,7 +317,7 @@ export default function PluginSolarPage() {
         </div>
         <div className="overflow-x-auto rounded-xl border border-black/8 bg-surface mt-6 max-h-[32rem]">
           <table className="w-full text-sm min-w-[40rem]">
-            <caption className="sr-only">Yearly output, value and payback of an 800 W plug-in solar kit by state</caption>
+            <caption className="sr-only">Yearly output and value of an 800 W plug-in solar kit by state</caption>
             <thead className="bg-surface-light text-left sticky top-0">
               <tr>
                 <th scope="col" className="p-3 font-semibold">State</th>
@@ -347,7 +325,6 @@ export default function PluginSolarPage() {
                 <th scope="col" className="p-3 font-semibold text-right">kWh/yr, south railing</th>
                 <th scope="col" className="p-3 font-semibold text-right">kWh/yr, east/west railing</th>
                 <th scope="col" className="p-3 font-semibold text-right">Value/yr (stand)</th>
-                <th scope="col" className="p-3 font-semibold text-right">Payback at {usd(EXAMPLE_KIT.priceUsd)}</th>
               </tr>
             </thead>
             <tbody>
@@ -360,7 +337,6 @@ export default function PluginSolarPage() {
                   <td className="p-3 text-right tabular-nums">{num(railing.kwhYear)}</td>
                   <td className="p-3 text-right tabular-nums">{num(ew.kwhYear)}</td>
                   <td className="p-3 text-right tabular-nums">{usd(tilted.valueYear)}</td>
-                  <td className="p-3 text-right tabular-nums">{tilted.paybackYears!.toFixed(1)} yrs</td>
                 </tr>
               ))}
             </tbody>
@@ -368,21 +344,18 @@ export default function PluginSolarPage() {
         </div>
         <p className="text-xs text-muted mt-2 max-w-3xl">
           Value multiplies output by each state&apos;s average residential price ({SOURCES.electricityPrice.period}). It
-          is an upper bound: it assumes every kWh replaces one you would have bought. Payback uses the{" "}
-          {kitName(EXAMPLE_KIT)} at {usd(EXAMPLE_KIT.priceUsd)} and ignores mounts, shipping and any rate changes.
+          is an upper bound: it assumes every kWh replaces one you would have bought. For payback, divide a kit&apos;s price
+          today by your state&apos;s yearly value.
         </p>
       </Section>
 
-      <Section title="What it costs, and how fast it pays you back" id="cost">
+      <Section title="What it costs, and what it saves" id="cost">
         <div className="text-stone-700 leading-relaxed space-y-4 max-w-3xl">
           <p>
-            Kits we found on US sellers&apos; sites cost from{" "}
-            {usd(Math.min(...PLUGIN_KITS.map((k) => perWatt(k)!)), 2)} to{" "}
-            {usd(Math.max(...PLUGIN_KITS.map((k) => perWatt(k)!)), 2)} per watt of panels. Installed rooftop solar
-            averages {usd(ROOFTOP_SOLAR_COST.perWatt, 2)} per watt nationally ({ROOFTOP_SOLAR_COST.source},{" "}
-            {ROOFTOP_SOLAR_COST.typicalSystem}), with no 30% federal credit for homeowners since the end of 2025. So
-            per watt, plug-in solar is similar or cheaper, but it is a small system: it trims a bill rather than
-            replacing it.
+            Installed rooftop solar averages {usd(ROOFTOP_SOLAR_COST.perWatt, 2)} per watt nationally
+            ({ROOFTOP_SOLAR_COST.source}, {ROOFTOP_SOLAR_COST.typicalSystem}), with no 30% federal credit for homeowners
+            since the end of 2025. To compare a plug-in kit, divide its price today by its panel watts. Either way, a
+            plug-in kit is a small system: it trims a bill rather than replacing it.
           </p>
           <p>
             <strong>The catch is self-consumption.</strong> A kit only saves money on power you use while it is
@@ -494,20 +467,20 @@ export default function PluginSolarPage() {
       <Section title="The kits you can buy in the US" id="kits">
         <div className="text-stone-700 leading-relaxed space-y-3 max-w-3xl mb-5">
           <p>
-            These are 120-volt kits listed for sale to US addresses on the seller&apos;s own website, with prices
-            checked on {formatDate(PLUGIN_KITS[0].retrieved)}. We list what each seller states about certification;
+            These are 120-volt kits listed for sale to US addresses on the seller&apos;s own website, checked on{" "}
+            {formatDate(PLUGIN_KITS[0].retrieved)}. We list what each seller states about certification;
             check that a kit meets the standard your state&apos;s law names before you buy (for example UL 3700 in Maine
             and Vermont).
           </p>
         </div>
         <div className="space-y-4">
-          {[...PLUGIN_KITS].sort((a, b) => a.priceUsd - b.priceUsd).map((k) => (
+          {[...PLUGIN_KITS].sort((a, b) => a.panelW - b.panelW || a.name.localeCompare(b.name)).map((k) => (
             <KitCard key={k.id} k={k} />
           ))}
         </div>
         <p className="text-xs text-muted mt-3 max-w-3xl">
-          *Prices from each seller&apos;s US website on {formatDate(PLUGIN_KITS[0].retrieved)}; they change often.
-          Bright Saver&apos;s price is its member price. Not listed: Anker&apos;s Solarbank, Bluetti&apos;s Balco,
+          We don&apos;t list prices: they change often, so each link opens the seller&apos;s page with today&apos;s price.
+          Not listed: Anker&apos;s Solarbank, Bluetti&apos;s Balco,
           Jackery&apos;s balcony systems and Zendure&apos;s SolarFlow 800 and 2400, which are sold in Europe but not in
           US stores; Zendure&apos;s US SolarFlow kit was sold out.
         </p>
@@ -519,7 +492,7 @@ export default function PluginSolarPage() {
             A battery stores midday surplus for the evening, which is where most of the extra savings come from. In
             Europe, all-in-one balcony batteries are common; in the US the choice is thin right now. EcoFlow&apos;s US
             store lists the STREAM microinverter, but its STREAM Ultra battery page was not available when we checked;
-            Zendure&apos;s US SolarFlow kit was sold out; and CraftStrom&apos;s 2 kW + 3 kWh set ({usd(8199)}) has more
+            Zendure&apos;s US SolarFlow kit was sold out; and CraftStrom&apos;s 2 kW + 3 kWh set has more
             panel power than any state&apos;s cap allows.
           </p>
           <p>
@@ -541,7 +514,7 @@ export default function PluginSolarPage() {
       <Faq items={faqs} path={PATH} />
       <Disclaimer>
         This is a summary of state laws and seller claims, not legal or electrical advice. Laws, utility rules and
-        prices change; read the linked law, ask your utility, and follow the kit maker&apos;s instructions.
+        products change; read the linked law, ask your utility, and follow the kit maker&apos;s instructions.
       </Disclaimer>
       <Sources
         items={[

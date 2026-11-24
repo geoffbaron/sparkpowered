@@ -119,7 +119,7 @@ export async function ask(body: unknown, visitor: string, deps: Deps): Promise<A
     pages: SITE_PAGES,
     product: (id) => {
       const p = catalogById(id);
-      return p && { id: p.id, name: p.name, href: p.href, priceText: p.priceText };
+      return p && { id: p.id, name: p.name, href: p.href };
     },
     commissionNote: COMMISSION_NOTE,
   });

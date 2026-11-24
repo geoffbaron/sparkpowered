@@ -4,27 +4,22 @@
  * beyond formatting.
  */
 
-import { PartnerLink } from "@/components/affiliate";
+import { PartnerLink, PriceLink } from "@/components/affiliate";
 import { formatDate } from "@/lib/energy";
 import { lifeSummary } from "@/lib/everyday";
 import { JsonLd } from "@/lib/seo";
 import { productList, reviewedProduct } from "@/lib/structured-data";
-import { brandName, fullName, kwh, maxWh, money, perKwh, watts } from "@/lib/products";
+import { brandName, fullName, kwh, maxWh, watts } from "@/lib/products";
 import type { Product } from "@/data/products";
 
 const dash = <span className="text-muted">—</span>;
 
+/** "See today's price at <maker>" for a product (we show no prices). */
 export function PriceCell({ p }: { p: Product }) {
-  if (p.priceUsd == null) return <span className="text-muted">{p.priceNote ?? "Quote only"}</span>;
   return (
     <span className="whitespace-nowrap">
-      <strong>{money(p.priceUsd)}</strong>
+      <PriceLink brand={p.brand} productId={p.id} productUrl={p.url} className="font-semibold underline underline-offset-2 text-spark-orange" store={brandSite(p)} />
       {p.soldOut && <span className="block text-xs text-muted">sold out when we checked</span>}
-      {p.listPriceUsd && p.listPriceUsd > p.priceUsd && (
-        <span className="block text-xs text-muted">
-          list <s>{money(p.listPriceUsd)}</s>
-        </span>
-      )}
     </span>
   );
 }
@@ -46,13 +41,11 @@ export function SpecTable({ products, caption }: { products: Product[]; caption:
             <th scope="col" className="p-3 font-semibold text-right">Expands to</th>
             <th scope="col" className="p-3 font-semibold text-right">Solar input</th>
             <th scope="col" className="p-3 font-semibold text-right">Warranty</th>
-            <th scope="col" className="p-3 font-semibold text-right">Price*</th>
-            <th scope="col" className="p-3 font-semibold text-right">$/kWh</th>
+            <th scope="col" className="p-3 font-semibold text-right">Price</th>
           </tr>
         </thead>
         <tbody>
           {products.map((p) => {
-            const ppk = perKwh(p);
             return (
               <tr key={p.id} className="border-t border-black/6 align-top">
                 <th scope="row" className="p-3 font-medium sticky left-0 bg-surface">
@@ -69,7 +62,6 @@ export function SpecTable({ products, caption }: { products: Product[]; caption:
                 <td className="p-3 text-right tabular-nums">{p.solarInputW ? watts(p.solarInputW) : dash}</td>
                 <td className="p-3 text-right tabular-nums">{p.warrantyYears ? `${p.warrantyYears} yr` : dash}</td>
                 <td className="p-3 text-right tabular-nums"><PriceCell p={p} /></td>
-                <td className="p-3 text-right tabular-nums">{ppk ? money(Math.round(ppk)) : dash}</td>
               </tr>
             );
           })}
@@ -105,7 +97,7 @@ export function SpecList({ p }: { p: Product }) {
   );
 }
 
-/** A "best for" pick: everyday outcome first, then why, price and the outbound link; specs tucked into an expander. */
+/** A "best for" pick: everyday outcome first, then why and the outbound link; specs tucked into an expander. */
 export function PickCard({ p, label, why }: { p: Product; label: string; why: string }) {
   const life = lifeSummary(p.capacityWh);
   const outcomes = [
@@ -130,10 +122,10 @@ export function PickCard({ p, label, why }: { p: Product; label: string; why: st
       </ul>
       <p className="text-stone-700 leading-relaxed mb-4">{why}</p>
       <div className="flex flex-wrap items-center gap-4">
-        <div className="text-2xl font-extrabold text-ink"><PriceCell p={p} /></div>
         <PartnerLink brand={p.brand} productId={p.id} productUrl={p.url} category="battery" className="btn btn-primary">
-          Check price at {brandSite(p)}
+          See today&apos;s price at {brandSite(p)}
         </PartnerLink>
+        {p.soldOut && <span className="text-sm text-muted">Sold out when we checked</span>}
       </div>
       <details className="mt-4">
         <summary className="cursor-pointer text-sm font-semibold text-spark-orange">Specs</summary>
@@ -151,14 +143,15 @@ export function PriceFootnote({ products }: { products: Product[] }) {
   const dates = [...new Set(products.map((p) => p.retrieved))].sort();
   return (
     <p className="text-xs text-muted mt-3 max-w-3xl">
-      *Prices and specifications are from each manufacturer&apos;s US website, checked{" "}
+      Specifications are from each manufacturer&apos;s US website, checked{" "}
       {dates.map((d, i) => (
         <span key={d}>
           {i > 0 ? ", " : ""}
           <time dateTime={d}>{formatDate(d)}</time>
         </span>
       ))}
-      . Prices change often, sometimes daily during sales; the seller&apos;s page is the final word. Cycle ratings
+      . We don&apos;t list prices: they change often, sometimes daily during sales, so each link goes to the seller&apos;s own page for
+      today&apos;s price. Cycle ratings
       are the maker&apos;s own figures, measured to different end points, so treat them as rough guides.
     </p>
   );
@@ -179,7 +172,6 @@ export function productJson(p: Product, pagePath: string, reviewDate?: string) {
     pagePath,
     reviewDate,
     description: `${fullName(p)} is a ${kwh(p.capacityWh)} ${kind} with ${watts(p.acOutputW)} of continuous AC output.`,
-    priceUsd: p.soldOut ? null : p.priceUsd,
     extra: {
       category: p.category === "home" ? "Home battery" : "Portable power station",
       additionalProperty: [

@@ -35,20 +35,11 @@ export interface CatalogProduct {
   brand: BrandId;
   /** One line of facts for the model (capacity, output, use). */
   facts: string;
-  /** Price exactly as the site shows it, with the date it was read; null = show no price. */
-  priceText: string | null;
   /** Tracked partner link (rel="sponsored"). */
   href: string;
   /** Spark Powered page that covers it. */
   page: string;
 }
-
-const checked = (iso: string) => {
-  const d = new Date(`${iso}T12:00:00Z`);
-  return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
-};
-const priceText = (usd: number | null | undefined, brand: BrandId, iso: string) =>
-  usd ? `${money(usd)} on ${AFFILIATES[brand].name}'s US site (checked ${checked(iso)})` : null;
 
 /** Only brands whose links carry our affiliate tracking: the commission note is then true. */
 const isTracked = (brand: BrandId | undefined): brand is BrandId => !!brand && AFFILIATES[brand].tracked;
@@ -72,7 +63,6 @@ function buildCatalog(): CatalogProduct[] {
       name: `${AFFILIATES[p.brand].name} ${p.model}`,
       brand: p.brand,
       facts: `${p.category === "home" ? "whole-home battery" : "portable power station"}, ${p.capacityWh.toLocaleString("en-US")} Wh, ${p.acOutputW.toLocaleString("en-US")} W AC output${p.maxCapacityWh ? `, expandable to ${p.maxCapacityWh.toLocaleString("en-US")} Wh` : ""}${p.chemistry ? `, ${p.chemistry}` : ""}${p.weightLb ? `, ${p.weightLb} lb` : ""}`,
-      priceText: priceText(p.priceUsd, p.brand, p.retrieved),
       href,
       page: p.category === "home" ? "/home-battery-backup" : "/best-portable-power-stations",
     });
@@ -87,7 +77,6 @@ function buildCatalog(): CatalogProduct[] {
       name: `${AFFILIATES[c.brand].name} ${c.name}`,
       brand: c.brand,
       facts: `home EV charger, ${c.level}, ${c.plug} plug, ${c.amps} A, ${c.outlet}${c.milesPerHour ? `, up to ${c.milesPerHour} miles of range an hour (maker's figure)` : ""}`,
-      priceText: priceText(c.priceUsd, c.brand, c.retrieved),
       href,
       page: "/best-home-ev-charger",
     });
@@ -102,7 +91,6 @@ function buildCatalog(): CatalogProduct[] {
       name: `${AFFILIATES[b.brand].name} ${b.short}`,
       brand: b.brand,
       facts: `${b.volts} V LiFePO4 battery, ${b.ampHours} Ah (${b.energyWh.toLocaleString("en-US")} Wh), ${b.weightLb} lb, uses: ${b.uses.join(", ")}${b.selfHeating ? ", self-heating" : ""}`,
-      priceText: priceText(b.priceUsd, b.brand, b.retrieved),
       href,
       page: b.uses.includes("trolling") ? "/best-trolling-motor-battery" : "/lithium-rv-battery",
     });
@@ -117,7 +105,6 @@ function buildCatalog(): CatalogProduct[] {
       name: o.name,
       brand: o.brand,
       facts: `12 V LiFePO4 battery, ${o.energyWh.toLocaleString("en-US")} Wh${o.weightLb ? `, ${o.weightLb} lb` : ""}`,
-      priceText: priceText(o.priceUsd, o.brand, o.retrieved),
       href,
       page: "/lithium-rv-battery",
     });

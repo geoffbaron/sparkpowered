@@ -7,15 +7,13 @@ import LithiumAgmCalc from "@/components/LithiumAgmCalc";
 import { BigStat, HubHero, PhotoCredit } from "@/components/ui";
 import { BATTERIES, BATTERY_FACTS, LEAD_ACID_REF, OTHER_LITHIUM } from "@/data/batteries";
 import { formatDate } from "@/lib/energy";
-import { money } from "@/lib/products";
-import { leadAcidUsableWh, lifetimeCost, lifetimeKwh } from "@/lib/rv-battery";
+import { leadAcidUsableWh, lifetimeCompare, lifetimeKwh } from "@/lib/rv-battery";
 import { pageMetadata } from "@/lib/seo";
-import { RedodoDeal } from "@/components/RedodoDeal";
 
 const PATH = "/lithium-vs-agm-battery";
-const TITLE = "100Ah Lithium vs AGM: Which Costs Less per Year? (2026 Prices)";
+const TITLE = "100Ah Lithium vs AGM: Usable Power, Weight and Years of Life (2026)";
 const DESCRIPTION =
-  "A 100Ah lithium battery gives as much usable power as 200Ah of AGM, at a third of the weight. What each costs per year of use, with today's prices and a calculator for how often you camp, fish or boondock.";
+  "A 100Ah lithium battery gives as much usable power as 200Ah of AGM, at a third of the weight. How many sets of AGMs it outlasts, with a calculator for how often you camp, fish or boondock.";
 
 export const metadata: Metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH, type: "article" });
 
@@ -24,16 +22,14 @@ export default function LithiumVsAgmPage() {
   const la = LEAD_ACID_REF;
   const laUsable = leadAcidUsableWh();
   const life = lifetimeKwh();
-  const at100 = lifetimeCost(100);
+  const at100 = lifetimeCompare(100);
   const [litime, battleBorn] = OTHER_LITHIUM;
 
   const rows: [string, string, string][] = [
-    ["Price when we checked", money(li.priceUsd), money(la.priceUsd)],
     ["Power you can use", `${li.energyWh.toLocaleString("en-US")} Wh (all of it)`, `${laUsable} Wh (run to 50%)`],
     ["Weight", `${li.weightLb} lb`, `${la.weightLb} lb`],
     ["Rated cycles", `${li.cycles.toLocaleString("en-US")} at 100% depth`, `${la.cycles} at 50% depth`],
     ["Energy over its life", `${Math.round(life.lithium).toLocaleString("en-US")} kWh`, `${Math.round(life.leadAcid).toLocaleString("en-US")} kWh`],
-    ["Cost per kWh delivered over its life", `${((li.priceUsd / life.lithium) * 100).toFixed(0)}¢`, `${((la.priceUsd / life.leadAcid) * 100).toFixed(0)}¢`],
     ["Warranty", `${li.warrantyYears} years`, la.warrantyNote],
     ["Charging below freezing", "Not without a self-heating model", "Yes, slowly"],
     ["Engine starting", "No (deep-cycle only)", "Some AGMs are dual-purpose"],
@@ -46,7 +42,7 @@ export default function LithiumVsAgmPage() {
     },
     {
       q: "Is lithium worth the extra cost over AGM?",
-      a: `If you use the battery regularly, yes. One Redodo 12V 100Ah cost ${money(li.priceUsd)} and two Renogy 100Ah AGMs ${money(la.priceUsd * 2)} when we checked. At 100 uses a year the lithium works out to about ${money(Math.round(at100.lithium.perYear))} a year and the AGMs ${money(Math.round(at100.leadAcid.perYear))}, because the lithium is rated for 4,000 full cycles against 500 half cycles. If half of one AGM's capacity is all you ever need, a single AGM is about ${money(Math.round(li.priceUsd - la.priceUsd))} cheaper up front.`,
+      a: `If you use the battery regularly, usually yes. One 100Ah lithium does the work of two 100Ah AGMs, and it is rated for ${li.cycles.toLocaleString("en-US")} full cycles against ${la.cycles} half cycles. At 100 uses a year the two AGMs wear out in about ${at100.leadAcid.years.toFixed(1)} years and the lithium lasts about ${at100.lithium.years.toFixed(0)}, so you would buy ${at100.leadAcid.sets} sets of AGMs over its life. Compare today's price of one lithium with that many pairs of AGMs. If half of one AGM's capacity is all you ever need, a single AGM costs less up front.`,
     },
     {
       q: "Can I replace my AGM battery with lithium?",
@@ -54,7 +50,7 @@ export default function LithiumVsAgmPage() {
     },
     {
       q: "Why are some lithium batteries so much more expensive?",
-      a: `Brand, warranty and where they are built. Battle Born's 100Ah (${money(battleBorn.priceUsd)}) is assembled in the USA with a 10-year warranty; LiTime's (${money(litime.priceUsd)}) and Redodo's (${money(li.priceUsd)}) carry 5-year warranties and the same 4,000-cycle rating where stated. Energy per battery is the same 1,280 Wh.`,
+      a: "Brand, warranty and where they are built. Battle Born's 100Ah is assembled in the USA with a 10-year warranty; LiTime's and Redodo's carry 5-year warranties and the same 4,000-cycle rating where stated. Energy per battery is the same 1,280 Wh.",
     },
     {
       q: "Does lithium work in cold weather?",
@@ -71,15 +67,15 @@ export default function LithiumVsAgmPage() {
           { name: "Lithium vs AGM", path: PATH },
         ]}
         eyebrow="Lithium vs AGM"
-        title={<>One lithium battery. <span className="text-amber-300">The work of two AGMs, for less per year.</span></>}
+        title={<>One lithium battery. <span className="text-amber-300">The work of two AGMs, for years longer.</span></>}
         sub={
           <>
-            A {money(li.priceUsd)} 100Ah lithium gives the usable power of two {money(la.priceUsd)} AGM batteries, weighs{" "}
+            One 100Ah lithium gives the usable power of two 100Ah AGM batteries, weighs{" "}
             {Math.round(la.weightLb * 2 - li.weightLb)} lb less than the pair, and lasts years longer. Here is the math for how you use it.
           </>
         }
       >
-        <a href="#calc" className="btn btn-primary">Work out my cost</a>
+        <a href="#calc" className="btn btn-primary">Work out how long each lasts</a>
         <a href="#table" className="btn btn-light">Side by side</a>
       </HubHero>
 
@@ -89,18 +85,15 @@ export default function LithiumVsAgmPage() {
         <QuickAnswer>
           <p>
             <strong>Use the battery more than a few weekends a year? Lithium.</strong> A{" "}
-            <PartnerLink brand="redodo" productId={li.id} productUrl={li.url}>Redodo 12V 100Ah</PartnerLink> ({money(li.priceUsd)} when we
-            checked) costs about {money(Math.round(at100.lithium.perYear))} a year at 100 uses, against{" "}
-            {money(Math.round(at100.leadAcid.perYear))} for the two AGMs that match it, and weighs {li.weightLb} lb instead of{" "}
-            {Math.round(la.weightLb * 2)}.
+            <PartnerLink brand="redodo" productId={li.id} productUrl={li.url}>Redodo 12V 100Ah</PartnerLink> lasts about{" "}
+            {at100.lithium.years.toFixed(0)} years at 100 uses a year; the two AGMs that match it wear out in about{" "}
+            {at100.leadAcid.years.toFixed(1)}. It weighs {li.weightLb} lb instead of {Math.round(la.weightLb * 2)}.
           </p>
           <p>
-            <strong>Need only a little power, or charge below freezing without a heater?</strong> A single AGM is{" "}
-            {money(li.priceUsd - la.priceUsd)} cheaper up front and charges in the cold, if half of its 100Ah is enough for you.
+            <strong>Need only a little power, or charge below freezing without a heater?</strong> A single AGM costs
+            less up front and charges in the cold, if half of its 100Ah is enough for you.
           </p>
         </QuickAnswer>
-
-        <RedodoDeal className="mt-4" product={{ name: "Redodo 12V 100Ah", url: li.url }} />
 
         <section aria-label="Key numbers" className="grid sm:grid-cols-3 gap-3 mt-8">
           <BigStat tone="leaf" value="2x" label="The power you can use" note={`${li.energyWh.toLocaleString("en-US")} Wh vs ${laUsable} Wh`} />
@@ -109,7 +102,7 @@ export default function LithiumVsAgmPage() {
         </section>
 
         <section id="calc" className="mt-12 scroll-mt-24" aria-labelledby="calc-heading">
-          <h2 id="calc-heading" className="text-2xl font-extrabold text-ink mb-2">What it costs you per year</h2>
+          <h2 id="calc-heading" className="text-2xl font-extrabold text-ink mb-2">How many AGMs one lithium outlasts</h2>
           <p className="text-stone-700 mb-4 max-w-3xl">
             Move the slider to how many days a year you run the battery down (a night in the RV, a day on the water).
           </p>
@@ -146,11 +139,12 @@ export default function LithiumVsAgmPage() {
             </table>
           </div>
           <p className="text-xs text-muted mt-2 max-w-3xl">
-            Prices and specs from Redodo&apos;s and Renogy&apos;s US product pages, checked {formatDate(li.retrieved)}. Redodo links are
+            Specs from Redodo&apos;s and Renogy&apos;s US product pages, checked {formatDate(li.retrieved)}. Redodo links are
             sponsored; Renogy is a plain link. Other 100Ah lithium batteries:{" "}
-            <PartnerLink brand="litime" productId={litime.id} productUrl={litime.url}>{litime.name}</PartnerLink> {money(litime.priceUsd)} (checked{" "}
+            <PartnerLink brand="litime" productId={litime.id} productUrl={litime.url}>{litime.name}</PartnerLink> (checked{" "}
             {formatDate(litime.retrieved)}, sponsored link),{" "}
-            <PlainLink href={battleBorn.url}>{battleBorn.name}</PlainLink> {money(battleBorn.priceUsd)} (checked {formatDate(battleBorn.retrieved)}).
+            <PlainLink href={battleBorn.url}>{battleBorn.name}</PlainLink> (checked {formatDate(battleBorn.retrieved)}). We don&apos;t list
+            prices; the links go to each maker&apos;s page for today&apos;s price.
           </p>
         </Section>
 
@@ -176,7 +170,7 @@ export default function LithiumVsAgmPage() {
 
         <Faq items={faqs} path={PATH} />
         <Disclaimer>
-          Cycle ratings are the makers&apos; own figures and real life depends on heat, charging and depth of use. Prices change often.
+          Cycle ratings are the makers&apos; own figures and real life depends on heat, charging and depth of use.
           Have a qualified technician check your charging system when you change battery type.
         </Disclaimer>
         <Sources

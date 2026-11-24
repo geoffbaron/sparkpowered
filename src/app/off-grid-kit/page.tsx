@@ -14,13 +14,13 @@ import { decemberPerKwDay, fmtKwh, fmtWh, offGridStates, relatedFor, sourcesFor,
 import { EXAMPLE_GENERATOR, KIT_BATTERY_DAYS, KIT_DAYS, buildKit, homePreset, kitProductIds, kitSystemIds, presetKits } from "@/lib/offgrid-kit";
 import { GOAL_DAYS, PREP_SOURCES as P } from "@/lib/prep";
 import { COOK_MINUTES_PER_PERSON, EXAMPLE_STOVE, FIRST_AID_KITS, LIGHT_COMMS, MEDICAL_HYGIENE, STAPLES, SURVIVAL_READ, SURVIVAL_SOURCES as SV, fdcUrl } from "@/lib/survival-kit";
-import { money, productById } from "@/lib/products";
+import { productById } from "@/lib/products";
 import { JsonLd, pageMetadata, url } from "@/lib/seo";
 
 const PATH = "/off-grid-kit";
 const TITLE = "90-Day Survival Kit: Power, Water, Food and Garden by Home Size";
 const DESCRIPTION =
-  "A complete 90-day household survival kit by home size and state: power sized on December sun with dated prices, generator and stove fuel, water and bleach, pounds of rice, beans and oats, a seed list with honest harvest times, a cold frame or greenhouse, first aid and a printable checklist.";
+  "A complete 90-day household survival kit by home size and state: power sized on December sun, generator and stove fuel, water and bleach, pounds of rice, beans and oats, a seed list with honest harvest times, a cold frame or greenhouse, first aid and a printable checklist.";
 
 export const metadata: Metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH });
 
@@ -32,7 +32,7 @@ export default function OffGridKitPage() {
   const kits = presetKits(dec);
   const [small, medium, large] = kits;
 
-  // Every station the builder can show for a preset in any state, for price dates and sources.
+  // Every station the builder can show for a preset in any state, for spec dates and sources.
   const ids = new Set<string>();
   for (const s of STATES)
     for (const k of presetKits(decemberPerKwDay(s))) for (const id of kitProductIds(k)) ids.add(id);
@@ -51,7 +51,7 @@ export default function OffGridKitPage() {
 
   const pkgLine = (k: (typeof kits)[number]) =>
     k.power
-      ? `${k.power.match.option.name}${k.power.match.addOns ? ` with ${k.power.match.addOns} ${k.power.system ? "extra" : "expansion"} batter${k.power.match.addOns === 1 ? "y" : "ies"}` : ""} (${fmtKwh(k.power.match.totalWh)}) and ${k.power.panels} × ${k.power.panelWatts} W panels${k.power.system ? " in the box" : ""}, ${money(k.power.priceUsd)} for the power items, plus about ${n0(k.generator.gallons)} gallons of generator fuel`
+      ? `${k.power.match.option.name}${k.power.match.addOns ? ` with ${k.power.match.addOns} ${k.power.system ? "extra" : "expansion"} batter${k.power.match.addOns === 1 ? "y" : "ies"}` : ""} (${fmtKwh(k.power.match.totalWh)}) and ${k.power.panels} × ${k.power.panelWatts} W panels${k.power.system ? " in the box" : ""}, plus about ${n0(k.generator.gallons)} gallons of generator fuel`
       : "no power station we track";
 
   const ms = medium.supplies;
@@ -169,10 +169,10 @@ export default function OffGridKitPage() {
               <Link href="/off-grid-solar-calculator" className="underline">off-grid solar calculator</Link> (EIA for fridges and freezers, the
               Eugene Water &amp; Electric Board&apos;s sheet for motors). The battery holds {KIT_BATTERY_DAYS} days of that with no sun; the panels
               are sized to replace a day&apos;s use in December, the darkest month, from NREL&apos;s PVWatts model for your state, up to what the
-              station accepts. We then pick the cheapest in-stock station from a brand we link to that holds the battery size and runs everything
-              you ticked at once. When no power station we track holds it, we pick the cheapest complete off-grid system that does, adding the
+              station accepts. We then pick the smallest in-stock station from a brand we link to that holds the battery size and runs everything
+              you ticked at once. When no power station we track holds it, we pick the smallest complete off-grid system that does, adding the
               maker&apos;s own extra battery modules, with the panels that come in its box. A system like that is installed by a licensed
-              electrician; its cost is not in our total.
+              electrician.
             </p>
             <p>
               <strong>Generator.</strong> Whatever the panels miss on an average December day, plus the storm days you choose, comes from a
@@ -373,7 +373,7 @@ export default function OffGridKitPage() {
               cold-state winter it needs heat sized to the plants (NC State), which means fuel or power this kit does not carry. In cold states,
               think of winter covers as a way to hold and slowly pick hardy greens planted in late summer, not as a way to start food in December.
             </p>
-            <p>We have not priced these; build or buy what suits your space.</p>
+            <p>We don&apos;t pick one for you; build or buy what suits your space.</p>
           </div>
         </Section>
 
@@ -391,10 +391,10 @@ export default function OffGridKitPage() {
             <p>
               <strong>A ready-made first aid kit.</strong> For a household, the{" "}
               <PartnerLink brand="survivex" productUrl={FIRST_AID_KITS.household.url}>{FIRST_AID_KITS.household.name}</PartnerLink>{" "}
-              has {FIRST_AID_KITS.household.supplies} supplies, including wound-closure strips, for {money(FIRST_AID_KITS.household.priceUsd)}{" "}on
-              SurviveX&apos;s site ({formatDate(FIRST_AID_KITS.checked)}; list {money(FIRST_AID_KITS.household.listUsd)}). For 1-2 people, their{" "}
+              has {FIRST_AID_KITS.household.supplies} supplies, including wound-closure strips (checked on
+              SurviveX&apos;s site {formatDate(FIRST_AID_KITS.checked)}). For 1-2 people, their{" "}
               <PartnerLink brand="survivex" productUrl={FIRST_AID_KITS.small.url}>{FIRST_AID_KITS.small.name}</PartnerLink>{" "}
-              has {FIRST_AID_KITS.small.supplies} supplies for {money(FIRST_AID_KITS.small.priceUsd)}. A kit only helps if someone knows how to
+              has {FIRST_AID_KITS.small.supplies} supplies. A kit only helps if someone knows how to
               use it: a first aid class from the Red Cross or a local hospital is worth more than any extra item, and add each person&apos;s own
               medicines and anything their doctor recommends.
             </p>
@@ -412,8 +412,8 @@ export default function OffGridKitPage() {
         </p>
         <Faq items={faqs} path={PATH} />
         <Disclaimer>
-          Estimates only. Real needs depend on your appliances, home, site, shade, snow and weather. Prices and specifications are copied from
-          makers&apos; US websites on the dates shown and change often. Wired-in loads such as a well pump need a transfer switch installed by a
+          Estimates only. Real needs depend on your appliances, home, site, shade, snow and weather. Specifications are copied from
+          makers&apos; US websites on the dates shown. Wired-in loads such as a well pump need a transfer switch installed by a
           licensed electrician. Food, medicine and sanitation notes follow USDA, CDC, EPA and Ready.gov guidance and are not medical advice.
         </Disclaimer>
         <Sources

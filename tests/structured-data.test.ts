@@ -63,7 +63,7 @@ test("generated product markup is complete for every product we list", () => {
   for (const b of BOAT_BATTERIES) checkTree(batteryProduct(b, "/fish-finder-battery"), b.id);
   for (const b of BATTERIES) checkTree(batteryProduct({ ...b, name: `Redodo ${b.model}`, maker: "Redodo" }, "/best-trolling-motor-battery"), b.id);
   for (const k of PLUGIN_KITS)
-    checkTree(reviewedProduct({ name: k.name, brand: k.brand, url: k.url, pagePath: "/plug-in-solar", description: "x", priceUsd: k.priceUsd }), k.id);
+    checkTree(reviewedProduct({ name: k.name, brand: k.brand, url: k.url, pagePath: "/plug-in-solar", description: "x" }), k.id);
 });
 
 test("Product markup is only built through src/lib/structured-data.ts", () => {

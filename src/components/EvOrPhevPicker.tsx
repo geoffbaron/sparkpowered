@@ -30,7 +30,7 @@ interface Props {
   gasCarMpg: number;
 }
 
-/** Home chargers we recommend, cheapest first, for the "charge at home" next step. */
+/** Home chargers we recommend, for the "charge at home" next step. */
 const HOME_PICKS = ["eviqo-l2-j1772", "lectron-nexus-j1772", "autel-elite-home-40a"].map(chargerById);
 
 const fmt = (n: number) =>
@@ -283,7 +283,8 @@ export default function EvOrPhevPicker({
                     {brandName(c)} {c.name}
                   </PartnerLink>
                   <span className="block text-muted mt-0.5">
-                    ${c.priceUsd.toLocaleString("en-US", { maximumFractionDigits: 0 })} when we checked, {c.amps} A, {c.plug} plug
+                    {c.amps} A, {c.plug} plug ·{" "}
+                    <PartnerLink brand={c.brand} productId={c.id} productUrl={c.url}>today&apos;s price</PartnerLink>
                   </span>
                 </li>
               ))}

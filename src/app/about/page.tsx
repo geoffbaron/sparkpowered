@@ -71,9 +71,9 @@ export default function AboutPage() {
       <Section title="How we use automation and AI">
         <p className="text-stone-700 leading-relaxed">
           The vehicle list in the EV Finder and the product list in the Home Battery Sizer are refreshed by an
-          automated research step that uses an AI model with web search to collect current prices and
-          specifications. Those lists can contain errors or go out of date, so we label prices as indicative,
-          show EPA-rated range alongside the EV results where we can match a model, and tell you to confirm
+          automated research step that uses an AI model with web search to collect specifications. Those
+          lists can contain errors or go out of date, so we show no prices (each link goes to the maker for
+          today&apos;s price), show EPA-rated range alongside the EV results where we can match a model, and tell you to confirm
           details with the manufacturer. Our state data pages and calculators do not use AI-generated numbers;
           they are computed directly from the government datasets above.
         </p>

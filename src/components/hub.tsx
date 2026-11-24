@@ -89,7 +89,6 @@ export function HubLanding({ hub, extra }: { hub: Hub; extra?: React.ReactNode }
                 name={fullName(pick)}
                 why={hub.pick!.why}
                 life={[`Fridge, Wi-Fi and lights: ${pickLife!.essentials}`, `Fridge alone: ${pickLife!.fridge}`]}
-                priceUsd={pick.priceUsd}
                 brand={pick.brand}
                 productId={pick.id}
                 productUrl={pick.url}
@@ -98,7 +97,7 @@ export function HubLanding({ hub, extra }: { hub: Hub; extra?: React.ReactNode }
                 moreHref="/best-portable-power-stations"
                 moreLabel="Compare every pick"
               />
-              <p className="text-xs text-muted mt-2">*Price on the maker&apos;s US site when we checked on {formatDate(pick.retrieved)}; prices change often.</p>
+              <p className="text-xs text-muted mt-2">Specs checked on {formatDate(pick.retrieved)}. The button goes to the maker&apos;s page for today&apos;s price.</p>
             </div>
           </section>
         )}

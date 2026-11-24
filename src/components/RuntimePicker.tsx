@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { PartnerLink } from "@/components/affiliate";
 import { PlainLink, pillClass } from "@/components/guide-ui";
-import type { BrandId } from "@/data/affiliates";
+import { AFFILIATES, type BrandId } from "@/data/affiliates";
 import { COOLER_WH_DAY, CPAP_NO_HUMIDIFIER_W, FRIDGE_KWH_YEAR, LOADS, USABLE_FRACTION } from "@/lib/everyday";
 
 export interface RuntimeOption {
@@ -12,14 +12,10 @@ export interface RuntimeOption {
   /** Partner brand id when the link should be tracked; null for a plain link. */
   brand: BrandId | null;
   capacityWh: number;
-  priceUsd: number;
   url: string;
   note?: string;
 }
 
-
-const money = (n: number) =>
-  n.toLocaleString("en-US", { style: "currency", currency: "USD", minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: n % 1 ? 2 : 0 });
 
 function hoursText(h: number) {
   if (h < 36) return `${Math.round(h)} hours`;
@@ -30,11 +26,11 @@ function hoursText(h: number) {
 function BuyLink({ o }: { o: RuntimeOption }) {
   return o.brand ? (
     <PartnerLink brand={o.brand} productId={o.id} productUrl={o.url} className="btn btn-primary btn-sm">
-      Check price
+      See today&apos;s price at {AFFILIATES[o.brand].name}
     </PartnerLink>
   ) : (
     <PlainLink href={o.url} className="btn btn-outline btn-sm">
-      See it
+      See today&apos;s price
     </PlainLink>
   );
 }
@@ -50,16 +46,16 @@ function Results({
   value: (o: RuntimeOption) => string;
   label: string;
 }) {
-  const sorted = [...options].sort((a, b) => a.priceUsd - b.priceUsd);
+  const sorted = [...options].sort((a, b) => a.capacityWh - b.capacityWh);
   const best = sorted.find(covers);
   return (
     <div className="p-5 sm:p-6 bg-gradient-to-br from-amber-50 to-orange-50" aria-live="polite">
-      <p className="text-xs font-bold uppercase tracking-wide text-spark-amber">Cheapest that covers it</p>
+      <p className="text-xs font-bold uppercase tracking-wide text-spark-amber">Smallest that covers it</p>
       {best ? (
         <>
           <p className="text-2xl font-extrabold text-ink mt-1" data-testid="runtime-pick">{best.name}</p>
           <p className="text-stone-800 mt-1">
-            {label} <strong>{value(best)}</strong> for {money(best.priceUsd)} when we checked.
+            {label} <strong>{value(best)}</strong>.
           </p>
           <div className="mt-3"><BuyLink o={best} /></div>
         </>
@@ -73,8 +69,7 @@ function Results({
         {sorted.map((o) => (
           <li key={o.id} className="flex items-center justify-between gap-3 p-3">
             <span>
-              <span className="font-semibold text-ink">{o.name}</span>{" "}
-              <span className="text-muted">{money(o.priceUsd)}</span>
+              <span className="font-semibold text-ink">{o.name}</span>
               <span className="block text-stone-700">
                 {label} {value(o)} {covers(o) ? <span className="text-leaf font-semibold">· covers it</span> : null}
               </span>

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { AffiliateDisclosure, PartnerLink } from "@/components/affiliate";
+import { AffiliateDisclosure, PartnerLink, PriceLink } from "@/components/affiliate";
 import { offPeakYearSaving, milesPerHourAt } from "@/components/chargers";
 import { Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
 import { PlainLink, QuickAnswer } from "@/components/guide-ui";
@@ -14,9 +14,9 @@ import { JsonLd, pageMetadata } from "@/lib/seo";
 import { productList, reviewedProduct } from "@/lib/structured-data";
 
 const PATH = "/best-home-ev-charger";
-const TITLE = "Best Home EV Charger (2026): Level 2 Chargers Compared, With Prices";
+const TITLE = "Best Home EV Charger (2026): Level 2 Chargers Compared";
 const DESCRIPTION =
-  "The best Level 2 home EV chargers for Teslas and every other EV: EVIQO, Lectron, Autel, Grizzl-E, Emporia, ChargePoint and Tesla compared on price, speed, plug (NACS or J1772) and app scheduling, with dated prices.";
+  "The best Level 2 home EV chargers for Teslas and every other EV: EVIQO, Lectron, Autel, Grizzl-E, Emporia, ChargePoint and Tesla compared on speed, plug (NACS or J1772), app scheduling, cable and warranty, with links to each maker's price.";
 
 export const metadata: Metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH, type: "article" });
 
@@ -24,7 +24,7 @@ const otherById = (id: string) => OTHER_CHARGERS.find((c) => c.id === id)!;
 const kwFor = (amps: number) => (amps * 240) / 1000;
 
 function partnerRec(c: HomeCharger, why: string): PlugRec {
-  return { name: `${brandName(c)} ${c.name}`, priceUsd: c.priceUsd, why, brand: c.brand, id: c.id, url: c.url };
+  return { name: `${brandName(c)} ${c.name}`, why, brand: c.brand, id: c.id, url: c.url };
 }
 
 export default function BestHomeEvChargerPage() {
@@ -47,20 +47,20 @@ export default function BestHomeEvChargerPage() {
 
   const recs: Record<Car, PlugRec[]> = {
     tesla: [
-      partnerRec(ln, `Tesla plug, 40 amps, up to ${ln.milesPerHour} miles of range an hour, plugs into a 240-volt NEMA 14-50 outlet. ${money(tesla.priceUsd - ln.priceUsd)} less than Tesla's own.`),
-      partnerRec(en, `Same 40 amps and NEMA 14-50 plug, plus an app that schedules charging for cheaper overnight rates and a ${en.cableFt}-foot cable. ${money(en.priceUsd - ln.priceUsd)} more than the Lectron.`),
-      { name: tesla.name, priceUsd: tesla.priceUsd, why: "Faster (48 amps, up to 44 miles an hour) and a 4-year warranty, but it must be hardwired and Tesla said ownership was required while supplies were limited.", brand: null, id: tesla.id, url: tesla.url },
+      partnerRec(ln, `Tesla plug, 40 amps, up to ${ln.milesPerHour} miles of range an hour, plugs into a 240-volt NEMA 14-50 outlet..`),
+      partnerRec(en, `Same 40 amps and NEMA 14-50 plug, plus an app that schedules charging for cheaper overnight rates and a ${en.cableFt}-foot cable..`),
+      { name: tesla.name, why: "Faster (48 amps, up to 44 miles an hour) and a 4-year warranty, but it must be hardwired and Tesla said ownership was required while supplies were limited.", brand: null, id: tesla.id, url: tesla.url },
     ],
     nacs: [
       partnerRec(ln, `Same NACS plug as a Tesla, 40 amps, plugs into a NEMA 14-50 outlet. ETL listed and ENERGY STAR.`),
-      partnerRec(en, `NACS plug with app scheduling and a ${en.cableFt}-foot cable, ${money(en.priceUsd)}. EVIQO also sells a hardwired 48-amp NACS version at ${money(enh.priceUsd)}.`),
+      partnerRec(en, `NACS plug with app scheduling and a ${en.cableFt}-foot cable. EVIQO also sells a hardwired ${enh.amps}-amp NACS version.`),
       partnerRec(lp, "Renting, or not ready to wire? This portable one works from an ordinary outlet or a 240-volt one and moves with you."),
     ],
     j1772: [
-      partnerRec(ej, `The lowest price we found for a smart charger: up to ${ej.milesPerHour} miles of range an hour plugged into a NEMA 14-50, or ${ej.hardwiredAmps} amps hardwired. App scheduling, ${ej.cableFt}-foot cable, weatherproof, ${ej.warrantyYears}-year warranty.`),
+      partnerRec(ej, `Smart charger: up to ${ej.milesPerHour} miles of range an hour plugged into a NEMA 14-50, or ${ej.hardwiredAmps} amps hardwired. App scheduling, ${ej.cableFt}-foot cable, weatherproof, ${ej.warrantyYears}-year warranty.`),
       partnerRec(lj, `Up to ${lj.milesPerHour} miles of range an hour from a NEMA 14-50 outlet, weatherproof, ETL listed to UL 2594, ${lj.warrantyYears}-year warranty. No app.`),
-      partnerRec(a40, `App scheduling for cheaper overnight rates, and a hardwired 50-amp version (${money(a50.priceUsd)}): every 5 cents a kWh off saves about ${money(Math.round(offPeakYearSaving()))} a year on 12,000 miles.`),
-      { name: grizzle.name, priceUsd: grizzle.priceUsd, why: "UL listed, 40 amps, no app.", brand: null, id: grizzle.id, url: grizzle.url },
+      partnerRec(a40, `App scheduling for cheaper overnight rates, and a hardwired ${a50.amps}-amp version: every 5 cents a kWh off saves about ${money(Math.round(offPeakYearSaving()))} a year on 12,000 miles.`),
+      { name: grizzle.name, why: "UL listed, 40 amps, no app.", brand: null, id: grizzle.id, url: grizzle.url },
     ],
   };
   const notes: Record<Car, string> = {
@@ -69,14 +69,13 @@ export default function BestHomeEvChargerPage() {
     j1772: "J1772 is the round five-pin plug used by nearly every non-Tesla EV and plug-in hybrid sold in the US until recently. If you might switch to a NACS car later, an adapter bridges the gap.",
   };
 
-  type Row = { name: string; maker: string; brand: HomeCharger["brand"] | null; id: string; url: string; price: number; plug: string; amps: number; mph: string; app: string; cable: string; warranty: string };
+  type Row = { name: string; maker: string; brand: HomeCharger["brand"] | null; id: string; url: string; plug: string; amps: number; mph: string; app: string; cable: string; warranty: string };
   const partnerRows: Row[] = HOME_CHARGERS.filter((c) => c.level === "Level 2").map((c) => ({
     name: `${brandName(c)} ${c.name}`,
     maker: brandName(c),
     brand: c.brand,
     id: c.id,
     url: c.url,
-    price: c.priceUsd,
     plug: c.plug,
     amps: c.amps,
     mph: c.milesPerHour ? `${c.milesPerHour}` : `about ${Math.round(milesPerHourAt(c.maxKw ?? kwFor(c.amps)))}`,
@@ -90,7 +89,6 @@ export default function BestHomeEvChargerPage() {
     brand: null,
     id: c.id,
     url: c.url,
-    price: c.priceUsd,
     plug: c.plugs.join(" or "),
     amps: c.amps,
     mph: c.milesPerHour ? `${c.milesPerHour}` : `about ${Math.round(milesPerHourAt(kwFor(c.amps)))}`,
@@ -98,12 +96,12 @@ export default function BestHomeEvChargerPage() {
     cable: c.cableFt ? `${c.cableFt} ft` : "Not stated",
     warranty: c.warrantyYears ? `${c.warrantyYears} yr` : "Not stated",
   }));
-  const rows = [...partnerRows, ...otherRows].sort((a, b) => a.price - b.price);
+  const rows = [...partnerRows, ...otherRows].sort((a, b) => a.amps - b.amps || a.name.localeCompare(b.name));
 
   const faqs = [
     {
       q: "What is the best Level 2 home EV charger?",
-      a: `For most cars with the J1772 plug, the EVIQO Level 2 (${money(ej.priceUsd)} when we checked, on sale from ${money(ej.listPriceUsd!)}): 40 amps plugged into a NEMA 14-50 or 48 amps hardwired, up to ${ej.milesPerHour} miles of range an hour, app scheduling, a ${ej.cableFt}-foot cable and a ${ej.warrantyYears}-year warranty, the lowest price we found. For a Tesla or other NACS car, the Lectron NEXUS (${money(ln.priceUsd)}): 40 amps, ETL listed to UL standards and ENERGY STAR, no app; EVIQO's NACS version (${money(en.priceUsd)}) adds the app. The Autel MaxiCharger AC Elite Home 40A (${money(a40.priceUsd)}) is the smart pick with a hardwired 50-amp option.`,
+      a: `For most cars with the J1772 plug, the EVIQO Level 2: 40 amps plugged into a NEMA 14-50 or 48 amps hardwired, up to ${ej.milesPerHour} miles of range an hour, app scheduling, a ${ej.cableFt}-foot cable and a ${ej.warrantyYears}-year warranty. For a Tesla or other NACS car, the Lectron NEXUS: 40 amps, ETL listed to UL standards and ENERGY STAR, no app; EVIQO's NACS version adds the app. The Autel MaxiCharger AC Elite Home 40A is the smart pick with a hardwired 50-amp option.`,
     },
     {
       q: "NACS or J1772: which home charger should I buy?",
@@ -136,7 +134,6 @@ export default function BestHomeEvChargerPage() {
               url: r.url,
               pagePath: PATH,
               description: `${r.name} is a ${r.amps}-amp Level 2 home EV charger with a ${r.plug} plug.`,
-              priceUsd: r.price,
             }),
           ),
         )}
@@ -151,7 +148,7 @@ export default function BestHomeEvChargerPage() {
         title={<>Wake up full. <span className="text-amber-300">Save about {money(Math.round(yearSaving / 10) * 10)} a year over gas.</span></>}
         sub={
           <>
-            A {money(ej.priceUsd)} Level 2 charger adds up to {ej.milesPerHour} miles of range an hour in your driveway, so you never
+            A Level 2 charger adds up to {ej.milesPerHour} miles of range an hour in your driveway, so you never
             stop for gas or hunt for a public charger again. Here is which one to buy for your car.
           </>
         }
@@ -167,22 +164,22 @@ export default function BestHomeEvChargerPage() {
         <QuickAnswer>
           <p>
             <strong>Best for most homes (J1772 plug):</strong>{" "}
-            <PartnerLink brand="eviqo" productId={ej.id} productUrl={ej.url} disclose>EVIQO Level 2</PartnerLink> ({money(ej.priceUsd)}), 40 amps
-            plugged in or {ej.hardwiredAmps} hardwired, app scheduling, {ej.cableFt}-foot cable. The lowest price we found.
+            <PartnerLink brand="eviqo" productId={ej.id} productUrl={ej.url} disclose>EVIQO Level 2</PartnerLink>, 40 amps
+            plugged in or {ej.hardwiredAmps} hardwired, app scheduling, {ej.cableFt}-foot cable.
           </p>
           <p>
             <strong>Best for a Tesla (NACS plug):</strong>{" "}
-            <PartnerLink brand="lectron" productId={ln.id} productUrl={ln.url} disclose>Lectron NEXUS</PartnerLink> ({money(ln.priceUsd)}), 40 amps,
+            <PartnerLink brand="lectron" productId={ln.id} productUrl={ln.url} disclose>Lectron NEXUS</PartnerLink>, 40 amps,
             ETL listed, ENERGY STAR, no app. With an app:{" "}
-            <PartnerLink brand="eviqo" productId={en.id} productUrl={en.url} disclose>EVIQO NACS</PartnerLink> ({money(en.priceUsd)}).
+            <PartnerLink brand="eviqo" productId={en.id} productUrl={en.url} disclose>EVIQO NACS</PartnerLink>.
           </p>
           <p>
             <strong>Smart charger with a 50-amp option:</strong>{" "}
-            <PartnerLink brand="autel" productId={a40.id} productUrl={a40.url} disclose>Autel MaxiCharger AC Elite Home 40A</PartnerLink> ({money(a40.priceUsd)}).
+            <PartnerLink brand="autel" productId={a40.id} productUrl={a40.url} disclose>Autel MaxiCharger AC Elite Home 40A</PartnerLink>.
           </p>
           <p className="text-sm">
-            <strong>No app, UL listed:</strong> <PlainLink href={grizzle.url}>Grizzl-E Classic</PlainLink> ({money(grizzle.priceUsd)}).{" "}
-            <strong>Fastest for a Tesla:</strong> <PlainLink href={tesla.url}>Tesla Wall Connector</PlainLink> ({money(tesla.priceUsd)}, hardwired).
+            <strong>No app, UL listed:</strong> <PlainLink href={grizzle.url}>Grizzl-E Classic</PlainLink>.{" "}
+            <strong>Fastest for a Tesla:</strong> <PlainLink href={tesla.url}>Tesla Wall Connector</PlainLink> (hardwired).
           </p>
         </QuickAnswer>
 
@@ -203,9 +200,8 @@ export default function BestHomeEvChargerPage() {
             label="Best for most homes"
             name={`EVIQO ${ej.name}`}
             icon="plug"
-            why={`Plug it into a 240-volt NEMA 14-50 outlet for 40 amps, or have an electrician hardwire it for ${ej.hardwiredAmps}; a switch inside matches it to your circuit. The app schedules charging for cheaper overnight hours. IP66 weatherproof for the driveway, ${ej.cableFt}-foot cable, on sale from ${money(ej.listPriceUsd!)} when we checked. J1772 plug: Teslas need an adapter.`}
+            why={`Plug it into a 240-volt NEMA 14-50 outlet for 40 amps, or have an electrician hardwire it for ${ej.hardwiredAmps}; a switch inside matches it to your circuit. The app schedules charging for cheaper overnight hours. IP66 weatherproof for the driveway, ${ej.cableFt}-foot cable. J1772 plug: Teslas need an adapter.`}
             life={[`Up to ${ej.milesPerHour} miles of range an hour plugged in (EVIQO's figure)`, `${ej.warrantyYears}-year warranty, UL/ETL listed (EVIQO)`]}
-            priceUsd={ej.priceUsd}
             brand="eviqo"
             productId={ej.id}
             productUrl={ej.url}
@@ -216,23 +212,21 @@ export default function BestHomeEvChargerPage() {
             label="Best for a Tesla or NACS car"
             name={`Lectron ${ln.name}`}
             icon="car"
-            why={`Plugs into a 240-volt outlet, weatherproof for the driveway, listed to UL safety standards and ENERGY STAR certified, with a ${ln.cableFt}-foot cable. No app. The J1772 version is the same ${money(lj.priceUsd)}. Want app scheduling and a 25-foot cable? EVIQO's NACS charger is ${money(en.priceUsd)}.`}
+            why={`Plugs into a 240-volt outlet, weatherproof for the driveway, listed to UL safety standards and ENERGY STAR certified, with a ${ln.cableFt}-foot cable. No app. Lectron also sells a J1772 version. Want app scheduling and a 25-foot cable? EVIQO makes a NACS charger too.`}
             life={[`Up to ${ln.milesPerHour} miles of range an hour`, `${ln.warrantyYears}-year warranty`]}
-            priceUsd={ln.priceUsd}
             brand="lectron"
             productId={ln.id}
             productUrl={ln.url}
             category="home"
-            cta="Check price: Tesla / NACS"
+            cta="See today's price at Lectron (Tesla / NACS)"
             disclose
           />
           <OurPick
             label="Smart charger with a 50-amp option"
             name={`Autel ${a40.name}`}
             icon="chart"
-            why={`The Autel Charge app starts, stops and schedules charging, so the car only charges in your utility's cheaper overnight hours. The hardwired 50-amp version (${money(a50.priceUsd)}) charges about a quarter faster for cars that can take it.`}
+            why={`The Autel Charge app starts, stops and schedules charging, so the car only charges in your utility's cheaper overnight hours. The hardwired 50-amp version charges about a quarter faster for cars that can take it.`}
             life={[`About ${Math.round(milesPerHourAt(a40.maxKw!))} miles of range an hour`, `${a40.cableFt}-foot cable, ${a40.warrantyYears}-year warranty`]}
-            priceUsd={a40.priceUsd}
             brand="autel"
             productId={a40.id}
             productUrl={a40.url}
@@ -245,7 +239,6 @@ export default function BestHomeEvChargerPage() {
             icon="car"
             why="Works from an ordinary outlet (keep it at 12 amps or less there) or a NEMA 14-50 on its own 50-amp circuit (up to 40 amps), and goes with you when you move. Never use an extension cord or adapter. Tesla (NACS) plug."
             life={["No installation if you have a checked outlet", "Ordinary or NEMA 14-50 outlet"]}
-            priceUsd={lp.priceUsd}
             brand="lectron"
             productId={lp.id}
             productUrl={lp.url}
@@ -261,7 +254,7 @@ export default function BestHomeEvChargerPage() {
               <thead className="bg-surface-light text-left">
                 <tr>
                   <th scope="col" className="p-3 font-semibold">Charger</th>
-                  <th scope="col" className="p-3 font-semibold text-right">Price*</th>
+                  <th scope="col" className="p-3 font-semibold">Price</th>
                   <th scope="col" className="p-3 font-semibold">Plug</th>
                   <th scope="col" className="p-3 font-semibold text-right">Amps</th>
                   <th scope="col" className="p-3 font-semibold text-right">Miles of range/hr</th>
@@ -276,7 +269,13 @@ export default function BestHomeEvChargerPage() {
                     <th scope="row" className="p-3 font-medium">
                       {r.brand ? <PartnerLink brand={r.brand} productId={r.id} productUrl={r.url} disclose>{r.name}</PartnerLink> : <PlainLink href={r.url}>{r.name}</PlainLink>}
                     </th>
-                    <td className="p-3 text-right tabular-nums">{money(r.price)}</td>
+                    <td className="p-3 whitespace-nowrap">
+                      {r.brand ? (
+                        <PriceLink brand={r.brand} productId={r.id} productUrl={r.url} disclose />
+                      ) : (
+                        <PlainLink href={r.url}>Today&apos;s price at {r.maker}</PlainLink>
+                      )}
+                    </td>
                     <td className="p-3">{r.plug}</td>
                     <td className="p-3 text-right tabular-nums">{r.amps}</td>
                     <td className="p-3 text-right tabular-nums">{r.mph}</td>
@@ -289,8 +288,8 @@ export default function BestHomeEvChargerPage() {
             </table>
           </div>
           <p className="text-xs text-muted mt-2 max-w-3xl">
-            *Prices and specs from each maker&apos;s US site: Lectron on {formatDate(lj.retrieved)}, EVIQO on {formatDate(ej.retrieved)} (the
-            price with its standard 3-year warranty), Autel and the others on {formatDate(a40.retrieved)}. Miles per hour is the maker&apos;s figure where stated; &quot;about&quot; figures are our
+            Specs from each maker&apos;s US site: Lectron on {formatDate(lj.retrieved)}, EVIQO on {formatDate(ej.retrieved)}, Autel and the
+            others on {formatDate(a40.retrieved)}. We don&apos;t list prices; each link goes to the maker&apos;s page for today&apos;s price. Miles per hour is the maker&apos;s figure where stated; &quot;about&quot; figures are our
             arithmetic for a {typical.kwhPer100mi} kWh/100 mi EV at the charger&apos;s full power. Your car may charge slower. Lectron,
             Autel and EVIQO links are sponsored; the others are plain links. Notes: {grizzle.note} {emporia.note} {cp.note}
           </p>
@@ -304,8 +303,8 @@ export default function BestHomeEvChargerPage() {
               the round plug on nearly every other EV and plug-in hybrid in the US.
             </p>
             <p>
-              Buy the plug that matches your car today. Lectron sells the NEXUS in both at the same {money(lj.priceUsd)}; EVIQO sells
-              J1772 ({money(ej.priceUsd)}) and NACS ({money(en.priceUsd)}) versions, plug-in or hardwired. Adapters
+              Buy the plug that matches your car today. Lectron sells the NEXUS in both; EVIQO sells
+              J1772 and NACS versions, plug-in or hardwired. Adapters
               cover the other plug if your next car is different. Only buy Tesla&apos;s own Wall Connector if you want the extra speed and
               will hardwire it.
             </p>
@@ -314,7 +313,7 @@ export default function BestHomeEvChargerPage() {
 
         <Section title="What installation costs" id="install">
           <p className="text-stone-700 leading-relaxed max-w-3xl">
-            Installation usually costs more than the charger. Qmerit&apos;s 2026 data, published by EnergySage, puts the US average at{" "}
+            Installation can cost more than the charger itself. Qmerit&apos;s 2026 data, published by EnergySage, puts the US average at{" "}
             {money(INSTALL_COST.usAverage)} for labor and materials, from {money(INSTALL_COST.byState.OR)} in Oregon to{" "}
             {money(INSTALL_COST.byState.MS)} in Mississippi. A plug-in charger next to an existing NEMA 14-50 outlet costs nothing to install, once an electrician has checked the outlet is on its own 50-amp circuit, in good condition and GFCI-protected where code requires.{" "}
             <Link href="/ev-charger-installation-cost" className="text-spark-orange font-semibold underline underline-offset-2">
@@ -343,7 +342,7 @@ export default function BestHomeEvChargerPage() {
 
         <Faq items={faqs} path={PATH} />
         <Disclaimer>
-          Prices and specifications are copied from makers&apos; US websites on the dates shown and change often. Charging speed depends
+          Specifications are copied from makers&apos; US websites on the dates shown. We don&apos;t list prices; check today&apos;s price on the maker&apos;s page. Charging speed depends
           on your car. Have a licensed electrician install the circuit and check local permit rules. Savings use the US average electricity and gasoline
           prices on our methodology page; your rates differ.
         </Disclaimer>

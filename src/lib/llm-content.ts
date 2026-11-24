@@ -7,7 +7,6 @@ export interface EVResult {
   name: string;
   /** Range from automated research; superseded by `epa` when a match exists. */
   range: number;
-  price: string;
   type: string;
   highlight: string;
   seats: number;
@@ -25,33 +24,31 @@ export interface EVResult {
 
 
 // ── Fallback data (used when API is unavailable) ───────────────────────────
-// Prices here are indicative starting MSRPs and are not refreshed
-// automatically; the UI labels them as approximate and shows EPA range from
-// fueleconomy.gov wherever a model can be matched. Reviewed 15 Oct 2026:
-// removed the F-150 Lightning (Ford ended production Dec 2025) and the
-// electric MINI Cooper (not sold in the US); Bolt price per GM's 2027 launch.
-// Rechecked 9 Nov 2026 on maker pages: Equinox EV, Ioniq 5/6, Silverado EV,
-// Bolt, EQS and ID.4 starting prices; Ioniq 5/6 and ID.4 EPA range.
+// No prices (Nov 24 2026): the finder links to each maker's page for today's
+// price. The UI shows EPA range from fueleconomy.gov wherever a model can be
+// matched. Reviewed 15 Oct 2026: removed the F-150 Lightning (Ford ended
+// production Dec 2025) and the electric MINI Cooper (not sold in the US).
+// Rechecked 9 Nov 2026 on maker pages: Ioniq 5/6 and ID.4 EPA range.
 
 const FALLBACK_EVS: EVResult[] = [
-  { name: "Chevrolet Equinox EV", range: 319, price: "$34,995", type: "SUV", highlight: "Best value family SUV with incredible range", seats: 5, cargo: "Large", url: "https://www.chevrolet.com/electric/equinox-ev" },
-  { name: "Tesla Model 3", range: 358, price: "$38,990", type: "Sedan", highlight: "Best-selling EV with great range and tech", seats: 5, cargo: "Medium", url: "https://www.tesla.com/model3" },
-  { name: "Tesla Model Y", range: 310, price: "$44,990", type: "SUV", highlight: "Versatile crossover with massive cargo space", seats: 5, cargo: "Large", url: "https://www.tesla.com/modely" },
-  { name: "Hyundai Ioniq 5", range: 318, price: "$35,250", type: "SUV", highlight: "Ultra-fast charging and retro-futuristic design", seats: 5, cargo: "Large", url: "https://www.hyundaiusa.com/us/en/vehicles/ioniq-5" },
-  { name: "Hyundai Ioniq 6", range: 342, price: "$37,850", type: "Sedan", highlight: "Aerodynamic design delivers outstanding range", seats: 5, cargo: "Medium", url: "https://www.hyundaiusa.com/us/en/vehicles/ioniq-6" },
-  { name: "Ford Mustang Mach-E", range: 312, price: "$42,995", type: "SUV", highlight: "Sporty handling with family-friendly space", seats: 5, cargo: "Large", url: "https://www.ford.com/electric-vehicles/mach-e/" },
-  { name: "Kia EV6", range: 310, price: "$42,600", type: "SUV", highlight: "Fun to drive with V2L power sharing", seats: 5, cargo: "Large", url: "https://www.kia.com/us/en/ev6" },
-  { name: "Kia EV9", range: 304, price: "$54,900", type: "SUV", highlight: "Three-row electric SUV for large families", seats: 7, cargo: "Extra Large", url: "https://www.kia.com/us/en/ev9" },
-  { name: "Rivian R1S", range: 321, price: "$75,900", type: "SUV", highlight: "Adventure-ready with incredible off-road capability", seats: 7, cargo: "Extra Large", url: "https://rivian.com/r1s" },
-  { name: "Rivian R1T", range: 328, price: "$69,900", type: "Truck", highlight: "Adventure truck with built-in camp kitchen", seats: 5, cargo: "Truck Bed", url: "https://rivian.com/r1t" },
-  { name: "Chevrolet Silverado EV", range: 450, price: "$61,900", type: "Truck", highlight: "Massive range and available Midgate", seats: 5, cargo: "Truck Bed", url: "https://www.chevrolet.com/electric/silverado-ev" },
-  { name: "Nissan Leaf", range: 303, price: "$29,990", type: "SUV", highlight: "Redesigned as a crossover with 300+ miles and a NACS port", seats: 5, cargo: "Medium", url: "https://www.nissanusa.com/vehicles/electric-cars/leaf.html" },
-  { name: "Chevrolet Bolt", range: 262, price: "$27,600", type: "Hatchback", highlight: "One of the least expensive new EVs in the US", seats: 5, cargo: "Medium", url: "https://www.chevrolet.com/electric/bolt-ev" },
-  { name: "BMW iX", range: 324, price: "$87,100", type: "SUV", highlight: "Luxury electric SUV with cutting-edge tech", seats: 5, cargo: "Large", url: "https://www.bmwusa.com/vehicles/bmw-i-series/ix/bmw-ix.html" },
-  { name: "Mercedes EQS Sedan", range: 350, price: "$101,450", type: "Sedan", highlight: "Ultra-luxury electric flagship with Hyperscreen", seats: 5, cargo: "Medium", url: "https://www.mbusa.com/en/vehicles/class/eqs/sedan" },
-  { name: "Porsche Taycan", range: 246, price: "$92,250", type: "Sedan", highlight: "Performance EV with legendary Porsche handling", seats: 5, cargo: "Medium", url: "https://www.porsche.com/usa/models/taycan/" },
-  { name: "Volkswagen ID.4", range: 291, price: "$45,095", type: "SUV", highlight: "Spacious and practical with solid value", seats: 5, cargo: "Large", url: "https://www.vw.com/en/models/id-4.html" },
-  { name: "Toyota bZ", range: 314, price: "$34,900", type: "SUV", highlight: "Toyota's updated electric crossover", seats: 5, cargo: "Large", url: "https://www.toyota.com/bz/" },
+  { name: "Chevrolet Equinox EV", range: 319, type: "SUV", highlight: "Family SUV with incredible range", seats: 5, cargo: "Large", url: "https://www.chevrolet.com/electric/equinox-ev" },
+  { name: "Tesla Model 3", range: 358, type: "Sedan", highlight: "Best-selling EV with great range and tech", seats: 5, cargo: "Medium", url: "https://www.tesla.com/model3" },
+  { name: "Tesla Model Y", range: 310, type: "SUV", highlight: "Versatile crossover with massive cargo space", seats: 5, cargo: "Large", url: "https://www.tesla.com/modely" },
+  { name: "Hyundai Ioniq 5", range: 318, type: "SUV", highlight: "Ultra-fast charging and retro-futuristic design", seats: 5, cargo: "Large", url: "https://www.hyundaiusa.com/us/en/vehicles/ioniq-5" },
+  { name: "Hyundai Ioniq 6", range: 342, type: "Sedan", highlight: "Aerodynamic design delivers outstanding range", seats: 5, cargo: "Medium", url: "https://www.hyundaiusa.com/us/en/vehicles/ioniq-6" },
+  { name: "Ford Mustang Mach-E", range: 312, type: "SUV", highlight: "Sporty handling with family-friendly space", seats: 5, cargo: "Large", url: "https://www.ford.com/electric-vehicles/mach-e/" },
+  { name: "Kia EV6", range: 310, type: "SUV", highlight: "Fun to drive with V2L power sharing", seats: 5, cargo: "Large", url: "https://www.kia.com/us/en/ev6" },
+  { name: "Kia EV9", range: 304, type: "SUV", highlight: "Three-row electric SUV for large families", seats: 7, cargo: "Extra Large", url: "https://www.kia.com/us/en/ev9" },
+  { name: "Rivian R1S", range: 321, type: "SUV", highlight: "Adventure-ready with incredible off-road capability", seats: 7, cargo: "Extra Large", url: "https://rivian.com/r1s" },
+  { name: "Rivian R1T", range: 328, type: "Truck", highlight: "Adventure truck with built-in camp kitchen", seats: 5, cargo: "Truck Bed", url: "https://rivian.com/r1t" },
+  { name: "Chevrolet Silverado EV", range: 450, type: "Truck", highlight: "Massive range and available Midgate", seats: 5, cargo: "Truck Bed", url: "https://www.chevrolet.com/electric/silverado-ev" },
+  { name: "Nissan Leaf", range: 303, type: "SUV", highlight: "Redesigned as a crossover with 300+ miles and a NACS port", seats: 5, cargo: "Medium", url: "https://www.nissanusa.com/vehicles/electric-cars/leaf.html" },
+  { name: "Chevrolet Bolt", range: 262, type: "Hatchback", highlight: "Small, simple and efficient", seats: 5, cargo: "Medium", url: "https://www.chevrolet.com/electric/bolt-ev" },
+  { name: "BMW iX", range: 324, type: "SUV", highlight: "Luxury electric SUV with cutting-edge tech", seats: 5, cargo: "Large", url: "https://www.bmwusa.com/vehicles/bmw-i-series/ix/bmw-ix.html" },
+  { name: "Mercedes EQS Sedan", range: 350, type: "Sedan", highlight: "Ultra-luxury electric flagship with Hyperscreen", seats: 5, cargo: "Medium", url: "https://www.mbusa.com/en/vehicles/class/eqs/sedan" },
+  { name: "Porsche Taycan", range: 246, type: "Sedan", highlight: "Performance EV with legendary Porsche handling", seats: 5, cargo: "Medium", url: "https://www.porsche.com/usa/models/taycan/" },
+  { name: "Volkswagen ID.4", range: 291, type: "SUV", highlight: "Spacious and practical", seats: 5, cargo: "Large", url: "https://www.vw.com/en/models/id-4.html" },
+  { name: "Toyota bZ", range: 314, type: "SUV", highlight: "Toyota's updated electric crossover", seats: 5, cargo: "Large", url: "https://www.toyota.com/bz/" },
 ];
 
 
@@ -113,19 +110,24 @@ export async function getDailyEVs(): Promise<EVResult[]> {
   try {
     const today = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long" });
     const text = await runResearch(
-      `Today is ${today}. Search the web for the 20 most popular electric vehicles currently available for sale in the US. Cover a range of price points: affordable (under $35K), mid-range ($35–50K), premium ($50–80K), and luxury ($80K+). Include sedans, SUVs, trucks, and hatchbacks.
+      `Today is ${today}. Search the web for the 20 most popular electric vehicles currently available for sale in the US. Include sedans, SUVs, trucks, and hatchbacks.
 
-For each vehicle, find: current starting MSRP, EPA-rated range in miles, seating capacity, body type, relative cargo size, and the official manufacturer URL to configure or learn more.
+For each vehicle, find: EPA-rated range in miles, seating capacity, body type, relative cargo size, and the official manufacturer URL to configure or learn more.
 
 Return ONLY a valid JSON array — no markdown, no explanation, no code fences:
-[{"name":"Make Model","range":300,"price":"$XX,XXX","type":"SUV","highlight":"one brief selling-point sentence","seats":5,"cargo":"Large","url":"https://manufacturer.com/model"}]
+[{"name":"Make Model","range":300,"price":"$XX,XXX","type":"SUV","highlight":"one brief selling-point sentence, never a price","seats":5,"cargo":"Large","url":"https://manufacturer.com/model"}]
 
 Rules: type must be one of Sedan, SUV, Truck, Hatchback. cargo must be one of Small, Medium, Large, Extra Large, Truck Bed. range and seats must be numbers. Return exactly 20 items.`
     );
 
     const parsed = extractJson<EVResult[]>(text);
     if (parsed && Array.isArray(parsed) && parsed.length >= 10) {
-      return parsed;
+      // We show no prices: drop any the research returned, and any highlight that quotes one.
+      return parsed.map((raw: EVResult & { price?: unknown }) => {
+        const { price, ...ev } = raw;
+        void price;
+        return { ...ev, highlight: /\$\s?\d/.test(ev.highlight ?? "") ? "" : ev.highlight };
+      });
     }
     console.warn("getDailyEVs: could not parse response, using fallback");
     return FALLBACK_EVS;

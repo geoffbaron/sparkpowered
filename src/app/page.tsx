@@ -8,7 +8,6 @@ import { Icon } from "@/components/icons";
 import { AffiliateDisclosure } from "@/components/affiliate";
 import { BeforeAfter, MythCallout, OurPick, Photo } from "@/components/ui";
 import { lite } from "@/data/myths";
-import { PLUGIN_KITS } from "@/data/products";
 import type { ImageKey } from "@/data/images";
 import { JsonLd, pageMetadata, url } from "@/lib/seo";
 import { DATA_UPDATED, NATIONAL, STATES, formatDate, nationalRateUsd, referenceEv, usd } from "@/lib/energy";
@@ -18,7 +17,6 @@ import { fullName, productById } from "@/lib/products";
 import { GAS_CARS, homeFigures, MMBTU_PER_MCF } from "@/lib/go-electric";
 import AskSparkCta from "@/components/AskSparkCta";
 import IWantTo from "@/components/IWantTo";
-import { DealsStrip } from "@/components/DealsStrip";
 import { HOME_BACKUP_HUB, liveHomeBackupPages } from "@/data/home-backup";
 
 const TITLE = "Go Electric and Save: EV, Solar & Battery Savings by State";
@@ -45,7 +43,6 @@ export default function HomePage() {
   // Shown just under the hero: a 2 kWh battery from a brand we are approved with (Bluetti, Awin).
   const topPick = productById("bluetti-elite-200-v2");
   const topLife = lifeSummary(topPick.capacityWh);
-  const cheapestKit = [...PLUGIN_KITS].sort((a, b) => a.priceUsd - b.priceUsd)[0];
   const states = [...STATES].sort((a, b) => a.name.localeCompare(b.name));
 
   // Worked example: the state whose typical-household saving is the national median.
@@ -63,7 +60,7 @@ export default function HomePage() {
   const SWITCHES: { href: string; image: ImageKey; icon: string; title: string; payoff: string; cta: string }[] = [
     { href: "/ev-charging-cost", image: "ev", icon: "car", title: "Drive electric", payoff: `Charging at home is like paying ${usd(eGallon, 2)} a gallon. No more gas station stops.`, cta: "See your charging cost" },
     { href: "/solar-calculator", image: "solar-roof", icon: "sun", title: "Rooftop solar", payoff: "Make your own power for 25+ years and stop riding every rate hike.", cta: "See what you'd save" },
-    { href: "/plug-in-solar", image: "plugin-solar", icon: "plug", title: "Plug-in solar", payoff: `Kits start around ${usd(cheapestKit.priceUsd)}. Plugs into an outlet where state law allows. Great for renters.`, cta: "Is it legal where you live?" },
+    { href: "/plug-in-solar", image: "plugin-solar", icon: "plug", title: "Plug-in solar", payoff: "Panels that plug into an outlet where state law allows. Great for renters.", cta: "Is it legal where you live?" },
     { href: "/best-portable-power-stations", image: "power-station", icon: "battery", title: "Backup power", payoff: `Keep the fridge, Wi-Fi and lights on for ${life.essentials} when the grid goes down.`, cta: "Find the right battery" },
     { href: "/home-battery-backup", image: "home-battery", icon: "home", title: "Whole-home battery", payoff: "The lights stay on automatically and silently, with no fuel to store.", cta: "Compare home batteries" },
     { href: "/go-electric", image: "heat-pump", icon: "heat", title: "Heat pump", payoff: "One quiet machine heats in winter and cools in summer.", cta: "See if it saves you money" },
@@ -101,7 +98,6 @@ export default function HomePage() {
           <IWantTo />
         </div>
       </section>
-      <DealsStrip />
 
       <section aria-labelledby="top-pick-heading" className="border-b border-black/8">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -125,7 +121,6 @@ export default function HomePage() {
               name={fullName(topPick)}
               why="About 2 kWh with long-life LFP cells, rated for 6,000 cycles, and a 5-year warranty. Leave the fridge plugged into it and it takes over in about 15 ms when the power cuts out. It can't take extra batteries later."
               life={[`Fridge, Wi-Fi and lights: ${topLife.essentials}`, `Fridge alone: ${topLife.fridge}`, `CPAP: ${topLife.cpap}`, `Phone charges: about ${topLife.phones}`]}
-              priceUsd={topPick.priceUsd}
               brand={topPick.brand}
               productId={topPick.id}
               productUrl={topPick.url}
@@ -133,7 +128,7 @@ export default function HomePage() {
               moreHref="/best-portable-power-stations"
               moreLabel="Compare every pick"
             />
-            <p className="text-xs text-muted mt-2">*Price on the maker&apos;s US site when we checked on {formatDate(topPick.retrieved)}; prices change often.</p>
+            <p className="text-xs text-muted mt-2">Specs from the maker&apos;s US site, checked {formatDate(topPick.retrieved)}. The button goes to the maker&apos;s page for today&apos;s price.</p>
             <p className="text-sm mt-2">
               <Link href="/home-backup/bluetti-elite-200-v2-solar-panels" className="font-semibold text-spark-orange underline underline-offset-2">Which solar panels fit it</Link>
             </p>
@@ -220,9 +215,8 @@ export default function HomePage() {
             <OurPick
               label="Our pick for outage backup"
               name={fullName(outage)}
-              why="A big battery at a fair price. Leave the fridge plugged into it and it takes over in a blink when the power cuts out."
+              why="A big battery for the money. Leave the fridge plugged into it and it takes over in a blink when the power cuts out."
               life={[`Fridge, Wi-Fi and lights: ${life.essentials}`, `Fridge alone: ${life.fridge}`, `CPAP: ${life.cpap}`, `Phone charges: about ${life.phones}`]}
-              priceUsd={outage.priceUsd}
               brand={outage.brand}
               productId={outage.id}
               productUrl={outage.url}
@@ -230,7 +224,7 @@ export default function HomePage() {
               moreHref="/best-portable-power-stations"
               moreLabel="See all our picks"
             />
-            <p className="text-xs text-muted mt-2">*Price on the maker&apos;s US site when we checked on {formatDate(outage.retrieved)}; prices change often.</p>
+            <p className="text-xs text-muted mt-2">Specs from the maker&apos;s US site, checked {formatDate(outage.retrieved)}. The button goes to the maker&apos;s page for today&apos;s price.</p>
           </div>
         </section>
 

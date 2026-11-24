@@ -45,7 +45,7 @@ const ctx = {
   pages: SITE_PAGES,
   product: (id: string) => {
     const p = catalogById(id);
-    return p && { id: p.id, name: p.name, href: p.href, priceText: p.priceText };
+    return p && { id: p.id, name: p.name, href: p.href };
   },
   commissionNote: COMMISSION_NOTE,
 };
@@ -189,7 +189,7 @@ test("product list is only tracked partner links from the site's own data, never
     assert.doesNotMatch(p.href, /amazon|amzn/i);
     assert.match(p.href, /awin1\.com|linksynergy\.com|^https:\/\/eviqo\.io\/products\/[^?]+\?ref=zycwdczj$/, `${p.id} link is not tracked`);
     assert.ok(SITE_PAGES.has(p.page), p.page);
-    if (p.priceText) assert.match(p.priceText, /^\$[\d,]+(\.\d{2})? on .+'s US site \(checked [A-Z][a-z]{2} \d{1,2}, \d{4}\)$/);
+    assert.ok(!("priceText" in p), `${p.id} carries a price`);
   }
   assert.ok(catalogById("bluetti-elite-100-v2"));
   assert.ok(catalogById("lectron-nexus-j1772"));
@@ -205,15 +205,15 @@ test("product list is only tracked partner links from the site's own data, never
 
 // ---------------------------------------------------------------- rendering and disclosure
 
-test("every product mention carries the commission note and the site's price", () => {
-  const p = CATALOG.find((x) => x.priceText)!;
+test("every product mention carries the commission note and no price", () => {
+  const p = CATALOG[0];
   const r = renderAnswer(`For outages, look at {{product:${p.id}}}. See [backup guide](/best-portable-power-stations).`, ctx);
   const parts = r.paras.flatMap((x) => x.parts);
   const prod = parts.filter((x) => x.t === "product");
   assert.equal(prod.length, 1);
   assert.equal(prod[0].t === "product" && prod[0].note, COMMISSION_NOTE);
   assert.equal(COMMISSION_NOTE, "We earn a commission if you buy through this link.");
-  assert.equal(prod[0].t === "product" && prod[0].price, p.priceText);
+  assert.ok(!("price" in prod[0]), "no price on product mentions");
   assert.equal(prod[0].t === "product" && prod[0].href, p.href);
   assert.deepEqual(r.products, [p.id]);
   // The chat component renders the note right next to the product link.

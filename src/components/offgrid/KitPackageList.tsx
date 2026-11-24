@@ -1,10 +1,8 @@
 import Link from "next/link";
-import { PartnerLink } from "@/components/affiliate";
+import { PartnerLink, PriceLink } from "@/components/affiliate";
 import { PRODUCTS } from "@/data/products";
-import { formatDate } from "@/lib/energy";
 import { KIT_BATTERY_DAYS, KIT_DAYS, type KitPackage } from "@/lib/offgrid-kit";
 import { fmtKwh, fmtW, fmtWh } from "@/lib/offgrid";
-import { money } from "@/lib/products";
 
 const n0 = (n: number) => Math.round(n).toLocaleString("en-US");
 const range = (a: number, b: number) => (a === b ? n0(a) : `${n0(a)} to ${n0(b)}`);
@@ -22,14 +20,13 @@ function Row({ title, children, price, testId }: { title: string; children: Reac
   );
 }
 
-/** The full 90-day package: priced power items, generator fuel, water, food and the honest caveats. */
+/** The full 90-day package: power items with links to today's prices, generator fuel, water, food and the honest caveats. */
 export default function KitPackageList({ k, stateName }: { k: KitPackage; stateName: string }) {
   const p = k.power;
   const sys = p?.system ?? null;
   const station = p && !sys ? PRODUCTS.find((x) => x.id === p.match.option.id)! : null;
   const g = k.generator;
   const s = k.supplies;
-  const checked = (iso: string) => <span className="block text-xs text-muted font-normal">on the maker&apos;s site {formatDate(iso)}</span>;
 
   return (
     <div data-testid="kit-package">
@@ -39,7 +36,7 @@ export default function KitPackageList({ k, stateName }: { k: KitPackage; stateN
             <Row
               title="Complete off-grid system"
               testId="kit-system"
-              price={<>{money(sys.priceUsd)}{checked(sys.retrieved)}</>}
+              price={<PriceLink brand={sys.brand} productId={sys.id} productUrl={sys.url} className="text-xs font-semibold underline underline-offset-2 text-spark-orange" />}
             >
               <PartnerLink brand={sys.brand} productId={sys.id} productUrl={sys.url}>
                 {p.match.option.name}
@@ -57,7 +54,7 @@ export default function KitPackageList({ k, stateName }: { k: KitPackage; stateN
               <Row
                 title="Extra batteries"
                 testId="kit-addons"
-                price={<>{p.match.addOns} × {money(sys.addOn.priceUsd ?? 0)}{checked(sys.retrieved)}</>}
+                price={<PriceLink brand={sys.brand} productUrl={sys.addOn.url} className="text-xs font-semibold underline underline-offset-2 text-spark-orange" />}
               >
                 <PartnerLink brand={sys.brand} productUrl={sys.addOn.url}>
                   {sys.addOn.model}
@@ -69,7 +66,7 @@ export default function KitPackageList({ k, stateName }: { k: KitPackage; stateN
             )}
             <Row title="Installation" testId="kit-install">
               Not plug-and-play. The inverter is wired into your home&apos;s electrical panel, which is a job for a licensed electrician and
-              usually needs a permit and inspection from your county building department. Get a quote before you buy; it is not in the total.
+              usually needs a permit and inspection from your county building department. Get a quote before you buy.
               See <Link href="/how-to-go-off-grid" className="underline">how to go off grid</Link> for permits and the{" "}
               <Link href="/home-backup/hookup-picker" className="underline">hookup picker</Link> for the ways a battery connects to a house.
             </Row>
@@ -79,7 +76,7 @@ export default function KitPackageList({ k, stateName }: { k: KitPackage; stateN
             <Row
               title="Power station"
               testId="kit-station"
-              price={<>{money(p.match.option.priceUsd)}{checked(station.retrieved)}</>}
+              price={<PriceLink brand={station.brand} productId={station.id} productUrl={station.url} className="text-xs font-semibold underline underline-offset-2 text-spark-orange" />}
             >
               <PartnerLink brand={station.brand} productId={station.id} productUrl={station.url}>
                 {p.match.option.name}
@@ -92,7 +89,7 @@ export default function KitPackageList({ k, stateName }: { k: KitPackage; stateN
               <Row
                 title="Expansion batteries"
                 testId="kit-addons"
-                price={<>{p.match.addOns} × {money(station.addOn.priceUsd ?? 0)}{checked(station.retrieved)}</>}
+                price={<PriceLink brand={station.brand} productUrl={station.addOn.url} className="text-xs font-semibold underline underline-offset-2 text-spark-orange" />}
               >
                 <PartnerLink brand={station.brand} productUrl={station.addOn.url}>
                   {station.addOn.model}
@@ -102,7 +99,7 @@ export default function KitPackageList({ k, stateName }: { k: KitPackage; stateN
                 </span>
               </Row>
             )}
-            <Row title="Solar panels" testId="kit-panels" price={<>{p.panels} × {money(p.panel.priceUsd)}{checked(p.panel.retrieved)}</>}>
+            <Row title="Solar panels" testId="kit-panels" price={<PriceLink brand={p.panel.brand} productUrl={p.panel.url} className="text-xs font-semibold underline underline-offset-2 text-spark-orange" />}>
               <PartnerLink brand={p.panel.brand} productUrl={p.panel.url}>
                 {p.panels} × {p.panel.model}
               </PartnerLink>
@@ -164,10 +161,9 @@ export default function KitPackageList({ k, stateName }: { k: KitPackage; stateN
       </ul>
       {p && (
         <p className="mt-3 text-base font-extrabold text-ink" data-testid="kit-total">
-          Power items total: <span className="tabular-nums">{money(p.priceUsd)}</span>
+          Power items: see today&apos;s prices on the makers&apos; own pages above
           <span className="block text-xs text-muted font-normal">
-            {sys ? "System and batteries at the maker's price on the date shown, before installation." : "Station, batteries and panels at the makers' prices on the dates shown."} Water, food, fuel, seeds and the generator are listed as amounts,
-            not prices.{" "}
+            {sys ? "Installation is extra. " : ""}Water, food, fuel, seeds and the generator are listed as amounts.{" "}
             {p.short
               ? `${KIT_BATTERY_DAYS} days of your ${fmtWh(k.whPerDay)} a day needs ${fmtKwh(k.size.batteryWh)} of battery; the biggest station we track holds ${fmtKwh(p.match.totalWh)}, so the generator does more.`
               : `Battery: ${fmtKwh(p.match.totalWh)}, at least ${KIT_BATTERY_DAYS} days of your ${fmtWh(k.whPerDay)} a day.`}

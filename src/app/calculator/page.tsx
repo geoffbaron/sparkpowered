@@ -13,7 +13,7 @@ import { JsonLd, pageMetadata, url } from "@/lib/seo";
 const PATH = "/calculator";
 const TITLE = "EV Finder — Which Electric Car Is Right for You?";
 const DESCRIPTION =
-  "Answer five quick questions about budget, body style, miles and passengers to get matched to electric cars on sale in the US, with official EPA range.";
+  "Answer four quick questions about body style, miles, passengers and what matters most to get matched to electric cars on sale in the US, with official EPA range.";
 
 export const metadata: Metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH });
 
@@ -43,11 +43,11 @@ function QuizSkeleton() {
 const faqs = [
   {
     q: "How does the EV Finder choose cars?",
-    a: "It scores each electric model currently on sale against your answers: body style carries the most weight, then budget, then whether the range comfortably covers your daily driving, then seating, then your top priority. The five highest scores are shown, best match first.",
+    a: "It scores each electric model currently on sale against your answers: body style carries the most weight, then whether the range comfortably covers your daily driving, then seating, then your top priority. The five highest scores are shown, best match first.",
   },
   {
-    q: "Where do the prices and ranges come from?",
-    a: "The model list and starting prices are refreshed by automated research and are approximate. Range and efficiency are shown from official EPA ratings on fueleconomy.gov wherever we can match the model, as a range across trims.",
+    q: "Where do the models and ranges come from?",
+    a: "The model list is refreshed by automated research. We don't list prices; each match links to the maker's site for today's price. Range and efficiency are shown from official EPA ratings on fueleconomy.gov wherever we can match the model, as a range across trims.",
   },
   {
     q: "How much range do I really need?",

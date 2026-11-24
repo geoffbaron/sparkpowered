@@ -32,10 +32,9 @@ export interface KitConfig {
 export interface KitTotals {
   batteryWh: number;
   panelW: number;
-  priceUsd: number;
   itemCount: number;
   /** Cart lines, extras included. */
-  items: (CartItem & { label: string; unitPriceUsd: number; url: string })[];
+  items: (CartItem & { label: string; url: string })[];
 }
 
 const clampInt = (n: number, max: number) => Math.max(0, Math.min(max, Math.floor(Number.isFinite(n) ? n : 0)));
@@ -44,12 +43,12 @@ const clampInt = (n: number, max: number) => Math.max(0, Math.min(max, Math.floo
 export function configTotals({ kit, extraBatteries, extraPanels }: KitConfig): KitTotals {
   const b = clampInt(extraBatteries, kit.addBattery?.max ?? 0);
   const p = clampInt(extraPanels, kit.addPanel?.max ?? 0);
-  const items: KitTotals["items"] = kit.lines.map((l) => ({ variantId: l.variantId, qty: l.qty, label: l.label, unitPriceUsd: l.unitPriceUsd, url: l.url }));
+  const items: KitTotals["items"] = kit.lines.map((l) => ({ variantId: l.variantId, qty: l.qty, label: l.label, url: l.url }));
   const add = (x: NonNullable<Kit["addBattery"]>, qty: number) => {
     if (qty <= 0) return;
     const same = items.find((i) => i.variantId === x.variantId);
     if (same) same.qty += qty;
-    else items.push({ variantId: x.variantId, qty, label: x.label, unitPriceUsd: x.unitPriceUsd, url: x.url });
+    else items.push({ variantId: x.variantId, qty, label: x.label, url: x.url });
   };
   if (kit.addBattery) add(kit.addBattery, b);
   if (kit.addPanel) add(kit.addPanel, p);
@@ -57,7 +56,6 @@ export function configTotals({ kit, extraBatteries, extraPanels }: KitConfig): K
   return {
     batteryWh: r(kit.batteryWh + b * (kit.addBattery?.wh ?? 0)),
     panelW: kit.panelW + p * (kit.addPanel?.panelW ?? 0),
-    priceUsd: r(kit.priceUsd + b * (kit.addBattery?.unitPriceUsd ?? 0) + p * (kit.addPanel?.unitPriceUsd ?? 0)),
     itemCount: items.reduce((t, i) => t + i.qty, 0),
     items,
   };
@@ -102,7 +100,7 @@ export function coverage(c: KitConfig, need: KitNeed): Coverage {
 }
 
 /**
- * The cheapest way to make one kit fit: fewest extra batteries that reach the
+ * The smallest way to make one kit fit: fewest extra batteries that reach the
  * battery need (or all it allows), then fewest extra panels that reach the
  * December panel need (or all it allows).
  */
@@ -117,11 +115,10 @@ export function fitKit(kit: Kit, need: KitNeed): KitConfig {
   return { kit, extraBatteries: b, extraPanels: p };
 }
 
-export type PickRole = "least" | "value" | "grow" | "brand" | "short" | "closest";
+export type PickRole = "least" | "grow" | "brand" | "short" | "closest";
 
 export const PICK_LABELS: Record<PickRole, string> = {
-  least: "Covers it for the least",
-  value: "Best value per kWh",
+  least: "Smallest kit that covers it",
   grow: "Room to grow",
   brand: "Another brand that covers it",
   short: "Close, but a little short",
@@ -147,12 +144,11 @@ const maxWh = (k: Kit) => k.batteryWh + (k.addBattery?.max ?? 0) * (k.addBattery
 
 /**
  * Up to three kits for a need:
- *   1. "Covers it for the least": the cheapest kit (with extras) that holds the
- *      energy and runs everything at once.
- *   2. "Best value per kWh": the lowest price per kWh among the other covering
- *      kits no more than 3x the size needed; failing that, "Room to grow": the
- *      covering kit that can expand furthest.
- *   3. The cheapest covering kit from each brand not already shown.
+ *   1. "Smallest kit that covers it": the covering kit (with extras) with the
+ *      least battery, so the closest fit; it holds the energy and runs
+ *      everything at once.
+ *   2. "Room to grow": the covering kit that can expand furthest.
+ *   3. The smallest covering kit from each brand not already shown.
  * Short of three, the nearest kit from each other brand, marked as short.
  * If nothing covers it, the biggest kit from each brand with its shortfall, and
  * `tooBig` so the page can point to a component system instead.
@@ -166,11 +162,11 @@ export function matchKits(need: KitNeed, kits: Kit[] = KITS): KitMatch {
     coverage: coverage(config, need),
   });
   const fits = kits.map((k) => fitKit(k, need)).map((c) => ({ c, t: configTotals(c), cov: coverage(c, need) }));
-  const covering = fits.filter((f) => f.cov.covers).sort((a, b) => a.t.priceUsd - b.t.priceUsd || (b.cov.panelPct ?? 0) - (a.cov.panelPct ?? 0));
+  const covering = fits.filter((f) => f.cov.covers).sort((a, b) => a.t.batteryWh - b.t.batteryWh || (b.cov.panelPct ?? 0) - (a.cov.panelPct ?? 0));
 
   if (covering.length === 0) {
     const byBrand = new Map<string, (typeof fits)[number]>();
-    for (const f of [...fits].sort((a, b) => b.t.batteryWh - a.t.batteryWh || Number(b.cov.runsAll) - Number(a.cov.runsAll) || a.t.priceUsd - b.t.priceUsd)) {
+    for (const f of [...fits].sort((a, b) => b.t.batteryWh - a.t.batteryWh || Number(b.cov.runsAll) - Number(a.cov.runsAll))) {
       if (!byBrand.has(f.c.kit.brand)) byBrand.set(f.c.kit.brand, f);
     }
     return { picks: [...byBrand.values()].slice(0, 3).map((f) => pick("closest", f.c)), tooBig: true };
@@ -178,15 +174,8 @@ export function matchKits(need: KitNeed, kits: Kit[] = KITS): KitMatch {
 
   const picks: KitPick[] = [pick("least", covering[0].c)];
   const rest = covering.slice(1);
-  const perKwh = (f: (typeof fits)[number]) => f.t.priceUsd / (f.t.batteryWh / 1000);
-  const value = rest
-    .filter((f) => f.t.batteryWh <= Math.max(need.batteryWh, 1) * 3 && perKwh(f) < perKwh(covering[0]))
-    .sort((a, b) => perKwh(a) - perKwh(b))[0];
-  if (value) picks.push(pick("value", value.c));
-  else {
-    const grow = rest.filter((f) => maxWh(f.c.kit) > maxWh(covering[0].c.kit)).sort((a, b) => maxWh(b.c.kit) - maxWh(a.c.kit) || a.t.priceUsd - b.t.priceUsd)[0];
-    if (grow) picks.push(pick("grow", grow.c));
-  }
+  const grow = rest.filter((f) => maxWh(f.c.kit) > maxWh(covering[0].c.kit)).sort((a, b) => maxWh(b.c.kit) - maxWh(a.c.kit) || a.t.batteryWh - b.t.batteryWh)[0];
+  if (grow) picks.push(pick("grow", grow.c));
   const used = new Set(picks.map((p) => p.config.kit.brand));
   for (const f of rest) {
     if (picks.length >= 3) break;
@@ -200,7 +189,7 @@ export function matchKits(need: KitNeed, kits: Kit[] = KITS): KitMatch {
     const shown = new Set(picks.map((p) => p.config.kit.brand));
     const near = fits
       .filter((f) => !f.cov.covers && !shown.has(f.c.kit.brand) && f.t.batteryWh >= need.batteryWh * 0.75 && f.cov.runsAll !== false)
-      .sort((a, b) => b.t.batteryWh - a.t.batteryWh || a.t.priceUsd - b.t.priceUsd);
+      .sort((a, b) => b.t.batteryWh - a.t.batteryWh);
     for (const f of near) {
       if (picks.length >= 3 || shown.has(f.c.kit.brand)) continue;
       shown.add(f.c.kit.brand);
@@ -221,14 +210,13 @@ export function componentSystemLink(): ResolvedLink {
 }
 
 /** Plain-text shopping list for the clipboard. */
-export function shoppingListText(c: KitConfig, brandName: string, checkedLabel: string): string {
+export function shoppingListText(c: KitConfig, brandName: string): string {
   const t = configTotals(c);
-  const usd = (n: number) => n.toLocaleString("en-US", { style: "currency", currency: "USD" });
-  const lines = t.items.map((i) => `- ${i.qty} x ${i.label}: ${usd(i.unitPriceUsd * i.qty)}\n  ${i.url}`);
+  const lines = t.items.map((i) => `- ${i.qty} x ${i.label}\n  ${i.url}`);
   return [
     `${c.kit.name} (from ${brandName})`,
     ...lines,
-    `Total: ${usd(t.priceUsd)} (prices on ${brandName}'s site, checked ${checkedLabel}; they change)`,
+    `See today's prices on ${brandName}'s site.`,
     `Add all ${t.itemCount} items to the cart at ${brandName}: ${kitCartLink(c).href}`,
   ].join("\n");
 }

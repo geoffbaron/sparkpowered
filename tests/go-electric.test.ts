@@ -74,7 +74,7 @@ test("home chargers are sourced, dated and use tracked Lectron, Autel and EVIQO 
   assert.ok(eviqo.some((c) => c.plug === "J1772") && eviqo.some((c) => c.plug === "NACS"));
   for (const c of eviqo) {
     assert.ok(c.url.startsWith("https://eviqo.io/products/") && !c.url.includes("?"), c.id);
-    assert.ok(c.priceUsd > 0 && c.cableFt === 25 && c.warrantyYears === 3 && c.scheduling, c.id);
+    assert.ok(!("priceUsd" in c) && c.cableFt === 25 && c.warrantyYears === 3 && c.scheduling, c.id);
   }
   assert.equal(AFFILIATES.lectron.tracked, true);
   assert.equal(AFFILIATES.autel.tracked, true);
@@ -82,7 +82,7 @@ test("home chargers are sourced, dated and use tracked Lectron, Autel and EVIQO 
   assert.ok(autel.length >= 2);
   for (const c of autel) {
     assert.ok(c.url.startsWith("https://autelenergy.us/products/"), c.id);
-    assert.ok(c.maxKw && c.maxKw > 0 && c.priceUsd > 0 && c.scheduling, c.id);
+    assert.ok(c.maxKw && c.maxKw > 0 && !("priceUsd" in c) && c.scheduling, c.id);
     const href = partnerUrl(c.brand, { productId: c.id, productUrl: c.url }).href;
     assert.ok(href.includes("awinmid=72577&awinaffid=3125360&ued="), c.id);
     assert.ok(href.endsWith(encodeURIComponent(c.url)), c.id);

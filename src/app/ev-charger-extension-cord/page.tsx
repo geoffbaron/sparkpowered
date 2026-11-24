@@ -244,7 +244,7 @@ export default function EvChargerExtensionCordPage() {
           links={[
             { href: "/ev-charger-tripping-gfci", label: "Charger tripping a GFCI breaker?", desc: "Why it happens and the safe fix" },
             { href: "/ev-charger-installation-cost", label: "EV charger installation cost", desc: "Average price in your state, and what adds to it" },
-            { href: "/best-home-ev-charger", label: "Best home EV charger", desc: "Cable length, amps and price compared" },
+            { href: "/best-home-ev-charger", label: "Best home EV charger", desc: "Cable length, amps and plug compared" },
             { href: "/questions/ev-charging", label: "Home charging questions", desc: "Breaker size, dryer outlets and permits" },
           ]}
         />

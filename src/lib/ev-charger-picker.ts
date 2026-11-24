@@ -196,9 +196,9 @@ export function pick(input: PickerInput, data: PickerData): PickerResult {
   const ej = charger("eviqo-l2-j1772");
   const en = charger("eviqo-nacs-40a");
   const enh = charger("eviqo-nacs-hardwired-48a");
-  // Ranked by spec and price only. EVIQO's J1772 model is the lowest-priced charger we
-  // carry and matches or beats the others on cable, app and adjustability, so it leads
-  // the J1772 answers; for NACS, Lectron is cheaper and EVIQO adds the app.
+  // Ranked by spec only. EVIQO's J1772 model matches or beats the others on cable, app
+  // and adjustability, so it leads the J1772 answers; for NACS, Lectron has no app and
+  // EVIQO adds one.
   const eviqoSwitch = "A switch inside sets the maximum to 16, 32, 40 or 48 amps";
 
   if (input.power === "dryer") {
@@ -208,7 +208,7 @@ export function pick(input: PickerInput, data: PickerData): PickerResult {
       products.push({
         charger: ej,
         setTo: amps < ej.hardwiredAmps! ? amps : undefined,
-        why: `Hardwired it runs at up to ${ej.hardwiredAmps} amps. ${eviqoSwitch}, so the electrician sets it to ${amps} for your ${circuitAmps}-amp circuit. App scheduling, ${ej.cableFt}-foot cable, IP66 weatherproof for indoor or outdoor use. The lowest price here.`,
+        why: `Hardwired it runs at up to ${ej.hardwiredAmps} amps. ${eviqoSwitch}, so the electrician sets it to ${amps} for your ${circuitAmps}-amp circuit. App scheduling, ${ej.cableFt}-foot cable, IP66 weatherproof for indoor or outdoor use.`,
       });
       products.push({
         charger: a50,
@@ -230,21 +230,21 @@ export function pick(input: PickerInput, data: PickerData): PickerResult {
   } else if (amps < 40) {
     // A 40-amp circuit: needs a charger you can turn down to 32 amps.
     if (connector === "J1772") {
-      products.push({ charger: ej, setTo: amps, why: `${eviqoSwitch}, so it can be set to ${amps} for a ${circuitAmps}-amp circuit. NEMA 14-50 plug, app scheduling, ${ej.cableFt}-foot cable. The lowest price here.` });
+      products.push({ charger: ej, setTo: amps, why: `${eviqoSwitch}, so it can be set to ${amps} for a ${circuitAmps}-amp circuit. NEMA 14-50 plug, app scheduling, ${ej.cableFt}-foot cable.` });
       products.push({ charger: a40, setTo: amps, why: `Adjustable up to 40 amps, so it can be set to ${amps} for a ${circuitAmps}-amp circuit. NEMA 14-50 plug, app scheduling, ${a40.cableFt}-foot cable.` });
     } else {
-      const portable: ProductMatch = { charger: lp, setTo: amps, why: `Adjustable from 8 to 40 amps, so it can be set to ${amps} for a ${circuitAmps}-amp circuit. NEMA 14-50 and ordinary-outlet plugs. The lower price; Lectron listed it as a pre-order shipping mid-November.` };
+      const portable: ProductMatch = { charger: lp, setTo: amps, why: `Adjustable from 8 to 40 amps, so it can be set to ${amps} for a ${circuitAmps}-amp circuit. NEMA 14-50 and ordinary-outlet plugs. Lectron listed it as a pre-order shipping mid-November.` };
       const wall: ProductMatch = { charger: en, setTo: amps, why: `${eviqoSwitch}, so it can be set to ${amps} for a ${circuitAmps}-amp circuit. Wall-mounted NEMA 14-50 plug-in with app scheduling and a ${en.cableFt}-foot cable.` };
       if (input.smart) products.push(wall, portable);
       else products.push(portable, wall);
     }
   } else if (connector === "NACS") {
-    const lectron: ProductMatch = { charger: ln, why: `Tesla-style (NACS) plug, 40 amps, up to ${ln.milesPerHour} miles of range an hour (Lectron's figure), NEMA 14-50 plug-in, IP66 weatherproof, ${ln.cableFt}-foot cable. The lower price; no app.` };
+    const lectron: ProductMatch = { charger: ln, why: `Tesla-style (NACS) plug, 40 amps, up to ${ln.milesPerHour} miles of range an hour (Lectron's figure), NEMA 14-50 plug-in, IP66 weatherproof, ${ln.cableFt}-foot cable. No app.` };
     const eviqo: ProductMatch = { charger: en, why: `Tesla-style (NACS) plug, 40 amps, up to ${en.milesPerHour} miles of range an hour (EVIQO's figure), NEMA 14-50 plug-in, ${en.cableFt}-foot cable. Its app schedules charging for your utility's cheaper overnight hours.` };
     if (input.smart) products.push(eviqo, lectron);
     else products.push(lectron, eviqo);
   } else {
-    const eviqo: ProductMatch = { charger: ej, why: `40 amps plugged in, up to ${ej.milesPerHour} miles of range an hour (EVIQO's figure), NEMA 14-50, ${ej.cableFt}-foot cable, IP66 weatherproof, and an app that schedules charging for cheaper overnight hours. The lowest price here.` };
+    const eviqo: ProductMatch = { charger: ej, why: `40 amps plugged in, up to ${ej.milesPerHour} miles of range an hour (EVIQO's figure), NEMA 14-50, ${ej.cableFt}-foot cable, IP66 weatherproof, and an app that schedules charging for cheaper overnight hours.` };
     const lectron: ProductMatch = { charger: lj, why: `40 amps, up to ${lj.milesPerHour} miles of range an hour (Lectron's figure), NEMA 14-50 plug-in, IP66 weatherproof, ${lj.cableFt}-foot cable, ETL listed to UL 2594. No app.` };
     const autel: ProductMatch = { charger: a40, why: `40 amps, NEMA 14-50 plug-in, ${a40.cableFt}-foot cable. Its app schedules charging for your utility's cheaper overnight hours.` };
     products.push(eviqo, input.smart ? autel : lectron);

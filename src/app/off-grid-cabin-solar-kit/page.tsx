@@ -26,13 +26,13 @@ import {
   stationOptions,
   typicalWinterState,
 } from "@/lib/offgrid";
-import { money, productById } from "@/lib/products";
+import { productById } from "@/lib/products";
 import { JsonLd, pageMetadata, url } from "@/lib/seo";
 
 const PATH = "/off-grid-cabin-solar-kit";
 const TITLE = "Off-Grid Cabin Solar Kit: What Size You Need, by State";
 const DESCRIPTION =
-  "What size solar kit an off-grid cabin needs for weekend, part-time or full-time use, sized on your state's December sun, with the power stations that can carry it and dated prices.";
+  "What size solar kit an off-grid cabin needs for weekend, part-time or full-time use, sized on your state's December sun, with the power stations that can carry it and links to today's prices.";
 
 export const metadata: Metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH });
 
@@ -71,7 +71,7 @@ export default function CabinSolarKitPage() {
   });
   const [weekend, parttime, fulltime] = tiers;
 
-  // Every station the picker can show, for the price dates and sources.
+  // Every station the picker can show, for the spec dates and sources.
   const shown = new Set<string>();
   for (const s of STATES)
     for (const t of CABIN_TIERS) {
@@ -88,15 +88,15 @@ export default function CabinSolarKitPage() {
     },
     {
       q: "Can a portable power station run an off-grid cabin?",
-      a: `For a weekend or part-time cabin, often yes, if it takes enough solar input. ${weekend.match ? `The cheapest one we track for a weekend cabin in ${typical.name} is the ${weekend.match.option.name} at ${money(weekend.match.totalUsd)} when we checked.` : ""} A full-time home (about ${fmtWh(fulltime.wh)} a day) is beyond any power station we track: it needs about ${fmtW(fulltime.here.panelW)} of panels and ${fmtKwh(fulltime.here.batteryWh)} of battery, which means a component system.`,
+      a: `For a weekend or part-time cabin, often yes, if it takes enough solar input. ${weekend.match ? `For a weekend cabin in ${typical.name}, the smallest station we track that carries it is the ${weekend.match.option.name}.` : ""} A full-time home (about ${fmtWh(fulltime.wh)} a day) is beyond any power station we track: it needs about ${fmtW(fulltime.here.panelW)} of panels and ${fmtKwh(fulltime.here.batteryWh)} of battery, which means a component system.`,
     },
     {
       q: "Is a fridge or a 12 V cooler better for an off-grid cabin?",
       a: `For weekends, a 12 V compressor cooler uses far less power: about ${fmtWh(dailyWh([{ id: "cooler", count: 1 }]))} a day on a hot day (Dometic CFX3 35 spec) against about ${fmtWh(dailyWh([{ id: "fridge", count: 1 }]))} for an average kitchen fridge (EIA). If you live there or need the space, a full-size fridge is fine, but it sets the size of the whole system.`,
     },
     {
-      q: "Do the kit prices include solar panels?",
-      a: "No. The prices we show are for the power station and any add-on batteries from the maker's own US site on the date we checked. Panels, mounts and cables are extra, and prices change often.",
+      q: "Do the power stations come with solar panels?",
+      a: "Usually not. Our picks are for the power station and any add-on batteries; panels, mounts and cables are usually extra. Some makers sell bundles with panels, so check the maker's page for today's price and what is in the box.",
     },
     {
       q: "Why does the same cabin need a bigger kit in some states?",
@@ -154,7 +154,7 @@ export default function CabinSolarKitPage() {
                 <PartnerLink brand={weekend.match.option.brand} productId={weekend.match.option.id} productUrl={weekend.match.option.url}>
                   {weekend.match.option.name}
                 </PartnerLink>{" "}
-                ({money(weekend.match.totalUsd)}) covers it.
+                covers it.
               </>
             )}
           </p>
@@ -162,11 +162,11 @@ export default function CabinSolarKitPage() {
             <strong>Part-time cabin with a fridge:</strong> about {fmtW(parttime.here.panelW)} and {fmtKwh(parttime.here.batteryWh)}.
             {parttime.match && (
               <>
-                {" "}The cheapest station we track that carries it is the{" "}
+                {" "}The smallest station we track that carries it is the{" "}
                 <PartnerLink brand={parttime.match.option.brand} productId={parttime.match.option.id} productUrl={parttime.match.option.url}>
                   {parttime.match.option.name}
                 </PartnerLink>
-                {parttime.match.addOns > 0 ? ` with ${parttime.match.addOns} add-on batteries` : ""} ({money(parttime.match.totalUsd)}).
+                {parttime.match.addOns > 0 ? ` with ${parttime.match.addOns} add-on batteries` : ""}.
               </>
             )}
           </p>
@@ -239,7 +239,7 @@ export default function CabinSolarKitPage() {
 
         <Section title="Off-grid kit makers" id="makers">
           <p className="text-stone-700 max-w-3xl mb-3">
-            For component systems. Kits and prices vary too much to list one; take your panel and battery numbers to them.
+            For component systems. Their kits vary too much to pick one; take your panel and battery numbers to them.
           </p>
           <ul className="grid sm:grid-cols-2 gap-3">
             {KIT_BRANDS.map((k) => (
@@ -259,8 +259,8 @@ export default function CabinSolarKitPage() {
         </p>
         <Faq items={faqs} path={PATH} />
         <Disclaimer>
-          Estimates only. Real needs depend on your appliances, site, shade and snow. Prices and specifications are copied from makers&apos; US
-          websites on the dates shown and change often.
+          Estimates only. Real needs depend on your appliances, site, shade and snow. Specifications are copied from makers&apos; US
+          websites on the dates shown.
         </Disclaimer>
         <Sources
           items={[

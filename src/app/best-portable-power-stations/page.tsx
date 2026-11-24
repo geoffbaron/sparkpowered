@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { DealsStrip } from "@/components/DealsStrip";
 import WhatItRunsLinks from "@/components/WhatItRunsLinks";
 import { HomeBackupLinks } from "@/components/home-backup";
 import { AffiliateDisclosure } from "@/components/affiliate";
@@ -12,13 +11,13 @@ import { PickCard, PriceFootnote, ProductListJsonLd, SpecTable } from "@/compone
 import { COMPARISONS } from "@/data/comparisons";
 import { PRODUCTS } from "@/data/products";
 import { formatDate } from "@/lib/energy";
-import { fullName, money, productById } from "@/lib/products";
+import { fullName, kwh, productById } from "@/lib/products";
 import { pageMetadata } from "@/lib/seo";
 
 const PATH = "/best-portable-power-stations";
 const TITLE = "Best Portable Power Stations of 2026 (Solar Generators Compared)";
 const DESCRIPTION =
-  "The best portable power stations and solar generators for camping, CPAP, fridge backup, RVs and apartments, picked from a spec table of EcoFlow, Anker SOLIX, Jackery, Bluetti and DJI models with current prices.";
+  "The best portable power stations and solar generators for camping, CPAP, fridge backup, RVs and apartments, picked from a spec table of EcoFlow, Anker SOLIX, Jackery, Bluetti and DJI models, with links to each maker's page for today's price.";
 
 export const metadata: Metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH, type: "article" });
 
@@ -30,13 +29,13 @@ const PICKS: { id: string; label: string; why: string }[] = [
   },
   {
     id: "growatt-infinity-2000-pro",
-    label: "Best value at 2 kWh",
-    why: "About $80 less than EcoFlow's DELTA 3 Max and $100 or more under the 2 kWh Anker and Bluetti units we list when we checked, with LFP cells and a 5-year warranty. The trade-offs: at 51 lb it is heavier than the Anker or Jackery, it switches over in about 20 ms rather than 10, and its extra batteries were sold out.",
+    label: "Also strong at 2 kWh",
+    why: "About 2 kWh with LFP cells and a 5-year warranty, often priced below the 2 kWh EcoFlow, Anker and Bluetti units we list; check today's price. The trade-offs: at 51 lb it is heavier than the Anker or Jackery, it switches over in about 20 ms rather than 10, and its extra batteries were sold out.",
   },
   {
     id: "anker-solix-c1000-gen-2",
-    label: "Best value · apartments",
-    why: "One of the cheapest full-size units we list. It refills from the wall in under an hour by Anker's figure and runs whisper-quiet (about 20 dB under light loads), so it suits a bedroom or small apartment. It can't take extra batteries later.",
+    label: "Best for apartments",
+    why: "A full-size 1 kWh unit that refills from the wall in under an hour by Anker's figure and runs whisper-quiet (about 20 dB under light loads), so it suits a bedroom or small apartment. It can't take extra batteries later.",
   },
   {
     id: "ecoflow-delta-3-plus",
@@ -51,7 +50,7 @@ const PICKS: { id: string; label: string; why: string }[] = [
   {
     id: "bluetti-elite-30-v2",
     label: "Best for CPAP and small loads",
-    why: "A 9.5 lb box for about $290 that switches over in about 10 ms, so a CPAP keeps running if the power blips. It holds one night with a heated humidifier; it can't take extra batteries. Check your own machine: our CPAP nights assume about 28 W with a heated humidifier, from ResMed's battery guide. If you depend on a CPAP, ask your doctor and the device maker which battery setups they approve.",
+    why: "A 9.5 lb box that switches over in about 10 ms, so a CPAP keeps running if the power blips. It holds one night with a heated humidifier; it can't take extra batteries. Check your own machine: our CPAP nights assume about 28 W with a heated humidifier, from ResMed's battery guide. If you depend on a CPAP, ask your doctor and the device maker which battery setups they approve.",
   },
   {
     id: "anker-solix-f3000",
@@ -61,7 +60,7 @@ const PICKS: { id: string; label: string; why: string }[] = [
   {
     id: "bluetti-apex-300",
     label: "Best for running home circuits",
-    why: "120 V and 240 V from one unit, with a 50 A (14-50R) outlet for a well pump or a transfer switch, 3,840 W of output and room to grow to 19.4 kWh with Bluetti's B300K batteries. The Anker F3800 Plus and EcoFlow DELTA Pro 3 were both sold out on their makers' US sites on Nov 6. Need more output? The Nature's Generator L6000 gives 6,000 W at 120/240 V for $2,099.99, with a 1-year warranty. 84 lb.",
+    why: "120 V and 240 V from one unit, with a 50 A (14-50R) outlet for a well pump or a transfer switch, 3,840 W of output and room to grow to 19.4 kWh with Bluetti's B300K batteries. The Anker F3800 Plus and EcoFlow DELTA Pro 3 were both sold out on their makers' US sites on Nov 6. Need more output? The Nature's Generator L6000 gives 6,000 W at 120/240 V, with a 1-year warranty. 84 lb.",
   },
 ];
 
@@ -69,7 +68,7 @@ export default function BestPowerStationsPage() {
   const all = PRODUCTS.filter((p) => p.category === "portable").sort((a, b) => a.capacityWh - b.capacityWh);
   const picks = PICKS.map((x) => ({ ...x, p: productById(x.id) }));
   const top = lifeSummary(picks[0].p.capacityWh);
-  const cheapest = all.filter((p) => p.priceUsd != null && !p.soldOut).sort((a, b) => a.priceUsd! - b.priceUsd!)[0];
+  const smallest = all.filter((p) => !p.soldOut)[0];
 
   const faqs = [
     {
@@ -112,7 +111,6 @@ export default function BestPowerStationsPage() {
         <a href="#picks" className="btn btn-primary">See our picks</a>
         <Link href="/battery-calculator" className="btn btn-light">Find the right size for you</Link>
       </HubHero>
-      <DealsStrip />
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <p className="text-sm text-muted mb-6">
@@ -124,7 +122,7 @@ export default function BestPowerStationsPage() {
       <section aria-label="What a 2 kWh station runs" className="grid sm:grid-cols-3 gap-3">
         <BigStat tone="leaf" value={top.essentials} label="Fridge, Wi-Fi and lights" note={`On our top pick, the ${fullName(picks[0].p)}`} />
         <BigStat value={top.cpap} label="Of CPAP" note="8 hours a night, with a heated humidifier (ResMed figure)" />
-        <BigStat tone="orange" value={`From ${money(cheapest.priceUsd!)}`} label="To get started" note={`The ${fullName(cheapest)}, when we checked`} />
+        <BigStat tone="orange" value={kwh(smallest.capacityWh)} label="Smallest we list" note={`The ${fullName(smallest)}`} />
       </section>
 
       <div className="mt-8 grid gap-3">
@@ -158,7 +156,7 @@ export default function BestPowerStationsPage() {
           Sorted by capacity. Swipe sideways on a phone. &quot;Expands to&quot; uses the maker&apos;s own add-on batteries on
           one unit. A dash means the maker does not publish the figure on its US page.
         </p>
-        <SpecTable products={all} caption="Portable power stations compared by published specs and price" />
+        <SpecTable products={all} caption="Portable power stations compared by published specs" />
         <PriceFootnote products={all} />
         <p className="text-sm text-stone-700 mt-4">
           Bigger whole-home systems such as the Nature's Generator MyGrid 10K, EcoFlow DELTA Pro Ultra and installed batteries are on
@@ -212,11 +210,11 @@ export default function BestPowerStationsPage() {
         <div className="text-stone-700 leading-relaxed space-y-3 max-w-3xl">
           <p>
             We started from the current US line-ups of the five brands that dominate searches for power stations, kept
-            models that were listed for sale on the maker&apos;s US site, and copied their specifications and prices from
+            models that were listed for sale on the maker&apos;s US site, and copied their specifications from
             those pages on the date shown. We have not lab-tested these units, and we publish no star ratings.
           </p>
           <ul className="list-disc pl-5 space-y-1">
-            <li><strong>Price per kWh</strong> at the listed price, because sale prices swing widely.</li>
+            <li><strong>Value:</strong> how much capacity and output you get for the money, checked against the maker&apos;s own price on the day.</li>
             <li><strong>LFP chemistry</strong> and a cycle rating stated to 80% capacity.</li>
             <li><strong>Continuous and surge output</strong> high enough for the use (a fridge compressor, an RV air conditioner, a well pump).</li>
             <li><strong>Solar input</strong>, which decides how fast it refills off-grid.</li>
@@ -236,8 +234,8 @@ export default function BestPowerStationsPage() {
 
       <Faq items={faqs} path={PATH} />
       <Disclaimer>
-        Specifications and prices are copied from manufacturers&apos; US websites on the date shown and change often,
-        especially during sales. Confirm them with the seller before you buy.
+        Specifications are copied from manufacturers&apos; US websites on the date shown. We don&apos;t list prices; each
+        link goes to the seller&apos;s page for today&apos;s price. Confirm them with the seller before you buy.
       </Disclaimer>
       <Sources items={all.map((p) => ({ name: `${fullName(p)} product page`, url: p.sourceUrl, detail: `checked ${formatDate(p.retrieved)}` }))} />
       <RelatedLinks

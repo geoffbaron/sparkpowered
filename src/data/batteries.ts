@@ -4,10 +4,10 @@
  * compare them with.
  *
  * RULES (enforced by tests/batteries.test.ts):
- *   - Every spec and price is copied from the maker's own US product page, and
+ *   - Every spec is copied from the maker's own US product page, and
  *     `sourceUrl` + `retrieved` say where and when.
- *   - `priceUsd` is the single-battery price shown on that page that day;
- *     `listPriceUsd` is the crossed-out regular price, if one was shown.
+ *   - No prices: they change often, so pages link to the maker's page for
+ *     today's price.
  *   - Use null for anything the maker does not publish. Never estimate.
  *   - No ratings or reviews: we have not collected any.
  * Outbound links are built from `url` by src/data/affiliates.ts.
@@ -25,7 +25,7 @@ export interface DeepCycleBattery {
   short: string;
   url: string;
   sourceUrl: string;
-  /** YYYY-MM-DD the specs and price were checked. */
+  /** YYYY-MM-DD the specs were checked. */
   retrieved: string;
   /** Nominal volts as sold (12.8 V packs are sold as "12V"). */
   volts: 12 | 24 | 36 | 48;
@@ -46,8 +46,6 @@ export interface DeepCycleBattery {
   lowTempCutoff: boolean;
   /** Warms itself so it can charge below freezing. */
   selfHeating: boolean;
-  priceUsd: number;
-  listPriceUsd: number | null;
   uses: BatteryUse[];
   notes: string[];
 }
@@ -61,7 +59,7 @@ export const BATTERIES: DeepCycleBattery[] = [
     url: `${RD}12v-100ah-lithium-battery`, sourceUrl: `${RD}12v-100ah-lithium-battery`, retrieved: CHECKED,
     volts: 12, nominalV: 12.8, ampHours: 100, energyWh: 1280, continuousA: 100, cycles: 4000,
     weightLb: 22.05, warrantyYears: 5, lifeYears: 10, bluetooth: false, lowTempCutoff: false, selfHeating: false,
-    priceUsd: 242.89, listPriceUsd: 279.99, uses: ["rv", "marine", "trolling"],
+    uses: ["rv", "marine", "trolling"],
     notes: [
       "Redodo's budget model; same size as a Group 31 lead-acid battery.",
       "Rated 4,000 cycles at 100% depth of discharge; Redodo states a 10-year life and 5-year warranty.",
@@ -73,7 +71,7 @@ export const BATTERIES: DeepCycleBattery[] = [
     url: `${RD}redodo-12v-100ah-smart-bluetooth-lithium-battery`, sourceUrl: `${RD}redodo-12v-100ah-smart-bluetooth-lithium-battery`, retrieved: CHECKED,
     volts: 12, nominalV: 12.8, ampHours: 100, energyWh: 1280, continuousA: 100, cycles: 4000,
     weightLb: 22.84, warrantyYears: 5, lifeYears: null, bluetooth: true, lowTempCutoff: true, selfHeating: false,
-    priceUsd: 265.99, listPriceUsd: 389.99, uses: ["rv", "marine", "trolling"],
+    uses: ["rv", "marine", "trolling"],
     notes: [
       "Shows charge level, current and remaining time in the Redodo phone app.",
       "Stops charging below 32°F to protect the cells.",
@@ -84,7 +82,7 @@ export const BATTERIES: DeepCycleBattery[] = [
     url: `${RD}self-heating-redodo-12v-100ah-lithium-battery`, sourceUrl: `${RD}self-heating-redodo-12v-100ah-lithium-battery`, retrieved: CHECKED,
     volts: 12, nominalV: 12.8, ampHours: 100, energyWh: 1280, continuousA: 100, cycles: 4000,
     weightLb: 23.32, warrantyYears: 5, lifeYears: 10, bluetooth: false, lowTempCutoff: true, selfHeating: true,
-    priceUsd: 279.99, listPriceUsd: 559.99, uses: ["rv", "cold", "marine"],
+    uses: ["rv", "cold", "marine"],
     notes: [
       "Built-in 100 W heating pads switch on below 32°F and off at 41°F, then charging resumes.",
       "Stops discharging below -4°F, per Redodo.",
@@ -95,7 +93,7 @@ export const BATTERIES: DeepCycleBattery[] = [
     url: `${RD}12v-200ah-plus-deep-cycle-lithium-battery`, sourceUrl: `${RD}12v-200ah-plus-deep-cycle-lithium-battery`, retrieved: CHECKED,
     volts: 12, nominalV: 12.8, ampHours: 200, energyWh: 2560, continuousA: 200, cycles: 4000,
     weightLb: 45.59, warrantyYears: 5, lifeYears: 10, bluetooth: false, lowTempCutoff: false, selfHeating: false,
-    priceUsd: 449.99, listPriceUsd: 769.99, uses: ["rv", "home"],
+    uses: ["rv", "home"],
     notes: [
       "200 A battery management system: 2,560 W continuous, enough for a microwave or coffee maker through an inverter.",
       "Redodo says it replaces two 12V 200Ah AGM batteries.",
@@ -106,7 +104,7 @@ export const BATTERIES: DeepCycleBattery[] = [
     url: `${RD}12v-300ah-lithium-battery`, sourceUrl: `${RD}12v-300ah-lithium-battery`, retrieved: CHECKED,
     volts: 12, nominalV: 12.8, ampHours: 300, energyWh: 3840, continuousA: 200, cycles: 4000,
     weightLb: 59.6, warrantyYears: 5, lifeYears: 10, bluetooth: false, lowTempCutoff: false, selfHeating: false,
-    priceUsd: 599.99, listPriceUsd: 1099.99, uses: ["rv", "home"],
+    uses: ["rv", "home"],
     notes: [
       "About 20.6 x 9.3 x 8.6 inches; Redodo says one replaces six 12V 100Ah AGM batteries.",
       "IP65 water resistance; listed as a pre-order when we checked.",
@@ -117,7 +115,7 @@ export const BATTERIES: DeepCycleBattery[] = [
     url: `${RD}redodo-24v-50ah-trolling-motor-battery-with-bluetooth`, sourceUrl: `${RD}redodo-24v-50ah-trolling-motor-battery-with-bluetooth`, retrieved: CHECKED,
     volts: 24, nominalV: 25.6, ampHours: 50, energyWh: 1280, continuousA: 50, cycles: 4000,
     weightLb: 21.14, warrantyYears: 5, lifeYears: null, bluetooth: true, lowTempCutoff: true, selfHeating: false,
-    priceUsd: 299.99, listPriceUsd: 359.99, uses: ["trolling", "marine"],
+    uses: ["trolling", "marine"],
     notes: [
       "One battery runs a 24 V trolling motor of up to 100 lb thrust, where lead-acid needs two 12 V batteries wired together.",
       "60 A for 30 minutes at full throttle, per Redodo.",
@@ -128,7 +126,7 @@ export const BATTERIES: DeepCycleBattery[] = [
     url: `${RD}redodo-51-2v-100ah-lithium-solar-battery`, sourceUrl: `${RD}redodo-51-2v-100ah-lithium-solar-battery`, retrieved: CHECKED,
     volts: 48, nominalV: 51.2, ampHours: 100, energyWh: 5120, continuousA: 100, cycles: 4000,
     weightLb: 82, warrantyYears: 5, lifeYears: null, bluetooth: true, lowTempCutoff: true, selfHeating: false,
-    priceUsd: 929.99, listPriceUsd: 1699.99, uses: ["home"],
+    uses: ["home"],
     notes: [
       "For 48 V off-grid solar and home backup systems with a 48 V inverter; up to four in parallel (20.48 kWh).",
       "Bluetooth monitoring; charging pauses below 32°F.",
@@ -149,7 +147,7 @@ export const TROLLING_EXTRA: DeepCycleBattery[] = [
     sourceUrl: `${RD}redodo-12v-120ah-group-24-trolling-motor-bluetooth-lithium-battery-for-3-days-fishing`, retrieved: CHECKED_TROLLING,
     volts: 12, nominalV: 12.8, ampHours: 120, energyWh: 1536, continuousA: 120, cycles: 4000,
     weightLb: 23.81, warrantyYears: 5, lifeYears: null, bluetooth: true, lowTempCutoff: true, selfHeating: false,
-    priceUsd: 329.99, listPriceUsd: 459.99, uses: ["trolling", "marine"],
+    uses: ["trolling", "marine"],
     notes: [
       "Fits a Group 24 battery tray, the size many small boats use, with 20% more energy than a 100 Ah battery.",
       "Redodo quotes up to 19.2 hours on a 55 lb thrust motor at 1/8 power; IP65 water resistance.",
@@ -160,7 +158,7 @@ export const TROLLING_EXTRA: DeepCycleBattery[] = [
     url: `${RD}redodo-24v-125ah-lifepo4-trolling-motor-battery`, sourceUrl: `${RD}redodo-24v-125ah-lifepo4-trolling-motor-battery`, retrieved: CHECKED_TROLLING,
     volts: 24, nominalV: 25.6, ampHours: 125, energyWh: 3200, continuousA: 125, cycles: 4000,
     weightLb: 52.47, warrantyYears: 5, lifeYears: null, bluetooth: true, lowTempCutoff: true, selfHeating: true,
-    priceUsd: 629.99, listPriceUsd: 939.99, uses: ["trolling", "marine", "cold"],
+    uses: ["trolling", "marine", "cold"],
     notes: [
       "One battery for a 24 V motor of 70 to 100 lb thrust, in place of two Group 31 AGMs (about 134 lb, per Redodo).",
       "Warms itself to charge on cold mornings; IP67 water resistance.",
@@ -171,7 +169,7 @@ export const TROLLING_EXTRA: DeepCycleBattery[] = [
     url: `${RD}redodo-36v-50ah-trolling-motor-battery-with-low-temp-cutoff`, sourceUrl: `${RD}redodo-36v-50ah-trolling-motor-battery-with-low-temp-cutoff`, retrieved: CHECKED_TROLLING,
     volts: 36, nominalV: 38.4, ampHours: 50, energyWh: 1920, continuousA: 50, cycles: 4000,
     weightLb: 32.8, warrantyYears: 5, lifeYears: null, bluetooth: false, lowTempCutoff: true, selfHeating: false,
-    priceUsd: 399.99, listPriceUsd: 499.99, uses: ["trolling", "marine"],
+    uses: ["trolling", "marine"],
     notes: [
       "For 36 V motors of 100 to 120 lb thrust, replacing three 12 V lead-acid batteries wired together.",
       "Redodo says it is not for electric outboards or golf carts.",
@@ -190,8 +188,6 @@ export interface OtherBattery {
   url: string;
   retrieved: string;
   energyWh: number;
-  priceUsd: number;
-  listPriceUsd: number | null;
   weightLb: number | null;
   cycles: number | null;
   warrantyYears: number | null;
@@ -201,13 +197,13 @@ export interface OtherBattery {
 export const OTHER_LITHIUM: OtherBattery[] = [
   {
     id: "litime-12v-100ah", brand: "litime", name: "LiTime 12V 100Ah LiFePO4", url: "https://www.litime.com/products/litime-12v-100ah-lithium-lifepo4-battery",
-    retrieved: CHECKED_LITIME, energyWh: 1280, priceUsd: 335.99, listPriceUsd: 359.99, weightLb: 24.25, cycles: 4000, warrantyYears: 5,
-    note: "Popular rival with the same 1,280 Wh and 4,000-cycle rating; it cost $93 more than Redodo's 12V 100Ah when we checked.",
+    retrieved: CHECKED_LITIME, energyWh: 1280, weightLb: 24.25, cycles: 4000, warrantyYears: 5,
+    note: "Popular rival with the same 1,280 Wh and 4,000-cycle rating; the same 5-year warranty as Redodo's 12V 100Ah.",
   },
   {
     id: "battle-born-100ah", name: "Battle Born 100Ah 12V LiFePO4", url: "https://battlebornbatteries.com/products/100ah-12v-lifepo4-deep-cycle-battery",
-    retrieved: CHECKED_TROLLING, energyWh: 1280, priceUsd: 799, listPriceUsd: 949, weightLb: null, cycles: null, warrantyYears: 10,
-    note: "Assembled in the USA with a 10-year warranty, twice Redodo's. You pay about three times as much for the same energy.",
+    retrieved: CHECKED_TROLLING, energyWh: 1280, weightLb: null, cycles: null, warrantyYears: 10,
+    note: "Assembled in the USA with a 10-year warranty, twice Redodo's, for the same energy.",
   },
 ];
 
@@ -224,14 +220,12 @@ export const LITIME_RV = {
   energyWh: 2944,
   continuousA: 200,
   weightLb: 45.22,
-  priceUsd: 484.49,
-  listPriceUsd: 709.99,
 };
 
 /**
  * A premium heated 12 V battery from Epoch Batteries (approved partner, Refersion),
  * read from epochbatteries.com on Oct 31 2026. Every figure is Epoch's own from the
- * product page: price, 1.34 kWh, 105 A continuous (200 A peak for 10 s), 22.1 lb,
+ * product page: 1.34 kWh, 105 A continuous (200 A peak for 10 s), 22.1 lb,
  * internal heating, Bluetooth, 4,000 cycles to 80% capacity, and an 11-year limited
  * warranty of which the first 3 years are free replacement.
  */
@@ -244,8 +238,6 @@ export const EPOCH_RV = {
   energyWh: 1340,
   continuousA: 105,
   weightLb: 22.1,
-  priceUsd: 549,
-  listPriceUsd: null,
   warrantyYears: 11,
   freeReplacementYears: 3,
   cycles: 4000,
@@ -255,7 +247,7 @@ export const EPOCH_RV = {
 
 /**
  * A self-heating 12 V 300Ah battery from Vatrer (approved partner, Awin), read from
- * vatrerpower.com on Oct 31 2026: price and spec table from the product page (3,840 Wh,
+ * vatrerpower.com on Oct 31 2026: spec table from the product page (3,840 Wh,
  * 200 A continuous, 54.67 lb, heats below 32°F and charges again above 41°F, Bluetooth app),
  * warranty from Vatrer's warranty policy (5 years on 12V 100Ah-600Ah RV batteries, updated
  * July 1 2026).
@@ -270,8 +262,6 @@ export const VATRER_RV = {
   energyWh: 3840,
   continuousA: 200,
   weightLb: 54.67,
-  priceUsd: 629.99,
-  listPriceUsd: 999.99,
   warrantyYears: 5,
   selfHeating: true,
   bluetooth: true,
@@ -279,13 +269,12 @@ export const VATRER_RV = {
 
 /**
  * The lead-acid battery we compare against: a widely sold 12 V 100 Ah AGM
- * deep-cycle battery, specs and price from the maker's US store.
+ * deep-cycle battery, specs from the maker's US store.
  */
 export const LEAD_ACID_REF = {
   name: "Renogy Deep Cycle AGM Battery 12V 100Ah",
   url: "https://www.renogy.com/products/deep-cycle-agm-battery-12-volt-100ah",
   retrieved: CHECKED,
-  priceUsd: 208.99,
   weightLb: 63.9,
   ampHours: 100,
   /** Renogy rates 500 cycles at 50% depth of discharge and advises not going below 50%. */

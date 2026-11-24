@@ -1,9 +1,8 @@
-import { PartnerLink } from "@/components/affiliate";
+import { PartnerLink, PriceLink } from "@/components/affiliate";
 import { PlainLink } from "@/components/guide-ui";
 import { AFFILIATES } from "@/data/affiliates";
 import { EBIKES_CHECKED, type Ebike, type EbikeAlternative } from "@/data/ebikes";
 import { formatDate } from "@/lib/energy";
-import { money } from "@/lib/products";
 
 const NS = "not stated";
 const n = (v: number | null | undefined, unit: string) => (v == null ? NS : `${v.toLocaleString("en-US")} ${unit}`);
@@ -31,8 +30,7 @@ export type EbikeColumn = "price" | "motor" | "torque" | "sensor" | "battery" | 
 const COLS: Record<EbikeColumn, { head: string; cell: (b: Ebike) => React.ReactNode; right?: boolean }> = {
   price: {
     head: "Price",
-    cell: (b) => (b.saleEndsLabel ? <>{money(b.price)}<span className="block text-xs text-slate-500">sale through {b.saleEndsLabel}</span></> : money(b.price)),
-    right: true,
+    cell: (b) => <PriceLink brand={b.brand} productUrl={b.url} className="underline underline-offset-2 text-spark-orange whitespace-nowrap" />,
   },
   motor: { head: "Motor", cell: motorLabel },
   torque: { head: "Torque", cell: (b) => n(b.torqueNm, "Nm") },
@@ -74,8 +72,9 @@ export function EbikeTable({ bikes, columns, caption }: { bikes: Ebike[]; column
         </table>
       </div>
       <p className="text-xs text-muted mt-2 max-w-3xl">
-        Specs and prices from each maker&apos;s US website on {formatDate(EBIKES_CHECKED)}. Range is the maker&apos;s own claim, usually at the
-        lowest assist level with a light rider on flat ground. Max load is rider plus cargo. We have not ridden these bikes.
+        Specs from each maker&apos;s US website on {formatDate(EBIKES_CHECKED)}. Range is the maker&apos;s own claim, usually at the
+        lowest assist level with a light rider on flat ground. Max load is rider plus cargo. We don&apos;t list prices; the links go to
+        each maker&apos;s page for today&apos;s price. We have not ridden these bikes.
       </p>
     </>
   );
@@ -87,7 +86,7 @@ export function EbikeAlternativeNote({ alt }: { alt: EbikeAlternative }) {
     <aside className="rounded-xl border border-black/10 bg-surface-light p-5" data-testid="ebike-alternative">
       <p className="text-xs font-bold uppercase tracking-wide text-muted">When a bike we don&apos;t earn on is the better pick</p>
       <p className="font-semibold text-ink mt-1">
-        <PlainLink href={alt.url}>{alt.brand} {alt.model}</PlainLink>, {money(alt.price)}
+        <PlainLink href={alt.url}>{alt.brand} {alt.model}</PlainLink>
       </p>
       <p className="text-sm text-stone-700 mt-1">{alt.whenBetter}</p>
       <p className="text-xs text-muted mt-2">Maker&apos;s specs: {alt.keySpec}. Checked {formatDate(EBIKES_CHECKED)}.</p>

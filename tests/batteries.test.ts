@@ -2,7 +2,7 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { BATTERIES, LEAD_ACID_REF } from "../src/data/batteries";
 import { AFFILIATES, partnerUrl } from "../src/data/affiliates";
-import { PICKER_BATTERIES, RV_LOADS, lifetimeCost, recommend } from "../src/lib/rv-battery";
+import { PICKER_BATTERIES, RV_LOADS, lifetimeCompare, recommend } from "../src/lib/rv-battery";
 import { ROUTES } from "../src/lib/seo";
 
 const isDate = (s: string) => /^\d{4}-\d{2}-\d{2}$/.test(s) && !Number.isNaN(Date.parse(s));
@@ -24,8 +24,7 @@ test("battery specs are plausible and consistent", () => {
   for (const b of BATTERIES) {
     assert.ok(Math.abs(b.nominalV * b.ampHours - b.energyWh) <= 1, `${b.id} energy = volts x amp-hours`);
     assert.ok(Math.abs(b.nominalV - b.volts * 1.0667) < 0.2, `${b.id} nominal volts`);
-    assert.ok(b.priceUsd > 50 && b.priceUsd < 5000, `${b.id} price`);
-    if (b.listPriceUsd != null) assert.ok(b.listPriceUsd >= b.priceUsd, `${b.id} list price`);
+    assert.ok(!("priceUsd" in b) && !("listPriceUsd" in b), `${b.id} carries no price`);
     assert.ok(b.weightLb > 5 && b.weightLb < 150, `${b.id} weight`);
     assert.ok(b.cycles >= 1000 && b.cycles <= 15000, `${b.id} cycles`);
     if (b.selfHeating) assert.ok(b.lowTempCutoff, `${b.id} self-heating implies low-temp cutoff`);
@@ -59,11 +58,12 @@ test("RV picker recommends a battery that covers the need, and scales up", () =>
   assert.equal(recommend(500, 2).battery.id, "redodo-12v-100ah");
 });
 
-test("lithium costs less per year than AGM at every usage level", () => {
+test("one lithium outlasts at least one set of AGMs at every usage level, with no dollar figures", () => {
   for (const n of [50, 100, 200, 365]) {
-    const c = lifetimeCost(n);
-    assert.ok(c.lithium.perYear < c.leadAcid.perYear, `${n} nights`);
-    assert.ok(c.lithium.years <= 10);
+    const c = lifetimeCompare(n);
+    assert.ok(c.lithium.years >= c.leadAcid.years, `${n} nights`);
+    assert.ok(c.leadAcid.sets >= 1 && c.lithium.years <= 10);
+    assert.ok(!/\$|usd|price/i.test(JSON.stringify(c)), "no prices in the comparison");
   }
 });
 

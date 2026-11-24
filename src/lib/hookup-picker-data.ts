@@ -9,11 +9,10 @@ import { fullName } from "@/lib/products";
 /** Brands we never add new placements for (Awin payment risk, growth plan section 6). */
 const NO_NEW_PLACEMENTS = new Set(["naturesgenerator", "himiway"]);
 
-/** In stock, priced, a tracked partner brand, at least 1 kWh, and plug-in (not installer-only). */
+/** In stock, a tracked partner brand, at least 1 kWh, and plug-in (not installer-only). */
 export const pickable = (p: Product) =>
   p.install === "diy" &&
   !p.soldOut &&
-  p.priceUsd != null &&
   p.capacityWh >= 1000 &&
   AFFILIATES[p.brand].tracked &&
   !NO_NEW_PLACEMENTS.has(p.brand);
@@ -23,8 +22,8 @@ export function hookupData(products: Product[] = PRODUCTS): HookupData {
   for (const p of products.filter(pickable)) {
     const h = modelHookup(p.id);
     const addOn =
-      p.addOn && !p.addOn.soldOut && p.addOn.priceUsd != null
-        ? { model: p.addOn.model, capacityWh: p.addOn.capacityWh, usd: p.addOn.priceUsd, max: p.addOn.maxUnits }
+      p.addOn && !p.addOn.soldOut
+        ? { model: p.addOn.model, capacityWh: p.addOn.capacityWh, max: p.addOn.maxUnits }
         : null;
     candidates.push({
       key: p.id,
@@ -34,7 +33,6 @@ export function hookupData(products: Product[] = PRODUCTS): HookupData {
       units: 1,
       capacityWh: p.capacityWh,
       addOn,
-      priceUsd: p.priceUsd!,
       acOutputW: p.acOutputW,
       motorSurgeW: motorSurgeW(p),
       has240: p.volts === "120/240V",
@@ -55,13 +53,12 @@ export function hookupData(products: Product[] = PRODUCTS): HookupData {
         capacityWh: 2 * p.capacityWh,
         // Add-ons on a pair are not offered: the maker's pair pages don't say how they split.
         addOn: null,
-        priceUsd: 2 * p.priceUsd! + hub.usd,
         acOutputW: hub.outputW,
         motorSurgeW: hub.outputW,
         has240: true,
         outlet: hub.outlet,
         smartPanel: null,
-        hub: { name: hub.name, usd: hub.usd, url: hub.url, retrieved: hub.retrieved, outlet: hub.outlet },
+        hub: { name: hub.name, url: hub.url, retrieved: hub.retrieved, outlet: hub.outlet },
         url: p.url,
         retrieved: p.retrieved < hub.retrieved ? p.retrieved : hub.retrieved,
       });

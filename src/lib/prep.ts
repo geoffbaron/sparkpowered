@@ -457,10 +457,10 @@ export function foodNeeded(people: FoodPerson[], days: number, activity: Activit
   return { days: d, perDay, daily, total: daily * d };
 }
 
-/** How long a kit's real calories last this household, and its cost per 1,000 calories. */
-export function compareKit(kitCalories: number, priceUsd: number, householdDaily: number) {
+/** How long a kit's real calories last this household, and its cost per 1,000 calories at the price the reader types in. */
+export function compareKit(kitCalories: number, readerPaidUsd: number, householdDaily: number) {
   const cal = Number.isFinite(kitCalories) && kitCalories > 0 ? kitCalories : 0;
-  const price = Number.isFinite(priceUsd) && priceUsd > 0 ? priceUsd : 0;
+  const price = Number.isFinite(readerPaidUsd) && readerPaidUsd > 0 ? readerPaidUsd : 0;
   return {
     days: householdDaily > 0 ? cal / householdDaily : 0,
     usdPer1000: cal > 0 && price > 0 ? (price / cal) * 1000 : null,

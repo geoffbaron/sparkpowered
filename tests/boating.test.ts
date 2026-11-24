@@ -12,7 +12,6 @@ import {
   electronicsHours,
   hoursLabel,
   hoursPrecise,
-  lithiumCostPhrase,
   minutesApart,
   runtimeFor,
   runtimeHours,
@@ -22,19 +21,19 @@ import { ROUTES } from "../src/lib/seo";
 
 const isDate = (s: string) => /^\d{4}-\d{2}-\d{2}$/.test(s) && Date.parse(s) <= Date.now();
 
-test("boating data is dated, priced and plausible", () => {
+test("boating data is dated, plausible and carries no prices", () => {
   for (const b of BOAT_BATTERIES) {
     assert.ok(isDate(b.retrieved), b.id);
-    assert.ok(b.priceUsd > 20 && b.priceUsd < 3000, b.id);
+    assert.ok(!("priceUsd" in b), `${b.id} carries no price`);
     assert.ok(Math.abs(b.volts * b.ampHours - b.energyWh) / b.energyWh < 0.08, `${b.id} energy`);
     assert.match(b.url, /^https:\/\//);
   }
   for (const o of ELECTRIC_OUTBOARDS) {
     assert.ok(isDate(o.retrieved), o.id);
-    assert.ok((o.packagePriceUsd ?? o.motorPriceUsd ?? 0) > 1000, o.id);
+    assert.ok(!("packagePriceUsd" in o) && !("motorPriceUsd" in o), `${o.id} carries no price`);
     assert.ok(o.batteryWh > 500, o.id);
   }
-  for (const c of BOAT_CHARGERS) assert.ok(c.priceUsd > 20 && isDate(c.retrieved), c.id);
+  for (const c of BOAT_CHARGERS) assert.ok(!("priceUsd" in c) && isDate(c.retrieved), c.id);
   assert.ok(FUEL_PRICES.gasUsdPerGal > 2 && FUEL_PRICES.electricCentsPerKwh > 10);
 });
 
@@ -82,10 +81,6 @@ test("boating pages are in the sitemap", () => {
 });
 
 test("comparison copy never shows a negative dollar figure", () => {
-  const usd = (n: number) => `$${n}`;
-  assert.equal(lithiumCostPhrase(399.99, 626.97, usd), "pay about $227 less for lithium");
-  assert.equal(lithiumCostPhrase(700, 650, usd), "pay about $50 more for lithium");
-  assert.equal(lithiumCostPhrase(500.2, 500, usd), "pay about the same for lithium");
   assert.equal(hoursPrecise(100 / 26), "about 3.8 hours");
   assert.equal(minutesApart(100 / 26, 100 / 28), 15);
   assert.equal(minutesApart(1, 2), 60);

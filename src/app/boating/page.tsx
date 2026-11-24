@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { AffiliateDisclosure, PartnerLink } from "@/components/affiliate";
-import { RedodoSaleCallout } from "@/components/SaleCallout";
 import { Callout, Faq, Section } from "@/components/content";
 import { Icon } from "@/components/icons";
 import { BigStat, HubHero, PhotoCredit } from "@/components/ui";
 import { LEAD_ACID_REF } from "@/data/batteries";
-import { BOATING_CHECKED, ELECTRIC_OUTBOARDS, PISCIFUN_GEAR } from "@/data/boating";
+import { BOATING_CHECKED, PISCIFUN_GEAR } from "@/data/boating";
 import { formatDate } from "@/lib/energy";
 import { money } from "@/lib/products";
 import { ELECTRIC_HOUR_USD, GAS_HOUR_USD, RUNTIME_BATTERIES, hoursLabel, runtimeFor, seasonFuel } from "@/lib/boating";
@@ -15,7 +14,7 @@ import { JsonLd, pageMetadata, url } from "@/lib/seo";
 const PATH = "/boating";
 const TITLE = "Electric Boating and Fishing: Fish Longer, Spend Less";
 const DESCRIPTION =
-  "Lithium trolling motor batteries, electric outboards and fish finder batteries, with real prices and hours on the water. How electric power saves anglers and boaters money every season.";
+  "Lithium trolling motor batteries, electric outboards and fish finder batteries and hours on the water. How electric power saves anglers and boaters money every season.";
 
 export const metadata: Metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH });
 
@@ -23,11 +22,11 @@ const GUIDES = [
   { href: "/trolling-motor-battery-life", icon: "chart", title: "How long will my trolling motor battery last?", desc: "A calculator: pick your motor, speed and battery, get hours on the water." },
   { href: "/best-trolling-motor-battery", icon: "battery", title: "Best trolling motor battery", desc: "12, 24 and 36 V lithium picks, with what they save over AGM." },
   { href: "/kayak-trolling-motor-battery", icon: "water", title: "Kayak trolling motor battery", desc: "An 11 lb battery for a whole morning of fishing." },
-  { href: "/electric-outboard-motor", icon: "quiet", title: "Electric outboard motors", desc: "ePropulsion, Mercury Avator and Torqeedo prices, range and cost vs gas." },
+  { href: "/electric-outboard-motor", icon: "quiet", title: "Electric outboard motors", desc: "ePropulsion, Mercury Avator and Torqeedo compared: range and running cost vs gas." },
   { href: "/fish-finder-battery", icon: "bolt", title: "Fish finder battery", desc: "How long your screens and live sonar run on each size." },
   { href: "/24v-vs-36v-trolling-motor", icon: "arrow", title: "24V vs 36V trolling motor", desc: "More push, or one less battery to buy and carry." },
   { href: "/charge-lithium-battery-on-boat", icon: "plug", title: "Charging lithium on a boat", desc: "Plug-in, alternator and solar, and the mistakes to avoid." },
-  { href: "/lithium-vs-agm-battery", icon: "dollar", title: "Lithium vs AGM", desc: "Which costs less per year, worked out with today's prices." },
+  { href: "/lithium-vs-agm-battery", icon: "dollar", title: "Lithium vs AGM", desc: "How many AGMs wear out over the life of one lithium." },
   { href: "/questions/electric-boating", icon: "check", title: "Boating questions, answered", desc: "Run times, battery size, chargers and outboard range, with sources." },
 ];
 
@@ -36,7 +35,6 @@ export default function BoatingHub() {
   const agmHalf = runtimeFor("55-12", "half", agm12.id);
   const liHalf = runtimeFor("55-12", "half", li100.id);
   const s100 = seasonFuel(100);
-  const spirit = ELECTRIC_OUTBOARDS.find((o) => o.id === "epropulsion-spirit-1-evo")!;
   const reel = PISCIFUN_GEAR.electricReel;
 
   const faqs = [
@@ -46,7 +44,7 @@ export default function BoatingHub() {
     },
     {
       q: "Is an electric outboard cheaper to run than gas?",
-      a: `Yes, by a wide margin per hour: about ${Math.round(ELECTRIC_HOUR_USD * 100)}¢ an hour at full throttle on a 1 kW electric against about ${money(Math.round(GAS_HOUR_USD * 100) / 100)} in fuel for a 2.3 hp gas outboard, at US average prices. The catch is the purchase price, about $1,200 to $1,600 more for a small motor.`,
+      a: `Yes, by a wide margin per hour: about ${Math.round(ELECTRIC_HOUR_USD * 100)}¢ an hour at full throttle on a 1 kW electric against about ${money(Math.round(GAS_HOUR_USD * 100) / 100)} in fuel for a 2.3 hp gas outboard, at US average prices. The catch is the purchase price: an electric costs more up front than a small gas motor.`,
     },
     {
       q: "What size battery do I need for a trolling motor?",
@@ -73,7 +71,7 @@ export default function BoatingHub() {
         sub={
           <>
             Lithium batteries give you twice the hours of lead-acid at a third of the weight, and electric outboards run for pennies an hour.
-            Here is the money side of going electric on the water, with real prices.
+            Here is the money side of going electric on the water.
           </>
         }
       >
@@ -112,15 +110,13 @@ export default function BoatingHub() {
         <Section title="Where the money goes, and where it stays" id="money">
           <div className="grid gap-3">
             <Callout>
-              <strong>Batteries.</strong> One 12V 100Ah lithium ({money(li100.priceUsd ?? 0)} when we checked) gives the usable power of two 100Ah AGMs
-              ({money(2 * LEAD_ACID_REF.priceUsd)}) and is rated for 4,000 full cycles against the AGM&apos;s {LEAD_ACID_REF.cycles} half cycles.
-              See the <Link href="/lithium-vs-agm-battery" className="underline">year-by-year cost</Link>.
+              <strong>Batteries.</strong> One 12V 100Ah lithium gives the usable power of two 100Ah AGMs and is rated for 4,000 full cycles against the AGM&apos;s {LEAD_ACID_REF.cycles} half cycles.
+              See <Link href="/lithium-vs-agm-battery" className="underline">how long each lasts</Link>.
             </Callout>
-            <RedodoSaleCallout />
             <Callout>
-              <strong>Motors.</strong> A small electric outboard such as the ePropulsion Spirit 1.0 ({money(spirit.packagePriceUsd ?? 0)} with battery)
+              <strong>Motors.</strong> A small electric outboard such as the ePropulsion Spirit 1.0
               costs more than a gas motor up front, then about {Math.round(ELECTRIC_HOUR_USD * 100)}¢ an hour to run, with no oil, plugs or winterizing.
-              See <Link href="/electric-outboard-motor" className="underline">electric outboard prices and running costs</Link>.
+              See <Link href="/electric-outboard-motor" className="underline">electric outboard running costs</Link>.
             </Callout>
             <Callout>
               <strong>Charging.</strong> Filling a 12V 100Ah lithium costs about a quarter at the US average power price.{" "}
@@ -137,7 +133,7 @@ export default function BoatingHub() {
           <div className="grid gap-3">
             <Callout>
               <strong>&quot;Lithium is too expensive.&quot;</strong> Per battery, yes. Per season, no: one lithium does the work of two AGMs and lasts
-              far more cycles. For a kayak, a 12V 50Ah lithium costs about the same as the 100Ah AGM it replaces.
+              far more cycles. For a kayak, a 12V 50Ah lithium is often enough, at a fraction of the weight of the 100Ah AGM it replaces.
             </Callout>
             <Callout>
               <strong>&quot;Electric outboards can&apos;t handle real water.&quot;</strong> Small ones are made for dinghies and jon boats at 3 to 5 mph
@@ -153,11 +149,12 @@ export default function BoatingHub() {
         <Section title="Electric on the line, too" id="reel">
           <p className="max-w-3xl">
             Electric power isn&apos;t only for the motor. Piscifun&apos;s{" "}
-            <PartnerLink brand="piscifun" productUrl={reel.url}>AtlantiX 1500 electric reel</PartnerLink> ({money(reel.priceUsd)}) weighs 17 oz and
+            <PartnerLink brand="piscifun" productUrl={reel.url}>AtlantiX 1500 electric reel</PartnerLink> weighs 17 oz and
             runs on its own rechargeable battery; Piscifun says a charge is good for up to 180 drops to 165 ft with a 14 oz lure, which saves
-            your arm on a long day of deep jigging.
+            your arm on a long day of deep jigging.{" "}
+            <PartnerLink brand="piscifun" productUrl={reel.url}>See today&apos;s price at Piscifun</PartnerLink>.
           </p>
-          <p className="text-xs text-muted mt-2">Piscifun price checked {formatDate(reel.retrieved)}. Piscifun links are sponsored.</p>
+          <p className="text-xs text-muted mt-2">Piscifun links are sponsored.</p>
         </Section>
 
         <Faq items={faqs} path={PATH} />

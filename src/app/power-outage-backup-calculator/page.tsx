@@ -125,8 +125,7 @@ export default function OutageBackupPage() {
                 {" "}The cheapest power station we track that covers it is the{" "}
                 <PartnerLink brand={essMatch.option.brand} productId={essMatch.option.id} productUrl={essMatch.option.url}>
                   {essMatch.option.name}
-                </PartnerLink>{" "}
-                ({money(essMatch.totalUsd)} when we checked).
+                </PartnerLink>.
               </>
             )}
           </p>

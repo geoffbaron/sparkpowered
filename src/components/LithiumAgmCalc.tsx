@@ -2,16 +2,14 @@
 
 import { useState } from "react";
 import { PartnerLink } from "@/components/affiliate";
-import { BeforeAfter } from "@/components/ui";
-import { lifetimeCost } from "@/lib/rv-battery";
+import { lifetimeCompare } from "@/lib/rv-battery";
 
-const money = (n: number) => n.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
+const yrs = (n: number) => (n >= 10 ? "10+" : n.toFixed(1));
 
-/** Uses a year -> cost per year of one 12V 100Ah lithium vs the AGMs that match it. */
+/** Uses a year -> how long one 12V 100Ah lithium lasts vs the AGMs that match it (no prices). */
 export default function LithiumAgmCalc({ productId, productUrl }: { productId: string; productUrl: string }) {
   const [uses, setUses] = useState(100);
-  const c = lifetimeCost(uses);
-  const saved = c.leadAcid.perYear - c.lithium.perYear;
+  const c = lifetimeCompare(uses);
   return (
     <div className="rounded-3xl border border-black/10 bg-white shadow-sm p-5 sm:p-6" data-testid="agm-calc">
       <label htmlFor="uses" className="font-bold text-ink block">
@@ -31,25 +29,18 @@ export default function LithiumAgmCalc({ productId, productUrl }: { productId: s
         <span>Weekend boater (10)</span>
         <span>Full-time RV (365)</span>
       </div>
-      <div className="mt-5 grid md:grid-cols-2 gap-5 items-center" aria-live="polite">
-        <BeforeAfter
-          before={c.leadAcid.perYear}
-          after={c.lithium.perYear}
-          beforeLabel={`${c.leadAcid.units} AGM batteries (${money(c.leadAcid.usd)})`}
-          afterLabel={`One lithium (${money(c.lithium.usd)})`}
-          unit="/yr"
-        />
-        <div>
-          <p className="text-3xl font-extrabold text-leaf tabular-nums" data-testid="agm-saving">{money(saved)} a year</p>
-          <p className="text-stone-700 text-sm mt-1">
-            saved with lithium. The AGMs last about {c.leadAcid.years >= 10 ? "10+" : c.leadAcid.years.toFixed(1)} years at this use;
-            the lithium about {c.lithium.years.toFixed(0)}.
-          </p>
-          <div className="mt-3">
-            <PartnerLink brand="redodo" productId={productId} productUrl={productUrl} className="btn btn-primary btn-sm">
-              Check the lithium price
-            </PartnerLink>
-          </div>
+      <div className="mt-5" aria-live="polite">
+        <p className="text-3xl font-extrabold text-leaf tabular-nums" data-testid="agm-saving">
+          {c.leadAcid.sets === 1 ? "1 set" : `${c.leadAcid.sets} sets`} of {c.leadAcid.units} AGMs
+        </p>
+        <p className="text-stone-700 text-sm mt-1">
+          wear out over the life of one lithium battery at this use. The AGMs last about {yrs(c.leadAcid.years)} years; the lithium about{" "}
+          {c.lithium.years.toFixed(0)}. Compare today&apos;s prices with that in mind.
+        </p>
+        <div className="mt-3">
+          <PartnerLink brand="redodo" productId={productId} productUrl={productUrl} className="btn btn-primary btn-sm">
+            See today&apos;s price at Redodo
+          </PartnerLink>
         </div>
       </div>
     </div>

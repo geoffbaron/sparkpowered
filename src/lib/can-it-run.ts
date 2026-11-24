@@ -126,18 +126,17 @@ export function motorStation(p: Product): MotorStation {
     acOutputW: p.acOutputW,
     motorSurgeW: motorSurgeW(p),
     usableWh: usableWh(p),
-    priceUsd: p.priceUsd ?? 0,
     tracked: AFFILIATES[p.brand].tracked,
   };
 }
 
 /**
- * Stations a load page compares: do-it-yourself, priced, in stock at the last
+ * Stations a load page compares: do-it-yourself, in stock at the last
  * check, and not Nature's Generator (no new placements while its payments are
  * in doubt).
  */
 export const loadPageProducts = () =>
-  PRODUCTS.filter((p) => p.install === "diy" && p.priceUsd != null && !p.soldOut && p.brand !== "naturesgenerator");
+  PRODUCTS.filter((p) => p.install === "diy" && !p.soldOut && p.brand !== "naturesgenerator");
 
 /** "about 9 hours", "4 nights", "65 charges", "about 52 minutes". */
 export function runText(p: Product, a: Appliance, wh = p.capacityWh) {

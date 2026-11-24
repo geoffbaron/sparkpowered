@@ -53,7 +53,6 @@ function Answer({ paras }: { paras: Para[] }) {
           <a href={x.href} target="_blank" rel="sponsored nofollow noopener" className="font-semibold underline underline-offset-2 text-spark-orange hover:text-spark-amber">
             {x.name}
           </a>
-          {x.price ? <span> ({x.price})</span> : null}
           <span className="text-xs text-muted"> {x.note}</span>
         </span>
       );

@@ -1,5 +1,5 @@
 /**
- * Home EV chargers we recommend. Specs and prices are copied from the maker's
+ * Home EV chargers we recommend. Specs are copied from the maker's
  * US product pages on `retrieved` (sourceUrl), like src/data/products.ts.
  * Outbound links go through PartnerLink, which uses the tracked links in
  * src/data/affiliates.ts.
@@ -26,8 +26,6 @@ export interface HomeCharger {
   cableFt: number | null;
   certifications: string[];
   warrantyYears: number | null;
-  priceUsd: number;
-  listPriceUsd: number | null;
   url: string;
   sourceUrl: string;
   retrieved: string;
@@ -47,8 +45,6 @@ export const HOME_CHARGERS: HomeCharger[] = [
     cableFt: 23,
     certifications: ["ETL listed to UL 2594, UL 2231, UL 2251", "ENERGY STAR"],
     warrantyYears: 3,
-    priceUsd: 419.99,
-    listPriceUsd: 479.99,
     url: "https://ev-lectron.com/products/lectron-nexus-level-2-j1772-ev-charging-station-240v-40-amp-23ft-cable-wall-mount-j-hook-plug-holder-nema-14-50",
     sourceUrl: "https://ev-lectron.com/products/lectron-nexus-level-2-j1772-ev-charging-station-240v-40-amp-23ft-cable-wall-mount-j-hook-plug-holder-nema-14-50",
     retrieved: "2026-10-31",
@@ -70,8 +66,6 @@ export const HOME_CHARGERS: HomeCharger[] = [
     cableFt: 23,
     certifications: ["ETL listed to UL 2594, UL 2231, UL 2251, UL 817", "ENERGY STAR"],
     warrantyYears: 3,
-    priceUsd: 419.99,
-    listPriceUsd: 479.99,
     url: "https://ev-lectron.com/products/lectron-nexus-level-2-nacs-tesla-ev-charging-station-240v-40-amp-23ft-cable-wall-mount-j-hook-plug-holder-nema-14-50",
     sourceUrl: "https://ev-lectron.com/products/lectron-nexus-level-2-nacs-tesla-ev-charging-station-240v-40-amp-23ft-cable-wall-mount-j-hook-plug-holder-nema-14-50",
     retrieved: "2026-10-31",
@@ -92,8 +86,6 @@ export const HOME_CHARGERS: HomeCharger[] = [
     cableFt: null,
     certifications: ["ETL listed"],
     warrantyYears: null,
-    priceUsd: 319.99,
-    listPriceUsd: 369.99,
     url: "https://ev-lectron.com/products/lectron-portable-level-1-2-tesla-nacs-ev-charger-120v-240v-adjustable-current-8-40a-nema-5-15-14-50",
     sourceUrl: "https://ev-lectron.com/products/lectron-portable-level-1-2-tesla-nacs-ev-charger-120v-240v-adjustable-current-8-40a-nema-5-15-14-50",
     retrieved: "2026-10-31",
@@ -116,8 +108,6 @@ export const HOME_CHARGERS: HomeCharger[] = [
     cableFt: 25,
     certifications: [],
     warrantyYears: 3,
-    priceUsd: 559,
-    listPriceUsd: null,
     url: "https://autelenergy.us/products/maxicharger-ac-wallbox-home-40a-nema-14-50-ev-charger-with-separate-holster",
     sourceUrl: "https://autelenergy.us/products/maxicharger-ac-wallbox-home-40a-nema-14-50-ev-charger-with-separate-holster",
     retrieved: "2026-10-31",
@@ -141,8 +131,6 @@ export const HOME_CHARGERS: HomeCharger[] = [
     cableFt: 25,
     certifications: [],
     warrantyYears: 3,
-    priceUsd: 599,
-    listPriceUsd: null,
     url: "https://autelenergy.us/products/maxicharger-ac-hardwired-wallbox-with-side-holster",
     sourceUrl: "https://autelenergy.us/products/maxicharger-ac-hardwired-wallbox-with-side-holster",
     retrieved: "2026-11-14",
@@ -153,7 +141,7 @@ export const HOME_CHARGERS: HomeCharger[] = [
     ],
   },
   // EVIQO (affiliate since Oct 31 2026). Read from eviqo.io product pages and their
-  // Shopify .js product data on Oct 31 2026; price is the 3-year (standard) warranty
+  // Shopify .js product data on Oct 31 2026; specs are for the 3-year (standard) warranty
   // option. Logged in docs/fact-check-eviqo.md.
   {
     id: "eviqo-l2-j1772",
@@ -170,8 +158,6 @@ export const HOME_CHARGERS: HomeCharger[] = [
     cableFt: 25,
     certifications: ["UL/ETL listed (EVIQO's wording)", "ENERGY STAR"],
     warrantyYears: 3,
-    priceUsd: 299,
-    listPriceUsd: 499,
     url: "https://eviqo.io/products/eviqo_level2_ev_charger",
     sourceUrl: "https://eviqo.io/products/eviqo_level2_ev_charger",
     retrieved: "2026-11-14",
@@ -195,13 +181,11 @@ export const HOME_CHARGERS: HomeCharger[] = [
     cableFt: 25,
     certifications: ["UL/ETL listed (EVIQO's wording)", "ENERGY STAR"],
     warrantyYears: 3,
-    priceUsd: 450.99,
-    listPriceUsd: 579.99,
     url: "https://eviqo.io/products/eviqo-level-2-ev-charger-gen-2-14-50-nema-plug-in-240v",
     sourceUrl: "https://eviqo.io/products/eviqo-level-2-ev-charger-gen-2-14-50-nema-plug-in-240v",
     retrieved: "2026-10-31",
     notes: [
-      "The newer plug-in model: adds a high-visibility holster and a side reset button. Same 40 amps, app and 25-foot cable as EVIQO's lower-priced J1772 model.",
+      "The newer plug-in model: adds a high-visibility holster and a side reset button. Same 40 amps, app and 25-foot cable as EVIQO's J1772 model.",
     ],
   },
   {
@@ -218,8 +202,6 @@ export const HOME_CHARGERS: HomeCharger[] = [
     cableFt: 25,
     certifications: ["UL/ETL listed (EVIQO's wording)", "ENERGY STAR"],
     warrantyYears: 3,
-    priceUsd: 450.99,
-    listPriceUsd: 579.99,
     url: "https://eviqo.io/products/eviqo-level-2-ev-charger-hardwire-version-240v-48-amp-home-charging-station-25-cable-40-input-cable",
     sourceUrl: "https://eviqo.io/products/eviqo-level-2-ev-charger-hardwire-version-240v-48-amp-home-charging-station-25-cable-40-input-cable",
     retrieved: "2026-11-14",
@@ -241,8 +223,6 @@ export const HOME_CHARGERS: HomeCharger[] = [
     cableFt: 25,
     certifications: ["UL/ETL listed (EVIQO's wording)", "ENERGY STAR"],
     warrantyYears: 3,
-    priceUsd: 480.99,
-    listPriceUsd: 599,
     url: "https://eviqo.io/products/eviqo-level-2-ev-charger-nacs-charger-compatible-with-tesla",
     sourceUrl: "https://eviqo.io/products/eviqo-level-2-ev-charger-nacs-charger-compatible-with-tesla",
     retrieved: "2026-10-31",
@@ -265,8 +245,6 @@ export const HOME_CHARGERS: HomeCharger[] = [
     cableFt: 25,
     certifications: ["UL/ETL listed (EVIQO's wording)", "ENERGY STAR"],
     warrantyYears: 3,
-    priceUsd: 480.99,
-    listPriceUsd: 599,
     url: "https://eviqo.io/products/eviqo-level-2-ev-charger-hardwired-nacs-charger-compatible-with-tesla",
     sourceUrl: "https://eviqo.io/products/eviqo-level-2-ev-charger-hardwired-nacs-charger-compatible-with-tesla",
     retrieved: "2026-11-14",

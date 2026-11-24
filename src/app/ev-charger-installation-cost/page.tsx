@@ -14,7 +14,7 @@ import { pageMetadata } from "@/lib/seo";
 const PATH = "/ev-charger-installation-cost";
 const TITLE = "How Much Does It Cost to Install a Home EV Charger? (2026, by State)";
 const DESCRIPTION =
-  "Home EV charger installation costs $2,442 on average in 2026 (Qmerit data), from $1,834 in Oregon to $3,680 in Mississippi. See your state, what adds to the bill, and an all-in estimate with the charger.";
+  "Home EV charger installation costs $2,442 on average in 2026 (Qmerit data), from $1,834 in Oregon to $3,680 in Mississippi. See your state and what adds to the bill.";
 
 export const metadata: Metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH, type: "article" });
 
@@ -23,7 +23,7 @@ export default function InstallCostPage() {
   const lj = chargerById("lectron-nexus-j1772");
   const ln = chargerById("lectron-nexus-nacs");
   const a40 = chargerById("autel-elite-home-40a");
-  // Our pick: the lowest-priced charger we found (see /best-home-ev-charger).
+  // Our pick (see /best-home-ev-charger).
   const ej = chargerById("eviqo-l2-j1772");
   const en = chargerById("eviqo-nacs-40a");
   const grizzle = OTHER_CHARGERS.find((x) => x.id === "grizzle-classic-40a")!;
@@ -36,24 +36,23 @@ export default function InstallCostPage() {
 
   const typical = referenceEv("typical");
   const yearSaving = ((gasCostPer100(NATIONAL.gasolineUsdPerGallon) - evCostPer100(nationalRateUsd(), typical.kwhPer100mi)) * MONTHLY_MILES * 12) / 100;
-  const allIn = c.usAverage + ej.priceUsd;
-  const cheapestCharger = Math.min(ej.priceUsd, grizzle.priceUsd);
-  const payback = allIn / yearSaving;
+  // Installation only (a market average): the charger is not priced on this site.
+  const payback = c.usAverage / yearSaving;
 
   const chargers: ChargerChoice[] = [
-    { id: ej.id, label: "EVIQO Level 2 40A plug-in / 48A hardwired (J1772), app scheduling", priceUsd: ej.priceUsd, brand: "eviqo", url: ej.url },
-    { id: lj.id, label: "Lectron NEXUS 40A (J1772)", priceUsd: lj.priceUsd, brand: "lectron", url: lj.url },
-    { id: ln.id, label: "Lectron NEXUS 40A (Tesla / NACS)", priceUsd: ln.priceUsd, brand: "lectron", url: ln.url },
-    { id: en.id, label: "EVIQO NACS 40A (Tesla / NACS), app scheduling", priceUsd: en.priceUsd, brand: "eviqo", url: en.url },
-    { id: a40.id, label: "Autel MaxiCharger 40A, app scheduling", priceUsd: a40.priceUsd, brand: "autel", url: a40.url },
-    { id: grizzle.id, label: "Grizzl-E Classic 40A, no app", priceUsd: grizzle.priceUsd, brand: null, url: grizzle.url },
-    { id: tesla.id, label: "Tesla Wall Connector 48A", priceUsd: tesla.priceUsd, brand: null, url: tesla.url },
+    { id: ej.id, label: "EVIQO Level 2 40A plug-in / 48A hardwired (J1772), app scheduling", brand: "eviqo", url: ej.url },
+    { id: lj.id, label: "Lectron NEXUS 40A (J1772)", brand: "lectron", url: lj.url },
+    { id: ln.id, label: "Lectron NEXUS 40A (Tesla / NACS)", brand: "lectron", url: ln.url },
+    { id: en.id, label: "EVIQO NACS 40A (Tesla / NACS), app scheduling", brand: "eviqo", url: en.url },
+    { id: a40.id, label: "Autel MaxiCharger 40A, app scheduling", brand: "autel", url: a40.url },
+    { id: grizzle.id, label: "Grizzl-E Classic 40A, no app", brand: null, url: grizzle.url },
+    { id: tesla.id, label: "Tesla Wall Connector 48A", brand: null, url: tesla.url },
   ];
 
   const faqs = [
     {
       q: "How much does it cost to install a home EV charger?",
-      a: `Qmerit's 2026 data, published by EnergySage, puts the US average installation price at ${money(c.usAverage)} for labor and materials, not counting the charger, and the typical range at ${money(c.typicalRange[0])} to ${money(c.typicalRange[1])}. Add ${money(cheapestCharger)} to about ${money(tesla.priceUsd)} for a Level 2 charger. If you already have a 240-volt outlet where you park, a plug-in charger costs nothing to install.`,
+      a: `Qmerit's 2026 data, published by EnergySage, puts the US average installation price at ${money(c.usAverage)} for labor and materials, not counting the charger, and the typical range at ${money(c.typicalRange[0])} to ${money(c.typicalRange[1])}. The charger itself is extra; see today's price on the maker's page. If you already have a 240-volt outlet where you park, a plug-in charger costs nothing to install.`,
     },
     {
       q: "What makes EV charger installation expensive?",
@@ -82,10 +81,10 @@ export default function InstallCostPage() {
           { name: "Installation cost", path: PATH },
         ]}
         eyebrow="Home charger installation"
-        title={<>About {money(allIn)} all in. <span className="text-amber-300">Paid back in about {Math.round(payback * 2) / 2} years of skipped gas.</span></>}
+        title={<>About {money(c.usAverage)} to install. <span className="text-amber-300">Paid back in about {Math.round(payback * 2) / 2} years of skipped gas.</span></>}
         sub={
           <>
-            The average home charger installation costs {money(c.usAverage)} in 2026, plus about {money(ej.priceUsd)} for the charger.
+            The average home charger installation costs {money(c.usAverage)} in 2026, plus the charger.
             Charging at home instead of buying gas saves about {money(Math.round(yearSaving))} a year. Here is your state&apos;s number.
           </>
         }
@@ -102,9 +101,9 @@ export default function InstallCostPage() {
           <p>
             <strong>Average: {money(c.usAverage)} to install</strong> (labor and materials, Qmerit 2026 via EnergySage), from{" "}
             {money(cheapest.avg)} in {cheapest.name} to {money(dearest.avg)} in {dearest.name}. Plus the charger: our pick, the{" "}
-            <PartnerLink brand="eviqo" productId={ej.id} productUrl={ej.url} disclose>EVIQO Level 2</PartnerLink>, was {money(ej.priceUsd)}{" "}
-            when we checked. For a Tesla, the{" "}
-            <PartnerLink brand="lectron" productId={ln.id} productUrl={ln.url} disclose>Lectron NEXUS NACS</PartnerLink> was {money(ln.priceUsd)}.
+            <PartnerLink brand="eviqo" productId={ej.id} productUrl={ej.url} disclose>EVIQO Level 2</PartnerLink>; for a Tesla, the{" "}
+            <PartnerLink brand="lectron" productId={ln.id} productUrl={ln.url} disclose>Lectron NEXUS NACS</PartnerLink>. Each link shows
+            today&apos;s price.
           </p>
           <p>
             <strong>Already have a NEMA 14-50 outlet in the garage?</strong> A plug-in charger installs for $0. Have an electrician check it first: it should be on its own 50-amp circuit with matching wire, a heavy-duty outlet in good condition, and GFCI-protected where local code requires. (If that GFCI keeps tripping, <Link href="/ev-charger-tripping-gfci" className="underline">here is why and the safe fix</Link>.) A dryer outlet is not the same: it allows only 24 amps and needs a charger made for its plug.{" "}
@@ -120,7 +119,7 @@ export default function InstallCostPage() {
         </section>
 
         <section id="calc" className="mt-12 scroll-mt-24" aria-labelledby="calc-heading">
-          <h2 id="calc-heading" className="text-2xl font-extrabold text-ink mb-2">Estimate your all-in cost</h2>
+          <h2 id="calc-heading" className="text-2xl font-extrabold text-ink mb-2">Estimate your installation cost</h2>
           <InstallCostCalc
             states={states.map(({ abbr, name, avg }) => ({ abbr, name, avg }))}
             usAverage={c.usAverage}
@@ -145,7 +144,6 @@ export default function InstallCostPage() {
               </thead>
               <tbody>
                 {[
-                  ["Level 2 charger", `${money(cheapestCharger)} to ${money(tesla.priceUsd)} (our table)`],
                   ["Installation, standard job", `${money(c.typicalRange[0])} to ${money(c.typicalRange[1])}`],
                   ["New 240-volt circuit (parts)", `${money(c.newCircuit[0])} to ${money(c.newCircuit[1])}`],
                   ["Permit", `${money(c.permit[0])} to ${money(c.permit[1])}`],
@@ -163,7 +161,7 @@ export default function InstallCostPage() {
           </div>
           <p className="text-xs text-muted mt-2 max-w-3xl">
             Ranges from EnergySage (updated June 22, 2026), checked {formatDate(c.retrieved)}; the standard-job range is Qmerit&apos;s.
-            Charger prices from the makers&apos; US sites.
+            The charger is extra: see today&apos;s price on the maker&apos;s page.
           </p>
         </Section>
 
@@ -175,7 +173,6 @@ export default function InstallCostPage() {
                 <tr>
                   <th scope="col" className="p-3 font-semibold">State</th>
                   <th scope="col" className="p-3 font-semibold text-right">Average installation</th>
-                  <th scope="col" className="p-3 font-semibold text-right">With a {money(ej.priceUsd)} charger</th>
                 </tr>
               </thead>
               <tbody>
@@ -185,7 +182,6 @@ export default function InstallCostPage() {
                       <Link href={`/states/${s.slug}`} className="underline underline-offset-2 hover:text-spark-orange">{s.name}</Link>
                     </th>
                     <td className="p-3 text-right tabular-nums">{money(s.avg)}</td>
-                    <td className="p-3 text-right tabular-nums">{money(s.avg + ej.priceUsd)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -219,7 +215,7 @@ export default function InstallCostPage() {
         <Faq items={faqs} path={PATH} />
         <Disclaimer>
           Averages are not quotes. Your price depends on your panel, the distance, local labor rates and permits. Always use a licensed
-          electrician and pull a permit where required. Charger prices are from makers&apos; US sites on the dates shown.
+          electrician and pull a permit where required. We don&apos;t list charger prices; check today&apos;s price on the maker&apos;s page.
         </Disclaimer>
         <Sources
           items={[

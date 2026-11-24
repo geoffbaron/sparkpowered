@@ -86,7 +86,7 @@ export const HUBS: Hub[] = [
         blurb: "Match a car to your budget, body style and commute, and see whether full electric or a plug-in hybrid suits you.",
         links: [
           { href: "/ev-or-plug-in-hybrid", title: "EV or plug-in hybrid?", desc: "Which fits your miles, charging and road trips, with yearly fuel cost", kind: "Picker" },
-          { href: "/calculator", title: "EV Finder", desc: "Electric cars on sale in the US matched to your budget and needs, with EPA range", kind: "Picker" },
+          { href: "/calculator", title: "EV Finder", desc: "Electric cars on sale in the US matched to how you drive, with EPA range", kind: "Picker" },
           { href: "/go-electric", title: "What going electric saves", desc: "An EV next to your other switches, priced for your state", kind: "Calculator" },
         ],
       },
@@ -96,7 +96,7 @@ export const HUBS: Hub[] = [
         links: [
           { href: "/ev-charging-cost", title: "Cost to charge at home", desc: "Your state's price per charge and per mile against gas, for every 2026 EV", kind: "Calculator" },
           { href: "/ev-charger-picker", title: "Which charger do I need?", desc: "Plug type, amps, plug-in or hardwired, in five questions", kind: "Picker" },
-          { href: "/best-home-ev-charger", title: "Best home EV chargers", desc: "Level 2 chargers compared on price, speed and plug, with dated prices", kind: "Comparison" },
+          { href: "/best-home-ev-charger", title: "Best home EV chargers", desc: "Level 2 chargers compared on speed, plug and features", kind: "Comparison" },
           { href: "/ev-charger-installation-cost", title: "Charger installation cost", desc: "Average install cost in your state and what adds to the bill", kind: "Calculator" },
         ],
       },
@@ -105,7 +105,7 @@ export const HUBS: Hub[] = [
         blurb: "For commutes and errands a car is overkill for. Specs read from each maker's own site.",
         links: [
           { href: "/e-bikes", title: "E-bike guide", desc: "How to choose one, cost per mile, and 2026 state rebates", kind: "Hub" },
-          { href: "/commuter-e-bike-under-1500", title: "Commuter e-bike under $1,500", desc: "Racks, lights and fenders included", kind: "Comparison" },
+          { href: "/commuter-e-bike-under-1500", title: "Commuter e-bikes", desc: "Racks, lights and fenders included", kind: "Comparison" },
           { href: "/e-bike-for-hills", title: "E-bike for hills", desc: "Torque, mid-drives and torque sensors", kind: "Comparison" },
           { href: "/e-bike-for-heavy-riders", title: "E-bike for heavy riders", desc: "Bikes rated for 400 lb and up", kind: "Comparison" },
           { href: "/folding-e-bike", title: "Folding e-bike", desc: "For apartments, RVs and car trunks", kind: "Comparison" },
@@ -167,7 +167,7 @@ export const HUBS: Hub[] = [
         blurb: "Keep the fridge, CPAP, Wi-Fi and well pump going through an outage, from a portable station to a whole-home battery.",
         links: [
           { href: "/power-outage-backup-calculator", title: "Outage backup calculator", desc: "What size battery keeps your essentials on, and how fast solar refills it", kind: "Calculator" },
-          { href: "/home-battery-backup", title: "Home battery backup", desc: "Whole-home vs plug-in vs portable, with real prices", kind: "Guide" },
+          { href: "/home-battery-backup", title: "Home battery backup", desc: "Whole-home vs plug-in vs portable, compared", kind: "Guide" },
           { href: "/battery-calculator", title: "Home battery size calculator", desc: "How many kWh you need for what you want to run", kind: "Calculator" },
           { href: "/best-portable-power-stations", title: "Best portable power stations", desc: "EcoFlow, Anker SOLIX, Jackery, Bluetti and DJI compared", kind: "Comparison" },
           { href: "/power-station-for-refrigerator", title: "Power station for a fridge", desc: "Hours each one keeps a kitchen fridge cold", kind: "Comparison" },
@@ -203,7 +203,7 @@ export const HUBS: Hub[] = [
     goals: [
       { href: "/lithium-rv-battery", label: "upgrade my RV or van battery", hint: "What lithium saves and what size you need" },
       { href: "/trolling-motor-battery-life", label: "fish all day on one battery", hint: "Hours for your motor and battery" },
-      { href: "/electric-outboard-motor", label: "go electric on my boat", hint: "Outboard prices, range and cost per hour" },
+      { href: "/electric-outboard-motor", label: "go electric on my boat", hint: "Outboard range and cost per hour" },
       { href: "/best-power-station-for-cpap", label: "run my CPAP while camping", hint: "Nights per charge, with and without humidifier" },
     ],
     start: {
@@ -221,7 +221,7 @@ export const HUBS: Hub[] = [
         blurb: "Size a house battery for your fridge, lights and CPAP, and see what switching from lead-acid saves.",
         links: [
           { href: "/lithium-rv-battery", title: "Lithium RV battery", desc: "What switching from lead-acid saves and what size you need", kind: "Picker" },
-          { href: "/lithium-vs-agm-battery", title: "Lithium vs AGM", desc: "Cost per year of use, with today's prices", kind: "Calculator" },
+          { href: "/lithium-vs-agm-battery", title: "Lithium vs AGM", desc: "How many AGMs one lithium outlasts", kind: "Calculator" },
           { href: "/best-power-station-for-cpap", title: "Power station for CPAP", desc: "Nights of sleep per charge, with and without the humidifier", kind: "Comparison" },
           { href: "/best-portable-power-stations", title: "Best portable power stations", desc: "For camping, RVs and the campsite", kind: "Comparison" },
         ],
@@ -242,7 +242,7 @@ export const HUBS: Hub[] = [
         heading: "Electric outboards and charging on board",
         blurb: "Going electric on the stern, and keeping lithium full away from the dock.",
         links: [
-          { href: "/electric-outboard-motor", title: "Electric outboard motors", desc: "Prices, range and cost per hour against a small gas outboard", kind: "Guide" },
+          { href: "/electric-outboard-motor", title: "Electric outboard motors", desc: "Range and cost per hour against a small gas outboard", kind: "Guide" },
           { href: "/charge-lithium-battery-on-boat", title: "Charging lithium on a boat", desc: "Plug-in charger, DC-to-DC off the engine, or solar", kind: "Guide" },
         ],
       },
@@ -397,7 +397,7 @@ export function hubById(id: HubId): Hub {
 
 /** Next steps on the e-bike guide and its four buying guides. */
 export const EBIKE_GOALS: Goal[] = [
-  { href: "/commuter-e-bike-under-1500", label: "find a commuter e-bike under $1,500", hint: "Racks, lights and fenders in the box" },
+  { href: "/commuter-e-bike-under-1500", label: "find a commuter e-bike", hint: "Racks, lights and fenders in the box" },
   { href: "/e-bike-for-hills", label: "find an e-bike for hills", hint: "Torque, mid-drives and torque sensors" },
   { href: "/e-bike-for-heavy-riders", label: "find an e-bike for a heavier rider", hint: "Bikes rated for 400 lb and up" },
   { href: "/folding-e-bike", label: "find a folding e-bike", hint: "For apartments, RVs and car trunks" },

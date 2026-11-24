@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { AffiliateDisclosure, PartnerLink } from "@/components/affiliate";
-import { RedodoSaleCallout } from "@/components/SaleCallout";
 import { Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
 import { QuickAnswer } from "@/components/guide-ui";
 import TrollingRuntimeCalc from "@/components/TrollingRuntimeCalc";
@@ -8,7 +7,6 @@ import { BigStat, HubHero, PhotoCredit } from "@/components/ui";
 import { BATTERY_FACTS, LEAD_ACID_REF } from "@/data/batteries";
 import { BOATING_CHECKED } from "@/data/boating";
 import { formatDate } from "@/lib/energy";
-import { money } from "@/lib/products";
 import {
   FISHING_DAY_HOURS,
   MINN_KOTA_MANUAL,
@@ -20,7 +18,6 @@ import {
   runtimeFor,
 } from "@/lib/boating";
 import { JsonLd, pageMetadata, url } from "@/lib/seo";
-import { RedodoDeal } from "@/components/RedodoDeal";
 
 const PATH = "/trolling-motor-battery-life";
 const TITLE = "How Long Will a Trolling Motor Battery Last? Runtime Calculator";
@@ -52,7 +49,7 @@ export default function TrollingRuntimePage() {
     },
     {
       q: "How long will a 12V battery run a trolling motor?",
-      a: `It depends on the battery's usable amp-hours. A 12V 50Ah lithium (${money(li50.priceUsd ?? 0)} when we checked) runs a 45 lb motor ${hoursLabel(h("45-12", "half", li50.id))} at half speed; a 12V 120Ah lithium (${money(li120.priceUsd ?? 0)}) runs it ${hoursLabel(h("45-12", "half", li120.id))}.`,
+      a: `It depends on the battery's usable amp-hours. A 12V 50Ah lithium runs a 45 lb motor ${hoursLabel(h("45-12", "half", li50.id))} at half speed; a 12V 120Ah lithium runs it ${hoursLabel(h("45-12", "half", li120.id))}.`,
     },
     {
       q: "How long does a trolling motor battery take to charge?",
@@ -107,17 +104,13 @@ export default function TrollingRuntimePage() {
           </p>
           <p>
             For a full {FISHING_DAY_HOURS}-hour day on a 12 V motor, a{" "}
-            <PartnerLink brand="redodo" productId={li120.id} productUrl={li120.url ?? undefined}>Redodo 12V 120Ah</PartnerLink> (
-            {money(li120.priceUsd ?? 0)}) covers most calm days at a mix of slow and half speed. For 24 V, see the calculator below.
+            <PartnerLink brand="redodo" productId={li120.id} productUrl={li120.url ?? undefined}>Redodo 12V 120Ah</PartnerLink> covers most calm days at a mix of slow and half speed. For 24 V, see the calculator below.
           </p>
         </QuickAnswer>
 
-        <RedodoSaleCallout className="mt-4" />
-        <RedodoDeal className="mt-3" product={li120.url ? { name: "Redodo 12V 120Ah", url: li120.url } : undefined} />
-
         <section aria-label="Lithium vs AGM on the water" className="grid sm:grid-cols-3 gap-3 mt-8">
           <BigStat tone="leaf" value="2x" label="The hours of a same-size AGM" note="Lithium runs to empty; AGM should stop at half" />
-          <BigStat value={hoursLabel(liHalf).replace("about ", "")} label="55 lb motor, half speed" note={`12V 100Ah lithium, ${money(li100.priceUsd ?? 0)}`} />
+          <BigStat value={hoursLabel(liHalf).replace("about ", "")} label="55 lb motor, half speed" note={`12V 100Ah lithium, ${li100.weightLb} lb`} />
           <BigStat
             tone="orange"
             value={`${Math.round((agm12.weightLb ?? 0) - (li100.weightLb ?? 0))} lb`}
@@ -162,7 +155,7 @@ export default function TrollingRuntimePage() {
           </div>
           <p className="text-xs text-muted mt-2 max-w-3xl">
             Max draw from Minn Kota&apos;s Endura C2 manual. Runtime is usable amp-hours divided by amps, Newport Vessels&apos; formula.
-            Battery prices from Redodo and Renogy, checked {formatDate(BOATING_CHECKED)}.
+            Battery specs from Redodo and Renogy, checked {formatDate(BOATING_CHECKED)}.
           </p>
         </Section>
 
@@ -195,8 +188,8 @@ export default function TrollingRuntimePage() {
 
         <Faq items={faqs} path={PATH} />
         <Disclaimer>
-          A calm-water guide. Real runtime depends on wind, current, boat weight, battery age and how you fish. Prices change often; the
-          dates are shown. Redodo links are sponsored.
+          A calm-water guide. Real runtime depends on wind, current, boat weight, battery age and how you fish. Battery specs were checked on the
+          dates shown. Redodo links are sponsored.
         </Disclaimer>
         <Sources
           items={[

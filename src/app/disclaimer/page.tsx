@@ -35,10 +35,10 @@ export default function DisclaimerPage() {
           your state, your utility or a qualified professional.
         </p>
         <p>
-          <strong>Product information.</strong> Vehicle and battery prices and specifications change often.
-          Battery, power station and plug-in solar specifications and prices on our guides are copied from the
+          <strong>Product information.</strong> Specifications change often.
+          Battery, power station and plug-in solar specifications on our guides are copied from the
           manufacturer&apos;s own US product pages and dated; the EV Finder list is gathered by automated research.
-          Prices move daily, so confirm details with the manufacturer or dealer before you buy.
+          We don&apos;t list product prices: each link goes to the seller&apos;s own page for today&apos;s price. Confirm details with the manufacturer or dealer before you buy.
         </p>
         <p>
           <strong>Installer listings.</strong> The Solar Finder lists companies that say they serve your state.
@@ -67,7 +67,7 @@ export default function DisclaimerPage() {
           </p>
           <p>
             <strong>Commissions never change our recommendations.</strong> We choose products from their published
-            specifications, prices and warranties, using the method described on each guide. We list products from
+            specifications and warranties, using the method described on each guide. We list products from
             brands that pay us nothing alongside those that do, and a brand cannot pay to be included, ranked higher
             or described more kindly.
           </p>

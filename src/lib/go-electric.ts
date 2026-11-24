@@ -102,7 +102,6 @@ export interface PlannerInputs {
 
 export interface Costs {
   rooftopPerWatt: number;
-  pluginKitUsd: number;
   pluginKitW: number;
 }
 
@@ -305,8 +304,8 @@ export function pluginSwitch(st: PlannerState, i: PlannerInputs, c: Costs): Swit
   return {
     id: "plugin",
     yearly,
-    upfront: c.pluginKitUsd,
-    paybackYears: c.pluginKitUsd / yearly,
+    upfront: null,
+    paybackYears: null,
     headline: `Plugs into an outlet and trims about ${Math.max(1, Math.round(billShare * 100))}% off your bill. No roof, no installer.`,
     proof: [`Up to ${usd0(yearly)} a year from an 800 W kit on a stand, if you use what it makes.`, lawLine],
   };

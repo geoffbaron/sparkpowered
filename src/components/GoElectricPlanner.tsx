@@ -8,7 +8,7 @@ import LocalNote from "@/components/LocalNote";
 import { useChooseState, useVisitorState } from "@/hooks/useVisitorState";
 import { PartnerLink, PARTNER_REL } from "@/components/affiliate";
 import { ASSUMPTIONS, GAS_CARS, MMBTU_PER_MCF, homeFigures, plan, type Costs, type PlannerInputs, type PlannerState, type SwitchId, type SwitchResult } from "@/lib/go-electric";
-import type { BrandId } from "@/data/affiliates";
+import { AFFILIATES, type BrandId } from "@/data/affiliates";
 import type { MythLite } from "@/data/myths";
 
 export interface PlannerProduct {
@@ -16,7 +16,6 @@ export interface PlannerProduct {
   brand: BrandId;
   name: string;
   url: string;
-  priceUsd: number;
   /** Plain-life line, e.g. "Keeps a fridge, Wi-Fi and lights on for about 14 hours". */
   life: string;
 }
@@ -279,11 +278,11 @@ export default function GoElectricPlanner({ states, costs, outagePick, outageAlt
               </p>
               <div className="flex flex-wrap items-center gap-3 mt-3">
                 <PartnerLink brand={outagePick.brand} productId={outagePick.id} productUrl={outagePick.url} category="battery" className="btn btn-primary btn-sm">
-                  Check price ({money(outagePick.priceUsd)} when we checked)
+                  See today&apos;s price at {AFFILIATES[outagePick.brand].name}
                 </PartnerLink>
                 {outageAltPick && (
                   <PartnerLink brand={outageAltPick.brand} productId={outageAltPick.id} productUrl={outageAltPick.url} category="battery" className="btn btn-outline btn-sm">
-                    Or the {outageAltPick.name} ({money(outageAltPick.priceUsd)})
+                    Or the {outageAltPick.name}
                   </PartnerLink>
                 )}
                 <Link href="/battery-calculator" className="font-semibold text-spark-orange underline underline-offset-2">
@@ -334,7 +333,7 @@ export default function GoElectricPlanner({ states, costs, outagePick, outageAlt
                 full price (net metering); where it pays less for power you send back, savings are lower.
               </li>
               <li>
-                Plug-in solar: an 800 W kit at {money(costs.pluginKitUsd)} on a south-facing stand, valued at your electricity price,
+                Plug-in solar: an 800 W kit on a south-facing stand, valued at your electricity price,
                 assuming you use what it makes as it makes it.
               </li>
               <li>E-bike: gasoline for a 10-mile round trip in your car. Electricity to charge an e-bike is pennies and not subtracted.</li>
@@ -416,7 +415,7 @@ function SwitchCard({
           <div className="flex flex-wrap items-center gap-3 mt-3">
             {r.id === "plugin" && (
               <PartnerLink brand={pluginPick.brand} productId={pluginPick.id} productUrl={pluginPick.url} category="solar" className="btn btn-primary btn-sm">
-                See the 800 W kit ({money(pluginPick.priceUsd)})
+                See today&apos;s price for the 800 W kit
               </PartnerLink>
             )}
             {r.id === "solar" && (
@@ -430,10 +429,10 @@ function SwitchCard({
                   Find an EV that fits
                 </Link>
                 <PartnerLink brand={chargerPick.brand} productId={chargerPick.id} productUrl={chargerPick.url} className="btn btn-outline btn-sm" disclose>
-                  Home charger with off-peak scheduling, {money(chargerPick.priceUsd)} (sponsored)
+                  Home charger with off-peak scheduling (sponsored)
                 </PartnerLink>
                 <PartnerLink brand={smartChargerPick.brand} productId={smartChargerPick.id} productUrl={smartChargerPick.url} className="btn btn-outline btn-sm" disclose>
-                  Tesla / NACS charger, {money(smartChargerPick.priceUsd)} (sponsored)
+                  Tesla / NACS charger (sponsored)
                 </PartnerLink>
                 <Link href="/ev-charger-picker" className="font-semibold text-spark-orange underline underline-offset-2">
                   Which charger do I need?

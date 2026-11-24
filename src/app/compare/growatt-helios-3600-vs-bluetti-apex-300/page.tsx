@@ -1,36 +1,27 @@
 import type { Metadata } from "next";
-import { Fragment } from "react";
 import Link from "next/link";
 import { AffiliateDisclosure, PartnerLink } from "@/components/affiliate";
 import { Breadcrumbs, Callout, Disclaimer, Faq, RelatedLinks, Section } from "@/components/content";
 import { QuickAnswer } from "@/components/guide-ui";
 import { HomeBackupLinks, WhatWeChecked } from "@/components/home-backup";
-import { PriceFootnote, productJson } from "@/components/products";
-import { BLACK_FRIDAY_2026, type PricePoint } from "@/data/deals";
+import { PriceCell, PriceFootnote, productJson } from "@/components/products";
 import { HOME_BACKUP_HUB } from "@/data/home-backup";
 import { HOOKUP_PARTS, modelHookup } from "@/data/hookup";
 import type { Product } from "@/data/products";
 import { formatDate } from "@/lib/energy";
-import { fullName, kwh, money, productById, watts } from "@/lib/products";
+import { fullName, kwh, productById, watts } from "@/lib/products";
 import { JsonLd, pageMetadata, url } from "@/lib/seo";
 
 const PATH = "/compare/growatt-helios-3600-vs-bluetti-apex-300";
 const UPDATED = "2026-11-14";
 const TITLE = "Growatt HELIOS 3600 vs Bluetti Apex 300: Which One for 240 V Home Backup?";
 const DESCRIPTION =
-  "The Bluetti Apex 300 gives 120/240 V from one unit; the Growatt HELIOS 3600 needs two units and Growatt's hub for 240 V. Capacity, output, expansion, hookup and our dated price log, from both makers' US stores.";
+  "The Bluetti Apex 300 gives 120/240 V from one unit; the Growatt HELIOS 3600 needs two units and Growatt's hub for 240 V. Capacity, output, expansion and hookup, from both makers' US stores.";
 
 export const metadata: Metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH, type: "article" });
 
 /** From the Apex 300 manual V3.1 spec table: the 14-50R on battery alone at the 240 V setting. */
 const APEX_240V_BATTERY_AMPS = 16;
-
-/** Every price we have recorded for a model: the Black Friday page's log plus the current products.ts read, oldest first. */
-function priceLog(p: Product): PricePoint[] {
-  const logged = BLACK_FRIDAY_2026.filter((d) => d.productId === p.id).flatMap((d) => d.log);
-  const all = [...logged, ...(p.priceUsd ? [{ date: p.retrieved, usd: p.priceUsd }] : [])];
-  return all.filter((pt, i) => all.findIndex((x) => x.date === pt.date) === i).sort((a, b) => a.date.localeCompare(b.date));
-}
 
 const yes = (v: number | null | undefined, f: (x: number) => string) => (v == null ? "Not stated" : f(v));
 
@@ -41,8 +32,6 @@ export default function HeliosVsApex() {
   const hub = HOOKUP_PARTS.growattHub;
   const hHook = modelHookup(h.id);
   const crumbs = [HOME_BACKUP_HUB, { name: "HELIOS 3600 vs Apex 300", path: PATH }];
-  const logs = [a, h].map((p) => ({ p, log: priceLog(p) }));
-  const maxRows = Math.max(...logs.map((l) => l.log.length));
 
   const rows: { label: string; a: string; h: string }[] = [
     { label: "240 V from one unit", a: `Yes: 120/240 V from the 14-50R`, h: "No: 120 V only; 240 V needs two units and Growatt's Double Voltage Power Hub" },
@@ -51,7 +40,7 @@ export default function HeliosVsApex() {
     { label: "240 V output on battery", a: `${APEX_240V_BATTERY_AMPS} A (${watts(a.acOutputW)}), per Bluetti's manual`, h: `${watts(h.acOutputW * 2)} from two units (Growatt)` },
     { label: "Big outlets", a: "NEMA 14-50R (50 A, 120/240 V) and TT-30R (30 A, 120 V)", h: hHook ? `${hHook.outlet}; the hub adds two L14-30 and one 6-20` : "Not stated" },
     { label: "Expands to", a: `${kwh(a.maxCapacityWh!)} (${a.expansion})`, h: `${kwh(h.maxCapacityWh!)} (${h.expansion})` },
-    { label: "Add-on battery", a: a.addOn ? `${money(a.addOn.priceUsd!)} each${a.addOn.soldOut ? ", sold out" : ""}` : "Not stated", h: h.addOn ? `${money(h.addOn.priceUsd!)} each${h.addOn.soldOut ? ", sold out when we checked" : ""}` : "Not stated" },
+    { label: "Add-on battery", a: a.addOn ? `${a.addOn.model}${a.addOn.soldOut ? ", sold out" : ""}` : "Not stated", h: h.addOn ? `${h.addOn.model}${h.addOn.soldOut ? ", sold out when we checked" : ""}` : "Not stated" },
     { label: "Max solar input", a: yes(a.solarInputW, watts), h: yes(h.solarInputW, watts) },
     { label: "Rated cycles", a: a.cycles ? `${a.cycles.toLocaleString("en-US")}${a.cyclesTo ? ` to ${a.cyclesTo}%` : ""}` : "Not stated", h: h.cycles ? h.cycles.toLocaleString("en-US") : "Not stated" },
     { label: "UPS switchover", a: "0 ms in online UPS mode on some outlets, 20 ms otherwise (Bluetti)", h: h.upsMs ? `${h.upsMs} ms (Growatt also says 15 ms)` : "Not stated" },
@@ -62,11 +51,11 @@ export default function HeliosVsApex() {
   const faqs = [
     {
       q: "Can one Growatt HELIOS 3600 give 240 V?",
-      a: `No. Growatt's own page says it supports 240 V whole-home power "when parallel two HELIOS 3600s", joined with its Double Voltage Power Hub (${money(hub.listPriceUsd)} on ${formatDate(hub.retrieved)}), which gives ${watts(h.acOutputW * 2)} with two L14-30 outlets. One unit is 120 V only.`,
+      a: `No. Growatt's own page says it supports 240 V whole-home power "when parallel two HELIOS 3600s", joined with its Double Voltage Power Hub, which gives ${watts(h.acOutputW * 2)} with two L14-30 outlets. One unit is 120 V only.`,
     },
     {
-      q: "Which is cheaper for 240 V, the HELIOS 3600 or the Apex 300?",
-      a: `The Apex 300: ${money(a.priceUsd!)} for one unit on ${formatDate(a.retrieved)}, against ${money(pair.listPriceUsd)} for Growatt's two-unit bundle with the hub on ${formatDate(pair.retrieved)}. The Growatt pair gives far more: about ${kwh(h.capacityWh * 2)} and ${watts(h.acOutputW * 2)}, against ${kwh(a.capacityWh)} and ${watts(a.acOutputW)}.`,
+      q: "Which is simpler for 240 V, the HELIOS 3600 or the Apex 300?",
+      a: `The Apex 300: one unit gives 120/240 V. Growatt needs its two-unit bundle with the hub (checked ${formatDate(pair.retrieved)}). The Growatt pair gives far more: about ${kwh(h.capacityWh * 2)} and ${watts(h.acOutputW * 2)}, against ${kwh(a.capacityWh)} and ${watts(a.acOutputW)}.`,
     },
     {
       q: "Which holds more energy?",
@@ -137,11 +126,9 @@ export default function HeliosVsApex() {
                   </tr>
                 ))}
                 <tr className="border-t border-black/6">
-                  <th scope="row" className="p-3 font-medium text-stone-700">Price on the maker&apos;s site*</th>
-                  <td className="p-3">{money(a.priceUsd!)} ({formatDate(a.retrieved)})</td>
-                  <td className="p-3">
-                    {money(h.priceUsd!)} one unit; {money(pair.listPriceUsd)} for two with the hub ({formatDate(h.retrieved)})
-                  </td>
+                  <th scope="row" className="p-3 font-medium text-stone-700">Today&apos;s price</th>
+                  <td className="p-3"><PriceCell p={a} /></td>
+                  <td className="p-3"><PriceCell p={h} /></td>
                 </tr>
               </tbody>
             </table>
@@ -149,11 +136,10 @@ export default function HeliosVsApex() {
           <PriceFootnote products={[a, h]} />
         </Section>
 
-        <Section title="The 240 V question, in dollars" id="240v">
+        <Section title="The 240 V question" id="240v">
           <div className="grid sm:grid-cols-2 gap-4">
             <div className="rounded-xl border border-black/8 bg-surface p-5">
               <h3 className="font-bold">One {fullName(a)}</h3>
-              <p className="text-3xl font-extrabold mt-1">{money(a.priceUsd!)}</p>
               <p className="text-sm text-stone-700 mt-2">
                 120/240 V, {kwh(a.capacityWh)}, {watts(a.acOutputW)}. At 240 V on battery the 14-50R gives {APEX_240V_BATTERY_AMPS} A; its 50 A
                 rating applies only when grid or generator power passes through (Bluetti manual).
@@ -161,7 +147,6 @@ export default function HeliosVsApex() {
             </div>
             <div className="rounded-xl border border-black/8 bg-surface p-5">
               <h3 className="font-bold">Two {fullName(h)} units + hub</h3>
-              <p className="text-3xl font-extrabold mt-1">{money(pair.listPriceUsd)}</p>
               <p className="text-sm text-stone-700 mt-2">
                 120/240 V, {kwh(h.capacityWh * 2)}, {watts(h.acOutputW * 2)}, with two L14-30 outlets on the hub. Two batteries to charge and move
                 ({h.weightLb} lb each).
@@ -174,37 +159,6 @@ export default function HeliosVsApex() {
             <Link href={HOME_BACKUP_HUB.path} className="text-spark-orange underline underline-offset-2">the four ways to connect a battery</Link> and
             the <Link href="/home-backup/bluetti-apex-300-hookup" className="text-spark-orange underline underline-offset-2">Apex 300 hookup guide</Link>.
           </p>
-        </Section>
-
-        <Section title="Our price log" id="prices">
-          <p className="text-stone-700 max-w-3xl mb-3">
-            Prices we read on each maker&apos;s US store, one unit, oldest first. We record them on our own checks, so gaps mean we did not look
-            that day.
-          </p>
-          <div className="relative overflow-x-auto rounded-xl border border-black/8 bg-surface">
-            <table className="w-full text-sm">
-              <caption className="sr-only">Prices recorded for the two models</caption>
-              <thead className="bg-surface-light text-left">
-                <tr>
-                  {logs.map(({ p }) => (
-                    <th key={p.id} scope="col" className="p-3 font-semibold" colSpan={2}>{fullName(p)}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {Array.from({ length: maxRows }, (_, i) => (
-                  <tr key={i} className="border-t border-black/6">
-                    {logs.map(({ p, log }) => (
-                      <Fragment key={p.id}>
-                        <td className="p-3">{log[i] ? formatDate(log[i].date) : ""}</td>
-                        <td className="p-3 tabular-nums">{log[i] ? money(log[i].usd) : ""}</td>
-                      </Fragment>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
         </Section>
 
         <Section title="Buying one" id="buy">
@@ -230,26 +184,25 @@ export default function HeliosVsApex() {
         <WhatWeChecked
           untested="either unit"
           items={[
-            { name: `${fullName(h)} product page`, url: h.sourceUrl, read: h.retrieved, what: "price, stock, two-unit bundle; \"Support 240V whole-home power when parallel two HELIOS 3600s\"" },
-            { name: `${hub.name} product page`, url: hub.url, read: hub.retrieved, what: "price; 7,200 W from two units; one 6-20 and two L14-30 outlets" },
-            { name: `${fullName(a)} product page`, url: a.sourceUrl, read: a.retrieved, what: "price, stock, outlets" },
+            { name: `${fullName(h)} product page`, url: h.sourceUrl, read: h.retrieved, what: "stock, two-unit bundle; \"Support 240V whole-home power when parallel two HELIOS 3600s\"" },
+            { name: `${hub.name} product page`, url: hub.url, read: hub.retrieved, what: "7,200 W from two units; one 6-20 and two L14-30 outlets" },
+            { name: `${fullName(a)} product page`, url: a.sourceUrl, read: a.retrieved, what: "stock, outlets" },
             { name: "Bluetti Apex 300 user manual V3.1 (PDF)", url: "https://s4.bluettipower.com/bluetti/purchasePageBiz/2025/12/Apex%20300%20User%20%20Manual%20US%20EN-FR-1764555919287-cde9.pdf", read: "2026-11-14", what: "14-50R: 50 A bypass, 16 A at 240 V on battery" },
-            { name: "Our Black Friday price log (src/data/deals.ts)", url: url("/black-friday-deals"), read: "2026-11-14", what: "earlier prices we recorded" },
           ]}
         />
 
         <HomeBackupLinks exclude={PATH} />
 
         <Disclaimer>
-          Specifications and prices are copied from Growatt&apos;s and Bluetti&apos;s US websites on the dates shown and change often, especially during
-          sales. Confirm them with the seller before you buy.
+          Specifications are copied from Growatt&apos;s and Bluetti&apos;s US websites on the dates shown. Confirm them with the seller before you
+          buy. We don&apos;t list prices; the links go to each maker&apos;s page for today&apos;s price.
         </Disclaimer>
         <RelatedLinks
           links={[
             { href: "/home-backup/bluetti-apex-300-hookup", label: "Bluetti Apex 300 hookup", desc: "AT1, interlock or manual transfer switch" },
             { href: HOME_BACKUP_HUB.path, label: "The four ways to connect a battery", desc: "Cords, interlock, transfer switch or smart panel" },
             { href: "/compare", label: "All comparisons", desc: "Every head-to-head we have" },
-            { href: "/best-portable-power-stations", label: "Best portable power stations", desc: "Every model compared, with dated prices" },
+            { href: "/best-portable-power-stations", label: "Best portable power stations", desc: "Every model compared by spec" },
           ]}
         />
       </div>

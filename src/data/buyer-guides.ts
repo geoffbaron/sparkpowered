@@ -3,8 +3,8 @@
  * market: non-partner home EV chargers, home charger installation costs, and
  * the CPAP battery pack that is not a power station.
  *
- * RULES (enforced by tests/buyer-guides.test.ts): every price and spec is
- * copied from the maker's own US site (or the cited cost study) and dated.
+ * RULES (enforced by tests/buyer-guides.test.ts): every spec is copied from
+ * the maker's own US site (or the cited cost study) and dated. No product prices.
  * Use null for anything not published. No ratings or reviews.
  */
 
@@ -25,7 +25,6 @@ export interface OtherCharger {
   wifi: boolean;
   cableFt: number | null;
   warrantyYears: number | null;
-  priceUsd: number;
   url: string;
   retrieved: string;
   /** What it does better or worse than our picks, in one line. */
@@ -43,10 +42,9 @@ export const OTHER_CHARGERS: OtherCharger[] = [
     wifi: false,
     cableFt: 25,
     warrantyYears: 3,
-    priceUsd: 299.99,
     url: "https://grizzl-e.com/products/grizzl-e-classic",
     retrieved: GUIDES_CHECKED,
-    note: "The cheapest UL-listed, ENERGY STAR 40-amp charger we found, with a tough aluminum case. No Wi-Fi or app, so no scheduling from your phone (many cars can schedule on their own).",
+    note: "A UL-listed, ENERGY STAR 40-amp charger with a tough aluminum case. No Wi-Fi or app, so no scheduling from your phone (many cars can schedule on their own).",
   },
   {
     id: "emporia-classic",
@@ -58,10 +56,9 @@ export const OTHER_CHARGERS: OtherCharger[] = [
     wifi: true,
     cableFt: 25,
     warrantyYears: 3,
-    priceUsd: 449,
     url: "https://shop.emporiaenergy.com/products/emporia-ev-charger",
     retrieved: GUIDES_CHECKED,
-    note: "Smart charger with app scheduling, 48 amps when hardwired. The J1772 version ($449) was sold out when we checked; the NACS version was $479. The $599 Pro adds load management that can let you skip a panel upgrade.",
+    note: "Smart charger with app scheduling, 48 amps when hardwired. Comes with a J1772 or NACS plug. The Pro version adds load management that can let you skip a panel upgrade.",
   },
   {
     id: "chargepoint-home-flex",
@@ -73,7 +70,6 @@ export const OTHER_CHARGERS: OtherCharger[] = [
     wifi: true,
     cableFt: 23,
     warrantyYears: 3,
-    priceUsd: 549,
     url: "https://store.chargepoint.com/product/home-flex-hardwired",
     retrieved: GUIDES_CHECKED,
     note: "Up to 50 amps hardwired with a well-known app. Out of stock on ChargePoint's store when we checked.",
@@ -88,7 +84,6 @@ export const OTHER_CHARGERS: OtherCharger[] = [
     wifi: true,
     cableFt: 24,
     warrantyYears: 4,
-    priceUsd: 585,
     url: "https://shop.tesla.com/product/wall-connector",
     retrieved: GUIDES_CHECKED,
     note: "The fastest here at 48 amps (up to 44 miles an hour) with the longest warranty. Must be hardwired by an electrician, and Tesla said Tesla ownership was required while supplies were limited.",
@@ -139,7 +134,6 @@ export const CPAP_PACK = {
   cycles: 2000,
   weightLb: 15,
   warrantyYears: 1,
-  priceUsd: 499,
   notes: [
     "Made for CPAPs: comes with seven power cables and a connector that Bluetti says fit about 90% of machines, including ResMed AirSense and Philips DreamStation.",
     "DC outputs only, which skips the power lost converting to a wall-style outlet. 12-month warranty, shorter than Bluetti's power stations.",

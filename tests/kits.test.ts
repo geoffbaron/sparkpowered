@@ -24,7 +24,7 @@ test("every kit has lines, variant ids, prices, a date and sources", () => {
     const extras = [k.addBattery, k.addPanel].filter((x) => x != null);
     for (const l of [...k.lines, ...extras]) {
       assert.ok(Number.isSafeInteger(l.variantId) && l.variantId > 1e9, `${k.id} variant id ${l.variantId}`);
-      assert.ok(l.unitPriceUsd > 20 && l.unitPriceUsd < 20_000, `${k.id} price ${l.unitPriceUsd}`);
+      assert.ok(!("unitPriceUsd" in l), `${k.id} line carries a price`);
       assert.ok(isHttps(l.url) && new URL(l.url).host === origin, `${k.id} url ${l.url} is on ${origin}`);
       assert.ok(l.label.length > 5, `${k.id} label`);
       assert.ok(l.wh >= 0 && l.panelW >= 0 && l.wh + l.panelW > 0, `${k.id} line adds nothing`);
@@ -49,17 +49,14 @@ test("kit totals add up from the lines", () => {
   for (const k of KITS) {
     const wh = k.lines.reduce((t, l) => t + l.wh * l.qty, 0);
     const w = k.lines.reduce((t, l) => t + l.panelW * l.qty, 0);
-    const usd = k.lines.reduce((t, l) => t + l.unitPriceUsd * l.qty, 0);
     assert.ok(Math.abs(k.batteryWh - wh) < 0.01, `${k.id} Wh`);
     assert.equal(k.panelW, w, `${k.id} W`);
-    assert.ok(Math.abs(k.priceUsd - usd) < 0.01, `${k.id} price`);
+    assert.ok(!("priceUsd" in k), `${k.id} carries a price`);
     const none = configTotals({ kit: k, extraBatteries: 0, extraPanels: 0 });
-    assert.equal(none.priceUsd, k.priceUsd);
+    assert.ok(!("priceUsd" in none));
     assert.equal(none.batteryWh, k.batteryWh);
   }
   // Spot checks against the stores' own figures on Oct 26 2026.
-  assert.equal(kitById("bluetti-ac180-200w").priceUsd, 769);
-  assert.equal(kitById("bluetti-apex-300-4xb300k-1000w").priceUsd, 1599 + 4 * 1079 + 2 * 799);
   assert.equal(kitById("bluetti-apex-300-4xb300k-1000w").batteryWh, 13824);
   assert.equal(kitById("ecoflow-delta-pro-3-2eb-800w").batteryWh, 12288);
 });
@@ -75,7 +72,6 @@ test("extras update totals, clamp to the brand's limit, and merge into cart line
   const k = kitById("bluetti-apex-300-4xb300k-1000w");
   const t = configTotals({ kit: k, extraBatteries: 99, extraPanels: 5 });
   assert.equal(t.batteryWh, Math.round((13824 + 2 * 2764.8) * 100) / 100);
-  assert.equal(t.priceUsd, k.priceUsd + 2 * 1079);
   assert.equal(t.panelW, 1000);
   const b300k = t.items.find((i) => i.variantId === 47262756896987)!;
   assert.equal(b300k.qty, 6);
@@ -83,8 +79,7 @@ test("extras update totals, clamp to the brand's limit, and merge into cart line
   const ac = configTotals({ kit: kitById("bluetti-ac180-200w"), extraBatteries: 1, extraPanels: 1 });
   assert.equal(ac.panelW, 400);
   assert.equal(ac.batteryWh, 1152);
-  assert.equal(ac.priceUsd, 769 + 349);
-  assert.equal(configTotals({ kit: k, extraBatteries: -3, extraPanels: Number.NaN }).priceUsd, k.priceUsd);
+  assert.equal(configTotals({ kit: k, extraBatteries: -3, extraPanels: Number.NaN }).batteryWh, k.batteryWh);
 });
 
 test("cart links: Shopify permalink, merged lines, wrapped in Awin for Bluetti, plain for untracked brands", () => {
@@ -117,15 +112,15 @@ test("cart links: Shopify permalink, merged lines, wrapped in Awin for Bluetti, 
 
 const need = (batteryWh: number, panelW: number, runningW: number, whPerDay = batteryWh * USABLE_FRACTION / 3): KitNeed => ({ batteryWh, panelW, runningW, whPerDay });
 
-test("matching: cheapest covering kit first, then value or room to grow, then another brand", () => {
+test("matching: smallest covering kit first, then room to grow, then another brand", () => {
   const m = matchKits(need(1000, 300, 200));
   assert.equal(m.tooBig, false);
   assert.ok(m.picks.length >= 2 && m.picks.length <= 3);
   assert.equal(m.picks[0].role, "least");
-  assert.equal(m.picks[0].label, "Covers it for the least");
+  assert.equal(m.picks[0].label, "Smallest kit that covers it");
   for (const p of m.picks) if (p.role !== "short") assert.ok(p.coverage.covers, `${p.config.kit.id} should cover`);
-  const prices = m.picks.filter((p) => p.role !== "least").map((p) => p.totals.priceUsd);
-  for (const x of prices) assert.ok(x >= m.picks[0].totals.priceUsd);
+  const sizes = m.picks.filter((p) => p.role !== "least" && p.role !== "short").map((p) => p.totals.batteryWh);
+  for (const x of sizes) assert.ok(x >= m.picks[0].totals.batteryWh);
   const brands = new Set(m.picks.map((p) => p.config.kit.brand));
   assert.ok(brands.size >= 2, "at least two brands");
   // The weekend kit adds a second panel to get closer to 300 W.
@@ -185,7 +180,7 @@ test("every cabin tier in a dark and a sunny state gets kits or the fallback, ne
       const m = matchKits({ batteryWh: s.batteryWh, panelW: s.panelW, runningW: peakWatts(t.picks).running, whPerDay: wh });
       assert.ok(m.picks.length > 0, `${t.id} at ${perKwDay}`);
       for (const p of m.picks) {
-        assert.ok(Number.isFinite(p.totals.priceUsd) && p.totals.priceUsd > 0);
+        assert.ok(!("priceUsd" in p.totals) && p.totals.batteryWh > 0);
         assert.ok(p.coverage.batteryDays == null || Number.isFinite(p.coverage.batteryDays));
         assert.match(kitCartLink(p.config).href, /^https:\/\//);
       }
@@ -193,12 +188,13 @@ test("every cabin tier in a dark and a sunny state gets kits or the fallback, ne
   }
 });
 
-test("shopping list text has every item, the total and the cart link", () => {
+test("shopping list text has every item and the cart link, and no prices", () => {
   const c = { kit: kitById("ecoflow-delta-3-plus-220w"), extraBatteries: 1, extraPanels: 1 };
-  const txt = shoppingListText(c, "EcoFlow", "Oct 26, 2026");
+  const txt = shoppingListText(c, "EcoFlow");
   assert.match(txt, /1 x DELTA 3 Plus/);
   assert.match(txt, /Smart Extra Battery/);
   assert.match(txt, /220 W bifacial/);
-  assert.match(txt, /Total: \$1,727\.00/);
+  assert.doesNotMatch(txt, /\$\d/);
+  assert.match(txt, /See today's prices on EcoFlow's site/);
   assert.match(txt, /us\.ecoflow\.com\/cart\/41826183151689:1,41631849971785:1,39993294454857:1\?storefront=true/);
 });

@@ -21,7 +21,7 @@ import { ELECTRIC_OUTBOARDS, FUEL_PRICES, GAS_OUTBOARDS } from "@/data/boating";
 import { INSTALL_COST } from "@/data/buyer-guides";
 import { chargerById } from "@/data/chargers";
 import { STATE_LAWS, LAW_REVIEWED } from "@/data/plugin-solar-law";
-import { INSTALLED_BATTERY_COST, PLUGIN_KITS } from "@/data/products";
+import { INSTALLED_BATTERY_COST } from "@/data/products";
 import { ELECTRIC_HOUR_USD, GAS_HOUR_USD, MOTORS, runtimeHours } from "@/lib/boating";
 import {
   MONTHLY_MILES,
@@ -187,10 +187,6 @@ const S = {
 /** EnergySage average installed price per watt before incentives, by state, read 2026-10-25 (S.esSolarCost). */
 const SOLAR_PER_WATT: Record<string, number> = { MA: 2.9, NJ: 2.59, AZ: 2.26, FL: 2.12, TX: 2.25, OH: 2.58, MI: 2.88, WA: 2.49 };
 const SOLAR_PER_WATT_US = 2.6;
-/** Redodo 12V 100Ah price on redodopower.com, read 2026-10-25 (1 pack). */
-const REDODO_100_PRICE_TODAY = 269.99;
-/** Renogy 12V 100Ah AGM price on renogy.com, read 2026-10-25 (1 pack). */
-const RENOGY_AGM_PRICE_TODAY = 208.99;
 /** Redodo 12V 100Ah weight as stated on its product page, read 2026-10-25. */
 const REDODO_100_LB_TODAY = 25;
 /** NREL PV Fleet median performance loss, % a year (S.doeFleet). */
@@ -458,7 +454,7 @@ export const TOPICS: Topic[] = [
         a: `As backup power, it can be: a home battery keeps your chosen circuits running in an outage without fuel. As a money-saver it is a harder case. EnergySage put home battery prices at about ${usd0(INSTALLED_BATTERY_COST.medianPerKwh)} per kWh in the first half of 2026, so one ${POWERWALL_3_KWH} kWh Tesla Powerwall 3 comes to about ${usd0(INSTALLED_BATTERY_COST.medianPerKwh * POWERWALL_3_KWH)} at that rate, and homeowners can no longer claim the 30% federal credit for one installed after 2025.`,
         detail: [
           { p: "EnergySage says resiliency, backup power in an outage, is the main reason people install home storage, and that most batteries cannot back up a whole home, so you choose the circuits." },
-          { p: `If you mainly want the fridge, lights, internet and a medical device through an outage, a plug-in power station is far cheaper: the 2 kWh Bluetti ${e200.model} was listed at ${usd0(e200.priceUsd ?? 0)} when we checked on ${formatDate(e200.retrieved)}, and you plug appliances straight into it. See the next questions for run times.` },
+          { p: `If you mainly want the fridge, lights, internet and a medical device through an outage, a plug-in power station costs far less than an installed battery: the 2 kWh Bluetti ${e200.model} is one, and you plug appliances straight into it. See the next questions for run times.` },
         ],
         sources: [S.esResilience, S.esH1, S.powerwall, S.irs25d],
         tools: [{ href: "/home-battery-backup", label: "Home battery backup guide" }],
@@ -625,7 +621,7 @@ export const TOPICS: Topic[] = [
         safety: "Plug the charging cord straight into a grounded outlet in good condition, ideally on its own circuit; never use an extension cord or power strip. If the plug or outlet gets warm, stop charging and have an electrician check it.",
         detail: [
           { p: "The DOE gives a range of charging times from less than 20 minutes on a DC fast charger to 20 hours or more on Level 1, depending on how empty and how big the battery is, the car's built-in charger and the equipment." },
-          { p: `A plug-in Level 2 charger needs a 240-volt outlet such as a NEMA 14-50; Lectron says a licensed electrician must install the outlet and a dedicated 240-volt circuit if you don't have one. The Lectron NEXUS was ${usd2(lectron.priceUsd)} on Lectron's site when we checked on October 25, 2026.` },
+          { p: `A plug-in Level 2 charger needs a 240-volt outlet such as a NEMA 14-50; Lectron says a licensed electrician must install the outlet and a dedicated 240-volt circuit if you don't have one.` },
         ],
         sources: [S.afdcStations, S.afdcHome, S.lectron],
         tools: [
@@ -666,14 +662,14 @@ export const TOPICS: Topic[] = [
         safety: "A 14-50 outlet for charging should be a heavy-duty, industrial-grade one on its own circuit, installed by a licensed electrician with its terminals tightened to spec; cheap or loose outlets can overheat over hours of charging. Plug the charger straight in, never through an extension cord or adapter the charger maker does not approve.",
         detail: [
           { p: "ChargePoint allows plug-in installs only on 40-amp and 50-amp circuits (32 or 40 amps of charging) and does not recommend a GFCI breaker with its Home Flex, because the charger has its own charging circuit interrupting device." },
-          { p: `Both Lectron's NEXUS (${usd2(lectron.priceUsd)}) and Autel's MaxiCharger AC Elite Home 40A (${usd0(autel40.priceUsd)}), both on the makers' sites on October 25, 2026, plug into a 14-50; Autel's 50-amp version is hardwired.` },
+          { p: `Both Lectron's NEXUS and Autel's MaxiCharger AC Elite Home 40A plug into a 14-50; Autel's 50-amp version is hardwired.` },
         ],
         sources: [S.chargepoint, S.chargepointTips, S.autel40, S.installCost, S.lectron, S.eviqo, S.nec],
         tools: [{ href: "/ev-charger-picker", label: "Which charger do I need? 1-minute picker" }, { href: "/best-home-ev-charger", label: "Plug-in and hardwired chargers compared" }],
         picks: [
           { brand: "lectron", label: "Lectron NEXUS 40A", url: lectron.url, note: "NEMA 14-50 plug-in, J1772 or Tesla plug" },
           { brand: "autel", label: "Autel MaxiCharger 40A", url: autel40.url, note: "NEMA 14-50 plug-in with app scheduling" },
-          { brand: "eviqo", label: `EVIQO Level 2 (${usd0(eviqo.priceUsd)} on October 31, 2026)`, url: eviqo.url, note: "Either way: NEMA 14-50 plug-in at 40 A, or hardwired at 48 A; app scheduling" },
+          { brand: "eviqo", label: "EVIQO Level 2", url: eviqo.url, note: "Either way: NEMA 14-50 plug-in at 40 A, or hardwired at 48 A; app scheduling" },
         ],
       },
       {
@@ -738,7 +734,7 @@ export const TOPICS: Topic[] = [
         ],
         sources: [S.minnKota, S.newport, S.renogyAgm],
         tools: [{ href: "/trolling-motor-battery-life", label: "Runtime calculator for your motor" }, { href: "/best-trolling-motor-battery", label: "Best trolling motor batteries" }],
-        picks: [{ brand: "redodo", label: "Redodo 12V 100Ah", url: redodo100.url, productId: redodo100.id, note: `About 100 usable amp-hours for 30 to 70 lb thrust motors (Redodo); ${usd2(REDODO_100_PRICE_TODAY)} on October 25, 2026` }],
+        picks: [{ brand: "redodo", label: "Redodo 12V 100Ah", url: redodo100.url, productId: redodo100.id, note: "About 100 usable amp-hours for 30 to 70 lb thrust motors (Redodo)" }],
       },
       {
         id: "trolling-motor-battery-size",
@@ -754,7 +750,7 @@ export const TOPICS: Topic[] = [
           { href: "/best-trolling-motor-battery", label: "Trolling motor battery picks" },
           { href: "/24v-vs-36v-trolling-motor", label: "24V vs 36V trolling motors" },
         ],
-        picks: [{ brand: "redodo", label: "Redodo 12V 100Ah", url: redodo100.url, productId: redodo100.id, note: `For 30 to 70 lb thrust motors (Redodo); ${usd2(REDODO_100_PRICE_TODAY)} on October 25, 2026` }],
+        picks: [{ brand: "redodo", label: "Redodo 12V 100Ah", url: redodo100.url, productId: redodo100.id, note: "For 30 to 70 lb thrust motors (Redodo)" }],
       },
       {
         id: "charge-lithium-regular-charger",
@@ -770,9 +766,9 @@ export const TOPICS: Topic[] = [
       {
         id: "lithium-vs-agm-trolling",
         q: "Is lithium worth it over AGM for a trolling motor?",
-        a: `Lithium wins on weight, usable capacity and life; AGM wins on up-front price. A Redodo 12V 100Ah lithium weighs ${REDODO_100_LB_TODAY} lb against ${n0(LEAD_ACID_REF.weightLb)} lb for a Renogy 100Ah AGM, lets you use all 100 amp-hours instead of about 50, and is rated for 4,000 cycles at full discharge against 500 cycles at 50% for the AGM. On October 25, 2026 the Redodo was ${usd2(REDODO_100_PRICE_TODAY)} and the Renogy ${usd2(RENOGY_AGM_PRICE_TODAY)}.`,
+        a: `Lithium wins on weight, usable capacity and life; AGM wins on up-front price. A Redodo 12V 100Ah lithium weighs ${REDODO_100_LB_TODAY} lb against ${n0(LEAD_ACID_REF.weightLb)} lb for a Renogy 100Ah AGM, lets you use all 100 amp-hours instead of about 50, and is rated for 4,000 cycles at full discharge against 500 cycles at 50% for the AGM. Compare today's prices on the makers' pages.`,
         detail: [
-          { p: `Per usable amp-hour that is about ${usd2(REDODO_100_PRICE_TODAY / 100)} for the lithium and ${usd2(RENOGY_AGM_PRICE_TODAY / agmUsableAh)} for the AGM. Redodo backs its battery with a 5-year warranty.` },
+          { p: `When you compare prices, compare per usable amp-hour: the lithium gives you all 100, the AGM about ${n0(agmUsableAh)}. Redodo backs its battery with a 5-year warranty.` },
         ],
         sources: [S.redodo100, S.renogyAgm],
         tools: [{ href: "/lithium-vs-agm-battery", label: "Lithium vs AGM calculator" }],
@@ -814,9 +810,9 @@ export const TOPICS: Topic[] = [
       {
         id: "solar-battery-tax-credit-2026",
         q: "Is there still a federal tax credit for solar panels or a home battery?",
-        a: `Not from the federal government for homeowners, but solar can still pay for itself without one, and there are cheaper ways in. At each state's own average price, a home system pays back in about ${Math.round(fastPay.years)} years in ${fastPay.s.name} and ${Math.round(slowPay.years)} years in ${slowPay.s.name} with no credit, and some states add their own, such as Hawaii's state solar tax credit of up to $5,000 and the Illinois Shines incentive. A plug-in solar kit starts at about ${usd0(Math.min(...PLUGIN_KITS.map((k) => k.priceUsd)))} where your state allows it, and a plug-in power station covers outage backup for a fraction of an installed home battery. The IRS says the 30% Residential Clean Energy Credit (section 25D), which covered solar panels and battery storage, is not allowed for systems installed after December 31, 2025, even if you paid in 2025.`,
+        a: `Not from the federal government for homeowners, but solar can still pay for itself without one, and there are cheaper ways in. At each state's own average price, a home system pays back in about ${Math.round(fastPay.years)} years in ${fastPay.s.name} and ${Math.round(slowPay.years)} years in ${slowPay.s.name} with no credit, and some states add their own, such as Hawaii's state solar tax credit of up to $5,000 and the Illinois Shines incentive. A plug-in solar kit is another way in where your state allows it, and a plug-in power station covers outage backup for a fraction of an installed home battery. The IRS says the 30% Residential Clean Energy Credit (section 25D), which covered solar panels and battery storage, is not allowed for systems installed after December 31, 2025, even if you paid in 2025.`,
         detail: [
-          { p: `For backup, an installed home battery runs about ${usd0(INSTALLED_BATTERY_COST.medianPerKwh)} per kWh before incentives (EnergySage). A power station is a fraction of that: the 2 kWh Bluetti ${e200.model} was listed at ${usd0(e200.priceUsd ?? 0)} when we checked on ${formatDate(e200.retrieved)}, enough for about ${Math.round(fridgeHours(e200.capacityWh))} hours of an average fridge. It does not power the whole house: you plug the fridge, lights and Wi-Fi straight into it.` },
+          { p: `For backup, an installed home battery runs about ${usd0(INSTALLED_BATTERY_COST.medianPerKwh)} per kWh before incentives (EnergySage). A power station costs a fraction of that: the 2 kWh Bluetti ${e200.model} holds enough for about ${Math.round(fridgeHours(e200.capacityWh))} hours of an average fridge. It does not power the whole house: you plug the fridge, lights and Wi-Fi straight into it.` },
           { p: "The IRS counts an expenditure as made when installation is completed. The Energy Efficient Home Improvement Credit (25C), which covered qualified heat pumps, water heaters, exterior doors, windows and insulation, is also not allowed for property placed in service after December 31, 2025. ENERGY STAR's heat pump page still describes a credit through 2032; the IRS's later guidance ends it after 2025." },
           { p: "If you lease solar or sign a power purchase agreement, the Department of Energy notes you are not entitled to the tax benefits, because you do not own the system." },
         ],
@@ -832,7 +828,7 @@ export const TOPICS: Topic[] = [
       {
         id: "ev-charger-tax-credit-2026",
         q: "Is there a federal tax credit for an EV or a home charger in 2026?",
-        a: `Not from the federal government any more, but some states pay their own and charging at home still saves the most. Illinois has a $2,000 EV rebate through December 31, 2026, Colorado a $750 state tax credit (up to $3,250 for a car under $35,000), and the Department of Energy's database lists state and utility EV and charger programs for every state. A Level 2 home charger starts at about ${usd0(eviqo.priceUsd)}, and at the US average electricity price a typical EV costs about ${usd0(evMonth(typical.kwhPer100mi))} a month to charge at home for ${n0(MONTHLY_MILES)} miles, against ${usd0(gasMonth)} for gas. The IRS says the new and used clean vehicle credits (30D and 25E) ended for vehicles acquired after September 30, 2025, and the charger credit (30C) for chargers placed in service after June 30, 2026.`,
+        a: `Not from the federal government any more, but some states pay their own and charging at home still saves the most. Illinois has a $2,000 EV rebate through December 31, 2026, Colorado a $750 state tax credit (up to $3,250 for a car under $35,000), and the Department of Energy's database lists state and utility EV and charger programs for every state. At the US average electricity price a typical EV costs about ${usd0(evMonth(typical.kwhPer100mi))} a month to charge at home for ${n0(MONTHLY_MILES)} miles, against ${usd0(gasMonth)} for gas. The IRS says the new and used clean vehicle credits (30D and 25E) ended for vehicles acquired after September 30, 2025, and the charger credit (30C) for chargers placed in service after June 30, 2026.`,
         detail: [
           { p: "A car counts as acquired once a written binding contract is signed and a payment, even a small down payment or a trade-in, has been made. If you signed and paid before October 1, 2025, the IRS says you can still claim the credit when you take delivery, even after that date." },
           { p: "Program amounts and deadlines change often, so check the program's own page before you buy. Your utility may also offer a cheaper overnight rate for EV charging, which lowers the monthly cost further." },
@@ -844,7 +840,7 @@ export const TOPICS: Topic[] = [
           { href: "/incentives", label: "State incentive links" },
         ],
         picks: [
-          { brand: "eviqo", label: `EVIQO Level 2 (${usd0(eviqo.priceUsd)} on October 31, 2026)`, url: eviqo.url, note: "The lowest-priced charger we recommend: NEMA 14-50 plug-in at 40 A, or hardwired at 48 A" },
+          { brand: "eviqo", label: "EVIQO Level 2", url: eviqo.url, note: "NEMA 14-50 plug-in at 40 A, or hardwired at 48 A" },
           { brand: "lectron", label: "Lectron NEXUS 40A", url: lectron.url, note: `Plugs into a NEMA 14-50; up to ${lectron.milesPerHour} miles of range an hour (Lectron)` },
           { brand: "autel", label: "Autel MaxiCharger 40A", url: autel40.url, note: "NEMA 14-50 plug-in with app scheduling for off-peak hours" },
         ],
@@ -1073,7 +1069,7 @@ const EXAMPLES: Record<string, Example> = {
     tool: { href: "/ev-charger-installation-cost", label: "Cost to add a charging circuit" },
   },
   "install-ev-charger-yourself": {
-    text: `EnergySage's US average for installing a home charger is ${usd0(INSTALL_COST.usAverage)}, with a permit adding ${usd0(INSTALL_COST.permit[0])} to ${usd0(INSTALL_COST.permit[1])} depending on where you live. A ${usd2(lectron.priceUsd)} plug-in Lectron NEXUS on an existing 14-50 outlet skips the circuit work.`,
+    text: `EnergySage's US average for installing a home charger is ${usd0(INSTALL_COST.usAverage)}, with a permit adding ${usd0(INSTALL_COST.permit[0])} to ${usd0(INSTALL_COST.permit[1])} depending on where you live. A plug-in charger such as the Lectron NEXUS on an existing 14-50 outlet skips the circuit work.`,
     source: S.installCost,
     tool: { href: "/ev-charger-installation-cost", label: "Installation cost by state" },
   },
@@ -1093,7 +1089,7 @@ const EXAMPLES: Record<string, Example> = {
     tool: { href: "/trolling-motor-battery-life", label: "Trolling motor runtime calculator" },
   },
   "lithium-vs-agm-trolling": {
-    text: `Price per usable amp-hour on October 25, 2026: Redodo lithium ${usd2(REDODO_100_PRICE_TODAY)} ÷ 100 = ${usd2(REDODO_100_PRICE_TODAY / 100)}; Renogy AGM ${usd2(RENOGY_AGM_PRICE_TODAY)} ÷ ${n0(agmUsableAh)} = ${usd2(RENOGY_AGM_PRICE_TODAY / agmUsableAh)}.`,
+    text: `To compare today's prices fairly, divide each by the usable amp-hours: 100 for the Redodo lithium, ${n0(agmUsableAh)} for the Renogy AGM (half its rating). A lithium that costs twice as much per battery costs about the same per usable amp-hour.`,
     source: S.renogyAgm,
     tool: { href: "/lithium-vs-agm-battery", label: "Lithium vs AGM calculator" },
   },
@@ -1108,7 +1104,7 @@ const EXAMPLES: Record<string, Example> = {
     tool: { href: "/solar-calculator?state=OH", label: "Solar savings calculator" },
   },
   "ev-charger-tax-credit-2026": {
-    text: `With no federal credit after June 30, 2026, a home charger is the full price: for example a ${usd2(lectron.priceUsd)} Lectron NEXUS plus EnergySage's US average installation of ${usd0(INSTALL_COST.usAverage)} is about ${usd0(lectron.priceUsd + INSTALL_COST.usAverage)}. State and utility rebates are what's left.`,
+    text: `With no federal credit after June 30, 2026, a home charger is the full price: the charger itself plus EnergySage's US average installation of ${usd0(INSTALL_COST.usAverage)}. State and utility rebates are what's left.`,
     source: S.installCost,
     tool: { href: "/ev-charger-installation-cost", label: "Installation cost by state" },
   },

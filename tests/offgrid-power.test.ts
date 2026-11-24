@@ -107,14 +107,15 @@ test("peak output adds running watts and the single biggest motor start", () => 
 
 test("station matching respects capacity, add-ons, solar input and output", () => {
   const opts: StationOption[] = [
-    { id: "a", name: "A", brand: "bluetti", capacityWh: 1000, addOnWh: 1000, addOnMax: 2, addOnUsd: 500, priceUsd: 800, solarInputW: 1000, acOutputW: 2000, surgeW: 4000, url: "https://x" },
-    { id: "b", name: "B", brand: "ecoflow", capacityWh: 2000, addOnWh: null, addOnMax: 0, addOnUsd: null, priceUsd: 1500, solarInputW: 500, acOutputW: 2400, surgeW: null, url: "https://y" },
+    { id: "a", name: "A", brand: "bluetti", capacityWh: 1000, addOnWh: 1000, addOnMax: 2, addOnInStock: true, solarInputW: 1000, acOutputW: 2000, surgeW: 4000, url: "https://x" },
+    { id: "b", name: "B", brand: "ecoflow", capacityWh: 2000, addOnWh: null, addOnMax: 0, addOnInStock: false, solarInputW: 500, acOutputW: 2400, surgeW: null, url: "https://y" },
   ];
   const m = matchStations(opts, 2500);
   assert.equal(m.length, 1);
   assert.equal(m[0].option.id, "a");
   assert.equal(m[0].addOns, 2);
-  assert.equal(m[0].totalUsd, 1800);
+  assert.equal(m[0].totalWh, 3000);
+  assert.ok(!("totalUsd" in m[0]));
   assert.equal(matchStations(opts, 1800, { panelW: 800 })[0].option.id, "a");
   assert.equal(matchStations(opts, 1800, { runningW: 2200 })[0].option.id, "b");
   assert.equal(matchStations(opts, 5000).length, 0);

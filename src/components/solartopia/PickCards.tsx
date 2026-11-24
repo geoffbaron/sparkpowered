@@ -2,7 +2,6 @@ import { AffiliateDisclosure, PartnerLink } from "@/components/affiliate";
 import { PickCard } from "@/components/products";
 import { chargerById } from "@/data/chargers";
 import { GOAL_PICK } from "@/data/solartopia";
-import { formatDate, usd } from "@/lib/energy";
 import { productById } from "@/lib/products";
 
 /** Home-battery pick for the outage goal: our existing product card, one product. */
@@ -29,12 +28,9 @@ export function DrivePick() {
         <p className="text-stone-700 text-sm mt-1">
           Adds up to {c.milesPerHour} miles of range an hour, so you wake up full every morning. It plugs into a 240-volt outlet and has a {c.warrantyYears}-year warranty.
         </p>
-        <p className="mt-2 text-xl font-extrabold text-ink tabular-nums">
-          {usd(c.priceUsd, 2)} <span className="text-xs font-normal text-muted">when we checked, {formatDate(c.retrieved)}</span>
-        </p>
         <div className="mt-2">
           <PartnerLink brand={c.brand} productId={c.id} productUrl={c.url} className="btn btn-primary btn-sm">
-            Check price at Lectron
+            See today&apos;s price at Lectron
           </PartnerLink>
         </div>
       </article>

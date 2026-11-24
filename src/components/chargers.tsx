@@ -1,6 +1,7 @@
 /**
  * Home EV charger recommendation and the "what does a home charger cost and
- * save?" explainer. Prices and specs come from src/data/chargers.ts; savings
+ * save?" explainer. Specs come from src/data/chargers.ts (no prices: links go to
+ * the maker's page for today's price); savings
  * from the same EIA/EPA figures as the charging calculator.
  */
 
@@ -33,19 +34,19 @@ function SmartChargerPick({ compact = false }: { compact?: boolean }) {
       <p className="text-xs font-bold uppercase tracking-wide text-spark-amber">Also good: a smart charger with a 50-amp option · sponsored link</p>
       <h3 className="text-lg font-extrabold text-ink mt-1">Autel {a.name}</h3>
       <p className="text-stone-700 mt-1">
-        {usd(a.priceUsd)} when we checked {formatDate(a.retrieved)}. Adds about {Math.round(milesPerHourAt(a.maxKw!))} miles of range an
+        Adds about {Math.round(milesPerHourAt(a.maxKw!))} miles of range an
         hour, roughly {Math.round(milesPerHourAt(a.maxKw!) / l1Mph)}x a wall-outlet cord. Its phone app schedules charging for your
         utility&apos;s cheaper overnight hours: on a time-of-use plan, every 5 cents a kWh off saves about{" "}
         {usd(offPeakYearSaving())} a year over 12,000 miles. {a.warrantyYears}-year warranty, 25-foot cable.
-        {compact ? "" : ` The hardwired 50-amp version (${usd(h.priceUsd)}) charges about a quarter faster for cars that can take it.`}
+        {compact ? "" : " The hardwired 50-amp version charges about a quarter faster for cars that can take it."}
       </p>
       <div className="flex flex-wrap items-center gap-3 mt-3">
         <PartnerLink brand={a.brand} productId={a.id} productUrl={a.url} className="btn btn-outline btn-sm" disclose>
-          Check price: Autel 40A plug-in ({usd(a.priceUsd)})
+          See today&apos;s price at Autel: 40A plug-in
         </PartnerLink>
         {!compact && (
           <PartnerLink brand={h.brand} productId={h.id} productUrl={h.url} className="btn btn-outline btn-sm" disclose>
-            50A hardwired ({usd(h.priceUsd)})
+            50A hardwired
           </PartnerLink>
         )}
       </div>
@@ -54,8 +55,7 @@ function SmartChargerPick({ compact = false }: { compact?: boolean }) {
 }
 
 export function ChargerPick({ compact = false }: { compact?: boolean }) {
-  // The lowest-priced charger we found, J1772 with app scheduling; for Teslas, the
-  // lowest-priced NACS charger (Lectron). Ranked by price and spec, see /best-home-ev-charger.
+  // J1772 with app scheduling; for Teslas, Lectron's NACS charger. Ranked by spec, see /best-home-ev-charger.
   const j = chargerById("eviqo-l2-j1772");
   const n = chargerById("lectron-nexus-nacs");
   return (
@@ -72,19 +72,11 @@ export function ChargerPick({ compact = false }: { compact?: boolean }) {
             240-volt outlet (the RV or range kind, NEMA 14-50) or can be hardwired for {j.hardwiredAmps} amps, is weatherproof for the
             driveway, has a {j.cableFt}-foot cable and an app that schedules charging for cheaper overnight hours, and a{" "}
             {j.warrantyYears}-year warranty.
-            {compact ? "" : ` For a Tesla, the Lectron NEXUS NACS (${usd(n.priceUsd, 2)}) is the lower-priced Tesla-plug pick.`}
+            {compact ? "" : " For a Tesla, the Lectron NEXUS NACS is our Tesla-plug pick."}
           </p>
           <div className="flex flex-wrap items-center gap-3 mt-4">
-            <span className="text-2xl font-extrabold text-ink tabular-nums">
-              {usd(j.priceUsd)}
-              <span className="text-xs font-normal text-muted ml-1">
-                list <s>{usd(j.listPriceUsd!)}</s>, when we checked {formatDate(j.retrieved)}
-              </span>
-            </span>
-          </div>
-          <div className="flex flex-wrap items-center gap-3 mt-3">
             <PartnerLink brand={j.brand} productId={j.id} productUrl={j.url} className="btn btn-primary btn-sm" disclose>
-              Check price: most EVs (J1772)
+              See today&apos;s price at EVIQO: most EVs (J1772)
             </PartnerLink>
             <PartnerLink brand={n.brand} productId={n.id} productUrl={n.url} className="btn btn-outline btn-sm" disclose>
               Tesla / NACS: Lectron NEXUS
@@ -108,7 +100,6 @@ export function ChargerPick({ compact = false }: { compact?: boolean }) {
 /** "What does a home charger cost and save?" in dollars. */
 export function HomeChargerGuide({ state }: { state?: StateEnergy }) {
   const typical = referenceEv("typical");
-  const portable = chargerById("lectron-portable-nacs");
   const j = chargerById("eviqo-l2-j1772");
   const autel = chargerById("autel-elite-home-40a");
   const rate = state ? state.electricity.residentialCentsPerKwhYtd / 100 : nationalRateUsd();
@@ -119,12 +110,15 @@ export function HomeChargerGuide({ state }: { state?: StateEnergy }) {
   const where = state ? ` in ${state.name}` : "";
   return (
     <section id="home-charger" className="mt-12 scroll-mt-24" aria-labelledby="home-charger-heading">
-      <h2 id="home-charger-heading" className="text-2xl sm:text-3xl font-extrabold text-ink">What does a home charger cost, and what does it save?</h2>
+      <h2 id="home-charger-heading" className="text-2xl sm:text-3xl font-extrabold text-ink">What does a home charger save?</h2>
       <div className="grid md:grid-cols-3 gap-3 mt-5">
         <div className="rounded-2xl bg-white border border-black/8 p-5">
-          <p className="text-3xl font-extrabold text-ink">{usd(j.priceUsd)}</p>
-          <p className="font-semibold text-ink mt-1">For the charger</p>
-          <p className="text-sm text-muted mt-1">Our pick, at EVIQO&apos;s price. Add an electrician if you don&apos;t already have a 240-volt outlet where you park.</p>
+          <p className="text-3xl font-extrabold text-ink">40 A</p>
+          <p className="font-semibold text-ink mt-1">Our pick, EVIQO&apos;s Level 2</p>
+          <p className="text-sm text-muted mt-1">
+            Add an electrician if you don&apos;t already have a 240-volt outlet where you park.{" "}
+            <PartnerLink brand={j.brand} productId={j.id} productUrl={j.url} disclose>See today&apos;s price at EVIQO</PartnerLink>
+          </p>
         </div>
         <div className="rounded-2xl bg-white border border-black/8 p-5">
           <p className="text-3xl font-extrabold text-leaf">{usd(yearSaving)}/yr</p>
@@ -149,13 +143,11 @@ export function HomeChargerGuide({ state }: { state?: StateEnergy }) {
         </p>
         <p>
           <strong>Want it to charge when power is cheapest?</strong> Many utilities sell power for less overnight on a
-          time-of-use or EV plan. A smart charger such as EVIQO&apos;s ({usd(j.priceUsd)}) or Autel&apos;s ({usd(autel.priceUsd)}), both
-          when we checked, lets you set the hours in an app, so the car only fills up at the low price. Every 5 cents a kWh off is worth about{" "}
+          time-of-use or EV plan. A smart charger such as EVIQO&apos;s or Autel&apos;s lets you set the hours in an app, so the car only fills up at the low price. Every 5 cents a kWh off is worth about{" "}
           {usd(offPeakYearSaving())} a year on 12,000 miles.
         </p>
         <p>
-          <strong>Renting or not ready to wire?</strong> Lectron&apos;s portable charger ({usd(portable.priceUsd, 2)} when we checked)
-          works on an ordinary outlet (at 12 amps or less) and on a NEMA 14-50 on its own 50-amp circuit (up to 40 amps), and moves with
+          <strong>Renting or not ready to wire?</strong> Lectron&apos;s portable charger works on an ordinary outlet (at 12 amps or less) and on a NEMA 14-50 on its own 50-amp circuit (up to 40 amps), and moves with
           you. Never use an extension cord or plug adapter with it.
         </p>
       </div>
@@ -163,7 +155,7 @@ export function HomeChargerGuide({ state }: { state?: StateEnergy }) {
         <ChargerPick />
       </div>
       <p className="text-xs text-muted mt-2">
-        Prices and specs from EVIQO&apos;s and Lectron&apos;s US sites on {formatDate(j.retrieved)} and Autel&apos;s US store on{" "}
+        Specs from EVIQO&apos;s and Lectron&apos;s US sites on {formatDate(j.retrieved)} and Autel&apos;s US store on{" "}
         {formatDate(autel.retrieved)}. EVIQO&apos;s and Lectron&apos;s miles per hour are their own figures; Autel&apos;s is our arithmetic from its stated
         kW. The time-of-use saving is arithmetic, not a quote from any utility. The ordinary-outlet figure assumes a 12-amp cord and a {typical.kwhPer100mi} kWh/100 mi EV (EPA). Sponsored links: we earn a
         commission if you buy.

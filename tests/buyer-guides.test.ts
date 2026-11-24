@@ -17,7 +17,7 @@ test("non-partner chargers are sourced, dated and plausible", () => {
   for (const c of OTHER_CHARGERS) {
     assert.ok(isHttps(c.url), `${c.id} url`);
     assert.ok(isDate(c.retrieved), `${c.id} retrieved`);
-    assert.ok(c.priceUsd > 100 && c.priceUsd < 2000, `${c.id} price`);
+    assert.ok(!("priceUsd" in c), `${c.id} carries no price`);
     assert.ok(c.amps >= 16 && c.amps <= 80, `${c.id} amps`);
     assert.ok(c.plugs.length > 0 && c.note.length > 20, `${c.id} plugs/note`);
     assert.ok(!/awin1\.com/.test(c.url), `${c.id} must not carry tracking`);
@@ -45,13 +45,13 @@ test("trolling and comparison batteries are sourced and consistent", () => {
     assert.ok(isDate(b.retrieved), `${b.id} retrieved`);
     assert.ok(Math.abs(b.nominalV * b.ampHours - b.energyWh) <= 1, `${b.id} energy`);
     assert.ok(Math.abs(b.nominalV - b.volts * 1.0667) < 0.2, `${b.id} volts`);
-    if (b.listPriceUsd != null) assert.ok(b.listPriceUsd >= b.priceUsd);
+    assert.ok(!("priceUsd" in b) && !("listPriceUsd" in b), `${b.id} carries no price`);
     const l = partnerUrl("redodo", { productId: b.id, productUrl: b.url });
     assert.ok(l.href.startsWith("https://www.awin1.com/cread.php?awinmid=97969&awinaffid=3125360&ued="), l.href);
   }
   for (const o of OTHER_LITHIUM) {
     assert.ok(isHttps(o.url) && isDate(o.retrieved), o.id);
-    assert.ok(o.priceUsd > 100 && o.energyWh > 500, o.id);
+    assert.ok(!("priceUsd" in o) && o.energyWh > 500, o.id);
   }
   for (const v of [12, 24, 36] as const) {
     for (const id of [TROLLING_CHOICE[v].short, TROLLING_CHOICE[v].long]) {

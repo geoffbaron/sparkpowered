@@ -7,7 +7,7 @@ import { ElectricianRule, HomeBackupLinks, WhatWeChecked } from "@/components/ho
 import { HOME_BACKUP_HUB } from "@/data/home-backup";
 import { HOOKUP_COSTS, HOOKUP_PARTS, HOOKUP_SAFETY_SOURCES, range } from "@/data/hookup";
 import { formatDate } from "@/lib/energy";
-import { fullName, kwh, money, productById, watts } from "@/lib/products";
+import { fullName, kwh, productById, watts } from "@/lib/products";
 import { JsonLd, pageMetadata, url } from "@/lib/seo";
 
 const PATH = "/home-backup/anker-solix-f3800-plus-hookup";
@@ -40,7 +40,7 @@ export default function F3800PlusHookup() {
     },
     {
       q: "Which Anker transfer switch fits one F3800 Plus?",
-      a: `The 30 A version of Anker's 10-circuit manual transfer switch (a Reliance Pro/Tran 2, regular price ${money(P.ankerMts30.listPriceUsd)} on ${formatDate(P.ankerMts30.retrieved)}). Anker's 50 A version is for an F3800 or two linked F3800 Plus units; its page says it is not suitable for a single F3800 Plus.`,
+      a: `The 30 A version of Anker's 10-circuit manual transfer switch (a Reliance Pro/Tran 2, checked ${formatDate(P.ankerMts30.retrieved)}). Anker's 50 A version is for an F3800 or two linked F3800 Plus units; its page says it is not suitable for a single F3800 Plus.`,
     },
     {
       q: "Does the F3800 Plus switch over automatically in an outage?",
@@ -140,10 +140,10 @@ export default function F3800PlusHookup() {
                   <th scope="row" className="p-3 font-medium text-stone-700">Rough cost</th>
                   <td className="p-3">Inlet box {range(C.inletBox)}; interlock installed {range(C.interlock)}; permit {range(C.permit)}</td>
                   <td className="p-3">
-                    {money(P.ankerMts30.listPriceUsd)} regular, plus labor ({range(C.labor)}) and permit
+                    The switch (see Anker&apos;s price), plus labor ({range(C.labor)}) and permit
                   </td>
                   <td className="p-3">
-                    Kit {money(P.ankerHpp.listPriceUsd)} regular plus a 100 A breaker; Anker&apos;s own install service {money(P.ankerHppInstall.listPriceUsd)}, permit not included
+                    The kit (see Anker&apos;s price) plus a 100 A breaker; Anker also sells an install service, permit not included
                   </td>
                 </tr>
                 <tr className="border-t border-black/6">
@@ -156,7 +156,7 @@ export default function F3800PlusHookup() {
             </table>
           </div>
           <p className="text-xs text-muted mt-2 max-w-3xl">
-            Anker prices are the regular prices on its US store on {formatDate(P.ankerHpp.retrieved)}, before its timed discount codes. Installed
+            Anker parts checked on its US store on {formatDate(P.ankerHpp.retrieved)}; we don&apos;t list their prices. Installed
             ranges are HomeGuide&apos;s (figures dated {formatDate(C.interlock.sourceUpdated)}); your electrician&apos;s quote is the real number.
           </p>
         </Section>
@@ -188,12 +188,11 @@ export default function F3800PlusHookup() {
         <Section title="Buying one" id="buy">
           <AffiliateDisclosure className="mb-4" />
           <p className="text-stone-700 max-w-3xl">
-            The F3800 Plus alone was sold out (last shown at {money(f.priceUsd!)} after Anker&apos;s code). The bundle that was in stock on{" "}
+            The F3800 Plus alone was sold out. The bundle that was in stock on{" "}
             {formatDate(kit.retrieved)}:{" "}
             <PartnerLink brand="anker" productUrl={kit.url} disclose>
               {kit.name}
-            </PartnerLink>{" "}
-            ({money(kit.listPriceUsd)} regular; Anker showed {money(kit.priceUsd)} with its auto-applied code that day). It includes the Home
+            </PartnerLink>. It includes the Home
             Power Panel, so budget for the electrician too.
           </p>
         </Section>
@@ -205,10 +204,10 @@ export default function F3800PlusHookup() {
           items={[
             { ...S.topQs, read: "2026-11-14", what: "25 A / 50 A subpanel backup; 120/240 V at 25 A per unit; solar and generator with the panel; L14-30R and TT-30R outlets" },
             { ...S.sameSwitch, read: "2026-11-14", what: "works with a home transfer switch or inlet box; neutral and ground warning" },
-            { name: `${P.ankerMts30.name} product page`, url: P.ankerMts30.url, read: P.ankerMts30.retrieved, what: "price; option labeled for one F3800 Plus" },
+            { name: `${P.ankerMts30.name} product page`, url: P.ankerMts30.url, read: P.ankerMts30.retrieved, what: "option labeled for one F3800 Plus" },
             { name: `${P.ankerMts50.name} product page`, url: P.ankerMts50.url, read: P.ankerMts50.retrieved, what: "not suitable for a single F3800 Plus; UL 1008; 120/240 V split-phase only for the Home Power Panel" },
-            { name: `${P.ankerHpp.name} product page`, url: P.ankerHpp.url, read: P.ankerHpp.retrieved, what: "price; licensed electrician required; 100 A breaker sold separately; install service" },
-            { name: `${kit.name} product page`, url: kit.url, read: kit.retrieved, what: "in stock, price" },
+            { name: `${P.ankerHpp.name} product page`, url: P.ankerHpp.url, read: P.ankerHpp.retrieved, what: "licensed electrician required; 100 A breaker sold separately; install service" },
+            { name: `${kit.name} product page`, url: kit.url, read: kit.retrieved, what: "in stock" },
             { name: `${fullName(f)} product page`, url: f.sourceUrl, read: f.retrieved, what: "sold out; specs" },
             { name: "HomeGuide, Generator transfer switch installation cost", url: C.interlock.url, read: C.interlock.retrieved, what: `installed-cost ranges (figures dated ${formatDate(C.interlock.sourceUpdated)})` },
             { ...HOOKUP_SAFETY_SOURCES.cpsc, read: "2026-11-14", what: "backfeeding warning" },
@@ -219,8 +218,8 @@ export default function F3800PlusHookup() {
         <HomeBackupLinks exclude={PATH} />
 
         <Disclaimer>
-          General information, not electrical advice. Codes and what inspectors accept differ by city and county. Prices, stock and specifications
-          are copied from Anker&apos;s US website on the dates shown and change often.
+          General information, not electrical advice. Codes and what inspectors accept differ by city and county. Stock and specifications
+          are copied from Anker&apos;s US website on the dates shown. We don&apos;t list product prices; the links go to Anker for today&apos;s price.
         </Disclaimer>
         <RelatedLinks
           links={[

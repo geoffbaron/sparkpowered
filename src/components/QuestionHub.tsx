@@ -2,7 +2,6 @@ import Link from "next/link";
 import { AffiliateDisclosure, PartnerLink } from "@/components/affiliate";
 import { Breadcrumbs, Callout, Disclaimer, RelatedLinks } from "@/components/content";
 import { QuickAnswer } from "@/components/guide-ui";
-import { RedodoDeal } from "@/components/RedodoDeal";
 import LocalStateLinks from "@/components/LocalStateLinks";
 import { TOPICS, topicIsStateBound, type Block, type Question, type Topic } from "@/data/questions";
 import { formatDate } from "@/lib/energy";
@@ -72,8 +71,7 @@ export function ToolLink({ href, label }: { href: string; label: string }) {
  * Everything under a question's heading on its hub: short answer, detail, worked
  * example, partner picks, tools and sources.
  */
-export function QuestionAnswer({ q, redodo }: { q: Question; redodo: boolean }) {
-  const redodoPick = q.picks?.find((p) => p.brand === "redodo");
+export function QuestionAnswer({ q }: { q: Question }) {
   return (
     <>
       <QuickAnswer>
@@ -105,7 +103,6 @@ export function QuestionAnswer({ q, redodo }: { q: Question; redodo: boolean }) 
           </p>
         </div>
       )}
-      {redodo && <RedodoDeal className="mt-5" product={redodoPick ? { name: redodoPick.label, url: redodoPick.url } : undefined} />}
       {q.picks && q.picks.length > 0 && (
         <ul className="mt-5 grid sm:grid-cols-2 gap-3">
           {q.picks.map((p) => (
@@ -148,7 +145,6 @@ export function QuestionAnswer({ q, redodo }: { q: Question; redodo: boolean }) 
 export default function QuestionHub({ topic }: { topic: Topic }) {
   const hasPicks = topic.questions.some((q) => q.picks?.length);
   // The Redodo code note goes with the first answer that picks a Redodo product.
-  const redodoQ = topic.questions.find((q) => q.picks?.some((p) => p.brand === "redodo"))?.id;
   const others = TOPICS.filter((t) => t.slug !== topic.slug);
   return (
     <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
@@ -217,7 +213,7 @@ export default function QuestionHub({ topic }: { topic: Topic }) {
               {q.q}
             </a>
           </h2>
-          <QuestionAnswer q={q} redodo={q.id === redodoQ} />
+          <QuestionAnswer q={q} />
         </section>
       ))}
 

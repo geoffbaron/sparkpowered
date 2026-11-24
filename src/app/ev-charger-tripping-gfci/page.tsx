@@ -236,7 +236,7 @@ export default function EvChargerTrippingGfciPage() {
                 </p>
                 <p className="text-sm mt-1">
                   {c.amps} amps, {c.plug === "NACS" ? "Tesla-style NACS plug" : "J1772 plug (most non-Tesla EVs)"}, {c.cableFt}-ft cable.{" "}
-                  {c.outlet}. {money(c.priceUsd)} when we checked on {formatDate(c.retrieved)}.
+                  {c.outlet}.
                 </p>
                 <p className="text-sm mt-2">
                   <PartnerLink brand={c.brand} productId={c.id} productUrl={c.url} disclose>

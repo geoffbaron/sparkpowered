@@ -229,7 +229,6 @@ export interface MotorStation {
   acOutputW: number;
   motorSurgeW: number;
   usableWh: number;
-  priceUsd: number;
   tracked: boolean;
 }
 
@@ -471,25 +470,24 @@ export interface StationOption {
   capacityWh: number;
   addOnWh: number | null;
   addOnMax: number;
-  addOnUsd: number | null;
-  priceUsd: number;
+  /** False when the add-on battery was sold out at the last check. */
+  addOnInStock: boolean;
   solarInputW: number | null;
   acOutputW: number;
   surgeW: number | null;
   url: string;
 }
 
-/** Every do-it-yourself power station or battery with a listed price, as calculator options. */
+/** Every do-it-yourself power station or battery in stock, as calculator options. */
 export function stationOptions(): StationOption[] {
-  return PRODUCTS.filter((p) => p.install === "diy" && p.priceUsd != null && !p.soldOut).map((p) => ({
+  return PRODUCTS.filter((p) => p.install === "diy" && !p.soldOut).map((p) => ({
     id: p.id,
     name: fullName(p),
     brand: p.brand,
     capacityWh: p.capacityWh,
     addOnWh: p.addOn?.capacityWh ?? null,
     addOnMax: p.addOn?.maxUnits ?? 0,
-    addOnUsd: p.addOn?.soldOut ? null : (p.addOn?.priceUsd ?? null),
-    priceUsd: p.priceUsd!,
+    addOnInStock: !!p.addOn && !p.addOn.soldOut,
     solarInputW: p.solarInputW,
     acOutputW: p.acOutputW,
     surgeW: p.surgeW,
@@ -501,11 +499,10 @@ export interface StationMatch {
   option: StationOption;
   addOns: number;
   totalWh: number;
-  totalUsd: number;
 }
 
 /**
- * Cheapest stations (one per brand) that reach `needWh` with their own add-on
+ * Closest-fit stations (least spare capacity, one per brand) that reach `needWh` with their own add-on
  * batteries and, if `panelW` is given, take at least that much solar input and,
  * if `peakW` is given, have continuous output to cover it.
  */
@@ -519,10 +516,10 @@ export function matchStations(options: StationOption[], needWh: number, { panelW
     if (addOns > o.addOnMax) continue;
     const totalWh = o.capacityWh + addOns * (o.addOnWh ?? 0);
     if (totalWh < needWh) continue;
-    if (addOns > 0 && o.addOnUsd == null) continue;
-    out.push({ option: o, addOns, totalWh, totalUsd: o.priceUsd + addOns * (o.addOnUsd ?? 0) });
+    if (addOns > 0 && !o.addOnInStock) continue;
+    out.push({ option: o, addOns, totalWh });
   }
-  out.sort((a, b) => a.totalUsd - b.totalUsd || a.totalWh - b.totalWh);
+  out.sort((a, b) => a.totalWh - b.totalWh || a.addOns - b.addOns);
   const seen = new Set<string>();
   return out.filter((m) => (seen.has(m.option.brand) ? false : (seen.add(m.option.brand), true))).slice(0, limit);
 }

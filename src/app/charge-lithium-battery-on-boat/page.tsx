@@ -11,12 +11,11 @@ import { USABLE_FRACTION } from "@/lib/everyday";
 import { money, productById } from "@/lib/products";
 import { chargeCostUsd } from "@/lib/boating";
 import { pageMetadata } from "@/lib/seo";
-import { RedodoDeal } from "@/components/RedodoDeal";
 
 const PATH = "/charge-lithium-battery-on-boat";
 const TITLE = "How to Charge a Lithium Battery on a Boat: Chargers, Alternator and Solar";
 const DESCRIPTION =
-  "Three ways to keep a lithium trolling or house battery full on a boat: a lithium plug-in charger, a DC-to-DC charger off the engine, and solar. What each costs, and what not to do.";
+  "Three ways to keep a lithium trolling or house battery full on a boat: a lithium plug-in charger, a DC-to-DC charger off the engine, and solar. Which one you need, and what not to do.";
 
 export const metadata: Metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH, type: "article" });
 
@@ -40,7 +39,7 @@ export default function ChargeOnBoatPage() {
     },
     {
       q: "Can you charge a lithium battery with the boat's alternator?",
-      a: `Yes, through a DC-to-DC charger. A lithium battery will pull as much current as the alternator can give, which can overheat a small outboard's charging system. A DC-to-DC charger limits the current and charges at the right voltage: Redodo's 12V 40A unit (${money(dcdc.priceUsd)}) refills a flat 12V 100Ah lithium in about ${dcdcHours.toFixed(1)} hours of running.`,
+      a: `Yes, through a DC-to-DC charger. A lithium battery will pull as much current as the alternator can give, which can overheat a small outboard's charging system. A DC-to-DC charger limits the current and charges at the right voltage: Redodo's 12V 40A unit refills a flat 12V 100Ah lithium in about ${dcdcHours.toFixed(1)} hours of running.`,
     },
     {
       q: "Can you charge a lithium battery with a solar panel on a boat?",
@@ -68,7 +67,7 @@ export default function ChargeOnBoatPage() {
         title={<>Full battery every trip, <span className="text-amber-300">for about {money(Math.round(fullCharge * 100) / 100)} a charge.</span></>}
         sub={
           <>
-            A lithium charger at home, a DC-to-DC charger off the engine, or a solar panel: here is which one you need, what it costs, and the
+            A lithium charger at home, a DC-to-DC charger off the engine, or a solar panel: here is which one you need, how fast each one charges, and the
             one mistake that shortens a lithium battery&apos;s life.
           </>
         }
@@ -82,21 +81,19 @@ export default function ChargeOnBoatPage() {
 
         <QuickAnswer>
           <p>
-            <strong>At home or the dock:</strong> a plug-in lithium charger for your voltage, from{" "}
-            <PartnerLink brand="redodo" productId={c12.id} productUrl={c12.url}>{money(c12.priceUsd)} for 12 V</PartnerLink>.
+            <strong>At home or the dock:</strong> a plug-in lithium charger for your voltage, such as{" "}
+            <PartnerLink brand="redodo" productId={c12.id} productUrl={c12.url}>Redodo&apos;s 12 V model</PartnerLink> for example.
             At the dock, plug into a GFCI-protected outlet or pedestal with a marine-rated cord, never a household extension cord, keep the
             charger dry and unplug the motor while charging. A charger mounted on the boat should be a marine on-board charger. Never swim near
             a dock with power.
           </p>
           <p>
             <strong>While the engine runs:</strong> a DC-to-DC charger, such as the{" "}
-            <PartnerLink brand="redodo" productId={dcdc.id} productUrl={dcdc.url}>Redodo 12V 40A with MPPT</PartnerLink> ({money(dcdc.priceUsd)}),
+            <PartnerLink brand="redodo" productId={dcdc.id} productUrl={dcdc.url}>Redodo 12V 40A with MPPT</PartnerLink>,
             which also takes a solar panel. Never wire a lithium battery straight to the alternator. Fuse the DC-to-DC charger&apos;s input and
             output cables near each battery, at the sizes in its manual.
           </p>
         </QuickAnswer>
-
-        <RedodoDeal className="mt-4" product={{ name: "Redodo 12V 40A DC-to-DC Charger", url: dcdc.url }} />
 
         <section aria-label="Charging at a glance" className="grid sm:grid-cols-3 gap-3 mt-8">
           <BigStat tone="leaf" value={money(Math.round(fullCharge * 100) / 100)} label="To fill a 12V 100Ah lithium" note="At 18.31¢ a kWh, the US average" />
@@ -110,9 +107,8 @@ export default function ChargeOnBoatPage() {
             label="1. Plug-in charger at home or the dock"
             name="A lithium charger matched to your voltage"
             icon="plug"
-            why={`The simplest and cheapest way. Redodo sells one for each trolling voltage: 12 V (${money(c12.priceUsd)}), 24 V (${money(c24.priceUsd)}) and 36 V (${money(c36.priceUsd)}). ${c12.note}`}
+            why={`The simplest way. Redodo sells one for each trolling voltage: 12 V, 24 V and 36 V. ${c12.note}`}
             life={["Charges overnight", "Lithium voltage built in"]}
-            priceUsd={c12.priceUsd}
             brand="redodo"
             productId={c12.id}
             productUrl={c12.url}
@@ -125,7 +121,6 @@ export default function ChargeOnBoatPage() {
             icon="bolt"
             why={`${dcdc.note} It protects a small alternator from a lithium battery's appetite, and charges at the right voltage for lithium, AGM or gel.`}
             life={[`Flat 12V 100Ah: about ${dcdcHours.toFixed(1)} hours of running`, "Solar input built in"]}
-            priceUsd={dcdc.priceUsd}
             brand="redodo"
             productId={dcdc.id}
             productUrl={dcdc.url}
@@ -137,7 +132,6 @@ export default function ChargeOnBoatPage() {
             icon="bolt"
             why={`${d40.note} A good fit if you already own a Bluetti power station.`}
             life={["Up to 30 A", "Lithium, AGM and lead-acid"]}
-            priceUsd={d40.priceUsd}
             brand="bluetti"
             productUrl={d40.url}
             category="battery"
@@ -148,7 +142,6 @@ export default function ChargeOnBoatPage() {
             icon="sun"
             why={`Camping at the lake with no hookup? A ${elite100.capacityWh.toLocaleString("en-US")} Wh power station can run a plug-in lithium charger and put back about ${stationShare}% of a 12V 100Ah battery, then recharge itself from solar panels during the day.`}
             life={[`About ${stationShare}% of a 12V 100Ah`, `${elite100.weightLb} lb`]}
-            priceUsd={elite100.priceUsd}
             brand="bluetti"
             productId={elite100.id}
             productUrl={elite100.url}
@@ -183,7 +176,7 @@ export default function ChargeOnBoatPage() {
               charge after every trip to stay healthy, but set every charger to its lithium profile: the battery&apos;s management system is a backstop, not the main control.
             </Callout>
             <Callout>
-              <strong>&quot;Charging gear makes lithium too expensive.&quot;</strong> A lithium charger starts at {money(c12.priceUsd)}. Many marine
+              <strong>&quot;You need all new charging gear.&quot;</strong> Often you don&apos;t. Many marine
               on-board chargers already have a lithium mode; check yours before buying anything.
             </Callout>
           </div>
@@ -192,8 +185,8 @@ export default function ChargeOnBoatPage() {
         <Faq items={faqs} path={PATH} />
         <Disclaimer>
           Follow your battery, charger and engine makers&apos; wiring instructions and fuse every connection close to the battery. Never use a
-          lead-acid charger&apos;s equalize or desulfate mode on lithium, and don&apos;t charge below freezing unless the battery has low-temperature protection. Prices are copied from makers&apos; US
-          websites on {formatDate(BOATING_CHECKED)} and change often. Redodo and Bluetti links are sponsored.
+          lead-acid charger&apos;s equalize or desulfate mode on lithium, and don&apos;t charge below freezing unless the battery has low-temperature protection. Specs are copied from makers&apos; US
+          websites on {formatDate(BOATING_CHECKED)}. Redodo and Bluetti links are sponsored.
         </Disclaimer>
         <Sources
           items={[
@@ -208,8 +201,8 @@ export default function ChargeOnBoatPage() {
           links={[
             { href: "/boating", label: "Electric boating and fishing", desc: "Every guide in one place" },
             { href: "/best-trolling-motor-battery", label: "Best trolling motor battery", desc: "Our picks for 12, 24 and 36 V" },
-            { href: "/electric-outboard-motor", label: "Electric outboard motors", desc: "Prices, range and cost vs gas" },
-            { href: "/lithium-vs-agm-battery", label: "Lithium vs AGM", desc: "The cost per year, worked out" },
+            { href: "/electric-outboard-motor", label: "Electric outboard motors", desc: "Range, power and running cost vs gas" },
+            { href: "/lithium-vs-agm-battery", label: "Lithium vs AGM", desc: "How long each lasts, worked out" },
           ]}
         />
         <p className="text-sm text-muted mt-6">

@@ -3,7 +3,7 @@ import Link from "next/link";
 import WhatItRunsLinks from "@/components/WhatItRunsLinks";
 import { AffiliateDisclosure, PartnerLink } from "@/components/affiliate";
 import { Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
-import { PriceFootnote, ProductListJsonLd } from "@/components/products";
+import { PriceCell, PriceFootnote, ProductListJsonLd } from "@/components/products";
 import { PlainLink, QuickAnswer } from "@/components/guide-ui";
 import { AFFILIATES } from "@/data/affiliates";
 import { FridgePicker, type RuntimeOption } from "@/components/RuntimePicker";
@@ -11,13 +11,13 @@ import { BigStat, HubHero, OurPick, PhotoCredit } from "@/components/ui";
 import type { Product } from "@/data/products";
 import { formatDate } from "@/lib/energy";
 import { FRIDGE_AVG_W, FRIDGE_KWH_YEAR, USABLE_FRACTION } from "@/lib/everyday";
-import { fullName, money, productById } from "@/lib/products";
+import { fullName, productById } from "@/lib/products";
 import { pageMetadata } from "@/lib/seo";
 
 const PATH = "/power-station-for-refrigerator";
 const TITLE = "Power Station for a Refrigerator: How Long It Runs, and Which to Buy (2026)";
 const DESCRIPTION =
-  "How many hours each portable power station keeps a kitchen fridge cold in an outage, from $499. Bluetti, EcoFlow, Jackery and Anker compared with dated prices, plus a calculator for your fridge.";
+  "How many hours each portable power station keeps a kitchen fridge cold in an outage. Bluetti, EcoFlow, Jackery and Anker compared on hours, output and weight, plus a calculator for your fridge.";
 
 export const metadata: Metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH, type: "article" });
 
@@ -39,7 +39,7 @@ const preorder = (p: Product) => p.notes.some((n) => /pre-order/i.test(n));
 const outOfStock = (p: Product) => p.notes.some((n) => /out of stock/i.test(n) && !/back in stock|after being out/i.test(n));
 
 function opt(p: Product): RuntimeOption {
-  return { id: p.id, name: fullName(p), brand: AFFILIATES[p.brand].tracked ? p.brand : null, capacityWh: p.capacityWh, priceUsd: p.priceUsd!, url: p.url };
+  return { id: p.id, name: fullName(p), brand: AFFILIATES[p.brand].tracked ? p.brand : null, capacityWh: p.capacityWh, url: p.url };
 }
 
 export default function FridgePage() {
@@ -58,7 +58,7 @@ export default function FridgePage() {
     },
     {
       q: "What size power station do I need for a fridge?",
-      a: `For a fridge through one night, about 1 kWh. To keep it cold for a full day without recharging, about 2.5 to 3 kWh, such as the Bluetti Elite 300 (${money(e300.priceUsd!)}, ${hText(hours(e300.capacityWh))}). Output matters too: the station's continuous watts must cover the fridge (usually a few hundred watts running) and its surge must cover the compressor start. A worst-case start (EWEB's generator-sizing figure) is about 2,900 W in all; the Bluetti AC180 and Elite 200 V2 list surge figures for heating-type loads only, so their specs don't confirm they start every fridge. Our what-it-runs pages show each model's limits.`,
+      a: `For a fridge through one night, about 1 kWh. To keep it cold for a full day without recharging, about 2.5 to 3 kWh, such as the Bluetti Elite 300 (${hText(hours(e300.capacityWh))}). Output matters too: the station's continuous watts must cover the fridge (usually a few hundred watts running) and its surge must cover the compressor start. A worst-case start (EWEB's generator-sizing figure) is about 2,900 W in all; the Bluetti AC180 and Elite 200 V2 list surge figures for heating-type loads only, so their specs don't confirm they start every fridge. Our what-it-runs pages show each model's limits.`,
     },
     {
       q: "Can a 1000 W power station run a refrigerator?",
@@ -70,7 +70,7 @@ export default function FridgePage() {
     },
     {
       q: "Is a power station better than a gas generator for a fridge?",
-      a: "For a fridge and essentials, often yes: it is silent, needs no fuel and makes no fumes, so it can be used indoors next to the fridge. A gas generator is cheaper for long, whole-house outages but must run outdoors because of carbon monoxide. Add solar panels and a station can keep going for days.",
+      a: "For a fridge and essentials, often yes: it is silent, needs no fuel and makes no fumes, so it can be used indoors next to the fridge. A gas generator suits long, whole-house outages but must run outdoors because of carbon monoxide. Add solar panels and a station can keep going for days.",
     },
   ];
 
@@ -87,7 +87,7 @@ export default function FridgePage() {
         title={<>Power&apos;s out. <span className="text-amber-300">The food stays cold.</span></>}
         sub={
           <>
-            A {money(e200.priceUsd!)} battery keeps a typical kitchen fridge running about {hText(hours(e200.capacityWh))} with no
+            A 2 kWh battery keeps a typical kitchen fridge running about {hText(hours(e200.capacityWh))} with no
             noise, no fumes and no gas cans. Here is how long each one lasts, and which to buy.
           </>
         }
@@ -102,20 +102,19 @@ export default function FridgePage() {
         <QuickAnswer>
           <p>
             <strong>For a full day of fridge:</strong> the{" "}
-            <PartnerLink brand="bluetti" productId={e300.id} productUrl={e300.url}>Bluetti Elite 300</PartnerLink> ({money(e300.priceUsd!)},
-            about {hText(hours(e300.capacityWh))} for a typical fridge).
+            <PartnerLink brand="bluetti" productId={e300.id} productUrl={e300.url}>Bluetti Elite 300</PartnerLink> (about {hText(hours(e300.capacityWh))} for a typical fridge).
           </p>
           <p>
             <strong>In stock now, overnight and then some:</strong> the{" "}
-            <PartnerLink brand="bluetti" productId={e200.id} productUrl={e200.url}>Bluetti Elite 200 V2</PartnerLink> ({money(e200.priceUsd!)},
-            about {hText(hours(e200.capacityWh))}). The <PlainLink href={delta.url}>EcoFlow DELTA 3 Max</PlainLink> is a fair alternative at
-            the same {money(delta.priceUsd!)} with about the same capacity and a faster 10 ms switchover; the Bluetti is rated for more
+            <PartnerLink brand="bluetti" productId={e200.id} productUrl={e200.url}>Bluetti Elite 200 V2</PartnerLink> (about{" "}
+            {hText(hours(e200.capacityWh))}). The <PlainLink href={delta.url}>EcoFlow DELTA 3 Max</PlainLink> is a fair alternative
+            with about the same capacity and a faster 10 ms switchover; the Bluetti is rated for more
             cycles (6,000 vs no published figure).
           </p>
         </QuickAnswer>
 
         <section aria-label="What it means" className="grid sm:grid-cols-3 gap-3 mt-8">
-          <BigStat tone="leaf" value={hText(hours(e300.capacityWh))} label="Of fridge from 3 kWh" note={`Bluetti Elite 300, ${money(e300.priceUsd!)}`} />
+          <BigStat tone="leaf" value={hText(hours(e300.capacityWh))} label="Of fridge from 3 kWh" note="Bluetti Elite 300" />
           <BigStat value={`${fridgeWhDay.toLocaleString("en-US")} Wh`} label="What a typical fridge uses a day" note={`${FRIDGE_KWH_YEAR} kWh a year (EIA)`} />
           <BigStat tone="orange" value="4 hours" label="Food stays safe with the door shut" note="FoodSafety.gov; keep it at 40°F or below" />
         </section>
@@ -136,7 +135,6 @@ export default function FridgePage() {
             name={fullName(e200)}
             why="Keeps a typical fridge running through the night with room for the Wi-Fi and phones, and is rated for 6,000 cycles, the most of any 2 kWh unit we list. Plug it in once and forget it until the lights go out."
             life={[`Fridge: ${hText(hours(e200.capacityWh))}`, `${e200.weightLb} lb, 5-year warranty`]}
-            priceUsd={e200.priceUsd}
             brand="bluetti"
             productId={e200.id}
             productUrl={e200.url}
@@ -146,9 +144,8 @@ export default function FridgePage() {
             label="Best for a full day"
             name={fullName(e300)}
             icon="home"
-            why={`About a day of fridge for $300 more than the Elite 200 V2, at about ${money(Math.round(e300.priceUsd! / (e300.capacityWh / 1000)))} per kWh. Add a couple of solar panels and it can keep up for days. Pre-order when we checked.`}
+            why={`About a day of fridge, about half again what the Elite 200 V2 holds. Add a couple of solar panels and it can keep up for days. Pre-order when we checked.`}
             life={[`Fridge: ${hText(hours(e300.capacityWh))}`, "RV (TT-30) outlet too"]}
-            priceUsd={e300.priceUsd}
             brand="bluetti"
             productId={e300.id}
             productUrl={e300.url}
@@ -162,19 +159,17 @@ export default function FridgePage() {
             icon="shield"
             why="Nearly 4 kWh on wheels. About a day and a half of fridge on its own, or two days if you run the fridge in shifts. Pre-order when we checked."
             life={[`Fridge: ${hText(hours(e400.capacityWh))}`, `${e400.weightLb} lb, rolls on wheels`]}
-            priceUsd={e400.priceUsd}
             brand="bluetti"
             productId={e400.id}
             productUrl={e400.url}
             category="battery"
           />
           <OurPick
-            label="Cheapest that runs a fridge"
+            label="Smallest that runs a fridge"
             name={fullName(ac180)}
-            icon="dollar"
-            why="Half a day of fridge for $499: enough for most short outages, and light enough to take camping afterwards."
+            icon="battery"
+            why="Half a day of fridge: enough for most short outages, and light enough to take camping afterwards."
             life={[`Fridge: ${hText(hours(ac180.capacityWh))}`, "1,800 W output"]}
-            priceUsd={ac180.priceUsd}
             brand="bluetti"
             productId={ac180.id}
             productUrl={ac180.url}
@@ -191,11 +186,11 @@ export default function FridgePage() {
               <thead className="bg-surface-light text-left">
                 <tr>
                   <th scope="col" className="p-3 font-semibold">Power station</th>
-                  <th scope="col" className="p-3 font-semibold text-right">Price*</th>
                   <th scope="col" className="p-3 font-semibold text-right">Typical fridge</th>
                   <th scope="col" className="p-3 font-semibold text-right">Output</th>
                   <th scope="col" className="p-3 font-semibold text-right">Weight</th>
                   <th scope="col" className="p-3 font-semibold">Stock</th>
+                  <th scope="col" className="p-3 font-semibold text-right">Price</th>
                 </tr>
               </thead>
               <tbody>
@@ -208,11 +203,11 @@ export default function FridgePage() {
                         <PlainLink href={p.url}>{fullName(p)}</PlainLink>
                       )}
                     </th>
-                    <td className="p-3 text-right tabular-nums">{money(p.priceUsd!)}</td>
                     <td className="p-3 text-right tabular-nums font-semibold">{hText(hours(p.capacityWh))}</td>
                     <td className="p-3 text-right tabular-nums">{p.acOutputW.toLocaleString("en-US")} W</td>
                     <td className="p-3 text-right tabular-nums">{p.weightLb ? `${p.weightLb} lb` : "Not stated"}</td>
                     <td className="p-3">{preorder(p) ? "Pre-order" : outOfStock(p) ? "Out of stock" : "Listed for sale"}</td>
+                    <td className="p-3 text-right"><PriceCell p={p} /></td>
                   </tr>
                 ))}
               </tbody>
@@ -252,8 +247,8 @@ export default function FridgePage() {
         <Faq items={faqs} path={PATH} />
         <Disclaimer>
           Fridge use varies with size, age, the room&apos;s temperature and how often the door opens. Our figures use the EIA US
-          average and assume {Math.round(USABLE_FRACTION * 100)}% of rated capacity is usable. Prices and specifications are copied
-          from makers&apos; US websites on the dates shown and change often.
+          average and assume {Math.round(USABLE_FRACTION * 100)}% of rated capacity is usable. Specifications are copied
+          from makers&apos; US websites on the dates shown.
         </Disclaimer>
         <Sources
           items={[
@@ -265,9 +260,9 @@ export default function FridgePage() {
         <RelatedLinks
           links={[
             { href: "/best-portable-power-stations", label: "Best portable power stations", desc: "Every model compared, with full specs" },
-            { href: "/best-power-station-for-cpap", label: "Power station for a CPAP", desc: "Nights of sleep per dollar" },
+            { href: "/best-power-station-for-cpap", label: "Power station for a CPAP", desc: "Nights of sleep per charge" },
             { href: "/home-battery-backup", label: "Home battery backup", desc: "When you need the whole house, not just the fridge" },
-            { href: "/compare/bluetti-elite-200-v2-vs-ac200l", label: "Bluetti Elite 200 V2 vs AC200L", desc: "Two $899 Bluettis compared" },
+            { href: "/compare/bluetti-elite-200-v2-vs-ac200l", label: "Bluetti Elite 200 V2 vs AC200L", desc: "Two 2 kWh Bluettis compared" },
           ]}
         />
         <PhotoCredit name="outage" />

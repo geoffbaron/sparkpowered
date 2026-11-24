@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { appliance, canItRunProducts, runText, whatItRunsPath } from "@/lib/can-it-run";
-import { fullName, kwh, money } from "@/lib/products";
+import { fullName, kwh } from "@/lib/products";
 
 /** Links to the single-model "what it runs" pages, with each model's fridge and CPAP figure. */
 export default function WhatItRunsLinks({ className = "mt-12" }: { className?: string }) {
@@ -19,7 +19,7 @@ export default function WhatItRunsLinks({ className = "mt-12" }: { className?: s
               What the {fullName(p)} runs
             </Link>
             <span className="block text-sm text-stone-700">
-              {kwh(p.capacityWh)}, {money(p.priceUsd!)}: a fridge {runText(p, fridge)}, CPAP {runText(p, cpap)}
+              {kwh(p.capacityWh)}: a fridge {runText(p, fridge)}, CPAP {runText(p, cpap)}
             </span>
           </li>
         ))}

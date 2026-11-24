@@ -7,13 +7,12 @@ import { EbikeAlternativeNote, EbikeTable, ebikeName, ebikeSources } from "@/com
 import { HubHero, OurPick, PhotoCredit } from "@/components/ui";
 import { EBIKES_CHECKED, EBIKE_ALTERNATIVES, ebikeById } from "@/data/ebikes";
 import { formatDate } from "@/lib/energy";
-import { money } from "@/lib/products";
 import { pageMetadata } from "@/lib/seo";
 
 const PATH = "/e-bike-for-heavy-riders";
 const TITLE = "E-Bike for Heavy Riders (2026): 400 to 450 lb Rated Bikes Compared";
 const DESCRIPTION =
-  "E-bikes rated for 400 to 450 lb of rider and cargo, from $1,199: what max load really means, which makers state a rider limit, and today's prices and specs.";
+  "E-bikes rated for 400 to 450 lb of rider and cargo: what max load really means, which makers state a rider limit, and the specs that matter.";
 
 export const metadata: Metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH, type: "article" });
 
@@ -33,7 +32,7 @@ export default function HeavyRiderEbikePage() {
     ebikeById("engwe-e26-3-0"),
     d5st,
     ebikeById("himiway-d5-2-0-ebike"),
-  ].sort((a, b) => a.price - b.price);
+  ].sort((a, b) => (b.payloadLb ?? 0) - (a.payloadLb ?? 0));
 
   const faqs = [
     {
@@ -63,7 +62,7 @@ export default function HeavyRiderEbikePage() {
           { name: "For heavy riders", path: PATH },
         ]}
         eyebrow="E-bikes for heavy riders"
-        title={<>Rated for 450 lb. <span className="text-amber-300">From {money(trekker.price)}.</span></>}
+        title={<>Rated for 450 lb. <span className="text-amber-300">In the maker&apos;s own words.</span></>}
         sub={<>The number that matters is the maker&apos;s maximum load, and whether they also state a rider limit. Here is what each bike is rated for, straight from the makers&apos; pages.</>}
       >
         <a href="#picks" className="btn btn-primary">See the bikes</a>
@@ -75,7 +74,7 @@ export default function HeavyRiderEbikePage() {
 
         <QuickAnswer>
           <p>
-            <strong>Most riders:</strong> the <PartnerLink brand="kingbull" productUrl={trekker.url}>{ebikeName(trekker)}</PartnerLink> ({money(trekker.price)}) is
+            <strong>Most riders:</strong> the <PartnerLink brand="kingbull" productUrl={trekker.url}>{ebikeName(trekker)}</PartnerLink> is
             rated for {trekker.payloadLb} lb of rider and cargo, with a step-thru frame, a {trekker.batteryWh} Wh battery and a torque sensor.
           </p>
           <p>
@@ -87,12 +86,11 @@ export default function HeavyRiderEbikePage() {
         <section id="picks" className="mt-12 grid gap-4 scroll-mt-24" aria-labelledby="picks-heading">
           <h2 id="picks-heading" className="text-2xl font-extrabold text-ink">Bikes that fit</h2>
           <OurPick
-            label="Best value at 450 lb"
+            label="Our pick at 450 lb"
             name={ebikeName(trekker)}
             icon="bike"
-            why={`Kingbull rates it for ${trekker.payloadLb} lb of rider and cargo. The step-thru frame is easier to mount, the torque sensor adds power as you push, and the ${trekker.batteryWh} Wh battery is bigger than most at this price.`}
+            why={`Kingbull rates it for ${trekker.payloadLb} lb of rider and cargo. The step-thru frame is easier to mount, the torque sensor adds power as you push, and the ${trekker.batteryWh} Wh battery is bigger than most here.`}
             life={[`${trekker.payloadLb} lb max load`, `${trekker.torqueNm} Nm, ${trekker.peakW} W peak`, `${trekker.batteryWh} Wh battery`, `${trekker.weightLb} lb bike`]}
-            priceUsd={trekker.price}
             brand="kingbull"
             productUrl={trekker.url}
             category="home"
@@ -103,7 +101,6 @@ export default function HeavyRiderEbikePage() {
             icon="battery"
             why={`Two batteries for ${dualVoyager.batteryWh?.toLocaleString("en-US")} Wh, the most here, plus a ${dualVoyager.rearRackLb} lb rear rack. It is also the only bike on this page whose maker names its class (${dualVoyager.class}).`}
             life={[`${dualVoyager.payloadLb} lb max load`, `${dualVoyager.batteryWh?.toLocaleString("en-US")} Wh`, `${dualVoyager.rearRackLb} lb rack`, "Step-thru"]}
-            priceUsd={dualVoyager.price}
             brand="kingbull"
             productUrl={dualVoyager.url}
             category="home"
@@ -114,7 +111,6 @@ export default function HeavyRiderEbikePage() {
             icon="bike"
             why={`Front and rear suspension (100 mm fork, 130 mm rear travel) and 4-inch Maxxis tires take the sting out of rough roads, with ${d5st.torqueNm} Nm and a step-through frame. Himiway rates it for ${d5st.payloadLb} lb.`}
             life={[`${d5st.payloadLb} lb max load`, `${d5st.torqueNm} Nm`, "Class 1, 2 or 3 (selectable)", `${d5st.weightLb} lb bike`]}
-            priceUsd={d5st.price}
             brand="himiway"
             productUrl={d5st.url}
             category="home"
@@ -151,15 +147,14 @@ export default function HeavyRiderEbikePage() {
         <Faq items={faqs} path={PATH} />
         <Disclaimer>
           We compare makers&apos; stated specs; we have not ridden these bikes. Look for UL 2849 certification of the whole electrical system, charge only with the maker&apos;s charger while you&apos;re awake and
-          nearby, and wear a helmet. Prices are from the makers&apos; US websites on {formatDate(EBIKES_CHECKED)},
-          several during sales, and change often. Kingbull, Himiway and ENGWE links may earn us a commission; {alt.brand} is a plain link.
+          nearby, and wear a helmet. Specs are from the makers&apos; US websites on {formatDate(EBIKES_CHECKED)}. We don&apos;t list prices; each link opens the maker&apos;s page with today&apos;s price. Kingbull, Himiway and ENGWE links may earn us a commission; {alt.brand} is a plain link.
         </Disclaimer>
         <Sources items={ebikeSources(bikes, [alt])} />
         <RelatedLinks
           links={[
             { href: "/e-bikes", label: "E-bike guide", desc: "How to choose, cost per mile, rebates" },
             { href: "/e-bike-for-hills", label: "E-bike for hills", desc: "Torque and mid-drive motors" },
-            { href: "/commuter-e-bike-under-1500", label: "Commuter e-bike under $1,500", desc: "Ready for daily rides" },
+            { href: "/commuter-e-bike-under-1500", label: "Commuter e-bikes", desc: "Ready for daily rides" },
             { href: "/folding-e-bike", label: "Folding e-bike", desc: "For apartments and RVs" },
           ]}
         />

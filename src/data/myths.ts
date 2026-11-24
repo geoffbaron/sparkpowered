@@ -194,8 +194,8 @@ export const MYTHS: Myth[] = [
     topic: "solar",
     myth: "Solar is all or nothing. I'd need a $30,000 system.",
     verdict: "Myth",
-    short: "A plug-in solar kit starts under $500, plugs straight into an outdoor outlet in states that allow it, and needs no roof or installer.",
-    answer: "Plug-in (balcony) solar kits of one to four panels plug straight into an ordinary outdoor outlet (never an extension cord) in states that allow them, and power whatever is running in your home while the sun is up. The nonprofit Bright Saver sells a 360 W kit for $414.17 to members, and several states now allow kits up to 1,200 W without utility paperwork. If your roof isn't right, community solar lets you subscribe to a shared array in states that allow it.",
+    short: "A plug-in solar kit plugs straight into an outdoor outlet in states that allow it, and needs no roof or installer.",
+    answer: "Plug-in (balcony) solar kits of one to four panels plug straight into an ordinary outdoor outlet (never an extension cord) in states that allow them, and power whatever is running in your home while the sun is up. The nonprofit Bright Saver sells a 360 W kit to members, and several states now allow kits up to 1,200 W without utility paperwork. If your roof isn't right, community solar lets you subscribe to a shared array in states that allow it.",
     sources: [S.brightSaver, S.communitySolar],
   },
   {
@@ -221,8 +221,8 @@ export const MYTHS: Myth[] = [
     topic: "money",
     myth: "Going electric is only for rich people.",
     verdict: "Myth",
-    short: "Plug-in solar starts under $500, power stations around $300, more than half of used EVs list under $30,000, and the savings arrive every month.",
-    answer: "You don't have to start with a new car or a roof full of panels. A plug-in solar kit starts at $414.17 (Bright Saver member price), a small power station that runs a CPAP is about $300, the 2027 Chevrolet Bolt launched under $30,000, and more than half of used EVs listed in September 2026 were under $30,000 (Recurrent). The federal EV credits ended for vehicles bought after Sept 30, 2025, and the home solar and efficiency credits after 2025 (IRS), but DOE Home Energy Rebates are live in some states; check your state energy office.",
+    short: "Plug-in solar kits and small power stations cost far less than a roof or a car, more than half of used EVs list under $30,000, and the savings arrive every month.",
+    answer: "You don't have to start with a new car or a roof full of panels. A plug-in solar kit or a small power station that runs a CPAP costs a fraction of a roof of panels, the 2027 Chevrolet Bolt launched under $30,000, and more than half of used EVs listed in September 2026 were under $30,000 (Recurrent). The federal EV credits ended for vehicles bought after Sept 30, 2025, and the home solar and efficiency credits after 2025 (IRS), but DOE Home Energy Rebates are live in some states; check your state energy office.",
     sources: [S.brightSaver, S.elite30, S.recurrentUsed, S.gmBolt, S.irs, S.doeRebates],
   },
   {

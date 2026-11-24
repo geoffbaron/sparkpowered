@@ -73,7 +73,6 @@ export interface RuntimeBattery {
   usableAh: number;
   usableWh: number;
   weightLb: number | null;
-  priceUsd: number | null;
   /** Redodo product page (tracked through our Awin link); null for the AGM reference. */
   url: string | null;
   leadAcid: boolean;
@@ -102,7 +101,6 @@ function agmString(volts: 12 | 24 | 36): RuntimeBattery {
     usableAh: LEAD_ACID_REF.ampHours * LEAD_ACID_REF.depthOfDischarge,
     usableWh: n * 12 * LEAD_ACID_REF.ampHours * LEAD_ACID_REF.depthOfDischarge,
     weightLb: round2(n * LEAD_ACID_REF.weightLb),
-    priceUsd: round2(n * LEAD_ACID_REF.priceUsd),
     url: null,
     leadAcid: true,
   };
@@ -120,7 +118,6 @@ function lithium(id: string, label: string, volts: 12 | 24 | 36, count = 1): Run
     usableAh: ah,
     usableWh: wh,
     weightLb: round2((b ? b.weightLb : o!.weightLb ?? 0) * count) || null,
-    priceUsd: round2((b ? b.priceUsd : o!.priceUsd) * count),
     url: b ? b.url : o!.url,
     leadAcid: false,
   };
@@ -175,17 +172,6 @@ export function hoursPrecise(h: number): string {
 
 /** Minutes between two run times, rounded to the nearest 5 (never negative). */
 export const minutesApart = (a: number, b: number) => Math.round((Math.abs(a - b) * 60) / 5) * 5;
-
-/**
- * Plain sentence for what lithium costs against lead-acid, whichever way the
- * gap runs: "pay about $227 less for lithium" or "pay about $50 more for lithium".
- * Never yields a negative dollar figure.
- */
-export function lithiumCostPhrase(lithiumUsd: number, leadAcidUsd: number, fmt: (n: number) => string): string {
-  const gap = Math.round(lithiumUsd - leadAcidUsd);
-  if (gap === 0) return "pay about the same for lithium";
-  return `pay about ${fmt(Math.abs(gap))} ${gap < 0 ? "less" : "more"} for lithium`;
-}
 
 export const motorById = (id: string) => {
   const m = MOTORS.find((x) => x.id === id);

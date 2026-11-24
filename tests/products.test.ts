@@ -29,15 +29,11 @@ test("every product has a source URL and a retrieval date", () => {
     assert.ok(isDate(p.retrieved), `${p.id} retrieved`);
     assert.ok(Date.parse(p.retrieved) <= Date.now(), `${p.id} retrieved in the future`);
     if (p.addOn) assert.ok(isHttps(p.addOn.url), `${p.id} add-on url`);
-    if (p.installedPerKwh) {
-      assert.ok(isHttps(p.installedPerKwh.url));
-      assert.ok(isDate(p.installedPerKwh.retrieved));
-    }
   }
   for (const k of PLUGIN_KITS) {
     assert.ok(isHttps(k.url) && isHttps(k.sourceUrl), `${k.id} urls`);
     assert.ok(isDate(k.retrieved), `${k.id} retrieved`);
-    assert.ok(k.inverterW > 0 && k.inverterW <= 2000 && k.priceUsd > 0, `${k.id} specs`);
+    assert.ok(k.inverterW > 0 && k.inverterW <= 2000 && !("priceUsd" in k), `${k.id} specs`);
     assert.ok(k.brand in AFFILIATES, `${k.id} brand`);
   }
   const kitIds = [...PRODUCTS.map((p) => p.id), ...PLUGIN_KITS.map((k) => k.id)];
@@ -50,12 +46,9 @@ test("specs are plausible and internally consistent", () => {
     assert.ok(p.acOutputW > 0 && p.acOutputW <= 30_000, `${p.id} output`);
     assert.ok(p.chemistry === null || ["LFP", "NMC"].includes(p.chemistry), `${p.id} chemistry`);
     if (p.warrantyYears != null) assert.ok(p.warrantyYears >= 1 && p.warrantyYears <= 25, `${p.id} warranty`);
-    if (p.install === "professional") assert.ok(p.priceUsd == null || p.installedPerKwh, `${p.id} installed cost`);
     if (p.maxCapacityWh != null) assert.ok(p.maxCapacityWh > p.capacityWh, `${p.id} max capacity`);
     if (p.surgeW != null) assert.ok(p.surgeW >= p.acOutputW, `${p.id} surge`);
-    if (p.priceUsd != null) assert.ok(p.priceUsd > 50 && p.priceUsd < 50_000, `${p.id} price`);
-    if (p.priceUsd == null) assert.ok(p.priceNote, `${p.id} needs a priceNote when unpriced`);
-    if (p.listPriceUsd != null && p.priceUsd != null) assert.ok(p.listPriceUsd >= p.priceUsd, `${p.id} list price`);
+    for (const k of ["priceUsd", "listPriceUsd", "priceNote", "installedPerKwh"]) assert.ok(!(k in p), `${p.id} carries ${k}`);
     if (p.addOn) {
       assert.ok(p.maxCapacityWh, `${p.id} has add-on but no max capacity`);
       assert.ok(p.capacityWh + p.addOn.capacityWh * p.addOn.maxUnits <= p.maxCapacityWh! + 1, `${p.id} add-on exceeds stated max`);

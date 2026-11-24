@@ -10,20 +10,9 @@ const typeMap: Record<string, string> = {
   sedan: "Sedan", suv: "SUV", truck: "Truck", hatchback: "Hatchback",
 };
 
-const budgetRanges: Record<string, [number, number]> = {
-  under35:  [0, 35000],
-  "35to50": [35000, 50000],
-  "50to80": [50000, 80000],
-  over80:   [80000, Infinity],
-};
-
 const cargoOrder: Record<string, number> = {
   "Truck Bed": 5, "Extra Large": 4, "Large": 3, "Medium": 2, "Small": 1,
 };
-
-function priceNum(ev: EVResult) {
-  return parseInt(ev.price.replace(/[$,]/g, ""));
-}
 
 /** Prefer the EPA rating over researched range wherever we could match one. */
 function rangeOf(ev: EVResult) {
@@ -32,7 +21,6 @@ function rangeOf(ev: EVResult) {
 
 interface QuizState {
   step: number;
-  budget: string;
   bodyType: string;
   dailyMiles: string;
   priority: string;
@@ -44,14 +32,6 @@ function scoreEV(ev: EVResult, quiz: QuizState): number {
 
   if (quiz.bodyType && ev.type === typeMap[quiz.bodyType]) score += 35;
   else score -= 5;
-
-  if (quiz.budget) {
-    const [lo, hi] = budgetRanges[quiz.budget];
-    const p = priceNum(ev);
-    if (p >= lo && p <= hi) score += 25;
-    else if (p < lo) score += 15;
-    else score += Math.max(-25, -Math.round(((p - hi) / hi) * 40));
-  }
 
   if (quiz.dailyMiles) {
     const minRange = { under30: 100, "30to60": 150, "60to100": 200, over100: 300 }[quiz.dailyMiles] ?? 0;
@@ -68,8 +48,7 @@ function scoreEV(ev: EVResult, quiz: QuizState): number {
   }
 
   if (quiz.priority === "range") score += Math.min(10, Math.floor(rangeOf(ev) / 40));
-  else if (quiz.priority === "value") score += Math.min(10, Math.floor((80000 - priceNum(ev)) / 7000));
-  else if (quiz.priority === "performance") score += Math.min(10, Math.floor(priceNum(ev) / 12000));
+  else if (quiz.priority === "efficiency") score += ev.epa ? Math.max(0, Math.min(10, Math.round((40 - ev.epa.kwhMin) / 2))) : 0;
   else if (quiz.priority === "space") score += (cargoOrder[ev.cargo] || 0) * 2;
 
   return score;
@@ -86,16 +65,6 @@ function getRecommendations(quiz: QuizState, evs: EVResult[]): EVResult[] {
 // ── Steps ─────────────────────────────────────────────────────────────────────
 
 const steps = [
-  {
-    key: "budget",
-    question: "What's your budget?",
-    options: [
-      { value: "under35",  label: "Under $35,000", sublabel: "Affordable",  icon: "savings" },
-      { value: "35to50",   label: "$35,000–$50,000", sublabel: "Mid-range", icon: "credit_card" },
-      { value: "50to80",   label: "$50,000–$80,000", sublabel: "Premium",   icon: "diamond" },
-      { value: "over80",   label: "$80,000+",         sublabel: "Luxury",   icon: "workspace_premium" },
-    ],
-  },
   {
     key: "bodyType",
     question: "What type of vehicle?",
@@ -120,9 +89,8 @@ const steps = [
     key: "priority",
     question: "What matters most to you?",
     options: [
-      { value: "value",       label: "Best Value",    sublabel: "Most car for the money",  icon: "local_offer" },
       { value: "range",       label: "Max Range",     sublabel: "Never worry about range", icon: "battery_charging_full" },
-      { value: "performance", label: "Performance",   sublabel: "Thrilling acceleration",  icon: "speed" },
+      { value: "efficiency",  label: "Low Running Cost", sublabel: "Fewest kWh per mile (EPA)", icon: "savings" },
       { value: "space",       label: "Cargo & Space", sublabel: "Maximize room inside",    icon: "inventory_2" },
     ],
   },
@@ -143,7 +111,7 @@ type StepKey = (typeof steps)[number]["key"];
 
 export default function EVQuiz({ initialEVs }: { initialEVs: EVResult[] }) {
   const [quiz, setQuiz] = useState<QuizState>({
-    step: 0, budget: "", bodyType: "", dailyMiles: "", priority: "", passengers: "",
+    step: 0, bodyType: "", dailyMiles: "", priority: "", passengers: "",
   });
   const [showResults, setShowResults] = useState(false);
 
@@ -161,7 +129,7 @@ export default function EVQuiz({ initialEVs }: { initialEVs: EVResult[] }) {
   }
 
   function reset() {
-    setQuiz({ step: 0, budget: "", bodyType: "", dailyMiles: "", priority: "", passengers: "" });
+    setQuiz({ step: 0, bodyType: "", dailyMiles: "", priority: "", passengers: "" });
     setShowResults(false);
   }
 
@@ -184,7 +152,7 @@ export default function EVQuiz({ initialEVs }: { initialEVs: EVResult[] }) {
           </h1>
           <p className="text-muted text-lg">Based on your answers, these models fit best.</p>
           <p className="text-sm text-stone-600 mt-2">
-            Prices are approximate starting MSRPs from automated research and change often — confirm with the
+            We don&apos;t list prices; each link goes to the maker&apos;s site for today&apos;s price. Confirm details with the
             dealer. Range and efficiency come from EPA ratings where we can match the model.
           </p>
         </div>
@@ -214,7 +182,6 @@ export default function EVQuiz({ initialEVs }: { initialEVs: EVResult[] }) {
                   ) : (
                     <span><span className="text-green-800 font-semibold">{ev.range} mi</span> range (maker&apos;s figure)</span>
                   )}
-                  <span><span className="text-blue-800 font-semibold">{ev.price}</span> approx. starting MSRP</span>
                   <span>{ev.type}</span>
                   <span>{ev.seats} seats</span>
                   <span>{ev.cargo} cargo</span>
@@ -233,7 +200,7 @@ export default function EVQuiz({ initialEVs }: { initialEVs: EVResult[] }) {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-gradient-to-r from-spark-yellow to-spark-orange text-white text-sm font-bold shadow hover:shadow-md transition-shadow whitespace-nowrap"
                 >
-                  Explore
+                  See today&apos;s price at {ev.name.split(" ")[0]}
                   <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                     <path d="M2.5 9.5L9.5 2.5M9.5 2.5H4.5M9.5 2.5V7.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>

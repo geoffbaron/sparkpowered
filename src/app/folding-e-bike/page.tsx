@@ -7,14 +7,13 @@ import { EbikeAlternativeNote, EbikeTable, ebikeName, ebikeSources } from "@/com
 import { HubHero, OurPick, PhotoCredit } from "@/components/ui";
 import { EBIKES_CHECKED, EBIKE_ALTERNATIVES, ebikeById } from "@/data/ebikes";
 import { formatDate } from "@/lib/energy";
-import { money } from "@/lib/products";
 import { pageMetadata } from "@/lib/seo";
 import { EBIKE_SOURCES } from "@/lib/ebikes";
 
 const PATH = "/folding-e-bike";
 const TITLE = "Folding E-Bike for Apartments and RVs (2026): Folded Sizes and Weights";
 const DESCRIPTION =
-  "Folding e-bikes for small apartments, RVs and car trunks: folded size, real weight, max load and today's prices from $699, plus when a lighter bike is the better pick.";
+  "Folding e-bikes for small apartments, RVs and car trunks: folded size, real weight and max load, plus when a lighter bike is the better pick.";
 
 export const metadata: Metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH, type: "article" });
 
@@ -24,7 +23,7 @@ export default function FoldingEbikePage() {
   const l20 = ebikeById("engwe-l20-2-0");
   const ep2 = ebikeById("engwe-ep-2-3-0");
   const alt = EBIKE_ALTERNATIVES.folding;
-  const bikes = [l20, literider, verve, ep2, ebikeById("engwe-l20-3-0")].sort((a, b) => a.price - b.price);
+  const bikes = [l20, literider, verve, ep2, ebikeById("engwe-l20-3-0")].sort((a, b) => (a.weightLb ?? 0) - (b.weightLb ?? 0));
   const weights = bikes.map((b) => b.weightLb ?? 0);
 
   const faqs = [
@@ -67,11 +66,11 @@ export default function FoldingEbikePage() {
 
         <QuickAnswer>
           <p>
-            <strong>Smallest fold:</strong> the <PartnerLink brand="kingbull" productUrl={literider.url}>{ebikeName(literider)}</PartnerLink> ({money(literider.price)}) folds
+            <strong>Smallest fold:</strong> the <PartnerLink brand="kingbull" productUrl={literider.url}>{ebikeName(literider)}</PartnerLink> folds
             to {literider.foldedDims?.split(" (")[0]} and is rated for {literider.payloadLb} lb.
           </p>
           <p>
-            <strong>Lightest and cheapest:</strong> the <PartnerLink brand="engwe" productUrl={l20.url}>{ebikeName(l20)}</PartnerLink> ({money(l20.price)}) weighs{" "}
+            <strong>Lightest:</strong> the <PartnerLink brand="engwe" productUrl={l20.url}>{ebikeName(l20)}</PartnerLink> weighs{" "}
             {l20.weightLb} lb. Every folder here is over 65 lb, so if you climb stairs with it, read the note at the bottom first.
           </p>
         </QuickAnswer>
@@ -79,12 +78,11 @@ export default function FoldingEbikePage() {
         <section id="picks" className="mt-12 grid gap-4 scroll-mt-24" aria-labelledby="picks-heading">
           <h2 id="picks-heading" className="text-2xl font-extrabold text-ink">Folding bikes that fit</h2>
           <OurPick
-            label="Smallest fold for the price"
+            label="Smallest fold"
             name={ebikeName(literider)}
             icon="bike"
             why={`Folds to ${literider.foldedDims?.split(" (")[0]}, the most compact on this page, with a rear rack, lights and a ${literider.payloadLb} lb max load. It uses a cadence sensor, which gives steady help rather than help that follows your effort.`}
             life={[`${literider.weightLb} lb`, `${literider.batteryWh} Wh battery`, `Up to ${literider.rangeMiles} mi (Kingbull)`, "UL 2849"]}
-            priceUsd={literider.price}
             brand="kingbull"
             productUrl={literider.url}
             category="home"
@@ -95,7 +93,6 @@ export default function FoldingEbikePage() {
             icon="battery"
             why={`The same folded size as the Literider with a ${verve.batteryWh} Wh battery, a torque sensor, ${verve.torqueNm} Nm and a ${verve.payloadLb} lb max load, the highest of any folder here. It is also the heaviest at ${verve.weightLb} lb.`}
             life={[`${verve.payloadLb} lb max load`, `${verve.batteryWh} Wh battery`, "Torque sensor", "UL 2849"]}
-            priceUsd={verve.price}
             brand="kingbull"
             productUrl={verve.url}
             category="home"
@@ -106,7 +103,6 @@ export default function FoldingEbikePage() {
             icon="bike"
             why="Fenders, a rear rack and lights come in the box, so it works as a daily commuter that folds away at home. It has a torque sensor and UL 2849 certification."
             life={[`${ep2.weightLb} lb`, `${ep2.batteryWh} Wh battery`, `${ep2.payloadLb} lb max load`, "Fenders, rack, lights"]}
-            priceUsd={ep2.price}
             brand="engwe"
             productUrl={ep2.url}
             category="home"
@@ -141,8 +137,7 @@ export default function FoldingEbikePage() {
 
         <Faq items={faqs} path={PATH} />
         <Disclaimer>
-          We compare makers&apos; stated specs; we have not ridden these bikes. Prices are from the makers&apos; US websites on {formatDate(EBIKES_CHECKED)},
-          several during sales, and change often. Kingbull and ENGWE links may earn us a commission; {alt.brand} is a plain link.
+          We compare makers&apos; stated specs; we have not ridden these bikes. Specs are from the makers&apos; US websites on {formatDate(EBIKES_CHECKED)}. We don&apos;t list prices; each link opens the maker&apos;s page with today&apos;s price. Kingbull and ENGWE links may earn us a commission; {alt.brand} is a plain link.
         </Disclaimer>
         <Sources
           items={[
@@ -154,7 +149,7 @@ export default function FoldingEbikePage() {
         <RelatedLinks
           links={[
             { href: "/e-bikes", label: "E-bike guide", desc: "How to choose, cost per mile, rebates" },
-            { href: "/commuter-e-bike-under-1500", label: "Commuter e-bike under $1,500", desc: "Ready for daily rides" },
+            { href: "/commuter-e-bike-under-1500", label: "Commuter e-bikes", desc: "Ready for daily rides" },
             { href: "/e-bike-for-heavy-riders", label: "E-bike for heavy riders", desc: "400 to 450 lb rated bikes" },
             { href: "/e-bike-for-hills", label: "E-bike for hills", desc: "Torque and mid-drive motors" },
           ]}

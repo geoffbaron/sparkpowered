@@ -105,17 +105,17 @@ test("owner with a 240 V well pump and an electrician: a panel method and a 240 
   assert.equal(r.method, "switch");
   assert.ok(r.matches.length > 0);
   const top = r.matches[0];
-  assert.ok(top.reachesNeed && top.startOk && !top.overBudget, JSON.stringify(top.c.key));
+  assert.ok(top.reachesNeed && top.startOk, JSON.stringify(top.c.key));
   assert.ok(top.c.has240);
   assert.ok(top.c.outlet);
 });
 
-test("no budget limit and a model with the maker's panel kit: the panel kit, priced into the equipment", () => {
+test("no budget limit and a model with the maker's panel kit: the panel kit is offered, with no prices", () => {
   const r = run({ loads: ["fridge", "well"], volts: "240", budget: "any" });
   assert.equal(r.method, "panel");
   const apex = r.matches.find((m) => m.c.productId === "bluetti-apex-300")!;
-  assert.ok(apex);
-  assert.equal(apex.equipmentUsd, productById("bluetti-apex-300").priceUsd! + apex.addOns * apex.c.addOn!.usd + apex.c.smartPanel!.usd);
+  assert.ok(apex && apex.c.smartPanel);
+  for (const k of ["equipmentUsd", "totalUsd", "overBudget"]) assert.ok(!(k in apex), k);
 });
 
 test("panel methods only offer models whose 30 A+ outlet we have read", () => {
@@ -139,10 +139,12 @@ test("parts ranges are low-high, sourced and dated", () => {
   }
 });
 
-test("prices shown are the products.ts prices, never typed in", () => {
+test("candidates carry specs from products.ts and no prices", () => {
   for (const c of data.candidates) {
     const p = productById(c.productId);
-    assert.equal(c.priceUsd, c.units === 1 ? p.priceUsd : 2 * p.priceUsd! + c.hub!.usd);
+    assert.ok(!("priceUsd" in c), c.key);
+    if (c.hub) assert.ok(!("usd" in c.hub), c.key);
+    if (c.smartPanel) assert.ok(!("usd" in c.smartPanel), c.key);
     assert.equal(c.acOutputW, c.units === 1 ? p.acOutputW : c.hub ? c.acOutputW : NaN);
   }
 });
@@ -155,17 +157,19 @@ test("an owner with only a few plug-in loads is told cords, with the panel ways 
   assert.equal(many.method, "switch");
 });
 
-test("two-unit setups are only offered for 240 V, and setups within budget come first", () => {
+test("two-unit setups are only offered for 240 V, and setups that fit come first", () => {
   for (const inp of allInputs()) {
     const r = pick(inp, data);
     if (inp.volts === "120") assert.ok(r.matches.every((m) => m.c.units === 1));
-    const firstOver = r.matches.findIndex((m) => m.overBudget);
-    if (firstOver >= 0) assert.ok(r.matches.slice(firstOver).every((m) => m.overBudget), JSON.stringify(inp));
+    const firstMiss = r.matches.findIndex((m) => !(m.reachesNeed && m.startOk));
+    if (firstMiss >= 0) assert.ok(r.matches.slice(firstMiss).every((m) => !(m.reachesNeed && m.startOk)), JSON.stringify(inp));
   }
 });
 
-test("when nothing in budget reaches the size, the biggest battery in budget is shown first", () => {
+test("setups that cover the need come smallest first; when none do, the biggest battery is shown first", () => {
   const r = run({ tenure: "rent", budget: "1500", loads: ["fridge", "router", "led", "phone"], days: 1 });
-  const inBudgetShort = r.matches.filter((m) => !m.overBudget && !m.reachesNeed);
-  for (let i = 1; i < inBudgetShort.length; i++) assert.ok(inBudgetShort[i - 1].totalWh >= inBudgetShort[i].totalWh);
+  const fits = r.matches.filter((m) => m.reachesNeed && m.startOk);
+  for (let i = 1; i < fits.length; i++) assert.ok(fits[i - 1].totalWh <= fits[i].totalWh);
+  const short = r.matches.filter((m) => !m.reachesNeed);
+  for (let i = 1; i < short.length; i++) assert.ok(short[i - 1].totalWh >= short[i].totalWh);
 });

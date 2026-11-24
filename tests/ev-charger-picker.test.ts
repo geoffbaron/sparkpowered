@@ -44,11 +44,13 @@ test("NACS plug-in: Lectron first on price; wanting the app puts EVIQO first", (
   assert.ok(!run({ plug: "tesla", power: "outlet1450", smart: true }).notes.some((n) => /no app scheduling/.test(n)));
 });
 
-test("Ranking is by price: the first J1772 pick is the cheapest matching charger", () => {
+test("Picks carry no prices: no charger has a price field and no reason quotes dollars", () => {
   for (const smart of [true, false]) {
     const r = run({ plug: "j1772", power: "new50", smart });
-    const [first, ...rest] = r.products.map((p) => p.charger.priceUsd);
-    assert.ok(rest.every((p) => p >= first));
+    for (const p of r.products) {
+      assert.ok(!("priceUsd" in p.charger), p.charger.id);
+      assert.ok(!/\$\d|lowest price|lower price|cheapest/i.test(p.why), p.why);
+    }
   }
 });
 

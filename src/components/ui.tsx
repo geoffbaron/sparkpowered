@@ -9,7 +9,7 @@ import { PartnerLink } from "@/components/affiliate";
 import { Breadcrumbs, type Crumb } from "@/components/content";
 import { IMAGES, type ImageKey } from "@/data/images";
 import type { MythLite } from "@/data/myths";
-import type { BrandId } from "@/data/affiliates";
+import { AFFILIATES, type BrandId } from "@/data/affiliates";
 
 /**
  * Responsive photo from public/images. Each photo is pre-encoded as WebP at
@@ -47,20 +47,19 @@ export function Photo({
   );
 }
 
-/** "Our pick for X" recommendation with a strong check-price button. */
+/** "Our pick for X" recommendation with a strong "See today's price" button (we show no prices). */
 export function OurPick({
   label,
   name,
   why,
   life,
-  priceUsd,
   priceNote,
   brand,
   productId,
   productUrl,
   category,
   icon = "battery",
-  cta = "Check price",
+  cta,
   moreHref,
   moreLabel,
   disclose = false,
@@ -71,7 +70,7 @@ export function OurPick({
   why: string;
   /** Everyday outcomes, e.g. ["Fridge: about 18 hours", "CPAP: 5 nights"]. */
   life?: string[];
-  priceUsd?: number | null;
+  /** Short note beside the button, e.g. "Sold and installed by quote". Never a price. */
   priceNote?: string;
   brand: BrandId;
   productId?: string;
@@ -107,17 +106,10 @@ export function OurPick({
           </ul>
         )}
         <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-4">
-          {priceUsd != null ? (
-            <span className="text-2xl font-extrabold text-ink tabular-nums">
-              ${priceUsd.toLocaleString("en-US", { maximumFractionDigits: priceUsd % 1 ? 2 : 0, minimumFractionDigits: priceUsd % 1 ? 2 : 0 })}
-              <span className="text-xs font-normal text-muted ml-1">when we checked*</span>
-            </span>
-          ) : (
-            priceNote && <span className="text-sm text-muted">{priceNote}</span>
-          )}
           <PartnerLink brand={brand} productId={productId} productUrl={productUrl} category={category} className="btn btn-primary" disclose={disclose}>
-            {cta}
+            {cta ?? <>See today&apos;s price at {AFFILIATES[brand].name}</>}
           </PartnerLink>
+          {priceNote && <span className="text-sm text-muted">{priceNote}</span>}
           {moreHref && (
             <Link href={moreHref} className="font-semibold text-spark-orange underline underline-offset-2">
               {moreLabel}

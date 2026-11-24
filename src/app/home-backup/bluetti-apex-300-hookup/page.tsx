@@ -8,7 +8,7 @@ import { PriceFootnote } from "@/components/products";
 import { HOME_BACKUP_HUB } from "@/data/home-backup";
 import { HOOKUP_COSTS, HOOKUP_PARTS, HOOKUP_SAFETY_SOURCES, range } from "@/data/hookup";
 import { formatDate } from "@/lib/energy";
-import { fullName, kwh, money, productById, watts } from "@/lib/products";
+import { fullName, kwh, productById, watts } from "@/lib/products";
 import { JsonLd, pageMetadata, url } from "@/lib/seo";
 
 const PATH = "/home-backup/bluetti-apex-300-hookup";
@@ -40,7 +40,7 @@ export default function Apex300Hookup() {
   const faqs = [
     {
       q: "Does the Bluetti Apex 300 need the AT1 to connect to a house?",
-      a: `No. The Apex 300's 50 A NEMA 14-50R outlet can feed an inlet box with an interlock kit, or a manual transfer switch, installed by a licensed electrician with a permit. The AT1 (${money(P.bluettiAt1.listPriceUsd)} on ${formatDate(P.bluettiAt1.retrieved)}) is Bluetti's automatic option: it switches over by itself and also manages a generator and rooftop solar.`,
+      a: `No. The Apex 300's 50 A NEMA 14-50R outlet can feed an inlet box with an interlock kit, or a manual transfer switch, installed by a licensed electrician with a permit. The AT1 is Bluetti's automatic option: it switches over by itself and also manages a generator and rooftop solar.`,
     },
     {
       q: "Does the Apex 300's 50 A outlet give 50 amps?",
@@ -56,7 +56,7 @@ export default function Apex300Hookup() {
     },
     {
       q: "How much does an Apex 300 home hookup cost?",
-      a: `Beyond the battery (${money(a.priceUsd!)} on ${formatDate(a.retrieved)}): an interlock kit installed runs ${range(C.interlock)} and a manual transfer switch installed ${range(C.manualSwitch)}, plus a permit (${range(C.permit)}), by HomeGuide's ranges. Bluetti's AT1 is ${money(P.bluettiAt1.listPriceUsd)} before installation.`,
+      a: `Beyond the battery: an interlock kit installed runs ${range(C.interlock)} and a manual transfer switch installed ${range(C.manualSwitch)}, plus a permit (${range(C.permit)}), by HomeGuide's ranges. Bluetti's AT1 costs extra, before installation; see Bluetti's page for today's price.`,
     },
   ];
 
@@ -130,7 +130,7 @@ export default function Apex300Hookup() {
                 </tr>
                 <tr className="border-t border-black/6">
                   <th scope="row" className="p-3 font-medium text-stone-700">Rough cost</th>
-                  <td className="p-3">{money(P.bluettiAt1.listPriceUsd)} plus installation</td>
+                  <td className="p-3">The AT1 (see Bluetti&apos;s price) plus installation</td>
                   <td className="p-3">Inlet box {range(C.inletBox)}; interlock installed {range(C.interlock)}</td>
                   <td className="p-3">Installed {range(C.manualSwitch)}</td>
                 </tr>
@@ -144,9 +144,9 @@ export default function Apex300Hookup() {
             </table>
           </div>
           <p className="text-xs text-muted mt-2 max-w-3xl">
-            Bluetti price on its US store on {formatDate(P.bluettiAt1.retrieved)}. Installed ranges are HomeGuide&apos;s (figures dated{" "}
+            AT1 checked on Bluetti&apos;s US store on {formatDate(P.bluettiAt1.retrieved)}. Installed ranges are HomeGuide&apos;s (figures dated{" "}
             {formatDate(C.interlock.sourceUpdated)}); permits add {range(C.permit)}. Your electrician&apos;s quote is the real number. Bluetti also
-            sells an Apex 300 Home Integration Kit ({money(P.bluettiApexKit.listPriceUsd)}); its listing says only that it ties the unit into home
+            sells an Apex 300 Home Integration Kit; its listing says only that it ties the unit into home
             circuits, so ask Bluetti what is in it before you count on it.
           </p>
         </Section>
@@ -179,13 +179,13 @@ export default function Apex300Hookup() {
         <Section title="Buying one" id="buy">
           <AffiliateDisclosure className="mb-4" />
           <p className="text-stone-700 max-w-3xl">
-            In stock at {money(a.priceUsd!)} on Bluetti&apos;s US site on {formatDate(a.retrieved)}:{" "}
+            In stock on Bluetti&apos;s US site on {formatDate(a.retrieved)}:{" "}
             <PartnerLink brand="bluetti" productId={a.id} productUrl={a.url} disclose>
               {fullName(a)}
             </PartnerLink>
           </p>
           <p className="text-stone-700 max-w-3xl mt-2">
-            Weighing it against a cheaper 120 V unit? A 120 V-only unit cannot feed 240 V circuits on its own; see{" "}
+            Weighing it against a 120 V unit? A 120 V-only unit cannot feed 240 V circuits on its own; see{" "}
             <Link href="/home-backup" className="underline underline-offset-2">the four ways to connect a battery</Link>.
           </p>
           <PriceFootnote products={[a]} />
@@ -198,9 +198,9 @@ export default function Apex300Hookup() {
           items={[
             { ...MANUAL, read: "2026-11-14", what: "14-50R: 50 A bypass, 16 A at 240 V on battery; TT-30R limits; voltage selector; no statement on neutral bonding" },
             { ...HOOKUP_GUIDE, read: "2026-11-14", what: "neutral bonding matters most; listed transfer equipment or an approved interlock; electrician, permits, never backfeed" },
-            { name: `${P.bluettiAt1.name} product page`, url: P.bluettiAt1.url, read: P.bluettiAt1.retrieved, what: "price; automatic transfer; compatible with Apex 300 systems (up to three via Hub A1)" },
-            { name: `${P.bluettiApexKit.name} product page`, url: P.bluettiApexKit.url, read: P.bluettiApexKit.retrieved, what: "price; one-line description" },
-            { name: `${fullName(a)} product page`, url: a.sourceUrl, read: a.retrieved, what: "price, stock, outlets" },
+            { name: `${P.bluettiAt1.name} product page`, url: P.bluettiAt1.url, read: P.bluettiAt1.retrieved, what: "automatic transfer; compatible with Apex 300 systems (up to three via Hub A1)" },
+            { name: `${P.bluettiApexKit.name} product page`, url: P.bluettiApexKit.url, read: P.bluettiApexKit.retrieved, what: "one-line description" },
+            { name: `${fullName(a)} product page`, url: a.sourceUrl, read: a.retrieved, what: "stock, outlets" },
             { name: "HomeGuide, Generator transfer switch installation cost", url: C.interlock.url, read: C.interlock.retrieved, what: `installed-cost ranges (figures dated ${formatDate(C.interlock.sourceUpdated)})` },
             { ...HOOKUP_SAFETY_SOURCES.cpsc, read: "2026-11-14", what: "backfeeding warning" },
             { ...HOOKUP_SAFETY_SOURCES.osha, read: "2026-11-14", what: "transfer switch by a qualified electrician" },
@@ -210,14 +210,14 @@ export default function Apex300Hookup() {
         <HomeBackupLinks exclude={PATH} />
 
         <Disclaimer>
-          General information, not electrical advice. Codes and what inspectors accept differ by city and county. Prices, stock and specifications
-          are copied from Bluetti&apos;s US website and manual on the dates shown and change often.
+          General information, not electrical advice. Codes and what inspectors accept differ by city and county. Stock and specifications
+          are copied from Bluetti&apos;s US website and manual on the dates shown. We don&apos;t list product prices; the links go to Bluetti for today&apos;s price.
         </Disclaimer>
         <RelatedLinks
           links={[
             { href: HOME_BACKUP_HUB.path, label: "The four ways to connect a battery", desc: "Cords, interlock, transfer switch or smart panel" },
             { href: "/home-backup/anker-solix-f3800-plus-hookup", label: "Anker SOLIX F3800 Plus hookup", desc: "Home Power Panel or Anker's transfer switch" },
-            { href: "/best-portable-power-stations", label: "Best portable power stations", desc: "Every model compared, with dated prices" },
+            { href: "/best-portable-power-stations", label: "Best portable power stations", desc: "Every model compared by spec" },
             { href: "/power-outage-backup-calculator", label: "Power outage backup calculator", desc: "How much battery your outage needs" },
           ]}
         />

@@ -7,23 +7,20 @@ import { BigStat, HubHero, OurPick, PhotoCredit } from "@/components/ui";
 import { BATTERIES, BATTERY_FACTS, LEAD_ACID_REF } from "@/data/batteries";
 import { BLUETTI_BOAT, BOATING_CHECKED, BOAT_BATTERIES, PISCIFUN_GEAR } from "@/data/boating";
 import { formatDate } from "@/lib/energy";
-import { money } from "@/lib/products";
 import { MINN_KOTA_MANUAL, NEWPORT_RUNTIME_GUIDE, hoursLabel, motorById, runtimeHours } from "@/lib/boating";
 import { JsonLd, pageMetadata } from "@/lib/seo";
 import { batteryProduct, productList, reviewedProduct } from "@/lib/structured-data";
-import { RedodoDeal } from "@/components/RedodoDeal";
 
 const PATH = "/kayak-trolling-motor-battery";
 const TITLE = "Best Kayak Trolling Motor Battery (2026): Light Lithium for All-Day Fishing";
 const DESCRIPTION =
-  "The best battery for a kayak trolling motor weighs 11 to 20 lb, not 64. What size you need for a 30, 45 or 55 lb motor, hours on the water for each, and today's prices.";
+  "The best battery for a kayak trolling motor weighs 11 to 20 lb, not 64. What size you need for a 30, 45 or 55 lb motor, hours on the water for each, and links to today's prices.";
 
 export const metadata: Metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH, type: "article" });
 
 /** Dakota Lithium (no affiliate program with us): the small battery many kayakers carry for electronics only. */
 const DAKOTA_10AH = {
   name: "Dakota Lithium 12V 10Ah Mini",
-  priceUsd: 85,
   url: "https://dakotalithium.com/product/12v-10ah-mini-deep-cycle-lifepo4-battery/",
 };
 
@@ -79,7 +76,6 @@ export default function KayakBatteryPage() {
             url: b1210.url,
             pagePath: PATH,
             description: b1210.note,
-            priceUsd: b1210.priceUsd,
           }),
         ])}
       />
@@ -93,7 +89,7 @@ export default function KayakBatteryPage() {
         title={<>An 11 lb battery. <span className="text-amber-300">A whole morning on the water.</span></>}
         sub={
           <>
-            A {money(k50.priceUsd)} lithium gives a kayak motor the same usable power as a {LEAD_ACID_REF.weightLb} lb lead-acid battery, at a
+            A 12V 50Ah lithium gives a kayak motor the same usable power as a {LEAD_ACID_REF.weightLb} lb lead-acid battery, at a
             sixth of the weight. Here is what size fits your motor and how long it lasts.
           </>
         }
@@ -108,22 +104,20 @@ export default function KayakBatteryPage() {
         <QuickAnswer>
           <p>
             <strong>Most kayaks (30 to 45 lb motor):</strong>{" "}
-            <PartnerLink brand="redodo" productId={k50.id} productUrl={k50.url}>Redodo 12V 50Ah Bluetooth</PartnerLink> ({money(k50.priceUsd)},{" "}
-            {k50.weightLb} lb). About {hrs(m30, 0.5, 50).replace("about ", "")} at half speed on a 30 lb motor.
+            <PartnerLink brand="redodo" productId={k50.id} productUrl={k50.url}>Redodo 12V 50Ah Bluetooth</PartnerLink> ({k50.weightLb}{" "}
+            lb). About {hrs(m30, 0.5, 50).replace("about ", "")} at half speed on a 30 lb motor.
           </p>
           <p>
             <strong>Bigger motor or all-day trips:</strong>{" "}
-            <PartnerLink brand="redodo" productId={mini.id} productUrl={mini.url}>Redodo 12V 100Ah Ultra-Mini</PartnerLink> ({money(mini.priceUsd)},{" "}
-            {mini.weightLb} lb), twice the hours in a case small enough for a tank well.
+            <PartnerLink brand="redodo" productId={mini.id} productUrl={mini.url}>Redodo 12V 100Ah Ultra-Mini</PartnerLink> ({mini.weightLb}{" "}
+            lb), twice the hours in a case small enough for a tank well.
           </p>
         </QuickAnswer>
-
-        <RedodoDeal className="mt-4" product={{ name: "Redodo 12V 50Ah Bluetooth", url: k50.url }} />
 
         <section aria-label="What lithium changes" className="grid sm:grid-cols-3 gap-3 mt-8">
           <BigStat tone="leaf" value={`${Math.round(LEAD_ACID_REF.weightLb - (k50.weightLb ?? 0))} lb`} label="Lighter than a 100Ah AGM" note={`Same usable power: ${k50.weightLb} lb vs ${LEAD_ACID_REF.weightLb} lb`} />
           <BigStat value={hrs(m30, 0.25, 50).replace("about ", "")} label="30 lb motor, slow troll" note="On a 12V 50Ah lithium" />
-          <BigStat tone="orange" value={money(k50.priceUsd)} label="For a full morning of fishing" note="Redodo 12V 50Ah, when we checked" />
+          <BigStat tone="orange" value="50 Ah" label="Enough for a full morning of fishing" note="Most kayaks with a 30 to 45 lb motor" />
         </section>
 
         <section id="picks" className="mt-12 grid gap-4 scroll-mt-24" aria-labelledby="picks-heading">
@@ -134,7 +128,6 @@ export default function KayakBatteryPage() {
             icon="water"
             why={`Light enough to carry in one hand, rated by Redodo for motors up to ${k50.maxThrustLb} lb thrust, and the phone app tells you how much is left before you turn for the launch.`}
             life={[`30 lb motor: ${hrs(m30, 0.5, 50)} at half speed`, `${k50.weightLb} lb`, "Charging pauses below 32°F", "Bluetooth charge gauge"]}
-            priceUsd={k50.priceUsd}
             brand="redodo"
             productId={k50.id}
             productUrl={k50.url}
@@ -146,7 +139,6 @@ export default function KayakBatteryPage() {
             icon="bolt"
             why={`A full 100 Ah in a small Group 22NF case at ${mini.weightLb} lb, with IP65 water resistance and Bluetooth. That's ${hrs(m55, 0.5, 100)} at half speed on a 55 lb motor.`}
             life={[`55 lb motor: ${hrs(m55, 0.25, 100)} at a slow troll`, `${mini.weightLb} lb`, "5-year warranty"]}
-            priceUsd={mini.priceUsd}
             brand="redodo"
             productId={mini.id}
             productUrl={mini.url}
@@ -160,7 +152,6 @@ export default function KayakBatteryPage() {
             icon="heat"
             why="A 12V 100Ah lithium with built-in self-heating and IP65, which Bluetti sells for trolling motors. It warms itself so you can charge on frosty mornings."
             life={["1,280 Wh", "Self-heating", "IP65"]}
-            priceUsd={b1210.priceUsd}
             brand="bluetti"
             productUrl={b1210.url}
             category="battery"
@@ -195,11 +186,11 @@ export default function KayakBatteryPage() {
           </div>
           <p className="text-xs text-muted mt-2 max-w-3xl">
             Max draw from Minn Kota&apos;s manual; hours are amp-hours divided by amps, with half speed at half the max draw (Newport&apos;s rule of
-            thumb) and a slow troll at a quarter (our estimate). Calm water. Prices checked {formatDate(BOATING_CHECKED)}.
+            thumb) and a slow troll at a quarter (our estimate). Calm water. Specs checked {formatDate(BOATING_CHECKED)}.
           </p>
           <p className="mt-4 max-w-3xl">
             Only running a fish finder, no motor? A small battery is enough: the{" "}
-            <PlainLink href={DAKOTA_10AH.url}>{DAKOTA_10AH.name}</PlainLink> was {money(DAKOTA_10AH.priceUsd)}, or see our{" "}
+            <PlainLink href={DAKOTA_10AH.url}>{DAKOTA_10AH.name}</PlainLink> does the job, or see our{" "}
             <Link href="/fish-finder-battery" className="underline">fish finder battery guide</Link>.
           </p>
         </Section>
@@ -207,10 +198,9 @@ export default function KayakBatteryPage() {
         <Section title="Myths, answered" id="myths">
           <div className="grid gap-3">
             <Callout>
-              <strong>&quot;Lithium is too expensive for a kayak.&quot;</strong> Not at this size. A 12V 50Ah lithium was {money(k50.priceUsd)} when
-              we checked; the 100Ah AGM that gives the same usable power was {money(LEAD_ACID_REF.priceUsd)}. You pay about{" "}
-              {money(Math.round(k50.priceUsd - LEAD_ACID_REF.priceUsd))} more and carry {Math.round(LEAD_ACID_REF.weightLb - (k50.weightLb ?? 0))} lb less,
-              with a battery rated for 4,000 full cycles against the AGM&apos;s {LEAD_ACID_REF.cycles} half cycles.
+              <strong>&quot;Lithium is too expensive for a kayak.&quot;</strong> Not at this size. A 12V 50Ah lithium gives the same usable
+              power as a 100Ah AGM, weighs {Math.round(LEAD_ACID_REF.weightLb - (k50.weightLb ?? 0))} lb less and is rated for 4,000 full cycles
+              against the AGM&apos;s {LEAD_ACID_REF.cycles} half cycles, so one lithium outlasts several AGMs.
             </Callout>
             <Callout>
               <strong>&quot;A small battery means a short day.&quot;</strong> Kayak motors draw little at a slow troll. A 30 lb motor at a quarter of
@@ -227,17 +217,16 @@ export default function KayakBatteryPage() {
 
         <Section title="Rounding out the kayak" id="gear">
           <p className="max-w-3xl">
-            Saved some weight and money on the battery? The{" "}
-            <PartnerLink brand="piscifun" productUrl={PISCIFUN_GEAR.spinningCombo.url}>{PISCIFUN_GEAR.spinningCombo.name}</PartnerLink> (
-            {money(PISCIFUN_GEAR.spinningCombo.priceUsd)}) comes with a spare rod tip, handy when rods ride in a crate behind you.
+            Saved some weight on the battery? The{" "}
+            <PartnerLink brand="piscifun" productUrl={PISCIFUN_GEAR.spinningCombo.url}>{PISCIFUN_GEAR.spinningCombo.name}</PartnerLink> comes with a spare rod tip, handy when rods ride in a crate behind you.
           </p>
-          <p className="text-xs text-muted mt-2">Piscifun price checked {formatDate(PISCIFUN_GEAR.spinningCombo.retrieved)}.</p>
+          <p className="text-xs text-muted mt-2">Piscifun checked {formatDate(PISCIFUN_GEAR.spinningCombo.retrieved)}; see today&apos;s price there.</p>
         </Section>
 
         <Faq items={faqs} path={PATH} />
         <Disclaimer>
           Runtimes are calm-water estimates. Adding a motor, even an electric one, means most states require you to register the kayak; wear
-          a life jacket and follow your state&apos;s boating rules. Prices and specs are copied from makers&apos; US websites on the dates shown and change often.
+          a life jacket and follow your state&apos;s boating rules. Specs are copied from makers&apos; US websites on the dates shown.
           Redodo, Bluetti and Piscifun links are sponsored; Dakota Lithium is a plain link.
         </Disclaimer>
         <Sources

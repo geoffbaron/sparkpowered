@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { AffiliateDisclosure, PartnerLink } from "@/components/affiliate";
+import { AffiliateDisclosure, PartnerLink, PriceLink } from "@/components/affiliate";
 import { Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
 import { PlainLink, QuickAnswer } from "@/components/guide-ui";
 import { AFFILIATES } from "@/data/affiliates";
@@ -10,15 +10,15 @@ import { CPAP_PACK } from "@/data/buyer-guides";
 import type { Product } from "@/data/products";
 import { formatDate } from "@/lib/energy";
 import { CPAP_NO_HUMIDIFIER_W, LOADS, USABLE_FRACTION } from "@/lib/everyday";
-import { fullName, money, productById } from "@/lib/products";
+import { fullName, productById } from "@/lib/products";
 import { JsonLd, pageMetadata } from "@/lib/seo";
 import { productList, reviewedProduct } from "@/lib/structured-data";
 import { productJson } from "@/components/products";
 
 const PATH = "/best-power-station-for-cpap";
-const TITLE = "Best Power Station for CPAP (2026): Nights of Sleep per Dollar";
+const TITLE = "Best Power Station for CPAP (2026): Nights of Sleep per Charge";
 const DESCRIPTION =
-  "How many nights each battery runs a CPAP, with and without the humidifier, from $289. Bluetti, EcoFlow, Jackery and Anker picks with dated prices, plus a picker for your outage.";
+  "How many nights each battery runs a CPAP, with and without the humidifier. Bluetti and Anker picks by nights, weight and switchover, plus a picker for your outage.";
 
 export const metadata: Metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH, type: "article" });
 
@@ -28,7 +28,7 @@ const n1 = (x: number) => (Math.floor(x * 10) / 10).toString();
 const IDS = ["bluetti-elite-30-v2", "bluetti-elite-100-v2", "bluetti-ac180", "bluetti-elite-200-v2", "anker-solix-c1000-gen-2"];
 
 function opt(p: Product): RuntimeOption {
-  return { id: p.id, name: fullName(p), brand: AFFILIATES[p.brand].tracked ? p.brand : null, capacityWh: p.capacityWh, priceUsd: p.priceUsd!, url: p.url };
+  return { id: p.id, name: fullName(p), brand: AFFILIATES[p.brand].tracked ? p.brand : null, capacityWh: p.capacityWh, url: p.url };
 }
 
 export default function CpapPage() {
@@ -38,12 +38,12 @@ export default function CpapPage() {
   const anker = productById("anker-solix-c1000-gen-2");
   const options: RuntimeOption[] = [
     ...products.map(opt),
-    { id: CPAP_PACK.id, name: CPAP_PACK.name, brand: "bluetti", capacityWh: CPAP_PACK.capacityWh, priceUsd: CPAP_PACK.priceUsd, url: CPAP_PACK.url },
+    { id: CPAP_PACK.id, name: CPAP_PACK.name, brand: "bluetti", capacityWh: CPAP_PACK.capacityWh, url: CPAP_PACK.url },
   ];
   const H = LOADS.cpapW;
   const D = CPAP_NO_HUMIDIFIER_W;
 
-  const rows = [...options].sort((a, b) => a.priceUsd - b.priceUsd);
+  const rows = [...options].sort((a, b) => a.capacityWh - b.capacityWh);
   const productFor = (id: string) => products.find((p) => p.id === id);
 
   const faqs = [
@@ -53,7 +53,7 @@ export default function CpapPage() {
     },
     {
       q: "What is the best power station for a CPAP?",
-      a: `For most people the Bluetti Elite 100 V2 (${money(e100.priceUsd!)} when we checked): about ${n1(nights(e100.capacityWh, H))} nights with the humidifier, a 10 ms switchover so the CPAP keeps running if the power blinks, and enough left over for a phone and a lamp. For travel or one night, the Bluetti Elite 30 V2 (${money(e30.priceUsd!)}, ${e30.weightLb} lb) gives about one night with the humidifier and ${n1(nights(e30.capacityWh, D))} without.`,
+      a: `For most people the Bluetti Elite 100 V2: about ${n1(nights(e100.capacityWh, H))} nights with the humidifier, a 10 ms switchover so the CPAP keeps running if the power blinks, and enough left over for a phone and a lamp. For travel or one night, the Bluetti Elite 30 V2 (${e30.weightLb} lb) gives about one night with the humidifier and ${n1(nights(e30.capacityWh, D))} without.`,
     },
     {
       q: "Should I turn off the CPAP humidifier on battery?",
@@ -77,16 +77,13 @@ export default function CpapPage() {
     <article>
       <JsonLd
         data={productList(PATH, "Power stations for a CPAP", [
-          ...[...products]
-            .sort((a, b) => a.priceUsd! - b.priceUsd!)
-            .map((p) => productJson(p, PATH)),
+          ...[...products].sort((a, b) => a.capacityWh - b.capacityWh).map((p) => productJson(p, PATH)),
           reviewedProduct({
             name: CPAP_PACK.name,
             brand: "Bluetti",
             url: CPAP_PACK.url,
             pagePath: PATH,
             description: CPAP_PACK.notes[0],
-            priceUsd: CPAP_PACK.priceUsd,
           }),
         ])}
       />
@@ -97,7 +94,7 @@ export default function CpapPage() {
           { name: "CPAP", path: PATH },
         ]}
         eyebrow="Power for your CPAP"
-        title={<>Sleep through the outage. <span className="text-amber-300">Nearly four nights of CPAP for $499.</span></>}
+        title={<>Sleep through the outage. <span className="text-amber-300">Nearly four nights of CPAP on one charge.</span></>}
         sub={
           <>
             A battery the size of a lunchbox keeps your CPAP running when the power goes out or you camp off-grid. Here is how many
@@ -115,26 +112,25 @@ export default function CpapPage() {
         <QuickAnswer>
           <p>
             <strong>Most people: the{" "}
-            <PartnerLink brand="bluetti" productId={e100.id} productUrl={e100.url}>Bluetti Elite 100 V2</PartnerLink></strong>{" "}
-            ({money(e100.priceUsd!)} when we checked). About {n1(nights(e100.capacityWh, H))} nights of CPAP with the heated
+            <PartnerLink brand="bluetti" productId={e100.id} productUrl={e100.url}>Bluetti Elite 100 V2</PartnerLink></strong>. About {n1(nights(e100.capacityWh, H))} nights of CPAP with the heated
             humidifier, {n1(nights(e100.capacityWh, D))} without, and it takes over in 10 ms if the power cuts out mid-sleep.
           </p>
           <p>
             <strong>Travel and single nights:</strong> the{" "}
-            <PartnerLink brand="bluetti" productId={e30.id} productUrl={e30.url}>Bluetti Elite 30 V2</PartnerLink> ({money(e30.priceUsd!)},{" "}
-            {e30.weightLb} lb).
+            <PartnerLink brand="bluetti" productId={e30.id} productUrl={e30.url}>Bluetti Elite 30 V2</PartnerLink> ({e30.weightLb} lb).{" "}
+            The links go to Bluetti&apos;s own pages for today&apos;s price.
           </p>
         </QuickAnswer>
 
         <section aria-label="What it means" className="grid sm:grid-cols-3 gap-3 mt-8">
-          <BigStat tone="leaf" value={`${n1(nights(e100.capacityWh, H))} nights`} label="Of CPAP with humidifier" note={`Bluetti Elite 100 V2, ${money(e100.priceUsd!)}`} />
+          <BigStat tone="leaf" value={`${n1(nights(e100.capacityWh, H))} nights`} label="Of CPAP with humidifier" note={`Bluetti Elite 100 V2, ${e100.weightLb} lb`} />
           <BigStat value={`${(H / D).toFixed(1)}x`} label="Longer with the humidifier off" note={`${H} W vs ${D} W (ResMed)`} />
-          <BigStat tone="orange" value={money(e30.priceUsd!)} label="For one night anywhere" note={`Bluetti Elite 30 V2, ${e30.weightLb} lb`} />
+          <BigStat tone="orange" value={`${e30.weightLb} lb`} label="For one night anywhere" note="Bluetti Elite 30 V2" />
         </section>
 
         <section id="picker" className="mt-12 scroll-mt-24" aria-labelledby="picker-heading">
           <h2 id="picker-heading" className="text-2xl font-extrabold text-ink mb-2">How many nights do you need?</h2>
-          <p className="text-stone-700 mb-4 max-w-3xl">Pick your settings. We show the cheapest battery that covers it, and how every option compares.</p>
+          <p className="text-stone-700 mb-4 max-w-3xl">Pick your settings. We show the smallest battery that covers it, and how every option compares.</p>
           <CpapPicker options={options} />
         </section>
 
@@ -143,9 +139,8 @@ export default function CpapPage() {
           <OurPick
             label="Best for most CPAP users"
             name={fullName(e100)}
-            why="Nearly four nights with the humidifier for $499, and it doubles as a UPS: leave the CPAP plugged into it at home and it keeps running when the power goes. If you depend on your CPAP, ask your doctor and the device maker which battery setups they approve, and keep a second backup plan. 25 lb, 5-year warranty, and fast solar charging if the outage drags on."
+            why="Nearly four nights with the humidifier, and it doubles as a UPS: leave the CPAP plugged into it at home and it keeps running when the power goes. If you depend on your CPAP, ask your doctor and the device maker which battery setups they approve, and keep a second backup plan. 25 lb, 5-year warranty, and fast solar charging if the outage drags on."
             life={[`CPAP with humidifier: ${n1(nights(e100.capacityWh, H))} nights`, `Without humidifier: ${n1(nights(e100.capacityWh, D))} nights`]}
-            priceUsd={e100.priceUsd}
             brand="bluetti"
             productId={e100.id}
             productUrl={e100.url}
@@ -157,7 +152,6 @@ export default function CpapPage() {
             name={fullName(e30)}
             why="Under 10 lb and rated under 30 dB, quiet enough for a tent or a bedside table. One night with the humidifier, nearly three without."
             life={[`CPAP with humidifier: ${n1(nights(e30.capacityWh, H))} nights`, `Without humidifier: ${n1(nights(e30.capacityWh, D))} nights`]}
-            priceUsd={e30.priceUsd}
             brand="bluetti"
             productId={e30.id}
             productUrl={e30.url}
@@ -167,15 +161,13 @@ export default function CpapPage() {
           <OurPick
             label="A CPAP-only kit"
             name={CPAP_PACK.name}
-            why={`Comes with seven CPAP cables and runs your machine on DC, skipping inverter losses. Be honest with yourself, though: at the same ${money(CPAP_PACK.priceUsd)} the Elite 100 V2 holds more, has regular outlets and a 5-year warranty against the X60's 1 year. Buy the X60 only if you want the simplest CPAP-only box.`}
+            why={`Comes with seven CPAP cables and runs your machine on DC, skipping inverter losses. Be honest with yourself, though: the Elite 100 V2 holds more, has regular outlets and a 5-year warranty against the X60's 1 year. Buy the X60 only if you want the simplest CPAP-only box.`}
             life={[`CPAP with humidifier: ${n1(nights(CPAP_PACK.capacityWh, H))} nights`, `${CPAP_PACK.weightLb} lb`]}
-            priceUsd={CPAP_PACK.priceUsd}
             brand="bluetti"
             productId={CPAP_PACK.id}
             productUrl={CPAP_PACK.url}
             category="battery"
           />
-          <p className="text-xs text-muted">*Prices on the makers&apos; US sites on {formatDate(e100.retrieved)}; Bluetti, Jackery and Anker run frequent sales.</p>
         </section>
 
         <Section title="Every option, side by side" id="compare">
@@ -185,12 +177,12 @@ export default function CpapPage() {
               <thead className="bg-surface-light text-left">
                 <tr>
                   <th scope="col" className="p-3 font-semibold">Battery</th>
-                  <th scope="col" className="p-3 font-semibold text-right">Price*</th>
                   <th scope="col" className="p-3 font-semibold text-right">Nights, humidifier on</th>
                   <th scope="col" className="p-3 font-semibold text-right">Nights, humidifier off</th>
                   <th scope="col" className="p-3 font-semibold text-right">Weight</th>
                   <th scope="col" className="p-3 font-semibold text-right">Switchover</th>
                   <th scope="col" className="p-3 font-semibold text-right">Capacity</th>
+                  <th scope="col" className="p-3 font-semibold text-right">Price</th>
                 </tr>
               </thead>
               <tbody>
@@ -205,12 +197,18 @@ export default function CpapPage() {
                           <PlainLink href={o.url}>{o.name}</PlainLink>
                         )}
                       </th>
-                      <td className="p-3 text-right tabular-nums">{money(o.priceUsd)}</td>
                       <td className="p-3 text-right tabular-nums font-semibold">{n1(nights(o.capacityWh, H))}</td>
                       <td className="p-3 text-right tabular-nums">{n1(nights(o.capacityWh, D))}</td>
                       <td className="p-3 text-right tabular-nums">{p ? (p.weightLb ? `${p.weightLb} lb` : "Not stated") : `${CPAP_PACK.weightLb} lb`}</td>
                       <td className="p-3 text-right tabular-nums">{p?.upsMs ? `${p.upsMs} ms` : p ? "Not stated" : "No outlets"}</td>
                       <td className="p-3 text-right tabular-nums">{o.capacityWh.toLocaleString("en-US")} Wh</td>
+                      <td className="p-3 text-right">
+                        {o.brand ? (
+                          <PriceLink brand={o.brand} productId={o.id} productUrl={o.url} className="underline underline-offset-2 text-spark-orange whitespace-nowrap" />
+                        ) : (
+                          <PlainLink href={o.url}>See today&apos;s price</PlainLink>
+                        )}
+                      </td>
                     </tr>
                   );
                 })}
@@ -218,9 +216,9 @@ export default function CpapPage() {
             </table>
           </div>
           <p className="text-xs text-muted mt-2 max-w-3xl">
-            *Prices and specs from each maker&apos;s US product page on {formatDate(e100.retrieved)} (Anker on{" "}
+            Specs from each maker&apos;s US product page on {formatDate(e100.retrieved)} (Anker on{" "}
             {formatDate(anker.retrieved)}). Nights assume {LOADS.cpapNightHours} hours at {H} W or {D} W and {Math.round(USABLE_FRACTION * 100)}%
-            usable capacity. Bluetti and Anker links are sponsored; others are plain links.
+            usable capacity. We don&apos;t list prices; the links go to each maker&apos;s page for today&apos;s price. Bluetti and Anker links are sponsored; others are plain links.
           </p>
         </Section>
 
@@ -228,8 +226,8 @@ export default function CpapPage() {
           <div className="grid gap-3">
             <Callout>
               <strong>&quot;You need a huge, expensive battery for a CPAP.&quot;</strong> No. A CPAP is one of the lightest loads in
-              the house: about {H} W with the humidifier, less than a single old light bulb. A {money(e30.priceUsd!)} battery covers a
-              night; {money(e100.priceUsd!)} covers a long weekend.
+              the house: about {H} W with the humidifier, less than a single old light bulb. A battery the size of the Elite 30 V2 covers a
+              night; the Elite 100 V2 covers a long weekend.
             </Callout>
             <Callout>
               <strong>&quot;A car battery or a cheap jump starter will do.&quot;</strong> Risky. A car battery isn&apos;t built to be
@@ -249,8 +247,8 @@ export default function CpapPage() {
         <Faq items={faqs} path={PATH} />
         <Disclaimer>
           This is not medical advice. CPAP power draw depends on your machine, pressure, humidifier and tubing settings; check your
-          machine&apos;s manual or ask your equipment supplier. Prices and specifications are copied from makers&apos; US websites on
-          the dates shown and change often.
+          machine&apos;s manual or ask your equipment supplier. Specifications are copied from makers&apos; US websites on
+          the dates shown.
         </Disclaimer>
         <Sources
           items={[

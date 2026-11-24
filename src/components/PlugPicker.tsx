@@ -3,11 +3,10 @@
 import { useState } from "react";
 import { PartnerLink } from "@/components/affiliate";
 import { PlainLink, pillClass } from "@/components/guide-ui";
-import type { BrandId } from "@/data/affiliates";
+import { AFFILIATES, type BrandId } from "@/data/affiliates";
 
 export interface PlugRec {
   name: string;
-  priceUsd: number;
   why: string;
   brand: BrandId | null;
   id: string;
@@ -21,9 +20,6 @@ const LABELS: Record<Car, string> = {
   nacs: "Another EV with a Tesla-style (NACS) port",
   j1772: "Most other EVs and plug-in hybrids (J1772 port)",
 };
-
-const money = (n: number) =>
-  n.toLocaleString("en-US", { style: "currency", currency: "USD", minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: n % 1 ? 2 : 0 });
 
 /** "What do you drive?" -> which plug, and which charger to buy. */
 export default function PlugPicker({ recs, notes }: { recs: Record<Car, PlugRec[]>; notes: Record<Car, string> }) {
@@ -49,16 +45,16 @@ export default function PlugPicker({ recs, notes }: { recs: Record<Car, PlugRec[
           {recs[car].map((r, i) => (
             <li key={r.id}>
               <p className={i === 0 ? "text-xl font-extrabold text-ink" : "font-bold text-ink"} data-testid={i === 0 ? "plug-pick" : undefined}>
-                {r.name} <span className="text-sm font-semibold text-muted">{money(r.priceUsd)}</span>
+                {r.name}
               </p>
               <p className="text-sm text-stone-700">{r.why}</p>
               <div className="mt-2">
                 {r.brand ? (
                   <PartnerLink brand={r.brand} productId={r.id} productUrl={r.url} className={i === 0 ? "btn btn-primary btn-sm" : "btn btn-outline btn-sm"} disclose>
-                    Check price
+                    See today&apos;s price at {AFFILIATES[r.brand].name}
                   </PartnerLink>
                 ) : (
-                  <PlainLink href={r.url} className="btn btn-outline btn-sm">See it</PlainLink>
+                  <PlainLink href={r.url} className="btn btn-outline btn-sm">See today&apos;s price</PlainLink>
                 )}
               </div>
             </li>

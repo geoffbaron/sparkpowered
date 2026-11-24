@@ -99,7 +99,7 @@ export default function CabinKitPicker({ states, stations, fallbackAbbr }: { sta
             </>
           }
         />
-        <p className="text-xs text-muted mt-3">Prices are for the station and add-on batteries only. Panels are extra.</p>
+        <p className="text-xs text-muted mt-3">Panels are extra.</p>
       </div>
     </div>
     <KitPicker

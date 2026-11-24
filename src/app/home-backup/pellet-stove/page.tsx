@@ -10,7 +10,7 @@ import type { Product } from "@/data/products";
 import { hoursText, loadPageProducts, usableWh } from "@/lib/can-it-run";
 import { formatDate } from "@/lib/energy";
 import { OFFGRID_SOURCES, USABLE_FRACTION } from "@/lib/offgrid";
-import { fullName, money } from "@/lib/products";
+import { fullName } from "@/lib/products";
 import { JsonLd, pageMetadata, url } from "@/lib/seo";
 
 const PATH = "/home-backup/pellet-stove";
@@ -115,11 +115,10 @@ export default function PelletStovePage() {
   const peak = STOVES.reduce((a, b) => (b.igniterW > a.igniterW ? b : a));
   const smallest = products.filter((p) => p.acOutputW >= peak.igniterW).sort((a, b) => a.acOutputW - b.acOutputW)[0];
 
-  // The page's pick: the most stove-hours per dollar among in-stock stations from makers we
-  // work with that state a UPS switchover time.
-  const pick = products
-    .filter((p) => AFFILIATES[p.brand].tracked && p.upsMs != null)
-    .sort((a, b) => usableWh(b) / b.priceUsd! - usableWh(a) / a.priceUsd!)[0];
+  // The page's pick: the smallest in-stock station from makers we work with that states a UPS
+  // switchover time and runs the bigger stove through a 12-hour night. No prices (we link out).
+  const fits = products.filter((p) => AFFILIATES[p.brand].tracked && p.upsMs != null);
+  const pick = fits.find((p) => usableWh(p) / hi.runW >= 12) ?? fits[fits.length - 1];
   const ms = products.map((p) => p.upsMs).filter((x): x is number => x != null);
   const msLo = Math.min(...ms);
   const msHi = Math.max(...ms);
@@ -303,20 +302,19 @@ export default function PelletStovePage() {
         </Section>
 
         <section className="mt-12" aria-labelledby="pick-heading">
-          <h2 id="pick-heading" className="text-2xl font-bold mb-4">Most hours of stove per dollar</h2>
+          <h2 id="pick-heading" className="text-2xl font-bold mb-4">Smallest that heats a full night</h2>
           <OurPick
-            label="Most stove-hours per dollar, with a stated switchover"
+            label="Smallest that heats a 12-hour night, with a stated switchover"
             name={fullName(pick)}
-            why={`Of the in-stock stations from makers we work with that publish a switchover time, it gives the most hours of heat per dollar: ${h(pick, hi.runW)} on the bigger stove's rating and ${h(pick, lo.runW)} on the smaller one. Pure sine wave, ${pick.acOutputW.toLocaleString("en-US")} W output and a ${pick.upsMs} ms switchover, per its maker.`}
+            why={`Of the in-stock stations from makers we work with that publish a switchover time, it is the smallest that runs the bigger stove through a 12-hour night: ${h(pick, hi.runW)} on the bigger stove's rating and ${h(pick, lo.runW)} on the smaller one. Pure sine wave, ${pick.acOutputW.toLocaleString("en-US")} W output and a ${pick.upsMs} ms switchover, per its maker.`}
             life={[`Big stove: ${h(pick, hi.runW)}`, `Small stove: ${h(pick, lo.runW)}`]}
-            priceUsd={pick.priceUsd}
             brand={pick.brand}
             productId={pick.id}
             productUrl={pick.url}
             category="battery"
             disclose
           />
-          <p className="text-xs text-muted mt-2">*Price on the maker&apos;s US site when we checked on {formatDate(pick.retrieved)} ({money(pick.priceUsd!)}); prices change often.</p>
+          <p className="text-xs text-muted mt-2">Specs checked on {formatDate(pick.retrieved)}. The button goes to the maker&apos;s page for today&apos;s price.</p>
         </section>
 
         <Faq items={faqs} path={PATH} />
@@ -328,7 +326,7 @@ export default function PelletStovePage() {
             { href: "/home-backup", label: "Home backup: the four ways to connect", desc: "Cords, inlet and interlock, transfer switch, smart panel" },
             { href: "/power-outage-backup-calculator", label: "Power outage backup calculator", desc: "Fridge, CPAP, well pump and furnace through an outage" },
             { href: "/home-backup/well-pump", label: "Power station for a well pump", desc: "Starting watts from the pump's nameplate" },
-            { href: "/best-portable-power-stations", label: "Best portable power stations", desc: "Every model we list, with dated prices" },
+            { href: "/best-portable-power-stations", label: "Best portable power stations", desc: "Every model we list, by spec" },
           ]}
         />
         <PhotoCredit name="power-station" />

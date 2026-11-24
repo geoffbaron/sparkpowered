@@ -5,10 +5,8 @@ import { Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/comp
 import { PlainLink, QuickAnswer } from "@/components/guide-ui";
 import { BigStat, HubHero, PhotoCredit } from "@/components/ui";
 import {
-  BOATING_CHECKED,
   ELECTRIC_OUTBOARDS,
   ELECTRIC_PONTOON,
-  EPROPULSION_E163,
   FUEL_PRICES,
   GAS_OUTBOARDS,
   SPIRIT_RUNTIME,
@@ -19,12 +17,11 @@ import { money } from "@/lib/products";
 import { ELECTRIC_HOUR_USD, GAS_HOUR_USD, chargeCostUsd, seasonFuel } from "@/lib/boating";
 import { JsonLd, pageMetadata } from "@/lib/seo";
 import { productList, reviewedProduct } from "@/lib/structured-data";
-import { RedodoDeal } from "@/components/RedodoDeal";
 
 const PATH = "/electric-outboard-motor";
-const TITLE = "Electric Outboard Motors (2026): Prices, Range and Cost vs Gas";
+const TITLE = "Electric Outboard Motors (2026): Range and Running Cost vs Gas";
 const DESCRIPTION =
-  "Real 2026 prices for ePropulsion, Mercury Avator and Torqeedo electric outboards, how far they go on a charge, and what an hour on the water costs next to a small gas outboard.";
+  "ePropulsion, Mercury Avator and Torqeedo electric outboards compared: power, battery, how far they go on a charge, and what an hour on the water costs next to a small gas outboard.";
 
 export const metadata: Metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH, type: "article" });
 
@@ -34,7 +31,6 @@ export default function ElectricOutboardPage() {
   const spirit = ELECTRIC_OUTBOARDS.find((o) => o.id === "epropulsion-spirit-1-evo")!;
   const travel = ELECTRIC_OUTBOARDS.find((o) => o.id === "torqeedo-travel-s")!;
   const avator = ELECTRIC_OUTBOARDS.find((o) => o.id === "mercury-avator-7-5e")!;
-  const f6 = GAS_OUTBOARDS.yamahaF6;
   const honda = GAS_OUTBOARDS.hondaBf23;
   const seasons = [50, 100, 150].map((h) => ({ h, ...seasonFuel(h) }));
   const s100 = seasonFuel(100);
@@ -43,8 +39,8 @@ export default function ElectricOutboardPage() {
 
   const faqs = [
     {
-      q: "How much does an electric outboard motor cost?",
-      a: `A ready-to-run 3 hp-class electric outboard with its battery costs about $3,400 to $3,800: the Torqeedo Travel S Essential Package is ${money(travel.packagePriceUsd!)}, the ePropulsion Spirit 1.0 Evo with tiller and battery ${money(spirit.packagePriceUsd!)} at a US dealer, and the Mercury Avator 7.5e starts at ${money(avator.packagePriceUsd!)} MSRP. A 6 hp Yamaha F6 gas outboard lists at ${money(f6.priceUsd)}.`,
+      q: "Which electric outboard should I buy for a small boat?",
+      a: "For a dinghy, jon boat or small fishing boat, a 3 hp-class motor with its own battery: the Torqeedo Travel S or the ePropulsion Spirit 1.0 Evo. Both split into motor and battery for carrying. If you want a dealer network behind it, look at the Mercury Avator 7.5e. Up front, an electric costs more than a small gas outboard; check today's prices on the makers' and dealers' sites, then weigh them against the running costs below.",
     },
     {
       q: "How far can an electric outboard go on one charge?",
@@ -77,8 +73,6 @@ export default function ElectricOutboardPage() {
               url: o.url,
               pagePath: PATH,
               description: `${o.name} is a ${o.watts.toLocaleString("en-US")} W electric outboard that ${o.maker} compares to a ${o.gasHpClaim} gas motor.`,
-              priceUsd: o.packagePriceUsd ?? o.motorPriceUsd,
-              priceUrl: o.priceUrl,
             }),
           ),
         )}
@@ -93,12 +87,12 @@ export default function ElectricOutboardPage() {
         title={<>No gas, no oil, no pull cord. <span className="text-amber-300">About {cents(spiritCharge)} a charge.</span></>}
         sub={
           <>
-            A 3 hp-class electric outboard costs about $3,400 to $3,800 with its battery, runs for hours at trolling speed, and costs pennies
-            an hour to run. Here are the real prices, ranges and running costs.
+            A 3 hp-class electric outboard runs for hours at trolling speed and costs pennies an hour to run. Here are the specs, the
+            makers&apos; range claims and the running costs next to gas.
           </>
         }
       >
-        <a href="#compare" className="btn btn-primary">Compare prices</a>
+        <a href="#compare" className="btn btn-primary">Compare motors</a>
         <a href="#cost" className="btn btn-light">Cost vs gas</a>
       </HubHero>
 
@@ -108,16 +102,16 @@ export default function ElectricOutboardPage() {
         <QuickAnswer>
           <p>
             <strong>Small boats, dinghies and jon boats:</strong> the{" "}
-            <PlainLink href={travel.priceUrl}>Torqeedo Travel S</PlainLink> ({money(travel.packagePriceUsd!)} with battery) or the{" "}
-            <PlainLink href={spirit.priceUrl}>ePropulsion Spirit 1.0 Evo</PlainLink> ({money(spirit.packagePriceUsd!)} with battery at a US
-            dealer). Both are rated as 3 hp equivalents and split into motor and battery for carrying.
+            <PlainLink href={travel.url}>Torqeedo Travel S</PlainLink> or the{" "}
+            <PlainLink href={spirit.url}>ePropulsion Spirit 1.0 Evo</PlainLink>. Both are rated as 3 hp equivalents and split into motor
+            and battery for carrying.
           </p>
           <p>
-            <strong>Want a dealer network behind it:</strong> the Mercury Avator 7.5e (from {money(avator.packagePriceUsd!)} MSRP) or the
+            <strong>Want a dealer network behind it:</strong> the <PlainLink href={avator.url}>Mercury Avator 7.5e</PlainLink> or the
             Avator 20e and 35e for 5 and 9.9 hp-class power.
           </p>
           <p className="text-sm">
-            None of these makers pays us anything; these are plain links to their sites or dealers.
+            None of these makers pays us anything; these are plain links to their sites, where you can see today&apos;s price.
           </p>
         </QuickAnswer>
 
@@ -130,44 +124,32 @@ export default function ElectricOutboardPage() {
         <Section title="Electric outboards compared" id="compare">
           <div className="relative overflow-x-auto rounded-xl border border-black/8 bg-surface">
             <table className="w-full text-sm min-w-[52rem]">
-              <caption className="sr-only">Electric outboard prices and range</caption>
+              <caption className="sr-only">Electric outboard power, battery and range</caption>
               <thead className="bg-surface-light text-left">
                 <tr>
                   <th scope="col" className="p-3 font-semibold">Motor</th>
-                  <th scope="col" className="p-3 font-semibold text-right">Price*</th>
                   <th scope="col" className="p-3 font-semibold">Like a gas</th>
                   <th scope="col" className="p-3 font-semibold text-right">Battery</th>
                   <th scope="col" className="p-3 font-semibold">Maker&apos;s range claim</th>
+                  <th scope="col" className="p-3 font-semibold">Price</th>
                 </tr>
               </thead>
               <tbody>
                 {ELECTRIC_OUTBOARDS.map((o) => (
                   <tr key={o.id} className="border-t border-black/6 align-top">
-                    <th scope="row" className="p-3 font-medium"><PlainLink href={o.priceUrl}>{o.name}</PlainLink></th>
-                    <td className="p-3 text-right tabular-nums">
-                      {money(o.packagePriceUsd ?? o.motorPriceUsd ?? 0)}
-                      <span className="block text-xs text-muted">{o.packageNote}</span>
-                    </td>
+                    <th scope="row" className="p-3 font-medium">{o.name}</th>
                     <td className="p-3">{o.gasHpClaim}</td>
                     <td className="p-3 text-right tabular-nums">{o.batteryWh.toLocaleString("en-US")} Wh</td>
                     <td className="p-3">{o.rangeClaim}</td>
+                    <td className="p-3"><PlainLink href={o.url}>Today&apos;s price at {o.maker}</PlainLink></td>
                   </tr>
                 ))}
-                <tr className="border-t border-black/6 bg-stone-50">
-                  <th scope="row" className="p-3 font-medium">For comparison: {f6.name}</th>
-                  <td className="p-3 text-right tabular-nums">{money(f6.priceUsd)}<span className="block text-xs text-muted">MSRP, engine only</span></td>
-                  <td className="p-3">6 hp</td>
-                  <td className="p-3 text-right">Gas tank</td>
-                  <td className="p-3">As far as your fuel goes</td>
-                </tr>
               </tbody>
             </table>
           </div>
           <p className="text-xs text-muted mt-2 max-w-3xl">
-            *Checked {formatDate(BOATING_CHECKED)}. Torqeedo from its US store. ePropulsion publishes no prices, so these are from Electric
-            Surf Sports, a US dealer. Mercury Avator prices are dealer-listed MSRPs (Gig Harbor Marina); specs and ranges from Mercury&apos;s
-            Avator brochure. The Navy 6.0 price is the tiller motor; ePropulsion&apos;s E163 battery ({EPROPULSION_E163.wh.toLocaleString("en-US")} Wh)
-            was {money(EPROPULSION_E163.priceUsd)} more. Yamaha F6 from Yamaha&apos;s July 2026 price list.
+            Specs and ranges from each maker&apos;s US site and brochures. We don&apos;t list prices: they change often, and some makers
+            only sell through dealers, so each link opens the maker&apos;s page.
           </p>
         </Section>
 
@@ -204,26 +186,24 @@ export default function ElectricOutboardPage() {
           </p>
           <p className="mt-4 max-w-3xl">
             The bigger savings are the things you stop doing: no fuel stabilizer, no oil or gear-lube changes, no carburetor cleaning after a
-            winter, no spare gas can in the car. The honest cost is up front: a 3 hp-class electric with battery costs about $1,200 to $1,600 more
-            than a 6 hp gas outboard.
+            winter, no spare gas can in the car. The honest cost is up front: a 3 hp-class electric with its battery costs more to buy than a
+            small gas outboard, so compare today&apos;s prices for both before you decide.
           </p>
         </Section>
 
         <Section title="Electric pontoons and bigger boats" id="pontoon">
           <p className="max-w-3xl">
-            Electric pontoons are here, at a price. Vision Marine&apos;s{" "}
-            <PlainLink href={ELECTRIC_PONTOON.url}>V17 electric pontoon</PlainLink> starts at {money(ELECTRIC_PONTOON.priceUsd)} ({ELECTRIC_PONTOON.note}).
-            To convert a small pontoon you already own, the Mercury Avator 35e ({money(ELECTRIC_OUTBOARDS.find((o) => o.id === "mercury-avator-35e")!.packagePriceUsd!)}
-            {" "}starting MSRP) is comparable to a 9.9 hp four-stroke, which Mercury says runs up to 18 hours on two batteries. Mercury also makes the
-            larger Avator 75e and 110e for bigger boats; we could not confirm their US prices.
+            Electric pontoons are here. Vision Marine&apos;s{" "}
+            <PlainLink href={ELECTRIC_PONTOON.url}>V17 electric pontoon</PlainLink> has a {ELECTRIC_PONTOON.note}.
+            To convert a small pontoon you already own, the Mercury Avator 35e is comparable to a 9.9 hp four-stroke, which Mercury says runs
+            up to 18 hours on two batteries. Mercury also makes the larger Avator 75e and 110e for bigger boats.
           </p>
           <p className="max-w-3xl mt-3">
             Building your own 48 V battery bank for a bigger electric motor? Redodo&apos;s{" "}
-            <PartnerLink brand="redodo" productId={redodo48.id} productUrl={redodo48.url}>48V 100Ah</PartnerLink> ({money(redodo48.priceUsd)},{" "}
-            {redodo48.energyWh.toLocaleString("en-US")} Wh) is a solar and home battery, so check your motor maker approves third-party batteries
+            <PartnerLink brand="redodo" productId={redodo48.id} productUrl={redodo48.url}>48V 100Ah</PartnerLink> ({redodo48.energyWh.toLocaleString("en-US")} Wh,{" "}
+            <PartnerLink brand="redodo" productId={redodo48.id} productUrl={redodo48.url}>see today&apos;s price at Redodo</PartnerLink>) is a solar and home battery, so check your motor maker approves third-party batteries
             first; most portable outboards only take their own.
           </p>
-          <RedodoDeal className="mt-4 max-w-3xl" product={{ name: "Redodo 48V 100Ah", url: redodo48.url }} />
         </Section>
 
         <Section title="Myths, answered" id="myths">
@@ -238,7 +218,7 @@ export default function ElectricOutboardPage() {
               flat out it is about an hour. Plan the trip the way you would a small fuel tank, and carry a paddle, as you should with gas. Wear the kill-switch lanyard, carry a life jacket for everyone aboard, and register the boat: most states count an electric motor as a motor under their boating laws.
             </Callout>
             <Callout>
-              <strong>&quot;They cost too much.&quot;</strong> Up front, yes, by about $1,200 to $1,600 for a small motor. Fuel and upkeep claw some of
+              <strong>&quot;They cost too much.&quot;</strong> Up front, an electric costs more than a small gas motor. Fuel and upkeep claw some of
               that back every season, and the quiet is worth something on a fishing trip.
             </Callout>
           </div>
@@ -246,15 +226,14 @@ export default function ElectricOutboardPage() {
 
         <Faq items={faqs} path={PATH} />
         <Disclaimer>
-          Prices and specifications come from the makers&apos; and dealers&apos; US websites on the dates shown and change often. Ranges are the
+          Specifications come from the makers&apos; US websites and change from time to time. We don&apos;t list prices; check today&apos;s on the maker&apos;s site. Ranges are the
           makers&apos; own claims in calm water. Fuel costs use US averages; yours will differ. The Redodo link is sponsored; all others are plain.
         </Disclaimer>
         <Sources
           items={[
-            ...ELECTRIC_OUTBOARDS.map((o) => ({ name: `${o.name}: ${o.priceSource}`, url: o.priceUrl, detail: `checked ${formatDate(o.retrieved)}` })),
+            ...ELECTRIC_OUTBOARDS.map((o) => ({ name: `${o.name}: maker specs`, url: o.url, detail: `checked ${formatDate(o.retrieved)}` })),
             { name: "ePropulsion Spirit 1.0 specs and runtime table", url: spirit.url },
             { name: "Mercury Avator brochure (specs, ranges)", url: avator.url },
-            { name: f6.source, url: f6.url },
             { name: "Honda BF2.3 specifications", url: honda.url, detail: "0.29 gal tank, up to 60 minutes at full throttle" },
             { name: "EIA gasoline prices", url: FUEL_PRICES.gasUrl, detail: `regular, week of ${formatDate(FUEL_PRICES.gasWeek)}` },
             { name: "EIA average residential electricity price", url: FUEL_PRICES.electricUrl, detail: FUEL_PRICES.electricMonth },

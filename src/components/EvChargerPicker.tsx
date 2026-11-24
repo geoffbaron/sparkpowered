@@ -33,7 +33,6 @@ function track(name: string, data?: Record<string, string | number>) {
 }
 
 const money = (n: number) => n.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: n % 1 ? 2 : 0, minimumFractionDigits: n % 1 ? 2 : 0 });
-const shortDate = (iso: string) => new Date(`${iso}T12:00:00Z`).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
 const hrs = (h: number) => (h < 1 ? "under an hour" : `about ${Math.round(h * 2) / 2} hour${Math.round(h * 2) / 2 === 1 ? "" : "s"}`);
 
 const PLUGS: { v: PlugAnswer; label: string }[] = [
@@ -276,15 +275,14 @@ export default function EvChargerPicker({ data }: { data: PickerData }) {
                 {res.products.map(({ charger: c, why, setTo }, i) => (
                   <li key={c.id} className={`rounded-2xl border p-4 ${i === 0 ? "border-amber-300 bg-gradient-to-br from-amber-50 to-orange-50" : "border-black/10"}`}>
                     <p className="font-extrabold text-ink">
-                      {brandName(c)} {c.name}{" "}
-                      <span className="text-sm font-semibold text-muted whitespace-nowrap">{money(c.priceUsd)} on {brandName(c)}&apos;s site, {shortDate(c.retrieved)}</span>
+                      {brandName(c)} {c.name}
                     </p>
                     <p className="text-sm text-stone-700 mt-1">{why}</p>
                     {setTo && <p className="text-sm text-stone-700 mt-1">Have the electrician set it to {setTo} amps.</p>}
                     <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-1">
                       <span onClick={() => track("ev_picker_product_click", { product: c.id })}>
                         <PartnerLink brand={c.brand} productId={c.id} productUrl={c.url} className={i === 0 ? "btn btn-primary btn-sm" : "btn btn-outline btn-sm"}>
-                          Check price at {brandName(c)}
+                          See today&apos;s price at {brandName(c)}
                         </PartnerLink>
                       </span>
                       <span className="text-xs text-muted" data-testid="product-disclosure">We earn a commission if you buy through this link.</span>

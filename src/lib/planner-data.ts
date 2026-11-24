@@ -13,7 +13,6 @@ export const PLANNER_KIT = PLUGIN_KITS.find((k) => k.id === "pluggedsolar-800w-k
 
 export const PLANNER_COSTS: Costs = {
   rooftopPerWatt: ROOFTOP_SOLAR_COST.perWatt,
-  pluginKitUsd: PLANNER_KIT.priceUsd,
   pluginKitW: PLANNER_KIT.panelW,
 };
 

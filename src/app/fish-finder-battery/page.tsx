@@ -7,11 +7,10 @@ import { BATTERY_FACTS } from "@/data/batteries";
 import { BOATING_CHECKED, BOAT_BATTERIES } from "@/data/boating";
 import { formatDate } from "@/lib/energy";
 import { USABLE_FRACTION } from "@/lib/everyday";
-import { money, productById } from "@/lib/products";
+import { productById } from "@/lib/products";
 import { ELECTRONICS, electronicsById, electronicsHours, hoursLabel } from "@/lib/boating";
 import { JsonLd, pageMetadata } from "@/lib/seo";
 import { batteryProduct, productList } from "@/lib/structured-data";
-import { RedodoDeal } from "@/components/RedodoDeal";
 
 const PATH = "/fish-finder-battery";
 const TITLE = "Best Fish Finder Battery (2026): What Size, and How Long It Lasts";
@@ -22,7 +21,6 @@ export const metadata: Metadata = pageMetadata({ title: TITLE, description: DESC
 
 const DAKOTA_10AH = {
   name: "Dakota Lithium 12V 10Ah Mini",
-  priceUsd: 85,
   energyWh: 128,
   url: "https://dakotalithium.com/product/12v-10ah-mini-deep-cycle-lifepo4-battery/",
 };
@@ -40,9 +38,9 @@ export default function FishFinderBatteryPage() {
   const garminProAmps = electronicsById("echomap-7").amps + livescope.amps;
 
   const batteries = [
-    { label: DAKOTA_10AH.name, wh: DAKOTA_10AH.energyWh, price: DAKOTA_10AH.priceUsd },
-    { label: `Redodo ${ff.short}`, wh: ff.energyWh, price: ff.priceUsd },
-    { label: `Redodo ${k50.short}`, wh: k50.energyWh, price: k50.priceUsd },
+    { label: DAKOTA_10AH.name, wh: DAKOTA_10AH.energyWh },
+    { label: `Redodo ${ff.short}`, wh: ff.energyWh },
+    { label: `Redodo ${k50.short}`, wh: k50.energyWh },
   ];
 
   const faqs = [
@@ -81,7 +79,7 @@ export default function FishFinderBatteryPage() {
         title={<>Screens on from first light <span className="text-amber-300">to the last cast.</span></>}
         sub={
           <>
-            A {money(ff.priceUsd)} lithium runs a 10-inch fish finder and live sonar for {hoursLabel(electronicsHours(ff.energyWh, proAmps))}, at{" "}
+            A 16 V lithium runs a 10-inch fish finder and live sonar for {hoursLabel(electronicsHours(ff.energyWh, proAmps))}, at{" "}
             {ff.weightLb} lb. Here is how long your electronics last on each size, from the makers&apos; own power figures.
           </>
         }
@@ -96,23 +94,21 @@ export default function FishFinderBatteryPage() {
         <QuickAnswer>
           <p>
             <strong>Live sonar or big screens:</strong>{" "}
-            <PartnerLink brand="redodo" productId={ff.id} productUrl={ff.url}>Redodo 16V 30Ah Fish Finder Battery</PartnerLink> ({money(ff.priceUsd)}).
+            <PartnerLink brand="redodo" productId={ff.id} productUrl={ff.url}>Redodo 16V 30Ah Fish Finder Battery</PartnerLink>.
             Made for MEGA Live, LiveScope and ActiveTarget setups, with a Bluetooth gauge and cold-charging protection.
           </p>
           <p>
             <strong>One basic fish finder on a kayak:</strong> a 10Ah lithium is plenty, such as the{" "}
-            <PlainLink href={DAKOTA_10AH.url}>{DAKOTA_10AH.name}</PlainLink> ({money(DAKOTA_10AH.priceUsd)}).{" "}
+            <PlainLink href={DAKOTA_10AH.url}>{DAKOTA_10AH.name}</PlainLink>.{" "}
             <strong>Fish finder plus trolling motor on one battery:</strong>{" "}
-            <PartnerLink brand="redodo" productId={k50.id} productUrl={k50.url}>Redodo 12V 50Ah</PartnerLink> ({money(k50.priceUsd)}).
+            <PartnerLink brand="redodo" productId={k50.id} productUrl={k50.url}>Redodo 12V 50Ah</PartnerLink>.
           </p>
         </QuickAnswer>
-
-        <RedodoDeal className="mt-4" product={{ name: "Redodo 16V 30Ah Fish Finder Battery", url: ff.url }} />
 
         <section aria-label="Fish finder battery at a glance" className="grid sm:grid-cols-3 gap-3 mt-8">
           <BigStat tone="leaf" value={hoursLabel(electronicsHours(DAKOTA_10AH.energyWh, striker.amps)).replace("about ", "")} label="A 1 A fish finder on 10Ah" note="Garmin STRIKER rated current" />
           <BigStat value={hoursLabel(electronicsHours(ff.energyWh, proAmps)).replace("about ", "")} label="HELIX 10 + MEGA Live" note={`On Redodo's ${ff.short}`} />
-          <BigStat tone="orange" value={`${ff.weightLb} lb`} label="For a full live-sonar day" note={`${money(ff.priceUsd)} when we checked`} />
+          <BigStat tone="orange" value={`${ff.weightLb} lb`} label="For a full live-sonar day" note={`Redodo ${ff.short}`} />
         </section>
 
         <Section title="How long your electronics run" id="hours">
@@ -123,7 +119,7 @@ export default function FishFinderBatteryPage() {
                 <tr>
                   <th scope="col" className="p-3 font-semibold">Unit (maker&apos;s draw)</th>
                   {batteries.map((b) => (
-                    <th key={b.label} scope="col" className="p-3 font-semibold">{b.label} ({money(b.price)})</th>
+                    <th key={b.label} scope="col" className="p-3 font-semibold">{b.label}</th>
                   ))}
                 </tr>
               </thead>
@@ -154,7 +150,7 @@ export default function FishFinderBatteryPage() {
           <p className="text-xs text-muted mt-2 max-w-3xl">
             Draws from each maker&apos;s manual or spec sheet (Lowrance from its spec sheet as posted by a dealer); LiveScope Plus is its 21 W typical
             figure divided by 12 V. Hours are the battery&apos;s rated watt-hours divided by watts at 12 V. Screen brightness and transducer settings
-            change the draw. Prices checked {formatDate(BOATING_CHECKED)}.
+            change the draw. Specs checked {formatDate(BOATING_CHECKED)}.
           </p>
         </Section>
 
@@ -166,7 +162,6 @@ export default function FishFinderBatteryPage() {
             icon="chart"
             why="A dedicated electronics battery at 16 V, which Redodo says gives a brighter screen, in a case small enough to tuck under a console. It keeps your sonar on even after a long day drains the trolling batteries."
             life={[`HELIX 10 + MEGA Live: ${hoursLabel(electronicsHours(ff.energyWh, proAmps))}`, `${ff.weightLb} lb`, "Bluetooth gauge", "Charging pauses below 32°F"]}
-            priceUsd={ff.priceUsd}
             brand="redodo"
             productId={ff.id}
             productUrl={ff.url}
@@ -178,7 +173,6 @@ export default function FishFinderBatteryPage() {
             icon="water"
             why={`Runs a trolling motor up to ${k50.maxThrustLb} lb thrust and a fish finder from one ${k50.weightLb} lb battery. A HELIX 7 alone would run for ${hoursLabel(electronicsHours(k50.energyWh, helix7.amps))} on it.`}
             life={[`${k50.energyWh} Wh`, `${k50.weightLb} lb`]}
-            priceUsd={k50.priceUsd}
             brand="redodo"
             productId={k50.id}
             productUrl={k50.url}
@@ -192,7 +186,6 @@ export default function FishFinderBatteryPage() {
             icon="heat"
             why={`A ${elite30.capacityWh} Wh power station with a 12 V car outlet for the fish finder, plus USB and wall-style outlets for phones, lights and a camera. It sits on the ice, not on your sled seat.`}
             life={[`1 A fish finder: ${hoursLabel(electronicsHours(elite30.capacityWh * USABLE_FRACTION, 1))}`, `${elite30.capacityWh} Wh`]}
-            priceUsd={elite30.priceUsd}
             brand="bluetti"
             productId={elite30.id}
             productUrl={elite30.url}
@@ -217,8 +210,7 @@ export default function FishFinderBatteryPage() {
 
         <Faq items={faqs} path={PATH} />
         <Disclaimer>
-          Runtimes are estimates from published current draw. Prices and specs are copied from makers&apos; US websites on the dates shown and
-          change often. Redodo and Bluetti links are sponsored; Dakota Lithium and the fish finder makers are plain links.
+          Runtimes are estimates from published current draw. Specs are copied from makers&apos; US websites on the dates shown. Redodo and Bluetti links are sponsored; Dakota Lithium and the fish finder makers are plain links.
         </Disclaimer>
         <Sources
           items={[

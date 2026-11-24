@@ -45,8 +45,8 @@ export const PARTS: Record<string, Part> = {
   cords: {
     id: "cords",
     label: "One to three 12-gauge outdoor-rated extension cords, 25 to 50 ft",
-    // Iron Forge Cable: 25 ft 12-gauge 2-pack $76.99 ($38.50 each); 50 ft 12/3 locking-end cord $65.99.
-    usd: [38.5, 3 * 65.99],
+    // A generic range for the item type (one short cord to three long ones), not a product price.
+    usd: [40, 200],
     source: IRON_FORGE_CORDS,
     note: "One cord per appliance, each plugged straight into the battery. No power strips or daisy-chained cords.",
   },
@@ -70,9 +70,9 @@ export interface ModelHookup {
   /** The model's own outlet of 30 A or more, which an inlet box or transfer switch cord plugs into. */
   outlet: string;
   /** The maker's own panel kit for this model, if it sells one. */
-  smartPanel?: { name: string; usd: number; url: string; retrieved: string; note: string };
+  smartPanel?: { name: string; url: string; retrieved: string; note: string };
   /** The maker's way to get 240 V from two of these units, if the model is 120 V only. */
-  pair240?: { name: string; usd: number; url: string; retrieved: string; outputW: number; outlet: string };
+  pair240?: { name: string; url: string; retrieved: string; outputW: number; outlet: string };
 }
 
 /**
@@ -85,7 +85,6 @@ export const MODEL_HOOKUPS: ModelHookup[] = [
     outlet: "50 A (NEMA 14-50R), 120/240 V",
     smartPanel: {
       name: "Bluetti Apex 300 Home Integration Kit",
-      usd: 699,
       url: "https://www.bluettipower.com/products/apex-300-home-integration-kit",
       retrieved: "2026-11-14",
       note: "Bluetti lists it as compatible with the Apex 300, to keep vital home circuits powered in an outage.",
@@ -96,7 +95,6 @@ export const MODEL_HOOKUPS: ModelHookup[] = [
     outlet: "120/240 V output",
     smartPanel: {
       name: "Anker SOLIX Home Power Panel kit",
-      usd: 1799.99,
       url: "https://www.ankersolix.com/products/smart-home-power-kit",
       retrieved: "2026-11-14",
       note: "Anker says it works with the F3800 Plus, needs a licensed electrician, and needs a 100 A breaker sold separately.",
@@ -107,7 +105,6 @@ export const MODEL_HOOKUPS: ModelHookup[] = [
     outlet: "TT-30 (30 A, 120 V)",
     pair240: {
       name: "Anker SOLIX Double Voltage Hub",
-      usd: 289.99,
       url: "https://www.ankersolix.com/products/double-voltage-hub",
       retrieved: "2026-11-14",
       outputW: 7200,
@@ -119,7 +116,6 @@ export const MODEL_HOOKUPS: ModelHookup[] = [
     outlet: "TT-30 (30 A, 120 V)",
     pair240: {
       name: "Growatt Double Voltage Power Hub",
-      usd: 139,
       url: "https://growattportable.com/products/growatt-double-voltage-power-hub",
       retrieved: "2026-11-14",
       outputW: 7200,
@@ -133,9 +129,7 @@ export const modelHookup = (id: string) => MODEL_HOOKUPS.find((m) => m.productId
 
 // ---------------------------------------------------------------------------
 // Maker parts and installed-cost ranges for the /home-backup guide pages.
-// Maker prices: `listPriceUsd` is the shelf price before any timed code, `priceUsd`
-// the price the store showed after its auto-applied code that day. Pages show the
-// shelf price as the rough cost, because the codes end and we do not track their end dates.
+// No maker prices: pages link to the maker's page for today's price.
 // ---------------------------------------------------------------------------
 
 export interface HookupPart {
@@ -143,10 +137,6 @@ export interface HookupPart {
   name: string;
   /** Maker's product page (no tracking; PartnerLink adds it). */
   url: string;
-  /** Regular price on the maker's US store. */
-  listPriceUsd: number;
-  /** Price shown after the store's own auto-applied code on `retrieved`, if lower. */
-  priceUsd?: number;
   /** YYYY-MM-DD read on the maker's US store. */
   retrieved: string;
   inStock: boolean;
@@ -174,8 +164,6 @@ export const HOOKUP_PARTS = {
     id: "anker-mts-10c-30a",
     name: "Anker SOLIX 10-Circuit Manual Transfer Switch (120/240 V, 30 A)",
     url: "https://www.ankersolix.com/products/home-backup-kit-for-f3000-2",
-    listPriceUsd: 789.99,
-    priceUsd: 549.99,
     retrieved: NOV14,
     inStock: true,
     note: "Reliance Pro/Tran 2 switch with a 30 A cable; Anker's option list labels it for one F3800 Plus or two F3000s.",
@@ -184,8 +172,6 @@ export const HOOKUP_PARTS = {
     id: "anker-mts-10c-50a",
     name: "Anker SOLIX 10-Circuit Manual Transfer Switch (120/240 V, 50 A)",
     url: "https://www.ankersolix.com/products/home-backup-kit-for-f3800-10c",
-    listPriceUsd: 859.99,
-    priceUsd: 599.99,
     retrieved: NOV14,
     inStock: true,
     note: "For an F3800 or two linked F3800 Plus units; Anker's page says it is not suitable for a single F3800 Plus.",
@@ -194,8 +180,6 @@ export const HOOKUP_PARTS = {
     id: "anker-home-power-panel-kit",
     name: "Anker SOLIX Smart Home Power Kit (Home Power Panel, subpanel, ground bar)",
     url: "https://www.ankersolix.com/products/smart-home-power-kit",
-    listPriceUsd: 1799.99,
-    priceUsd: 1199.99,
     retrieved: NOV14,
     inStock: true,
     note: "Licensed electrician required; a standard 100 A breaker is sold separately.",
@@ -204,7 +188,6 @@ export const HOOKUP_PARTS = {
     id: "anker-home-power-panel-install",
     name: "Anker SOLIX Home Power Panel Installation Service (without permit)",
     url: "https://www.ankersolix.com/products/smart-home-power-kit",
-    listPriceUsd: 2000,
     retrieved: NOV14,
     inStock: true,
     note: "Anker's own add-on on the kit page; the permit is not included.",
@@ -213,8 +196,6 @@ export const HOOKUP_PARTS = {
     id: "anker-f3800-plus-smart-home-power-kit",
     name: "Anker SOLIX F3800 Plus + Smart Home Power Kit",
     url: "https://www.ankersolix.com/products/f3800-plus-smart-home-power-kit",
-    listPriceUsd: 4799.99,
-    priceUsd: 3199.99,
     retrieved: NOV14,
     inStock: true,
     note: "The F3800 Plus with the Home Power Panel kit; in stock (dispatch within 7 days) while the F3800 Plus alone was sold out.",
@@ -223,7 +204,6 @@ export const HOOKUP_PARTS = {
     id: "bluetti-at1",
     name: "Bluetti AT1 Smart Distribution Panel",
     url: "https://www.bluettipower.com/products/at1",
-    listPriceUsd: 1299,
     retrieved: NOV14,
     inStock: true,
     note: "Automatic transfer panel; Bluetti lists it as compatible with Apex 300 systems, up to three units through its Hub A1.",
@@ -232,7 +212,6 @@ export const HOOKUP_PARTS = {
     id: "bluetti-apex-300-home-integration-kit",
     name: "Bluetti Apex 300 Home Integration Kit",
     url: "https://www.bluettipower.com/products/apex-300-home-integration-kit",
-    listPriceUsd: 699,
     retrieved: NOV14,
     inStock: true,
     note: "Bluetti's listing says only that it ties an Apex 300 into home circuits; the linked guide is a scanned image with no text we could check.",
@@ -241,7 +220,6 @@ export const HOOKUP_PARTS = {
     id: "growatt-helios-3600-x2-hub",
     name: "Growatt HELIOS 3600 x 2 + Double Voltage Hub",
     url: "https://growattportable.com/products/growatt-helios-3600-portable-power-station",
-    listPriceUsd: 3337,
     retrieved: NOV14,
     inStock: true,
     note: "Growatt's own two-unit bundle option on the HELIOS 3600 page, the way to 240 V.",
@@ -250,7 +228,6 @@ export const HOOKUP_PARTS = {
     id: "growatt-double-voltage-hub",
     name: "Growatt Double Voltage Power Hub",
     url: "https://growattportable.com/products/growatt-double-voltage-power-hub",
-    listPriceUsd: 139,
     retrieved: NOV14,
     inStock: true,
     note: "Joins two HELIOS 3600 units for 7,200 W at 240 V; one NEMA 6-20 and two NEMA L14-30 outlets.",

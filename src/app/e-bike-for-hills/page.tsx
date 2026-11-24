@@ -5,15 +5,14 @@ import { Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/comp
 import { QuickAnswer } from "@/components/guide-ui";
 import { EbikeAlternativeNote, EbikeTable, ebikeName, ebikeSources } from "@/components/ebikes";
 import { HubHero, OurPick, PhotoCredit } from "@/components/ui";
-import { EBIKES_CHECKED, EBIKE_ALTERNATIVES, ebikeById, ebikeSaleNote } from "@/data/ebikes";
+import { EBIKES_CHECKED, EBIKE_ALTERNATIVES, ebikeById } from "@/data/ebikes";
 import { formatDate } from "@/lib/energy";
-import { money } from "@/lib/products";
 import { pageMetadata } from "@/lib/seo";
 
 const PATH = "/e-bike-for-hills";
 const TITLE = "Best E-Bike for Hills (2026): Torque, Mid-Drives and Torque Sensors";
 const DESCRIPTION =
-  "What makes an e-bike good on steep hills: torque in Nm, mid-drive vs hub motors and torque sensors, with stated specs and today's prices from $1,199.";
+  "What makes an e-bike good on steep hills: torque in Nm, mid-drive vs hub motors and torque sensors, with stated specs and links to each maker's page.";
 
 export const metadata: Metadata = pageMetadata({ title: TITLE, description: DESCRIPTION, path: PATH, type: "article" });
 
@@ -31,7 +30,7 @@ export default function HillsEbikePage() {
     e26,
     ebikeById("himiway-d5-2-0-st-ebike"),
     a7pro,
-  ].sort((a, b) => (b.torqueNm ?? 0) - (a.torqueNm ?? 0) || a.price - b.price);
+  ].sort((a, b) => (b.torqueNm ?? 0) - (a.torqueNm ?? 0) || (a.weightLb ?? 0) - (b.weightLb ?? 0));
 
   const faqs = [
     {
@@ -40,7 +39,7 @@ export default function HillsEbikePage() {
     },
     {
       q: "Is a mid-drive or hub motor better for hills?",
-      a: "A mid-drive motor sits at the pedals and drives through the bike's gears, so on a long climb you can shift down and let the motor work in its efficient range, the way you would on a regular bike. A hub motor sits in the wheel and is simpler and usually cheaper. Both climb; mid-drives tend to suit long, steep grades.",
+      a: "A mid-drive motor sits at the pedals and drives through the bike's gears, so on a long climb you can shift down and let the motor work in its efficient range, the way you would on a regular bike. A hub motor sits in the wheel and is simpler and usually costs less. Both climb; mid-drives tend to suit long, steep grades.",
     },
     {
       q: "What is a torque sensor and does it help on hills?",
@@ -73,11 +72,11 @@ export default function HillsEbikePage() {
 
         <QuickAnswer>
           <p>
-            <strong>Hilly town on a budget:</strong> the <PartnerLink brand="kingbull" productUrl={jumper.url}>{ebikeName(jumper)}</PartnerLink> ({money(jumper.price)}) pairs a{" "}
+            <strong>Hilly town:</strong> the <PartnerLink brand="kingbull" productUrl={jumper.url}>{ebikeName(jumper)}</PartnerLink> pairs a{" "}
             {jumper.torqueNm} Nm hub motor ({jumper.peakW} W peak) with a torque sensor and full suspension.
           </p>
           <p>
-            <strong>Long, steep climbs:</strong> the <PartnerLink brand="himiway" productUrl={a7pro.url}>{ebikeName(a7pro)}</PartnerLink> ({money(a7pro.price)}{ebikeSaleNote(a7pro) && `, ${ebikeSaleNote(a7pro)}`}) has a
+            <strong>Long, steep climbs:</strong> the <PartnerLink brand="himiway" productUrl={a7pro.url}>{ebikeName(a7pro)}</PartnerLink> has a
             mid-drive rated {a7pro.torqueNm} Nm with a torque sensor, the most torque of any single-motor bike here.
           </p>
         </QuickAnswer>
@@ -85,12 +84,11 @@ export default function HillsEbikePage() {
         <section id="picks" className="mt-12 grid gap-4 scroll-mt-24" aria-labelledby="picks-heading">
           <h2 id="picks-heading" className="text-2xl font-extrabold text-ink">Bikes that climb</h2>
           <OurPick
-            label="Best value for hilly towns"
+            label="Best for hilly towns"
             name={ebikeName(jumper)}
             icon="bike"
-            why={`${jumper.torqueNm} Nm and ${jumper.peakW} W peak from a Bafang hub motor, a torque sensor and full suspension on compact 20-inch wheels, for ${money(jumper.price)}. Kingbull rates it for ${jumper.payloadLb} lb.`}
+            why={`${jumper.torqueNm} Nm and ${jumper.peakW} W peak from a Bafang hub motor, a torque sensor and full suspension on compact 20-inch wheels. Kingbull rates it for ${jumper.payloadLb} lb.`}
             life={[`${jumper.torqueNm} Nm`, "Torque sensor", `${jumper.batteryWh} Wh battery`, "Full suspension"]}
-            priceUsd={jumper.price}
             brand="kingbull"
             productUrl={jumper.url}
             category="home"
@@ -100,8 +98,7 @@ export default function HillsEbikePage() {
             name={ebikeName(a7pro)}
             icon="bike"
             why={`A ${a7pro.motorType} rated ${a7pro.torqueNm} Nm, driving through the gears, with a torque sensor and full suspension. Himiway rates it for ${a7pro.payloadLb} lb of rider and cargo, lower than the fat-tire bikes, and its spec table doesn't list a throttle.`}
-            life={[`${a7pro.torqueNm} Nm mid-drive`, "Torque sensor", `${a7pro.batteryWh} Wh battery`, `${a7pro.weightLb} lb bike`, ...(ebikeSaleNote(a7pro) ? [ebikeSaleNote(a7pro)] : [])]}
-            priceUsd={a7pro.price}
+            life={[`${a7pro.torqueNm} Nm mid-drive`, "Torque sensor", `${a7pro.batteryWh} Wh battery`, `${a7pro.weightLb} lb bike`]}
             brand="himiway"
             productUrl={a7pro.url}
             category="home"
@@ -112,7 +109,6 @@ export default function HillsEbikePage() {
             icon="bolt"
             why={`Two hub motors rated ${e26.motorW?.toLocaleString("en-US")} W together (${e26.peakW?.toLocaleString("en-US")} W peak) and ${e26.torqueNm} Nm combined. That rating is above the 750 W in the federal e-bike definition, so check your state's rules before riding it on roads and paths: above 750 W, or with a throttle past 20 mph, many states treat it as a moped or motor vehicle that needs registration, a license and insurance, and expect the shortest range here in dual-motor mode.`}
             life={[`${e26.torqueNm} Nm combined`, `${e26.batteryWh} Wh battery`, "Full suspension", `${e26.weightLb} lb bike`]}
-            priceUsd={e26.price}
             brand="engwe"
             productUrl={e26.url}
             category="home"
@@ -151,15 +147,14 @@ export default function HillsEbikePage() {
         <Faq items={faqs} path={PATH} />
         <Disclaimer>
           We compare makers&apos; stated specs; we have not ridden these bikes. Look for UL 2849 certification of the whole electrical system, charge only with the maker&apos;s charger while you&apos;re awake and
-          nearby, and wear a helmet. Prices are from the makers&apos; US websites on {formatDate(EBIKES_CHECKED)},
-          several during sales, and change often. Kingbull, Himiway and ENGWE links may earn us a commission; {alt.brand} is a plain link.
+          nearby, and wear a helmet. Specs are from the makers&apos; US websites on {formatDate(EBIKES_CHECKED)}. We don&apos;t list prices; each link opens the maker&apos;s page with today&apos;s price. Kingbull, Himiway and ENGWE links may earn us a commission; {alt.brand} is a plain link.
         </Disclaimer>
         <Sources items={ebikeSources(bikes, [alt])} />
         <RelatedLinks
           links={[
             { href: "/e-bikes", label: "E-bike guide", desc: "How to choose, cost per mile, rebates" },
             { href: "/e-bike-for-heavy-riders", label: "E-bike for heavy riders", desc: "400 to 450 lb rated bikes" },
-            { href: "/commuter-e-bike-under-1500", label: "Commuter e-bike under $1,500", desc: "Ready for daily rides" },
+            { href: "/commuter-e-bike-under-1500", label: "Commuter e-bikes", desc: "Ready for daily rides" },
             { href: "/folding-e-bike", label: "Folding e-bike", desc: "For apartments and RVs" },
           ]}
         />

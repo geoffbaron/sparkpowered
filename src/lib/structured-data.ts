@@ -9,10 +9,8 @@
  * - `review` is a Review by Spark Powered with the page's content date. We give
  *   no star scores on the site, so there is no reviewRating; Google allows that
  *   when the review has an author and a date.
- * - `offers` is an AggregateOffer (the price we read on the seller's page, and
- *   the seller's own link), which Google supports for product snippets and
- *   does not treat as us selling the item. availability is InStock because we
- *   only show a price we could read live on that page.
+ * - No `offers` and no price: we show no prices on the site (they change too
+ *   often), so the markup carries none either. tests/no-prices.test.ts guards it.
  * - `image` is our own page image: we have no licence to reuse makers' photos.
  * - No aggregateRating: we have no user ratings to report.
  */
@@ -30,10 +28,6 @@ export interface ReviewedProductInput {
   pagePath: string;
   /** The maker's or seller's product page. */
   url: string;
-  /** Price we read on the seller's page, USD. Omit when the item is sold by quote. */
-  priceUsd?: number | null;
-  /** Where that price was read, if different from `url`. */
-  priceUrl?: string;
   /** Real identifiers only: never invent a sku, mpn or gtin. */
   model?: string;
   sku?: string;
@@ -70,19 +64,6 @@ export function reviewedProduct(p: ReviewedProductInput): Record<string, unknown
       author: { "@type": "Organization", name: SITE_NAME, url: url("/") },
       publisher: { "@type": "Organization", name: SITE_NAME, url: url("/") },
     },
-    ...(p.priceUsd != null && p.priceUsd > 0
-      ? {
-          offers: {
-            "@type": "AggregateOffer",
-            lowPrice: p.priceUsd,
-            highPrice: p.priceUsd,
-            offerCount: 1,
-            priceCurrency: "USD",
-            availability: IN_STOCK,
-            url: p.priceUrl ?? p.url,
-          },
-        }
-      : {}),
   };
 }
 
@@ -100,7 +81,7 @@ export function productList(path: string, name: string, items: Record<string, un
 
 /** A battery from src/data/boating.ts or src/data/batteries.ts, as a reviewed product. */
 export function batteryProduct(
-  b: { name: string; maker: string; url: string; volts: number; ampHours: number; energyWh: number; priceUsd: number },
+  b: { name: string; maker: string; url: string; volts: number; ampHours: number; energyWh: number },
   pagePath: string,
 ) {
   return reviewedProduct({
@@ -109,6 +90,5 @@ export function batteryProduct(
     url: b.url,
     pagePath,
     description: `${b.volts}V ${b.ampHours}Ah lithium battery from ${b.maker}, rated at ${b.energyWh.toLocaleString("en-US")} Wh.`,
-    priceUsd: b.priceUsd,
   });
 }

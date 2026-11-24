@@ -7,7 +7,7 @@ import { PriceCell, PriceFootnote, productJson } from "@/components/products";
 import { COMPARISONS, comparisonBySlug } from "@/data/comparisons";
 import type { Product } from "@/data/products";
 import { formatDate } from "@/lib/energy";
-import { fullName, kwh, money, perKwh, productById, watts } from "@/lib/products";
+import { fullName, kwh, productById, watts } from "@/lib/products";
 import { JsonLd, pageMetadata, url } from "@/lib/seo";
 
 export function generateStaticParams() {
@@ -39,8 +39,7 @@ const ROWS: Row[] = [
   { label: "UPS switchover", get: (p) => p.upsMs, better: "low" },
   { label: "Voltage", get: (p) => p.volts },
   { label: "Warranty (years)", get: (p) => p.warrantyYears, better: "high" },
-  { label: "Price on maker's site*", get: (p) => p.priceUsd, better: "low" },
-  { label: "Price per kWh", get: (p) => (perKwh(p) ? Math.round(perKwh(p)!) : null), better: "low" },
+  { label: "Today's price", get: () => null },
 ];
 
 function show(label: string, v: string | number | null): string {
@@ -48,7 +47,6 @@ function show(label: string, v: string | number | null): string {
   if (typeof v === "string") return v;
   if (label === "Capacity" || label === "Expands to") return kwh(v);
   if (label.includes("output") || label.includes("Surge") || label.includes("solar")) return watts(v);
-  if (label.startsWith("Price")) return money(v);
   if (label === "UPS switchover") return `${v} ms`;
   return v.toLocaleString("en-US");
 }
@@ -81,10 +79,10 @@ function PairTable({ a, b, label }: { a: Product; b: Product; label?: string }) 
               <tr key={r.label} className="border-t border-black/6">
                 <th scope="row" className="p-3 font-medium text-stone-700">{r.label}</th>
                 <td className={`p-3 tabular-nums ${win === "a" ? "font-bold text-green-800" : ""}`}>
-                  {r.label.startsWith("Price on") ? <PriceCell p={a} /> : show(r.label, va)}
+                  {r.label === "Today's price" ? <PriceCell p={a} /> : show(r.label, va)}
                 </td>
                 <td className={`p-3 tabular-nums ${win === "b" ? "font-bold text-green-800" : ""}`}>
-                  {r.label.startsWith("Price on") ? <PriceCell p={b} /> : show(r.label, vb)}
+                  {r.label === "Today's price" ? <PriceCell p={b} /> : show(r.label, vb)}
                 </td>
               </tr>
             );
@@ -134,7 +132,7 @@ export default async function ComparisonPage({ params }: Props) {
       <Breadcrumbs items={[{ name: "Comparisons", path: "/compare" }, { name: c.title, path }]} />
       <PageIntro eyebrow="Head to head" title={c.title} lede={c.intro} />
       <p className="text-sm text-muted -mt-6 mb-6">
-        Specs and prices from the manufacturers&apos; US sites, checked <time dateTime={c.updated}>{formatDate(c.updated)}</time>.
+        Specs from the manufacturers&apos; US sites, checked <time dateTime={c.updated}>{formatDate(c.updated)}</time>.
       </p>
       <AffiliateDisclosure className="mb-8" />
 
@@ -189,8 +187,8 @@ export default async function ComparisonPage({ params }: Props) {
       </Section>
 
       <Disclaimer>
-        Specifications and prices are copied from manufacturer websites on the date shown and change often. Confirm
-        them with the seller before buying.
+        Specifications are copied from manufacturer websites on the date shown. Confirm
+        them with the seller before buying. We don&apos;t list prices; the links go to each maker&apos;s page for today&apos;s price.
       </Disclaimer>
       <Sources
         items={all
@@ -201,7 +199,7 @@ export default async function ComparisonPage({ params }: Props) {
         links={[
           { href: "/best-portable-power-stations", label: "Best portable power stations", desc: "Every model we track, in one table" },
           { href: "/battery-calculator", label: "Battery sizer", desc: "Work out how many kWh you actually need" },
-          ...others.slice(0, 4).map((o) => ({ href: `/compare/${o.slug}`, label: o.title, desc: o.pairs.length > 1 ? "Brand line-ups compared size for size" : "Specs, prices and a verdict" })),
+          ...others.slice(0, 4).map((o) => ({ href: `/compare/${o.slug}`, label: o.title, desc: o.pairs.length > 1 ? "Brand line-ups compared size for size" : "Specs and a verdict" })),
         ]}
       />
     </article>

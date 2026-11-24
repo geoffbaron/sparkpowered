@@ -142,7 +142,7 @@ export function kitPicks(home: HomePreset, loads: KitLoad[]): LoadPick[] {
   return picks;
 }
 
-/** Brands with a panel we price; the kit only picks their stations, so every power line has a dated price. */
+/** Brands with an in-stock panel we list; the kit only picks their stations, so every power line has a matching panel. */
 const panelFor = (brand: string): SolarPanel | undefined => SOLAR_PANELS.find((p) => p.brand === brand && !p.soldOut);
 
 /** Stations the kit may pick: in stock, priced, a tracked brand, with a priced panel from the same maker. */
@@ -165,8 +165,7 @@ export function kitSystems(): StationOption[] {
     capacityWh: s.capacityWh,
     addOnWh: s.addOn.capacityWh,
     addOnMax: s.addOn.maxUnits,
-    addOnUsd: s.addOn.soldOut ? null : s.addOn.priceUsd,
-    priceUsd: s.priceUsd,
+    addOnInStock: !s.addOn.soldOut,
     solarInputW: s.solarInputW,
     acOutputW: s.acOutputW,
     surgeW: s.surgeW,
@@ -209,7 +208,6 @@ export interface KitPower {
   /** True when the station's solar input is below the December panel need. */
   inputCapped: boolean;
   solarWhDay: number;
-  priceUsd: number;
 }
 
 export interface KitPackage {
@@ -254,15 +252,13 @@ function pickPower(options: StationOption[], needWh: number, runningW: number): 
   let best: StationMatch | null = null;
   for (const o of options) {
     if (runningW > 0 && o.acOutputW < runningW) continue;
-    const addOns = o.addOnWh && o.addOnUsd != null ? o.addOnMax : 0;
+    const addOns = o.addOnWh && o.addOnInStock ? o.addOnMax : 0;
     const totalWh = o.capacityWh + addOns * (o.addOnWh ?? 0);
-    const totalUsd = o.priceUsd + addOns * (o.addOnUsd ?? 0);
-    if (!best || totalWh > best.totalWh || (totalWh === best.totalWh && totalUsd < best.totalUsd)) best = { option: o, addOns, totalWh, totalUsd };
+    if (!best || totalWh > best.totalWh || (totalWh === best.totalWh && addOns < best.addOns)) best = { option: o, addOns, totalWh };
   }
   return best ? { match: best, short: true } : null;
 }
 
-const r2 = (n: number) => Math.round(n * 100) / 100;
 
 /** One complete 90-day package. */
 export function buildKit(input: KitInput): KitPackage {
@@ -301,7 +297,6 @@ export function buildKit(input: KitInput): KitPackage {
       panelW,
       inputCapped: false,
       solarWhDay: solarWhPerDay(panelW, input.perKwDay),
-      priceUsd: r2(chosen.match.totalUsd),
     };
   } else if (chosen) {
     const o = chosen.match.option;
@@ -321,7 +316,6 @@ export function buildKit(input: KitInput): KitPackage {
       panelW,
       inputCapped: cap < size.panelW,
       solarWhDay: solarWhPerDay(panelW, input.perKwDay),
-      priceUsd: r2(chosen.match.totalUsd + panels * panel.priceUsd),
     };
   }
 

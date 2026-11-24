@@ -28,7 +28,7 @@ export const metadata: Metadata = pageMetadata({ title: TITLE, description: DESC
 export default function GoElectricPage() {
   const outage = productById("ecoflow-delta-3-max");
   const outageAlt = productById("bluetti-elite-200-v2");
-  // Lowest-priced charger we carry (J1772, with app scheduling), and the lowest-priced NACS one.
+  // Our J1772 charger pick (app scheduling), and our NACS pick.
   const charger = chargerById("eviqo-l2-j1772");
   const smartCharger = chargerById("lectron-nexus-nacs");
   const life = lifeSummary(outage.capacityWh);
@@ -60,7 +60,6 @@ export default function GoElectricPage() {
             brand: outage.brand,
             name: fullName(outage),
             url: outage.url,
-            priceUsd: outage.priceUsd!,
             life: `Keeps a fridge, Wi-Fi, lights and phones going for ${life.essentials}, or a fridge alone for ${life.fridge}.`,
           },
     outageAltPick: {
@@ -68,7 +67,6 @@ export default function GoElectricPage() {
             brand: outageAlt.brand,
             name: fullName(outageAlt),
             url: outageAlt.url,
-            priceUsd: outageAlt.priceUsd!,
             life: "",
           },
     pluginPick: {
@@ -76,7 +74,6 @@ export default function GoElectricPage() {
             brand: PLANNER_KIT.brand,
             name: `${AFFILIATES[PLANNER_KIT.brand].name} ${PLANNER_KIT.name}`,
             url: PLANNER_KIT.url,
-            priceUsd: PLANNER_KIT.priceUsd,
             life: "",
           },
     chargerPick: {
@@ -84,7 +81,6 @@ export default function GoElectricPage() {
             brand: charger.brand,
             name: `${brandName(charger)} ${charger.name}`,
             url: charger.url,
-            priceUsd: charger.priceUsd,
             life: "",
           },
     smartChargerPick: {
@@ -92,7 +88,6 @@ export default function GoElectricPage() {
             brand: smartCharger.brand,
             name: `${brandName(smartCharger)} ${smartCharger.name}`,
             url: smartCharger.url,
-            priceUsd: smartCharger.priceUsd,
             life: "",
           },
     solarQuotes: solarQuotesUrl(),
