@@ -594,20 +594,9 @@ export function typicalWinterState() {
 
 /** The off-grid and emergency prep pages, for each page's "Keep going" links (a page drops itself). */
 export const OFFGRID_LINKS = [
-  { href: "/off-grid-solar-calculator", label: "Off-grid solar calculator", desc: "Panels and battery for your state's darkest month" },
-  { href: "/off-grid-cabin-solar-kit", label: "Cabin solar kit size", desc: "Weekend, part-time or full-time, by state" },
-  { href: "/off-grid-kit", label: "90-day survival kit", desc: "Power, water, food and garden by home size" },
-  { href: "/how-to-go-off-grid", label: "How to go off grid", desc: "Power line cost vs solar and battery, step by step" },
   { href: "/power-outage-backup-calculator", label: "Power outage backup calculator", desc: "Fridge, CPAP, well pump and furnace through an outage" },
   { href: "/generator-runtime-calculator", label: "Generator runtime and fuel", desc: "How much fuel to store, and how to run it safely" },
-  { href: "/emergency-water-storage-calculator", label: "Emergency water storage", desc: "Gallons to store for your household" },
-  { href: "/how-to-purify-water", label: "How to purify water", desc: "Bleach drops, boiling and filters" },
-  { href: "/best-emergency-water-filters", label: "Emergency water filters", desc: "Filters and purifiers by certification" },
-  { href: "/emergency-kit-checklist", label: "Emergency kit checklist", desc: "What a 72-hour and 2-week kit needs" },
-  { href: "/emergency-food-calculator", label: "Emergency food calculator", desc: "Calories to store, not servings" },
-  { href: "/noaa-weather-radio", label: "NOAA weather radio", desc: "Find your station and county code" },
 ];
 
 export const relatedFor = (path: string) => OFFGRID_LINKS.filter((l) => l.href !== path);
 
-export const CAMPER_VOLTS_URL = "https://campervolts.com";

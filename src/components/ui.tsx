@@ -209,7 +209,10 @@ export function HubHero({
   crumbs,
   children,
   after,
+  byline,
 }: {
+  /** The author line (<Byline tone="dark" />), under the subhead. */
+  byline?: React.ReactNode;
   crumbs?: Crumb[];
   /** Full-width content under the buttons, such as the goal picker. */
   after?: React.ReactNode;
@@ -230,6 +233,7 @@ export function HubHero({
         <p className="text-amber-300 font-bold uppercase tracking-wide text-sm">{eyebrow}</p>
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold leading-[1.05] mt-2 max-w-3xl">{title}</h1>
         <div className="mt-4 text-lg sm:text-xl text-white/90 max-w-2xl leading-relaxed">{sub}</div>
+        {byline && <div className="mt-5">{byline}</div>}
         {children && <div className="mt-6 flex flex-wrap gap-3 items-center">{children}</div>}
         {after}
       </div>

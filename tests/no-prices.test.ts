@@ -35,12 +35,6 @@ test("no product data or code carries a price field", () => {
   assert.deepEqual(hits, []);
 });
 
-test("the e-bike data has no price or sale keys", () => {
-  const keys = (o: unknown): string[] =>
-    o && typeof o === "object" ? Object.entries(o).flatMap(([k, v]) => [k, ...keys(v)]) : [];
-  const bad = keys(JSON.parse(readFileSync("src/data/ebikes.json", "utf8"))).filter((k) => /price|sale/i.test(k));
-  assert.deepEqual([...new Set(bad)], []);
-});
 
 test("product markup has no offers or prices", () => {
   const trees = [
@@ -75,9 +69,3 @@ test("llms.txt quotes no product price", () => {
   assert.match(llms, /We do not list product prices/);
 });
 
-test("the deals page links to the makers' own sale pages and lists no prices", () => {
-  const page = readFileSync("src/app/black-friday-deals/page.tsx", "utf8");
-  assert.ok(!/\$\d|money\(|usd\(/.test(page));
-  for (const host of ["ankersolix.com", "bluettipower.com", "himiwaybike.com"]) assert.ok(page.includes(host), host);
-  assert.match(page, /PartnerLink/);
-});

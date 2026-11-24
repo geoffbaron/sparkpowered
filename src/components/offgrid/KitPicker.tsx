@@ -349,7 +349,6 @@ function TooBig({ need }: { need: KitNeed }) {
       </p>
       <p className="text-sm mt-2 flex flex-wrap gap-x-4 gap-y-1">
         <PartnerLink brand="shopsolar">Component systems at Shop Solar Kits</PartnerLink>
-        <Link href="/how-to-go-off-grid" className="underline underline-offset-2 text-spark-orange hover:text-spark-amber">How to go off grid, step by step</Link>
       </p>
     </div>
   );

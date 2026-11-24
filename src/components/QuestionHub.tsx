@@ -1,11 +1,11 @@
 import Link from "next/link";
+import Byline from "@/components/Byline";
 import { AffiliateDisclosure, PartnerLink } from "@/components/affiliate";
-import { Breadcrumbs, Callout, Disclaimer, RelatedLinks } from "@/components/content";
+import { Breadcrumbs, Callout, Disclaimer, RelatedLinks, Sources } from "@/components/content";
 import { QuickAnswer } from "@/components/guide-ui";
-import LocalStateLinks from "@/components/LocalStateLinks";
-import { TOPICS, topicIsStateBound, type Block, type Question, type Topic } from "@/data/questions";
+import { type Block, type Question, type Topic } from "@/data/questions";
 import { formatDate } from "@/lib/energy";
-import { JsonLd, QUESTIONS_UPDATED, QUESTIONS_UPDATED_AT, url } from "@/lib/seo";
+import { AUTHOR_REF, JsonLd, QUESTIONS_UPDATED_AT, pageUpdated, url } from "@/lib/seo";
 
 export function DetailBlock({ b }: { b: Block }) {
   if ("p" in b) return <p>{b.p}</p>;
@@ -145,7 +145,6 @@ export function QuestionAnswer({ q }: { q: Question }) {
 export default function QuestionHub({ topic }: { topic: Topic }) {
   const hasPicks = topic.questions.some((q) => q.picks?.length);
   // The Redodo code note goes with the first answer that picks a Redodo product.
-  const others = TOPICS.filter((t) => t.slug !== topic.slug);
   return (
     <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <JsonLd
@@ -157,6 +156,7 @@ export default function QuestionHub({ topic }: { topic: Topic }) {
           url: url(topic.path),
           dateModified: QUESTIONS_UPDATED_AT,
           inLanguage: "en-US",
+          author: AUTHOR_REF,
           publisher: { "@id": url("/#organization") },
           isPartOf: { "@id": url("/#website") },
           mainEntity: topic.questions.map((q) => ({
@@ -169,7 +169,6 @@ export default function QuestionHub({ topic }: { topic: Topic }) {
       />
       <Breadcrumbs
         items={[
-          { name: "Questions", path: "/questions" },
           { name: topic.nav, path: topic.path },
         ]}
       />
@@ -177,9 +176,9 @@ export default function QuestionHub({ topic }: { topic: Topic }) {
         <p className="text-sm font-semibold uppercase tracking-wide text-spark-amber mb-3">Questions answered</p>
         <h1 className="text-3xl sm:text-4xl font-extrabold leading-tight mb-4">{topic.h1}</h1>
         <p className="text-lg text-stone-600 leading-relaxed max-w-3xl">{topic.intro}</p>
-        <p className="text-sm text-muted mt-4">
-          Updated <time dateTime={QUESTIONS_UPDATED}>{formatDate(QUESTIONS_UPDATED)}</time>. Every answer lists the sources we read it from. If we
-          couldn&apos;t back an answer, we left the question out.
+        <Byline path={topic.path} className="mt-4" />
+        <p className="text-sm text-muted mt-2">
+          Every answer lists the sources it was read from, with dates. If I couldn&apos;t back an answer, I left the question out.
         </p>
       </header>
 
@@ -217,29 +216,13 @@ export default function QuestionHub({ topic }: { topic: Topic }) {
         </section>
       ))}
 
-      {topicIsStateBound(topic) && <LocalStateLinks />}
 
-      <section aria-labelledby="more-questions" className="mt-14">
-        <h2 id="more-questions" className="text-xl font-bold mb-3">
-          More questions answered
-        </h2>
-        <ul className="flex flex-wrap gap-x-5 gap-y-2 text-sm">
-          {others.map((t) => (
-            <li key={t.slug}>
-              <Link href={t.path} className="underline underline-offset-2 hover:text-spark-orange">
-                {t.nav}
-              </Link>
-            </li>
-          ))}
-          <li>
-            <Link href="/questions" className="underline underline-offset-2 hover:text-spark-orange">
-              All questions
-            </Link>
-          </li>
-        </ul>
-      </section>
       <RelatedLinks links={topic.related} />
       <Disclaimer />
+      <Sources
+        checked={pageUpdated(topic.path)}
+        items={[...new Map(topic.questions.flatMap((q) => q.sources).map((x) => [x.url, x])).values()].map((x) => ({ name: x.name, url: x.url }))}
+      />
     </article>
   );
 }

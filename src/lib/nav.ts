@@ -1,76 +1,37 @@
 // Site header navigation. Kept in a plain (non-client) module so both the
 // client Header and any server page can import it safely.
+// Nov 24 2026: the site covers one subject, home backup in an outage.
 
 export type NavLink = { href: string; label: string };
 /** `hub` is the section's own landing page, linked from the menu heading. */
 export type NavGroup = { id: string; label: string; hub: NavLink; links: NavLink[] };
 
-export const NAV_CTA: NavLink = { href: "/go-electric", label: "See what you'd save" };
+export const NAV_CTA: NavLink = { href: "/power-outage-backup-calculator", label: "Size your backup" };
 
 export const NAV_GROUPS: NavGroup[] = [
   {
-    id: "cars",
-    hub: { href: "/electric-vehicles", label: "All electric car & e-bike guides" },
-    label: "Cars & bikes",
+    id: "hookup",
+    hub: { href: "/home-backup", label: "The four ways to connect a battery" },
+    label: "Connect to the house",
     links: [
-      { href: "/calculator", label: "Electric cars" },
-      { href: "/ev-or-plug-in-hybrid", label: "EV or plug-in hybrid?" },
-      { href: "/best-home-ev-charger", label: "EV chargers" },
-      { href: "/ev-charger-picker", label: "Which charger do I need?" },
-      { href: "/ev-charging-cost", label: "EV charging cost" },
-      { href: "/ev-charger-installation-cost", label: "Charger install cost" },
-      { href: "/e-bikes", label: "E-bikes" },
+      { href: "/home-backup/hookup-picker", label: "Hookup picker" },
+      { href: "/home-backup/anker-solix-f3800-plus-hookup", label: "Anker F3800 Plus hookup" },
+      { href: "/home-backup/bluetti-apex-300-hookup", label: "Bluetti Apex 300 hookup" },
+      { href: "/home-battery-backup", label: "Whole-home vs portable" },
     ],
   },
   {
-    id: "home",
-    hub: { href: "/home-energy", label: "All home energy guides" },
-    label: "Home Energy",
+    id: "runs",
+    hub: { href: "/power-outage-backup-calculator", label: "Outage backup calculator" },
+    label: "What it runs",
     links: [
-      { href: "/solar-calculator", label: "Solar" },
-      { href: "/plug-in-solar", label: "Plug-in solar" },
-      { href: "/home-battery-backup", label: "Home batteries" },
-      { href: "/best-portable-power-stations", label: "Backup power" },
-      { href: "/space-heater-cost", label: "Space heater cost" },
-      { href: "/christmas-lights-cost", label: "Christmas lights cost" },
-    ],
-  },
-  {
-    id: "outdoors",
-    hub: { href: "/outdoor-power", label: "All RV, boat & camping guides" },
-    label: "Outdoors",
-    links: [
-      { href: "/lithium-rv-battery", label: "RV batteries" },
-      { href: "/boating", label: "Boating" },
-      { href: "/best-trolling-motor-battery", label: "Trolling motor batteries" },
-      { href: "/best-power-station-for-cpap", label: "CPAP power" },
-    ],
-  },
-  {
-    id: "offgrid",
-    hub: { href: "/off-grid", label: "All off-grid & prep guides" },
-    label: "Off Grid",
-    links: [
-      { href: "/off-grid-solar-calculator", label: "Off-grid solar" },
-      { href: "/off-grid-cabin-solar-kit", label: "Cabin solar kits" },
-      { href: "/power-outage-backup-calculator", label: "Outage backup" },
-      { href: "/emergency-water-storage-calculator", label: "Water storage" },
-      { href: "/best-emergency-water-filters", label: "Water filters" },
-      { href: "/emergency-kit-checklist", label: "Emergency kit" },
-    ],
-  },
-  {
-    id: "learn",
-    hub: { href: "/learn", label: "Everything in Learn" },
-    label: "Learn",
-    links: [
-      { href: "/solartopia", label: "Solartopia (game)" },
-      { href: "/myths", label: "Myths" },
-      { href: "/states", label: "States" },
-      { href: "/compare", label: "Compare" },
-      { href: "/incentives", label: "Incentives" },
-      { href: "/questions", label: "Questions answered" },
-      { href: "/ask", label: "Ask Spark" },
+      { href: "/home-backup/well-pump", label: "Well pump" },
+      { href: "/home-backup/pellet-stove", label: "Pellet stove" },
+      { href: "/power-station-for-refrigerator", label: "Refrigerator" },
+      { href: "/battery-calculator", label: "Home battery size" },
+      { href: "/generator-runtime-calculator", label: "Generator runtime" },
+      { href: "/compare", label: "Comparisons" },
+      { href: "/questions/home-batteries-backup", label: "Questions answered" },
     ],
   },
 ];

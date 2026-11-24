@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Byline from "@/components/Byline";
 import { AffiliateDisclosure, PartnerLink } from "@/components/affiliate";
 import { Breadcrumbs, Callout, Disclaimer, Faq, RelatedLinks, Section } from "@/components/content";
 import { QuickAnswer } from "@/components/guide-ui";
@@ -10,11 +11,11 @@ import { HOOKUP_PARTS, modelHookup } from "@/data/hookup";
 import type { Product } from "@/data/products";
 import { formatDate } from "@/lib/energy";
 import { fullName, kwh, productById, watts } from "@/lib/products";
-import { JsonLd, pageMetadata, url } from "@/lib/seo";
+import { JsonLd, pageMetadata, url, AUTHOR_REF } from "@/lib/seo";
 
 const PATH = "/compare/growatt-helios-3600-vs-bluetti-apex-300";
 const UPDATED = "2026-11-14";
-const TITLE = "Growatt HELIOS 3600 vs Bluetti Apex 300: Which One for 240 V Home Backup?";
+const TITLE = "Growatt HELIOS 3600 vs Bluetti Apex 300 for 240 V";
 const DESCRIPTION =
   "The Bluetti Apex 300 gives 120/240 V from one unit; the Growatt HELIOS 3600 needs two units and Growatt's hub for 240 V. Capacity, output, expansion and hookup, from both makers' US stores.";
 
@@ -83,7 +84,7 @@ export default function HeliosVsApex() {
           url: url(PATH),
           datePublished: UPDATED,
           dateModified: UPDATED,
-          author: { "@id": url("/#organization") },
+          author: AUTHOR_REF,
           publisher: { "@id": url("/#organization") },
           isPartOf: { "@id": url("/#website") },
           mainEntityOfPage: url(PATH),
@@ -94,6 +95,7 @@ export default function HeliosVsApex() {
         <Breadcrumbs items={crumbs} />
         <p className="text-sm font-semibold uppercase tracking-wide text-spark-amber mb-2">Head to head</p>
         <h1 className="text-3xl sm:text-4xl font-extrabold leading-tight mb-6">Growatt HELIOS 3600 vs Bluetti Apex 300: the 240 V question</h1>
+        <Byline path={PATH} />
 
         <QuickAnswer>
           <p>
@@ -181,15 +183,6 @@ export default function HeliosVsApex() {
 
         <Faq items={faqs} path={PATH} />
 
-        <WhatWeChecked
-          untested="either unit"
-          items={[
-            { name: `${fullName(h)} product page`, url: h.sourceUrl, read: h.retrieved, what: "stock, two-unit bundle; \"Support 240V whole-home power when parallel two HELIOS 3600s\"" },
-            { name: `${hub.name} product page`, url: hub.url, read: hub.retrieved, what: "7,200 W from two units; one 6-20 and two L14-30 outlets" },
-            { name: `${fullName(a)} product page`, url: a.sourceUrl, read: a.retrieved, what: "stock, outlets" },
-            { name: "Bluetti Apex 300 user manual V3.1 (PDF)", url: "https://s4.bluettipower.com/bluetti/purchasePageBiz/2025/12/Apex%20300%20User%20%20Manual%20US%20EN-FR-1764555919287-cde9.pdf", read: "2026-11-14", what: "14-50R: 50 A bypass, 16 A at 240 V on battery" },
-          ]}
-        />
 
         <HomeBackupLinks exclude={PATH} />
 
@@ -202,7 +195,15 @@ export default function HeliosVsApex() {
             { href: "/home-backup/bluetti-apex-300-hookup", label: "Bluetti Apex 300 hookup", desc: "AT1, interlock or manual transfer switch" },
             { href: HOME_BACKUP_HUB.path, label: "The four ways to connect a battery", desc: "Cords, interlock, transfer switch or smart panel" },
             { href: "/compare", label: "All comparisons", desc: "Every head-to-head we have" },
-            { href: "/best-portable-power-stations", label: "Best portable power stations", desc: "Every model compared by spec" },
+          ]}
+        />
+        <WhatWeChecked className="mt-14"
+          untested="either unit"
+          items={[
+            { name: `${fullName(h)} product page`, url: h.sourceUrl, read: h.retrieved, what: "stock, two-unit bundle; \"Support 240V whole-home power when parallel two HELIOS 3600s\"" },
+            { name: `${hub.name} product page`, url: hub.url, read: hub.retrieved, what: "7,200 W from two units; one 6-20 and two L14-30 outlets" },
+            { name: `${fullName(a)} product page`, url: a.sourceUrl, read: a.retrieved, what: "stock, outlets" },
+            { name: "Bluetti Apex 300 user manual V3.1 (PDF)", url: "https://s4.bluettipower.com/bluetti/purchasePageBiz/2025/12/Apex%20300%20User%20%20Manual%20US%20EN-FR-1764555919287-cde9.pdf", read: "2026-11-14", what: "14-50R: 50 A bypass, 16 A at 240 V on battery" },
           ]}
         />
       </div>

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Byline from "@/components/Byline";
 import { AffiliateDisclosure, PartnerLink } from "@/components/affiliate";
 import { Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
 import { QuickAnswer } from "@/components/guide-ui";
@@ -8,11 +9,11 @@ import { INSTALL_COST } from "@/data/buyer-guides";
 import { brandName, chargerById } from "@/data/chargers";
 import { formatDate } from "@/lib/energy";
 import { money } from "@/lib/products";
-import { JsonLd, pageMetadata, url } from "@/lib/seo";
+import { JsonLd, pageMetadata, url, AUTHOR_REF, pageUpdated } from "@/lib/seo";
 
 const PATH = "/ev-charger-tripping-gfci";
 const UPDATED = "2026-11-14";
-const TITLE = "Level 2 EV Charger Keeps Tripping a GFCI Breaker? Why, and the Safe Fix";
+const TITLE = "EV Charger Tripping a GFCI Breaker? Why, and the Fix";
 const DESCRIPTION =
   "Why a plug-in Level 2 charger trips a GFCI breaker (two ground-fault protections on one circuit, and code requires the outlet one), what you can safely check, and why hardwiring by a licensed electrician is the usual fix.";
 
@@ -96,16 +97,16 @@ export default function EvChargerTrippingGfciPage() {
           url: url(PATH),
           datePublished: UPDATED,
           dateModified: UPDATED,
-          author: { "@id": url("/#organization") },
+          author: AUTHOR_REF,
           publisher: { "@id": url("/#organization") },
           isPartOf: { "@id": url("/#website") },
           mainEntityOfPage: url(PATH),
         }}
       />
       <HubHero
+        byline={<Byline path={PATH} tone="dark" />}
         image="ev"
         crumbs={[
-          { name: "Best home EV charger", path: "/best-home-ev-charger" },
           { name: "Charger tripping a GFCI breaker", path: PATH },
         ]}
         eyebrow="Home charging safety"
@@ -247,8 +248,7 @@ export default function EvChargerTrippingGfciPage() {
             ))}
           </ul>
           <p className="text-sm text-muted mt-3">
-            All three must be installed by a licensed electrician on a dedicated circuit sized to the maker&apos;s instructions. More options
-            in our <Link href="/best-home-ev-charger" className="underline">home charger guide</Link>.
+            All three must be installed by a licensed electrician on a dedicated circuit sized to the maker&apos;s instructions.
           </p>
         </Section>
 
@@ -257,15 +257,12 @@ export default function EvChargerTrippingGfciPage() {
           General information, not electrical advice. Electrical codes differ by state and town, and your local inspector has the final word.
           Leave panel, breaker and charger wiring to a licensed electrician.
         </Disclaimer>
-        <Sources items={Object.values(S)} />
         <RelatedLinks
           links={[
             { href: "/ev-charger-extension-cord", label: "Extension cord for a Level 2 charger?", desc: "What charger makers say, and the safe options" },
-            { href: "/ev-charger-installation-cost", label: "EV charger installation cost", desc: "Average price in your state, and what adds to it" },
-            { href: "/best-home-ev-charger", label: "Best home EV charger", desc: "Plug-in and hardwired chargers compared" },
-            { href: "/questions/ev-charging", label: "Home charging questions", desc: "Breaker size, dryer outlets and permits" },
           ]}
         />
+        <Sources checked={pageUpdated(PATH)} items={Object.values(S)} />
         <PhotoCredit name="ev" />
       </div>
     </article>

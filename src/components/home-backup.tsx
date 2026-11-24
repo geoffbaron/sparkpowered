@@ -19,14 +19,14 @@ export interface CheckedSource {
   what?: string;
 }
 
-/** The sources a cluster page rests on, with read dates, and the plain statement that we have not tested the unit. */
+/** The dated sources a cluster page rests on, and the plain statement that the unit was not tested. Goes last on the page. */
 export function WhatWeChecked({ items, untested, className = "mt-10" }: { items: CheckedSource[]; untested: string; className?: string }) {
   return (
-    <section aria-labelledby="checked-heading" className={`rounded-2xl border border-black/10 bg-surface-light p-5 sm:p-6 ${className}`}>
-      <h2 id="checked-heading" className="text-lg font-bold">What we checked</h2>
+    <section aria-labelledby="checked-heading" className={`rounded-2xl border border-black/10 bg-surface-light p-5 sm:p-6 ${className}`} data-testid="sources">
+      <h2 id="checked-heading" className="text-lg font-bold">Sources</h2>
       <p className="text-sm text-stone-700 mt-1 max-w-3xl">
-        <strong>We have not tested {untested}.</strong> Everything below comes from the makers&apos; own manuals, support articles
-        and store pages, and from safety agencies, read on the dates shown.
+        <strong>I haven&apos;t tested {untested} myself.</strong> Every claim on this page comes from the makers&apos; own manuals, support
+        articles and store pages, and from safety agencies, read on the dates shown.
       </p>
       <ul className="mt-3 space-y-1.5 text-sm text-stone-700">
         {items.map((s) => {

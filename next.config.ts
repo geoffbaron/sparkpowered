@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { REMOVED, REMOVED_PATTERNS, type Removed } from "./src/lib/removed";
 
 const nextConfig: NextConfig = {
   cacheComponents: true,
@@ -7,18 +8,18 @@ const nextConfig: NextConfig = {
   experimental: { inlineCss: true },
 
   async redirects() {
+    const moved = (r: Removed) => ({ source: r.source, destination: r.destination, statusCode: 301 as const });
     return [
-      { source: "/objections", destination: "/myths", permanent: true },
-      // The 51 per-state off-grid pages were near-duplicates; one hub now serves every state.
-      { source: "/off-grid-solar-calculator/:state", destination: "/off-grid-solar-calculator?state=:state", permanent: true },
-      // The 34 single-answer question pages repeated their hub word for word; each answer now lives at its hub anchor.
+      // www answers once DNS points it here: send it to the bare domain, same path.
       {
-        source: "/questions/:topic(home-solar|home-batteries-backup|ev-charging|electric-boating|costs-and-incentives)/:question",
-        destination: "/questions/:topic#:question",
-        permanent: true,
+        source: "/:path*",
+        has: [{ type: "host" as const, value: "www.sparkpowered.com" }],
+        destination: "https://sparkpowered.com/:path*",
+        statusCode: 301 as const,
       },
-      // Both units sold out; the same pair is the 120/240 V class on the brand comparison.
-      { source: "/compare/ecoflow-delta-pro-3-vs-anker-solix-f3800-plus", destination: "/compare/anker-solix-vs-ecoflow", permanent: true },
+      // Pages removed in the Nov 24 2026 narrowing (src/lib/removed.ts). Fixed addresses first, then whole sections.
+      ...REMOVED.map(moved),
+      ...REMOVED_PATTERNS.map(moved),
     ];
   },
 

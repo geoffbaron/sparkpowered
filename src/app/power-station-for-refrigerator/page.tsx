@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Byline from "@/components/Byline";
 import WhatItRunsLinks from "@/components/WhatItRunsLinks";
 import { AffiliateDisclosure, PartnerLink } from "@/components/affiliate";
 import { Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
@@ -12,10 +13,10 @@ import type { Product } from "@/data/products";
 import { formatDate } from "@/lib/energy";
 import { FRIDGE_AVG_W, FRIDGE_KWH_YEAR, USABLE_FRACTION } from "@/lib/everyday";
 import { fullName, productById } from "@/lib/products";
-import { pageMetadata } from "@/lib/seo";
+import { pageMetadata, pageUpdated } from "@/lib/seo";
 
 const PATH = "/power-station-for-refrigerator";
-const TITLE = "Power Station for a Refrigerator: How Long It Runs, and Which to Buy (2026)";
+const TITLE = "Power Station for a Refrigerator: How Long It Runs";
 const DESCRIPTION =
   "How many hours each portable power station keeps a kitchen fridge cold in an outage. Bluetti, EcoFlow, Jackery and Anker compared on hours, output and weight, plus a calculator for your fridge.";
 
@@ -80,41 +81,38 @@ export default function FridgePage() {
       <HubHero
         image="outage"
         crumbs={[
-          { name: "Best portable power stations", path: "/best-portable-power-stations" },
           { name: "For a refrigerator", path: PATH },
         ]}
+        byline={<Byline path={PATH} tone="dark" article={{ headline: TITLE, description: DESCRIPTION }} />}
         eyebrow="Fridge backup"
-        title={<>Power&apos;s out. <span className="text-amber-300">The food stays cold.</span></>}
+        title="How long a power station runs a refrigerator"
         sub={
           <>
-            A 2 kWh battery keeps a typical kitchen fridge running about {hText(hours(e200.capacityWh))} with no
-            noise, no fumes and no gas cans. Here is how long each one lasts, and which to buy.
+            A 2 kWh battery runs a typical kitchen fridge for about {hText(hours(e200.capacityWh))}, worked out from EIA&apos;s
+            average fridge use and each maker&apos;s published capacity.
           </>
         }
       >
         <a href="#picker" className="btn btn-primary">How long for my fridge?</a>
-        <a href="#picks" className="btn btn-light">See our picks</a>
+        
       </HubHero>
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <AffiliateDisclosure className="mb-8" />
 
         <QuickAnswer>
           <p>
-            <strong>For a full day of fridge:</strong> the{" "}
-            <PartnerLink brand="bluetti" productId={e300.id} productUrl={e300.url}>Bluetti Elite 300</PartnerLink> (about {hText(hours(e300.capacityWh))} for a typical fridge).
+            <strong>A typical kitchen fridge uses about {fridgeWhDay.toLocaleString("en-US")} Wh a day</strong> ({FRIDGE_KWH_YEAR} kWh a year,
+            EIA). So about 1 kWh of battery gets it through a night, and about 2.5 to 3 kWh through a full day without recharging.
           </p>
           <p>
-            <strong>In stock now, overnight and then some:</strong> the{" "}
-            <PartnerLink brand="bluetti" productId={e200.id} productUrl={e200.url}>Bluetti Elite 200 V2</PartnerLink> (about{" "}
-            {hText(hours(e200.capacityWh))}). The <PlainLink href={delta.url}>EcoFlow DELTA 3 Max</PlainLink> is a fair alternative
-            with about the same capacity and a faster 10 ms switchover; the Bluetti is rated for more
-            cycles (6,000 vs no published figure).
+            The station&apos;s continuous watts must cover the fridge while it runs, and its motor surge rating must cover the compressor
+            start. With the door shut, food stays safe for about 4 hours without power (FoodSafety.gov), so running the fridge in shifts
+            stretches any battery.
           </p>
         </QuickAnswer>
 
         <section aria-label="What it means" className="grid sm:grid-cols-3 gap-3 mt-8">
-          <BigStat tone="leaf" value={hText(hours(e300.capacityWh))} label="Of fridge from 3 kWh" note="Bluetti Elite 300" />
+          <BigStat tone="leaf" value={hText(hours(e300.capacityWh))} label="Of fridge from about 3 kWh" note="For example, a Bluetti Elite 300" />
           <BigStat value={`${fridgeWhDay.toLocaleString("en-US")} Wh`} label="What a typical fridge uses a day" note={`${FRIDGE_KWH_YEAR} kWh a year (EIA)`} />
           <BigStat tone="orange" value="4 hours" label="Food stays safe with the door shut" note="FoodSafety.gov; keep it at 40°F or below" />
         </section>
@@ -128,56 +126,6 @@ export default function FridgePage() {
           <FridgePicker options={products.map(opt)} />
         </section>
 
-        <section id="picks" className="mt-12 grid gap-4 scroll-mt-24" aria-labelledby="picks-heading">
-          <h2 id="picks-heading" className="text-2xl font-extrabold text-ink">Our picks</h2>
-          <OurPick
-            label="Best for overnight outages (in stock)"
-            name={fullName(e200)}
-            why="Keeps a typical fridge running through the night with room for the Wi-Fi and phones, and is rated for 6,000 cycles, the most of any 2 kWh unit we list. Plug it in once and forget it until the lights go out."
-            life={[`Fridge: ${hText(hours(e200.capacityWh))}`, `${e200.weightLb} lb, 5-year warranty`]}
-            brand="bluetti"
-            productId={e200.id}
-            productUrl={e200.url}
-            category="battery"
-          />
-          <OurPick
-            label="Best for a full day"
-            name={fullName(e300)}
-            icon="home"
-            why={`About a day of fridge, about half again what the Elite 200 V2 holds. Add a couple of solar panels and it can keep up for days. Pre-order when we checked.`}
-            life={[`Fridge: ${hText(hours(e300.capacityWh))}`, "RV (TT-30) outlet too"]}
-            brand="bluetti"
-            productId={e300.id}
-            productUrl={e300.url}
-            category="battery"
-            moreHref="/compare/bluetti-elite-200-v2-vs-elite-300"
-            moreLabel="Elite 200 V2 vs Elite 300"
-          />
-          <OurPick
-            label="Best for two-day outages"
-            name={fullName(e400)}
-            icon="shield"
-            why="Nearly 4 kWh on wheels. About a day and a half of fridge on its own, or two days if you run the fridge in shifts. Pre-order when we checked."
-            life={[`Fridge: ${hText(hours(e400.capacityWh))}`, `${e400.weightLb} lb, rolls on wheels`]}
-            brand="bluetti"
-            productId={e400.id}
-            productUrl={e400.url}
-            category="battery"
-          />
-          <OurPick
-            label="Smallest that runs a fridge"
-            name={fullName(ac180)}
-            icon="battery"
-            why="Half a day of fridge: enough for most short outages, and light enough to take camping afterwards."
-            life={[`Fridge: ${hText(hours(ac180.capacityWh))}`, "1,800 W output"]}
-            brand="bluetti"
-            productId={ac180.id}
-            productUrl={ac180.url}
-            category="battery"
-            moreHref="/compare/bluetti-ac180-vs-elite-100-v2"
-            moreLabel="AC180 vs Elite 100 V2"
-          />
-        </section>
 
         <Section title="Hours of fridge, side by side" id="compare">
           <div className="relative overflow-x-auto rounded-xl border border-black/8 bg-surface">
@@ -217,6 +165,69 @@ export default function FridgePage() {
           <p className="text-xs text-muted mt-1">Bluetti and Anker links are sponsored; EcoFlow and Jackery are plain links.</p>
         </Section>
 
+        <section id="picks" className="mt-12 grid gap-4 scroll-mt-24" aria-labelledby="picks-heading">
+          <h2 id="picks-heading" className="text-2xl font-extrabold text-ink">Picks, if you are buying</h2>
+          <AffiliateDisclosure />
+          <OurPick
+            label="Best for overnight outages (in stock)"
+            name={fullName(e200)}
+            why="Keeps a typical fridge running through the night with room for the Wi-Fi and phones, and is rated for 6,000 cycles, the most of any 2 kWh unit we list. Plug it in once and forget it until the lights go out."
+            life={[`Fridge: ${hText(hours(e200.capacityWh))}`, `${e200.weightLb} lb, 5-year warranty`]}
+            brand="bluetti"
+            productId={e200.id}
+            productUrl={e200.url}
+            category="battery"
+          />
+          <OurPick
+            label="Best for a full day"
+            name={fullName(e300)}
+            icon="home"
+            why={`About a day of fridge, about half again what the Elite 200 V2 holds. Add a couple of solar panels and it can keep up for days. Pre-order when we checked.`}
+            life={[`Fridge: ${hText(hours(e300.capacityWh))}`, "RV (TT-30) outlet too"]}
+            brand="bluetti"
+            productId={e300.id}
+            productUrl={e300.url}
+            category="battery"
+            moreHref="/power-stations/bluetti-elite-300/what-it-runs"
+            moreLabel="What the Elite 300 runs"
+          />
+          <OurPick
+            label="Best for two-day outages"
+            name={fullName(e400)}
+            icon="shield"
+            why="Nearly 4 kWh on wheels. About a day and a half of fridge on its own, or two days if you run the fridge in shifts. Pre-order when we checked."
+            life={[`Fridge: ${hText(hours(e400.capacityWh))}`, `${e400.weightLb} lb, rolls on wheels`]}
+            brand="bluetti"
+            productId={e400.id}
+            productUrl={e400.url}
+            category="battery"
+          />
+          <OurPick
+            label="Smallest that runs a fridge"
+            name={fullName(ac180)}
+            icon="battery"
+            why="Half a day of fridge: enough for most short outages, and light enough to take camping afterwards."
+            life={[`Fridge: ${hText(hours(ac180.capacityWh))}`, "1,800 W output"]}
+            brand="bluetti"
+            productId={ac180.id}
+            productUrl={ac180.url}
+            category="battery"
+            moreHref="/power-stations/bluetti-ac180/what-it-runs"
+            moreLabel="What the AC180 runs"
+          />
+          <OurPick
+            label="Alternative from a maker that doesn't pay us"
+            name={fullName(delta)}
+            icon="battery"
+            why="About the same capacity as the Elite 200 V2, with a 10 ms switchover. EcoFlow doesn't publish a cycle rating for it."
+            life={[`Fridge: ${hText(hours(delta.capacityWh))}`, `${delta.weightLb} lb`]}
+            brand={delta.brand}
+            productId={delta.id}
+            productUrl={delta.url}
+            category="battery"
+          />
+        </section>
+
         <Section title="Myths, answered" id="myths">
           <div className="grid gap-3">
             <Callout>
@@ -250,19 +261,16 @@ export default function FridgePage() {
           average and assume {Math.round(USABLE_FRACTION * 100)}% of rated capacity is usable. Specifications are copied
           from makers&apos; US websites on the dates shown.
         </Disclaimer>
-        <Sources
+        <RelatedLinks
+          links={[
+            { href: "/home-battery-backup", label: "Home battery backup", desc: "When you need the whole house, not just the fridge" },
+          ]}
+        />
+        <Sources checked={pageUpdated(PATH)}
           items={[
             { name: "EIA Residential Energy Consumption Survey 2020 (refrigerator electricity use)", url: "https://www.eia.gov/consumption/residential/data/2020/", detail: `${FRIDGE_KWH_YEAR} kWh a year per household` },
             { name: "FoodSafety.gov: Food safety during power outages", url: "https://www.foodsafety.gov/food-safety-charts/food-safety-during-power-outage", detail: "about 4 hours in a closed refrigerator, 48 in a full freezer" },
             ...products.map((p) => ({ name: `${fullName(p)} product page`, url: p.sourceUrl, detail: `checked ${formatDate(p.retrieved)}` })),
-          ]}
-        />
-        <RelatedLinks
-          links={[
-            { href: "/best-portable-power-stations", label: "Best portable power stations", desc: "Every model compared, with full specs" },
-            { href: "/best-power-station-for-cpap", label: "Power station for a CPAP", desc: "Nights of sleep per charge" },
-            { href: "/home-battery-backup", label: "Home battery backup", desc: "When you need the whole house, not just the fridge" },
-            { href: "/compare/bluetti-elite-200-v2-vs-ac200l", label: "Bluetti Elite 200 V2 vs AC200L", desc: "Two 2 kWh Bluettis compared" },
           ]}
         />
         <PhotoCredit name="outage" />

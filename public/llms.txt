@@ -1,155 +1,69 @@
 # Spark Powered
 
-> Free, independent calculators and state-by-state data for US households weighing an electric car, solar panels or a home battery. Figures are computed from public government data (EIA, DOE Alternative Fuels Data Center, PVWatts, EPA fueleconomy.gov) and every page lists its sources and data date. Not affiliated with any carmaker, installer or utility.
+> How to keep a US home running in a power outage with a portable power station or home battery: how to connect one to the house, what it runs and for how long, and which unit fits which job. Written by Geoff Baron (https://sparkpowered.com/about), who is not an electrician: every page is researched from the makers' manuals and spec sheets and from official sources (NEC, CPSC, OSHA, DOE, EIA), ends with a dated source list, and has not been hands-on tested. Contact: geoff@mylastlap.com.
 
 Site: https://sparkpowered.com
 Language: English (US)
-Audience: US homeowners and drivers.
+Audience: US homeowners and renters planning for power outages.
 
-## Section guides (start here)
+## Connecting a battery to the house
 
-- [Electric cars & e-bikes](https://sparkpowered.com/electric-vehicles): Every tool for choosing an EV or plug-in hybrid, home charging cost, chargers and install cost, and e-bikes, grouped by goal.
-- [Home energy](https://sparkpowered.com/home-energy): Solar, plug-in solar, home batteries, outage backup and the cost of running heaters and holiday lights, by state.
-- [RV, boat & camping power](https://sparkpowered.com/outdoor-power): Lithium RV and boat batteries, trolling motor and fish finder run times, electric outboards and power stations for CPAP and camping.
-- [Off grid & emergency prep](https://sparkpowered.com/off-grid): Off-grid solar sizing for winter, power line vs solar, cabin kits, generator fuel, emergency water, filters, purification, food and a 72-hour kit.
-- [Learn](https://sparkpowered.com/learn): Questions answered, myths, 2026 tax credits, state data and methodology.
-
-## Tools
-
-- [EV charging cost calculator](https://sparkpowered.com/ev-charging-cost): Home EV charging cost per 100 miles, per month and per year for any state and any 2026-2027 EV (EPA kWh/100 mi), compared with gasoline. Includes a 50-state + DC table.
-- [Solar panel calculator](https://sparkpowered.com/solar-calculator): System size (kW), panel count, yearly output and value from monthly kWh or bill, using PVWatts output per state. Includes a state table.
-- [Home battery sizer](https://sparkpowered.com/battery-calculator): kWh of storage needed for a backup goal, the sizing formula, and average daily household use by state, plus 2-4 real systems (portable or installed) that reach that size, with links to each maker for today's price.
-- [EV Finder](https://sparkpowered.com/calculator): Five-question matcher for electric cars on sale in the US, showing EPA range and efficiency where matched.
-- [EV or plug-in hybrid?](https://sparkpowered.com/ev-or-plug-in-hybrid): Picks an electric car, a plug-in hybrid or a regular hybrid from state, daily miles, where you can charge, road trips and towing, with yearly fuel cost for each against a 25.5 mpg gas car and the share of the PHEV's miles on electricity. Uses EPA fueleconomy.gov PHEV ratings (model years 2025-2027), EIA prices, a $0.54/kWh fast-charging average (Paren, Q3 2026), Recurrent cold-weather range for states with freezing NOAA winter normals, and notes ICCT's finding that US PHEVs drive 26%-56% less on electricity than their labels assume.
-- [Solar Finder](https://sparkpowered.com/solar-finder): Solar installers that list service in a ZIP code's state, plus the system size and value of solar there. Collects no contact details.
-- [Solar panels stopped working?](https://sparkpowered.com/solar-panels-not-working): Safe owner checks (monitoring Wi-Fi, inverter codes, breakers, rapid shutdown, DOE's 10% rule), who repairs a system when the installer is gone (maker-certified installers, NABCEP, SunPower legacy contacts), Fixr repair costs, warranty transfers (Enphase, SolarEdge), paperwork for buying a house with solar, and UK FIT/MCS steps. Sources read 2026-11-09.
-- [Christmas lights cost calculator](https://sparkpowered.com/christmas-lights-cost): Season cost of holiday lights by state from EIA residential electricity prices, LED vs incandescent mini and C9 strings (0.07 W, 0.4 W, 7 W per bulb), with a 50-state + DC table for a 1,000-bulb display at 6 hours a night for 40 nights.
+- [Home backup: the four ways to connect a portable battery to a house](https://sparkpowered.com/home-backup): Extension cords, inlet box plus interlock kit, manual transfer switch, and the maker's smart panel (Anker Home Power Panel, Bluetti AT1, EcoFlow Smart Home Panel 2): what each powers, rough installed cost (HomeGuide ranges, read 2026-11-14), electrician and permit for anything at the panel, which 120/240 V models support each, the neutral-bonding question, and the backfeeding warning (CPSC, OSHA). Not hands-on tested; from makers' documents.
 - [Home backup hookup picker](https://sparkpowered.com/home-backup/hookup-picker): Five questions (what must stay on, 120 V only or 240 V loads like a well pump, own or rent, budget, hiring a licensed electrician) to the way to connect a portable power station to a house (extension cords, inlet box + interlock kit, manual transfer switch, or the maker's panel kit such as the Bluetti Apex 300 Home Integration Kit), the battery size (EIA and EWEB loads, 85% usable), in-stock Anker SOLIX, Bluetti, Growatt and ALLPOWERS models that fit (120/240 V or two units on the maker's hub for 240 V loads), and a parts list with cost ranges (HomeGuide 2026, checked 2026-11-14). Renters get cords only; anything at the panel means a licensed electrician and a permit; never backfeed through a wall or dryer outlet.
-- [Space heater cost calculator](https://sparkpowered.com/space-heater-cost): Cost per hour, day and month of a 1,500 W space heater in every state (EIA electricity prices), compared with the same heat from an 80% AFUE gas furnace (EIA residential gas prices) and a federal-minimum heat pump.
-
-## Buying guides (dated manufacturer specs, no prices: links go to each seller for today's price; contain affiliate links)
-
-- [Plug-in solar (balcony solar)](https://sparkpowered.com/plug-in-solar): State-by-state legal status of plug-in solar as of 2026-10-15 with links to each enacted law (Utah HB 340 of 2025; 2026 laws in Maine, Virginia, Colorado, Maryland, Connecticut, Vermont, New Hampshire, New Jersey and California; New York passed but unsigned), UL 3700 / UL 1741 / NEC notes, modeled yearly output of an 800 W kit in every state for three mounting positions (PVWatts v8 on NASA weather), and US-sold kits (no prices; links to each seller).
-- [Best portable power stations](https://sparkpowered.com/best-portable-power-stations): Picks by use (camping, CPAP, fridge, RV, apartment, 120/240 V home circuits) and a spec table (capacity, output, chemistry, cycles, weight, expansion, solar input, warranty) for EcoFlow, Anker SOLIX, Jackery, Bluetti and DJI models.
-- [Black Friday 2026 sale pages](https://sparkpowered.com/black-friday-deals): Links to the Black Friday sale pages of Anker SOLIX, Bluetti and Himiway on each maker's US store. No prices listed.
-- [Home battery backup](https://sparkpowered.com/home-battery-backup): Whole-home installed batteries (Tesla Powerwall 3, Enphase IQ Battery 5P/10C, FranklinWH aPower 2) with EnergySage's market-average installed cost per kWh, versus plug-in whole-home systems and portable stations.
-- [Home backup: the four ways to connect a portable battery to a house](https://sparkpowered.com/home-backup): Extension cords, inlet box plus interlock kit, manual transfer switch, and the maker's smart panel (Anker Home Power Panel, Bluetti AT1, EcoFlow Smart Home Panel 2): what each powers, rough installed cost (HomeGuide ranges, read 2026-11-14), electrician and permit for anything at the panel, which 120/240 V models support each, the neutral-bonding question, and the backfeeding warning (CPSC, OSHA). We have not tested the units.
 - [Anker SOLIX F3800 Plus home hookup](https://sparkpowered.com/home-backup/anker-solix-f3800-plus-hookup): Inlet box and interlock vs Anker's 10-circuit manual transfer switch (30 A version for one unit; the 50 A version is for two) vs the Home Power Panel (automatic, 25 A per unit, 50 A with two, 120/240 V split-phase only, grid-tied solar and generator), from Anker's support articles and US store on 2026-11-14; the F3800 Plus alone was sold out, the bundle with the Smart Home Power Kit in stock.
 - [Bluetti Apex 300 transfer switch options](https://sparkpowered.com/home-backup/bluetti-apex-300-hookup): Bluetti AT1 vs inlet box and interlock vs manual transfer switch for the Apex 300; its 14-50R gives 50 A only in bypass and 16 A at 240 V on battery (manual V3.1); the neutral-bonding caveat from Bluetti's own Oct 29 2026 hookup guide (the manual does not say whether the output neutral is bonded). Read 2026-11-14.
-- [Growatt HELIOS 3600 vs Bluetti Apex 300](https://sparkpowered.com/compare/growatt-helios-3600-vs-bluetti-apex-300): Built on the 240 V question: the Apex 300 gives 120/240 V from one unit (16 A at 240 V on battery, 50 A only in bypass, per Bluetti's manual); the HELIOS 3600 is 120 V and needs two units on Growatt's Double Voltage Power Hub for 240 V (Growatt's wording). Capacity, output, expansion, and outlets from both makers' US stores, read 2026-11-14.
-- [Lithium RV, van and boat batteries](https://sparkpowered.com/lithium-rv-battery): What swapping a lead-acid (AGM) house battery for lithium iron phosphate lasts (Redodo 12V 100Ah vs two Renogy 12V 100Ah AGM; 4,000 cycles at 100% vs 500 at 50% depth of discharge), weight, a sizing picker by daily loads and days off-grid, solar pairing, cold-weather charging, charger and fire-safety facts with sources, and Redodo 12 V, 24 V and 48 V models with dated specs.
-- [Best power station for CPAP](https://sparkpowered.com/best-power-station-for-cpap): Nights of CPAP each battery gives with the heated humidifier on (28 W) and off (11 W), per ResMed's battery guide, at 8 hours a night and 85% usable capacity; Bluetti Elite 30 V2, Elite 100 V2, AC180 and X60 CPAP pack against EcoFlow RIVER 3 Plus, Jackery Explorer 1000 v2 and Anker SOLIX C1000 Gen 2, specs checked 2026-10-19; FAA 160 Wh airline limit.
+- [Home battery backup](https://sparkpowered.com/home-battery-backup): Whole-home installed batteries (Tesla Powerwall 3, Enphase IQ Battery 5P/10C, FranklinWH aPower 2) with EnergySage's market-average installed cost per kWh, versus plug-in whole-home systems and portable stations.
+
+## What it runs, and for how long
+
+- [Power outage backup calculator](https://sparkpowered.com/power-outage-backup-calculator): Essentials (fridge, CPAP, well pump, furnace blower, router, lights) to kWh a day and battery size for 1 to 7 days, with winter solar recharge by state.
+- [Power station for a well pump](https://sparkpowered.com/home-backup/well-pump): Calculator from the pump nameplate (volts, horsepower, 2- or 3-wire, optional max amps). Running watts = volts × amps (US DOE) or Franklin Electric's maximum load watts; starting = volts × locked rotor amps from Franklin Electric's 2026 AIM manual 4-inch single-phase table. Which in-stock power stations have 240 V output and a motor surge that covers the start (Bluetti Power Lifting figures are heating-only and not counted), the soft-start option, transfer switch by a licensed electrician.
+- [Power station for a pellet stove](https://sparkpowered.com/home-backup/pellet-stove): Igniter vs running watts from US Stove (5660, US5522-W), Harman P-Series and PelPro PP130 manuals; hours of heat per in-stock power station; UPS switchover time per model; Harman's back-up sheet on pure sine wave; power-failure smoke warnings from the manuals.
 - [Power station for a refrigerator](https://sparkpowered.com/power-station-for-refrigerator): Hours each power station runs a typical US kitchen fridge (839 kWh a year, EIA RECS 2020), a calculator using the fridge's EnergyGuide kWh, FoodSafety.gov outage guidance (4 hours closed fridge, 48 hours full freezer), Bluetti Elite 200 V2 / Elite 300 / Elite 400 / AC180 and EcoFlow, Jackery, Anker alternatives with dated specs and stock status.
+- [Home battery sizer](https://sparkpowered.com/battery-calculator): kWh of storage needed for a backup goal, the sizing formula, and average daily household use by state, plus 2-4 real systems (portable or installed) that reach that size, with links to each maker for today's price.
+- [Generator runtime calculator](https://sparkpowered.com/generator-runtime-calculator): Fuel to store from the generator's rated runtime; carbon monoxide safety (20 feet from the house, CO alarms; CDC, CPSC).
+- [Bluetti Elite 200 V2 solar panels](https://sparkpowered.com/home-backup/bluetti-elite-200-v2-solar-panels): Solar input limits from Bluetti's manual (12-60 V Voc, 20 A, 1,000 W, XT60; 8.2 A at 30 V or less in the app's default setting), which Bluetti panels fit in series or parallel, open-circuit voltage math with the NEC 690.7 cold-weather correction (IAEI method), and what a third-party panel needs.
 - [What the Anker SOLIX C1000 Gen 2 runs](https://sparkpowered.com/power-stations/anker-solix-c1000-gen-2/what-it-runs): Run times on one charge for 15 appliances from 1.02 kWh at 85% usable (2,000 W continuous): typical fridge about 9 hours, CPAP with humidifier 3.5 nights, 1,500 W space heater about 35 minutes, 1/3 HP sump pump about 1 hour of pumping. Cannot run: 12,000 BTU window AC (3,250 W). Watts from EIA RECS 2020, ResMed and the EWEB generator sizing sheet; specs checked November 6, 2026.
 - [What the Bluetti AC180 runs](https://sparkpowered.com/power-stations/bluetti-ac180/what-it-runs): Run times on one charge for 15 appliances from 1.15 kWh at 85% usable (1,800 W continuous): typical fridge about 10 hours, CPAP with humidifier 4 nights, 1,500 W space heater about 40 minutes, 1/3 HP sump pump about 1 hour of pumping. Cannot run: 12,000 BTU window AC (3,250 W); start not confirmed by specs: kitchen refrigerator, chest or upright freezer, 1/3 HP sump pump, 1/3 HP well pump, 1/3 HP furnace blower fan. Watts from EIA RECS 2020, ResMed and the EWEB generator sizing sheet; specs checked October 26, 2026.
 - [What the Bluetti Elite 200 V2 runs](https://sparkpowered.com/power-stations/bluetti-elite-200-v2/what-it-runs): Run times on one charge for 15 appliances from 2.07 kWh at 85% usable (2,600 W continuous): typical fridge about 18 hours, CPAP with humidifier 7.5 nights, 1,500 W space heater about 1 hour, 1/3 HP sump pump about 2 hours of pumping. Cannot run: 12,000 BTU window AC (3,250 W); start not confirmed by specs: kitchen refrigerator, chest or upright freezer, 1/3 HP well pump. Watts from EIA RECS 2020, ResMed and the EWEB generator sizing sheet; specs checked November 6, 2026.
 - [What the Anker SOLIX C2000 Gen 2 runs](https://sparkpowered.com/power-stations/anker-solix-c2000-gen-2/what-it-runs): Run times on one charge for 15 appliances from 2.05 kWh at 85% usable (2,400 W continuous): typical fridge about 18 hours, CPAP with humidifier 7.5 nights, 1,500 W space heater about 1 hour, 1/3 HP sump pump about 2 hours of pumping. Cannot run: 12,000 BTU window AC (3,250 W). Watts from EIA RECS 2020, ResMed and the EWEB generator sizing sheet; specs checked November 6, 2026.
 - [What the Bluetti Elite 300 runs](https://sparkpowered.com/power-stations/bluetti-elite-300/what-it-runs): Run times on one charge for 15 appliances from 3.01 kWh at 85% usable (2,400 W continuous): typical fridge about 27 hours, CPAP with humidifier 11 nights, 1,500 W space heater about 1.5 hours, 1/3 HP sump pump about 3 hours of pumping. Cannot run: 12,000 BTU window AC (3,250 W). Watts from EIA RECS 2020, ResMed and the EWEB generator sizing sheet; specs checked November 9, 2026.
-- [Best trolling motor battery](https://sparkpowered.com/best-trolling-motor-battery): 12 V, 24 V and 36 V lithium (LiFePO4) trolling motor batteries by thrust, weight saved versus AGM, Redodo models with dated specs, and LiTime and Battle Born for comparison.
-- [100Ah lithium vs AGM](https://sparkpowered.com/lithium-vs-agm-battery): Usable energy (1,280 Wh vs 600 Wh at 50% depth), weight, rated cycles, lifetime energy and how many AGM sets one lithium outlasts by days of use, Redodo 12V 100Ah vs Renogy 12V 100Ah AGM, specs checked 2026-10-16 and 2026-10-19.
-- [Best home EV charger](https://sparkpowered.com/best-home-ev-charger): Level 2 home chargers compared on plug (NACS / SAE J3400 or J1772), amps, miles of range per hour, app scheduling, cable and warranty: Lectron NEXUS, Autel MaxiCharger AC Elite Home, Grizzl-E Classic, Emporia, ChargePoint Home Flex and Tesla Wall Connector, specs checked 2026-10-15 and 2026-10-19.
-- [Home EV charger picker](https://sparkpowered.com/ev-charger-picker): Five-question picker (car plug NACS or J1772, daily miles and EPA kWh per 100 miles, NEMA 14-50 / dryer outlet / panel room, plug-in or hardwired, off-peak scheduling) that returns the amps, circuit size (125% continuous-load rule), plug-in or hardwired, matching Lectron or Autel chargers checked 2026-10-31 (or the spec to look for when none fits), and the state average installation cost (Qmerit 2026 via EnergySage).
-- [EV charger installation cost](https://sparkpowered.com/ev-charger-installation-cost): Average home EV charger installation price in all 50 states and DC (Qmerit 2026 data via EnergySage; US average $2,442, labor and materials, charger not included), cost of long wire runs, subpanels and service upgrades, permits, and an all-in estimator.
+
+## Comparisons (makers' published specs; no prices; some affiliate links)
+
+- [Comparisons](https://sparkpowered.com/compare): Three home-backup comparisons: Growatt HELIOS 3600 vs Bluetti Apex 300, Anker SOLIX F3800 Plus vs Jackery Explorer 5000 Plus, and EcoFlow vs Anker SOLIX size for size.
+- [Growatt HELIOS 3600 vs Bluetti Apex 300](https://sparkpowered.com/compare/growatt-helios-3600-vs-bluetti-apex-300): Built on the 240 V question: the Apex 300 gives 120/240 V from one unit (16 A at 240 V on battery, 50 A only in bypass, per Bluetti's manual); the HELIOS 3600 is 120 V and needs two units on Growatt's Double Voltage Power Hub for 240 V (Growatt's wording). Capacity, output, expansion, and outlets from both makers' US stores, read 2026-11-14.
+- [Anker SOLIX F3800 Plus vs Jackery Explorer 5000 Plus](https://sparkpowered.com/compare/anker-solix-f3800-plus-vs-jackery-explorer-5000-plus): Two 120/240 V home backup units compared on the makers' published specs.
+- [EcoFlow vs Anker SOLIX](https://sparkpowered.com/compare/anker-solix-vs-ecoflow): Power stations compared size for size, up to the DELTA Pro 3 and F3800 Plus, on the makers' published specs.
+
+## Home EV charger questions that come up with home wiring
+
 - [EV charger tripping a GFCI breaker](https://sparkpowered.com/ev-charger-tripping-gfci): Why a plug-in Level 2 EV charger trips a GFCI breaker (NEC 625.54 requires GFCI protection on EV charging receptacles; the charger has its own CCID ground-fault device, about 20 mA per Autel, while a household GFCI trips at about 6 mA per CPSC), what an owner can safely check without opening anything, and why a licensed electrician hardwiring the charger is the usual code-compliant fix (ChargePoint's recommendation). No bypass advice.
 - [Extension cord for a Level 2 EV charger](https://sparkpowered.com/ev-charger-extension-cord): Can you use an extension cord with a Level 2 EV charger? No: Tesla (Wall Connector and Mobile Connector manuals), Lectron, Autel and EVIQO all say not to. Why (continuous load, heat at plug joints, warranty), what the 240 V "EV extension cables" sold online are, and the safe options: park closer, a longer-cable charger, or an electrician adding an outlet or hardwiring a charger where you park.
-- [E-bikes](https://sparkpowered.com/e-bikes): How to choose an e-bike (battery Wh, torque, max load vs rider limit, weight), class 1/2/3 definitions (36 CFR 1.4; 750 W), electricity cost per mile (Efficiency Vermont 1.02 kWh per 100 miles at the EIA US average price) vs AAA 2026 car costs, 2026 state and city e-bike programs with status (Colorado, Washington, Portland, Hawaii open; Denver, California, Massachusetts, Minnesota closed; no federal credit), and CPSC / UL 2849 battery safety. Checked 2026-11-02.
-- [E-bike for heavy riders](https://sparkpowered.com/e-bike-for-heavy-riders): E-bikes rated 400 to 450 lb max load (Kingbull, Himiway, ENGWE) with makers' stated specs checked 2026-11-02, the difference between max load and rider limit, and a Lectric trike with a stated 330 lb rider limit for comparison.
-- [E-bike for hills](https://sparkpowered.com/e-bike-for-hills): E-bikes compared by stated torque (Nm), motor type (hub or mid-drive) and pedal sensor, Himiway, Kingbull and ENGWE models, specs checked 2026-11-02, and an Aventon mid-drive for comparison.
-- [Best commuter e-bike](https://sparkpowered.com/commuter-e-bike-under-1500): Commuter e-bikes with what comes in the box (fenders, rack, lights), stated range, weight and class settings, ENGWE and Kingbull models, specs checked 2026-11-02, and a Lectric commuter for comparison.
-- [Folding e-bike](https://sparkpowered.com/folding-e-bike): Folding e-bikes for apartments and RVs by folded size, weight and max load (Kingbull, ENGWE), specs checked 2026-11-02, CPSC charging advice, and a Lectric folder with a removable battery for comparison.
-- [Comparisons](https://sparkpowered.com/compare): Head-to-head pages such as EcoFlow DELTA 3 Plus vs Anker SOLIX C1000 Gen 2, Jackery vs EcoFlow, Anker SOLIX vs EcoFlow, EcoFlow vs Bluetti (Anker SOLIX vs EcoFlow also covers the DELTA Pro 3 against the SOLIX F3800 Plus), Bluetti AC180 vs Elite 100 V2, Bluetti Elite 200 V2 vs Elite 300, Bluetti Elite 200 V2 vs AC200L, and Tesla Powerwall 3 vs Enphase IQ Battery 5P.
 
-## Data and guides
+## Data, questions and method
 
-- [Energy data by state](https://sparkpowered.com/states): Index of 51 state pages (50 states + DC), e.g. https://sparkpowered.com/states/texas. Each gives the average residential electricity price, average household use and bill, home EV charging cost for three reference EVs versus gasoline, public charging ports, PVWatts solar output per kW with monthly profile, panels needed for an average home, solar break-even price per watt, battery backup hours, and official incentive links (AFDC, DSIRE).
-- [2026 incentives](https://sparkpowered.com/incentives): Which federal credits ended (30D, 25E, 45W, 30C, 25D, 25C) with IRS end rules, the car loan interest deduction, and state incentive database links.
-- [State EV credits and rebates, 10 states](https://sparkpowered.com/incentives#states): For New Hampshire, California, Texas, Florida, New York, New Jersey, Massachusetts, Colorado, Washington and Illinois, each state page's Incentives section (e.g. https://sparkpowered.com/states/new-hampshire#incentives) answers whether the state has an EV tax credit and lists the main state and utility programs for EVs, home chargers, solar, batteries and heat pumps with amount, who qualifies, status, end date and official link, all read 2026-11-11. Examples: New Hampshire has no state EV credit and charges $100 a year extra to register a battery EV; Colorado's Innovative Motor Vehicle Credit is $750 in tax year 2026; Washington's EV sales tax exemption expired July 31, 2025; California's MyFirstEV gives first-time buyers $3,500 off a new EV.
-- [Questions answered](https://sparkpowered.com/questions): 34 frequently searched questions with sourced short answers (FAQPage markup), in five hubs: [home solar](https://sparkpowered.com/questions/home-solar) (2026 payback by state without the 25D credit, outages, winter output, panel degradation, net metering, panels to charge an EV, plug-in solar laws), [home batteries and backup](https://sparkpowered.com/questions/home-batteries-backup) (outage hours, warranties, fridge and space-heater run times, generators vs power stations, backfeeding), [EV charging at home](https://sparkpowered.com/questions/ev-charging) (monthly cost, vs gas, Level 1 vs 2, breaker sizing and the 125% rule, NEMA 14-50 vs hardwired, dryer outlets, permits), [electric boating](https://sparkpowered.com/questions/electric-boating) (trolling motor run time and battery size, lithium charging, lithium vs AGM, electric outboard range) and [costs, credits and heat pumps](https://sparkpowered.com/questions/costs-and-incentives) (2026 federal credit end dates, heat pump vs gas running cost, cold-climate heat pumps, electricity prices by state, rebate databases). Sources read 2026-10-25. Each answer sits on its hub under its own anchor, listed in the next section.
-- [Go electric myths, answered](https://sparkpowered.com/myths): Sourced answers to the doubts people have about EVs, solar, batteries, heat pumps and induction: cost, battery life, fires, chargers, the grid, cold weather, cloudy climates, roofs and more.
-- [Go Electric savings calculator](https://sparkpowered.com/go-electric): Yearly savings for an EV, heat pump, heat pump water heater, induction, rooftop and plug-in solar, by state, from EIA and EPA data.
+- [Energy data by state](https://sparkpowered.com/states): Average home electricity price, daily and monthly use and bill for all 50 states and DC (EIA), for sizing a backup battery, plus the open state home battery rebates and a link to DSIRE.
+- [Home backup questions, answered](https://sparkpowered.com/questions/home-batteries-backup): Seven sourced short answers (FAQPage markup):
+  - [Is a home battery worth it without solar?](https://sparkpowered.com/questions/home-batteries-backup#home-battery-without-solar)
+  - [How long will a home battery power my house in an outage?](https://sparkpowered.com/questions/home-batteries-backup#home-battery-outage-hours)
+  - [How many years does a home battery last?](https://sparkpowered.com/questions/home-batteries-backup#home-battery-lifespan)
+  - [How long will a portable power station run a refrigerator?](https://sparkpowered.com/questions/home-batteries-backup#power-station-refrigerator)
+  - [Should I get a power station or a gas generator for outages?](https://sparkpowered.com/questions/home-batteries-backup#power-station-vs-generator)
+  - [Can I plug a generator or power station into a wall outlet to power my house?](https://sparkpowered.com/questions/home-batteries-backup#plug-into-wall-outlet)
+  - [Can a power station run a space heater?](https://sparkpowered.com/questions/home-batteries-backup#power-station-space-heater)
 - [Methodology](https://sparkpowered.com/methodology): Formulas, sources, dates and limitations.
-- [About and editorial standards](https://sparkpowered.com/about)
-
-## Questions answered, by hub
-
-Each hub page carries all of its answers (FAQPage markup): the question, the short answer, the detail, a worked example and the sources it was read from. The links below go straight to each answer's anchor on its hub.
-
-### [Home solar](https://sparkpowered.com/questions/home-solar)
-
-- [Is solar worth it in 2026 now that the tax credit is gone?](https://sparkpowered.com/questions/home-solar#is-solar-worth-it-2026)
-- [Do solar panels work during a power outage?](https://sparkpowered.com/questions/home-solar#solar-power-outage)
-- [Do I need a battery with solar panels?](https://sparkpowered.com/questions/home-solar#battery-with-solar)
-- [Do solar panels work on cloudy days and in winter?](https://sparkpowered.com/questions/home-solar#cloudy-days-winter)
-- [How long do solar panels last?](https://sparkpowered.com/questions/home-solar#how-long-solar-panels-last)
-- [What is net metering?](https://sparkpowered.com/questions/home-solar#what-is-net-metering)
-- [How many solar panels does it take to charge an EV?](https://sparkpowered.com/questions/home-solar#solar-panels-to-charge-ev)
-- [Is plug-in balcony solar legal in my state?](https://sparkpowered.com/questions/home-solar#plug-in-solar-legal)
-
-### [Home batteries & backup](https://sparkpowered.com/questions/home-batteries-backup)
-
-- [Is a home battery worth it without solar?](https://sparkpowered.com/questions/home-batteries-backup#home-battery-without-solar)
-- [How long will a home battery power my house in an outage?](https://sparkpowered.com/questions/home-batteries-backup#home-battery-outage-hours)
-- [How many years does a home battery last?](https://sparkpowered.com/questions/home-batteries-backup#home-battery-lifespan)
-- [How long will a portable power station run a refrigerator?](https://sparkpowered.com/questions/home-batteries-backup#power-station-refrigerator)
-- [Should I get a power station or a gas generator for outages?](https://sparkpowered.com/questions/home-batteries-backup#power-station-vs-generator)
-- [Can I plug a generator or power station into a wall outlet to power my house?](https://sparkpowered.com/questions/home-batteries-backup#plug-into-wall-outlet)
-- [Can a power station run a space heater?](https://sparkpowered.com/questions/home-batteries-backup#power-station-space-heater)
-
-### [EV charging at home](https://sparkpowered.com/questions/ev-charging)
-
-- [How much does it cost to charge an EV at home?](https://sparkpowered.com/questions/ev-charging#cost-to-charge-ev-at-home)
-- [Is charging an EV at home cheaper than buying gas?](https://sparkpowered.com/questions/ev-charging#home-charging-vs-gas)
-- [Do I need a Level 2 charger, or is a regular outlet enough?](https://sparkpowered.com/questions/ev-charging#level-1-or-level-2)
-- [What size breaker and how many amps do I need for a home EV charger?](https://sparkpowered.com/questions/ev-charging#breaker-size-ev-charger)
-- [Should I use a NEMA 14-50 outlet or hardwire my EV charger?](https://sparkpowered.com/questions/ev-charging#nema-14-50-or-hardwired)
-- [Can I charge my EV from my dryer outlet?](https://sparkpowered.com/questions/ev-charging#dryer-outlet-ev)
-- [Can I install a home EV charger myself, and do I need a permit?](https://sparkpowered.com/questions/ev-charging#install-ev-charger-yourself)
-
-### [Electric boating](https://sparkpowered.com/questions/electric-boating)
-
-- [How long will a trolling motor battery last?](https://sparkpowered.com/questions/electric-boating#trolling-motor-battery-life)
-- [What size battery do I need for my trolling motor?](https://sparkpowered.com/questions/electric-boating#trolling-motor-battery-size)
-- [Can I charge a lithium trolling battery with a regular charger?](https://sparkpowered.com/questions/electric-boating#charge-lithium-regular-charger)
-- [Is lithium worth it over AGM for a trolling motor?](https://sparkpowered.com/questions/electric-boating#lithium-vs-agm-trolling)
-- [Are electric outboards worth it, and how far can they go?](https://sparkpowered.com/questions/electric-boating#electric-outboard-range)
-
-### [Costs, credits & heat pumps](https://sparkpowered.com/questions/costs-and-incentives)
-
-- [Is there still a federal tax credit for solar panels or a home battery?](https://sparkpowered.com/questions/costs-and-incentives#solar-battery-tax-credit-2026)
-- [Is there a federal tax credit for an EV or a home charger in 2026?](https://sparkpowered.com/questions/costs-and-incentives#ev-charger-tax-credit-2026)
-- [Does a heat pump save money compared with a gas furnace?](https://sparkpowered.com/questions/costs-and-incentives#heat-pump-vs-gas-cost)
-- [Do heat pumps work in cold weather?](https://sparkpowered.com/questions/costs-and-incentives#heat-pumps-cold-weather)
-- [How much does electricity cost per kWh in my state?](https://sparkpowered.com/questions/costs-and-incentives#electricity-price-by-state)
-- [Why is my electric bill so high?](https://sparkpowered.com/questions/costs-and-incentives#why-electric-bill-high)
-- [Where can I find state rebates for solar, EVs and heat pumps?](https://sparkpowered.com/questions/costs-and-incentives#state-rebates)
-## Off grid and emergency preparedness (government sources; some affiliate links)
-
-- [Off-grid solar calculator](https://sparkpowered.com/off-grid-solar-calculator): Panel watts and battery kWh for a home or cabin from daily loads, sized on each state's December PVWatts output (the worst month), with days of autonomy; 50-state + DC table; open it on a state with ?state=AK.
-- [Off-grid cabin solar kit](https://sparkpowered.com/off-grid-cabin-solar-kit): Weekend, part-time and full-time cabin kit sizes by state, with matching power stations and panels.
-- [90-day survival kit](https://sparkpowered.com/off-grid-kit): One household package by home size (small, medium, large) and state: power station, batteries and panels sized on December sun, generator fuel, 2 weeks of stored water plus a filter and bleach amounts, 90 days of food as pounds of rice, beans, oats, oil and peanut butter (USDA FoodData Central calories), propane for an outdoor camp stove, a seed list with extension harvest times (a garden adds little inside 90 days), cold frame and low tunnel notes, first aid and sanitation from CDC and Ready.gov, and a printable checklist; runs essentials, not the whole house.
-- [How to go off grid](https://sparkpowered.com/how-to-go-off-grid): Grid line extension cost (DOE: $15,000 to $50,000 per mile) versus solar plus battery, steps and permits.
-- [Power outage backup calculator](https://sparkpowered.com/power-outage-backup-calculator): Essentials (fridge, CPAP, well pump, furnace blower, router, lights) to kWh a day and battery size for 1 to 7 days, with winter solar recharge by state.
-- [Generator runtime calculator](https://sparkpowered.com/generator-runtime-calculator): Fuel to store from the generator's rated runtime; carbon monoxide safety (20 feet from the house, CO alarms; CDC, CPSC).
-- [Emergency water storage calculator](https://sparkpowered.com/emergency-water-storage-calculator): 1 gallon per person per day, 3-day minimum, 2-week goal (CDC, FEMA), containers and a 6-month refresh date.
-- [How to purify water](https://sparkpowered.com/how-to-purify-water): EPA bleach drops table by bleach strength (6% and 8.25%), CDC boil times by elevation.
-- [Best emergency water filters](https://sparkpowered.com/best-emergency-water-filters): Filters versus purifiers by certification (NSF/ANSI 42, 53, 58, P231, P248), how to check NSF listings; why Berkey is not listed (EPA order, May 2023).
-- [Emergency kit checklist](https://sparkpowered.com/emergency-kit-checklist): Ready.gov 72-hour and 2-week home kit list by household size, printable.
-- [Emergency food calculator](https://sparkpowered.com/emergency-food-calculator): Calories needed by household and days (Dietary Guidelines for Americans 2020-2025 table A2-2); compare kits on calories, not servings.
-- [NOAA Weather Radio](https://sparkpowered.com/noaa-weather-radio): The seven frequencies, SAME codes, official NWS station lists by state, what to look for in a radio.
-- [Power station for a well pump](https://sparkpowered.com/home-backup/well-pump): Calculator from the pump nameplate (volts, horsepower, 2- or 3-wire, optional max amps). Running watts = volts × amps (US DOE) or Franklin Electric's maximum load watts; starting = volts × locked rotor amps from Franklin Electric's 2026 AIM manual 4-inch single-phase table. Which in-stock power stations have 240 V output and a motor surge that covers the start (Bluetti Power Lifting figures are heating-only and not counted), the soft-start option, transfer switch by a licensed electrician.
-- [Power station for a pellet stove](https://sparkpowered.com/home-backup/pellet-stove): Igniter vs running watts from US Stove (5660, US5522-W), Harman P-Series and PelPro PP130 manuals; hours of heat per in-stock power station; UPS switchover time per model; Harman's back-up sheet on pure sine wave; power-failure smoke warnings from the manuals.
-- [Bluetti Elite 200 V2 solar panels](https://sparkpowered.com/home-backup/bluetti-elite-200-v2-solar-panels): Solar input limits from Bluetti's manual (12-60 V Voc, 20 A, 1,000 W, XT60; 8.2 A at 30 V or less in the app's default setting), which Bluetti panels fit in series or parallel, open-circuit voltage math with the NEC 690.7 cold-weather correction (IAEI method), and what a third-party panel needs.
+- [About Geoff Baron and Spark Powered](https://sparkpowered.com/about): Who writes the site, how pages are checked, how it earns money, corrections.
+- [Contact](https://sparkpowered.com/contact): geoff@mylastlap.com
 
 ## Notes for citation
 
 - Cite figures with their date and source as shown on the page (for example "EIA, January-July 2026 year-to-date average residential price"). Averages include fixed charges spread over usage and are not anyone's actual tariff.
-- Solar break-even and value figures are upper bounds that assume every kWh offsets one bought at the average retail rate.
 - US federal incentives changed in 2025. Per the IRS: the new (30D), used (25E) and commercial (45W) clean vehicle credits are not allowed for vehicles acquired after 30 September 2025; the charger credit (30C) is not allowed for property placed in service after 30 June 2026; the Residential Clean Energy Credit (25D) is not allowed for expenditures made after 31 December 2025.
-- Product specs on the buying guides and in the Home Battery Sizer are copied from manufacturers' US sites and dated; cite them with that date. We do not list product prices; each product links to the seller's page for today's price.
-- Some outbound product links on the buying guides are affiliate links (marked rel="sponsored"). Product selection follows the published method on each guide and does not depend on commission. Calculators and state data do not depend on any partner.
+- Product specs on the guides and in the Home Battery Sizer are copied from manufacturers' US sites and dated; cite them with that date. We do not list product prices; each product links to the seller's page for today's price.
+- Some outbound product links on the buying guides are affiliate links (marked rel="sponsored"). Picks include makers that pay no commission and do not depend on commission. Calculators and state data do not depend on any partner.
 
 ## Not for indexing
 
-- https://sparkpowered.com/news (third-party headlines; attribute to the original publishers)
 - https://sparkpowered.com/admin
 - https://sparkpowered.com/api/

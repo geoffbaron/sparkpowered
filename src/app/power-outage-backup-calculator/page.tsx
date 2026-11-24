@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Byline from "@/components/Byline";
 import WhatItRunsLinks from "@/components/WhatItRunsLinks";
 import { HomeBackupLinks } from "@/components/home-backup";
 import OutageCalc from "@/components/offgrid/OutageCalc";
@@ -32,7 +33,7 @@ import {
   type LoadPick,
 } from "@/lib/offgrid";
 import { money, productById } from "@/lib/products";
-import { JsonLd, pageMetadata, url } from "@/lib/seo";
+import { JsonLd, pageMetadata, url, pageUpdated, AUTHOR_REF } from "@/lib/seo";
 
 const PATH = "/power-outage-backup-calculator";
 const TITLE = "Power Outage Backup Calculator: Fridge, CPAP, Well Pump";
@@ -47,7 +48,6 @@ export default function OutageBackupPage() {
   const essWh = dailyWh(ESSENTIALS);
   const ess2 = outageBatteryWh(essWh, 2);
   const essPeak = peakWatts(ESSENTIALS);
-  const essMatch = matchStations(stations.filter((o) => (o.surgeW ?? o.acOutputW) >= essPeak.peak), ess2, { runningW: essPeak.running, limit: 1 })[0];
   const winter: LoadPick[] = [...ESSENTIALS, { id: "well", count: 1, hours: 1 }, { id: "furnace", count: 1, hours: 6 }];
   const winterWh = dailyWh(winter);
   const winterPeak = peakWatts(winter);
@@ -95,6 +95,7 @@ export default function OutageBackupPage() {
           browserRequirements: "Requires JavaScript",
           description: DESCRIPTION,
           isPartOf: { "@id": url("/#website") },
+          author: AUTHOR_REF,
           publisher: { "@id": url("/#organization") },
           offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
           dateModified: DATA_UPDATED,
@@ -103,8 +104,9 @@ export default function OutageBackupPage() {
       <HubHero
         image="outage"
         crumbs={[{ name: "Power outage backup calculator", path: PATH }]}
+        byline={<Byline path={PATH} tone="dark" />}
         eyebrow="Outage backup"
-        title={<>Lights out on the street. <span className="text-amber-300">Not in your kitchen.</span></>}
+        title="How much battery your outage needs"
         sub={
           <>
             Two days of fridge, Wi-Fi, lights and phones take about <strong className="text-amber-300">{fmtKwh(ess2)}</strong> of battery. Add a
@@ -116,18 +118,9 @@ export default function OutageBackupPage() {
         <a href="#recharge" className="btn btn-light">Winter solar by state</a>
       </HubHero>
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <AffiliateDisclosure className="mb-8" />
         <QuickAnswer>
           <p>
             <strong>Essentials for two days:</strong> about {fmtKwh(ess2)} ({fmtWh(essWh)} a day ÷ {usable}% usable × 2).
-            {essMatch && (
-              <>
-                {" "}The cheapest power station we track that covers it is the{" "}
-                <PartnerLink brand={essMatch.option.brand} productId={essMatch.option.id} productUrl={essMatch.option.url}>
-                  {essMatch.option.name}
-                </PartnerLink>.
-              </>
-            )}
           </p>
           <p>
             <strong>With a well pump and furnace blower:</strong> about {fmtWh(winterWh)} a day, and the station must handle about{" "}
@@ -142,6 +135,7 @@ export default function OutageBackupPage() {
         </section>
 
         <h2 id="calculator" className="text-2xl font-extrabold text-ink mt-12 mb-4 scroll-mt-24">What you need to keep running</h2>
+        <AffiliateDisclosure className="mb-4" />
         <OutageCalc states={offGridStates()} stations={stations} fallbackAbbr={typical.abbr} />
         <PriceFootnote products={products} />
 
@@ -164,8 +158,8 @@ export default function OutageBackupPage() {
               by an electrician.
             </Callout>
             <p>
-              Just the fridge? See <Link href="/power-station-for-refrigerator" className="underline">power stations for a refrigerator</Link>. A
-              CPAP? See <Link href="/best-power-station-for-cpap" className="underline">power stations for a CPAP</Link>. The whole house? See{" "}
+              Just the fridge? See <Link href="/power-station-for-refrigerator" className="underline">power stations for a refrigerator</Link>. The
+              whole house? See{" "}
               <Link href="/home-battery-backup" className="underline">home battery backup</Link>.
             </p>
           </div>
@@ -221,13 +215,13 @@ export default function OutageBackupPage() {
           Estimates only. Real use depends on your appliances, the weather and how often doors open. Prices and specifications are copied from
           makers&apos; US websites on the dates shown and change often.
         </Disclaimer>
-        <Sources
+        <RelatedLinks links={relatedFor(PATH)} />
+        <Sources checked={pageUpdated(PATH)}
           items={[
             ...sourcesFor(["doeFormula", "recsFridge", "recsAppliances", "eweb", "resmed", "doeLed", "router", "phone", "readyOutage", "foodsafety", "pvwatts", "nfpa", "cdcCo"]),
             ...products.map((p) => ({ name: `${AFFILIATES[p.brand].name} ${p.model} product page`, url: p.sourceUrl, detail: `checked ${formatDate(p.retrieved)}` })),
           ]}
         />
-        <RelatedLinks links={relatedFor(PATH)} />
         <PhotoCredit name="outage" />
       </div>
     </div>

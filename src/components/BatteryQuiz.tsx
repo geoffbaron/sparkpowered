@@ -169,7 +169,7 @@ export default function BatteryQuiz() {
             Energy Credit (25D) covered 30% of a home battery, but the IRS says it is not allowed for
             expenditures made after 31 December 2025.
             Some states and utilities run their own storage rebates.{" "}
-            <Link href="/incentives" className="underline font-semibold">See what is still available</Link>.
+            <Link href="/states" className="underline font-semibold">See rebates by state</Link>.
           </div>
 
 
@@ -232,27 +232,9 @@ export default function BatteryQuiz() {
             </div>
           </div>
 
-          {/* Solar upsell */}
-          {quiz.solar === "none" && (
-            <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200 rounded-2xl p-6">
-              <div className="mb-2"><span aria-hidden="true" translate="no" className="material-symbols-outlined" style={{ fontSize: 32, color: "#f59e0b" }}>wb_sunny</span></div>
-              <h3 className="font-bold text-lg mb-1">Add solar and maximize your savings</h3>
-              <p className="text-muted text-sm mb-4">
-                A battery alone can shift energy use and provide backup. But pairing with solar lets
-                you generate free electricity and potentially eliminate your bill entirely.
-              </p>
-              <Link
-                href="/solar-finder"
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-spark-yellow to-spark-orange text-white font-bold px-5 py-2.5 rounded-xl shadow hover:shadow-lg transition-shadow text-sm"
-              >
-                Find Solar Installers Near You →
-              </Link>
-            </div>
-          )}
 
           <p className="text-xs text-muted text-center pb-2">
-            Specs are each maker&apos;s own, as on our{" "}
-            <Link href="/best-portable-power-stations" className="underline">power station guide</Link>; add-on
+            Specs are each maker&apos;s own, from their US sites; add-on
             batteries are the maker&apos;s own. We don&apos;t list prices: each link goes to the maker&apos;s page for
             today&apos;s price, and installed systems are priced by quote, so get several. Storage needed assumes about 85% of a
             battery&apos;s rated capacity is usable in practice.

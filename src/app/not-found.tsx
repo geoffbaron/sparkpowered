@@ -14,8 +14,6 @@ export default function NotFound() {
       <p className="text-stone-700 mb-8">It may have moved. These are the most-used tools:</p>
       <ul className="grid sm:grid-cols-2 gap-3 text-left">
         {[
-          { href: "/ev-charging-cost", label: "EV charging cost calculator" },
-          { href: "/solar-calculator", label: "Solar panel calculator" },
           { href: "/battery-calculator", label: "Home battery sizer" },
           { href: "/states", label: "Energy data by state" },
         ].map((l) => (

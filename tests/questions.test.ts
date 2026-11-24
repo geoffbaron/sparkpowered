@@ -9,7 +9,8 @@ const text = (q: (typeof all)[number]["q"]) =>
 
 test("every hub is in the sitemap routes", () => {
   for (const t of TOPICS) assert.ok(ROUTES.some((r) => r.path === t.path), `${t.path} missing from ROUTES`);
-  assert.ok(ROUTES.some((r) => r.path === "/questions"));
+  // Nov 24 2026: the /questions index was folded into the one remaining hub.
+  assert.ok(!ROUTES.some((r) => r.path === "/questions"));
 });
 
 test("question ids are unique and every answer has sources", () => {
@@ -21,7 +22,7 @@ test("question ids are unique and every answer has sources", () => {
     assert.ok(q.sources.length > 0, `${key} has no sources`);
     for (const s of q.sources) assert.match(s.url, /^https:\/\//, `${key} source ${s.name}`);
   }
-  assert.ok(all.length >= 30, `only ${all.length} questions`);
+  assert.ok(all.length >= 7, `only ${all.length} questions`);
 });
 
 test("no broken numbers, emojis or AI mentions in any answer", () => {
@@ -51,23 +52,16 @@ test("the old single-answer pages are gone from the sitemap; the hubs stay", asy
   assert.ok(![...urls].some((u) => /^\/questions\/[^/]+\/[^/]+/.test(u)), "a single-answer URL is still listed");
 });
 
-test("every old question URL 308s to its hub anchor", async () => {
+test("every old question URL 301s to its hub anchor", async () => {
   const { default: config } = await import("../next.config");
   const rules = await config.redirects!();
-  const rule = rules.find((r) => r.source.startsWith("/questions/"));
-  assert.ok(rule, "no /questions redirect");
-  assert.equal(rule.permanent, true);
-  // Compile the Next source pattern: ":topic(a|b)" -> "(a|b)", ":question" -> "([^/]+)".
-  const re = new RegExp(`^${rule.source.replace(/:topic(\([^)]*\))/, "$1").replace(":question", "([^/]+)")}$`);
   for (const { topic, question } of ALL_QUESTIONS) {
-    const m = `${topic.path}/${question.id}`.match(re);
-    assert.ok(m, `${topic.path}/${question.id} not redirected`);
-    const dest = rule.destination.replace(":topic", m[1]).replace(":question", m[2]);
-    assert.equal(dest, `${topic.path}#${question.id}`);
+    const rule = rules.find((r) => r.source === `${topic.path}/:question`);
+    assert.ok(rule, `${topic.path}/${question.id} not redirected`);
+    assert.equal((rule as { statusCode?: number }).statusCode, 301);
+    assert.equal(rule.destination.replace(":question", question.id), `${topic.path}#${question.id}`);
   }
-  // Hub pages themselves must not match.
-  for (const t of TOPICS) assert.ok(!re.test(t.path), `${t.path} would redirect`);
-  assert.equal(ALL_QUESTIONS.length, 34);
+  assert.equal(ALL_QUESTIONS.length, 7);
 });
 
 test("llms.txt links every answer at its hub anchor and no single-answer URL", async () => {
@@ -90,20 +84,7 @@ test("every question has a worked example with a source and a calculator link", 
 });
 
 test("answers that tell people to plug in, wire, charge or run something carry safety conditions", () => {
-  const needSafety = [
-    "dryer-outlet-ev",
-    "breaker-size-ev-charger",
-    "nema-14-50-or-hardwired",
-    "level-1-or-level-2",
-    "home-battery-outage-hours",
-    "power-station-refrigerator",
-    "power-station-space-heater",
-    "trolling-motor-battery-life",
-    "trolling-motor-battery-size",
-    "charge-lithium-regular-charger",
-    "plug-in-solar-legal",
-    "solar-panels-to-charge-ev",
-  ];
+  const needSafety = ["home-battery-outage-hours", "power-station-refrigerator", "power-station-space-heater"];
   for (const id of needSafety) {
     const q = ALL_QUESTIONS.find((x) => x.question.id === id)?.question;
     assert.ok(q, `${id} not found`);

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Byline from "@/components/Byline";
 import { notFound } from "next/navigation";
 import { AffiliateDisclosure, PartnerLink } from "@/components/affiliate";
 import { Breadcrumbs, Disclaimer, PageIntro, RelatedLinks, Section, Sources } from "@/components/content";
@@ -8,7 +9,7 @@ import { COMPARISONS, comparisonBySlug } from "@/data/comparisons";
 import type { Product } from "@/data/products";
 import { formatDate } from "@/lib/energy";
 import { fullName, kwh, productById, watts } from "@/lib/products";
-import { JsonLd, pageMetadata, url } from "@/lib/seo";
+import { JsonLd, pageMetadata, url, pageUpdated } from "@/lib/seo";
 
 export function generateStaticParams() {
   return COMPARISONS.map((c) => ({ slug: c.slug }));
@@ -131,11 +132,10 @@ export default async function ComparisonPage({ params }: Props) {
       />
       <Breadcrumbs items={[{ name: "Comparisons", path: "/compare" }, { name: c.title, path }]} />
       <PageIntro eyebrow="Head to head" title={c.title} lede={c.intro} />
+      <Byline path={`/compare/${c.slug}`} updated={c.updated} />
       <p className="text-sm text-muted -mt-6 mb-6">
         Specs from the manufacturers&apos; US sites, checked <time dateTime={c.updated}>{formatDate(c.updated)}</time>.
       </p>
-      <AffiliateDisclosure className="mb-8" />
-
       <section aria-labelledby="verdict" className="rounded-2xl border border-amber-200 bg-amber-50 p-5 sm:p-6">
         <h2 id="verdict" className="text-xl font-bold mb-2">The short answer</h2>
         <p className="text-stone-800 leading-relaxed">{c.verdict}</p>
@@ -149,6 +149,8 @@ export default async function ComparisonPage({ params }: Props) {
           </p>
         )}
       </section>
+
+      <AffiliateDisclosure className="mt-8" />
 
       {pairs.map(([a, b], i) => (
         <Section
@@ -173,14 +175,14 @@ export default async function ComparisonPage({ params }: Props) {
       <p className="text-xs text-muted mt-3">Bold green marks the better figure where higher or lower is clearly better.</p>
       <PriceFootnote products={all} />
 
-      <Section title="How we compared">
+      <Section title="How these were compared">
         <p className="text-stone-700 leading-relaxed max-w-3xl">
-          We compare only figures the manufacturers publish for their US models, and we link each one below. We have
-          not lab-tested these units. Capacity is the rated battery capacity; usable AC energy is lower, typically by
+          I compare only figures the manufacturers publish for their US models, and link each one below. I haven&apos;t
+          tested these units myself. Capacity is the rated battery capacity; usable AC energy is lower, typically by
           10 to 20 percent, because of inverter losses. Cycle ratings are each maker&apos;s claim to its own
-          end point. See{" "}
-          <Link href="/best-portable-power-stations#how-we-chose" className="underline underline-offset-2">
-            how we choose products
+          end point. See the{" "}
+          <Link href="/methodology" className="underline underline-offset-2">
+            methodology
           </Link>
           .
         </p>
@@ -190,17 +192,16 @@ export default async function ComparisonPage({ params }: Props) {
         Specifications are copied from manufacturer websites on the date shown. Confirm
         them with the seller before buying. We don&apos;t list prices; the links go to each maker&apos;s page for today&apos;s price.
       </Disclaimer>
-      <Sources
-        items={all
-          .filter((p, i) => all.findIndex((x) => x.id === p.id) === i)
-          .map((p) => ({ name: `${fullName(p)} product page`, url: p.sourceUrl, detail: `checked ${formatDate(p.retrieved)}` }))}
-      />
       <RelatedLinks
         links={[
-          { href: "/best-portable-power-stations", label: "Best portable power stations", desc: "Every model we track, in one table" },
           { href: "/battery-calculator", label: "Battery sizer", desc: "Work out how many kWh you actually need" },
           ...others.slice(0, 4).map((o) => ({ href: `/compare/${o.slug}`, label: o.title, desc: o.pairs.length > 1 ? "Brand line-ups compared size for size" : "Specs and a verdict" })),
         ]}
+      />
+      <Sources checked={c.updated}
+        items={all
+          .filter((p, i) => all.findIndex((x) => x.id === p.id) === i)
+          .map((p) => ({ name: `${fullName(p)} product page`, url: p.sourceUrl, detail: `checked ${formatDate(p.retrieved)}` }))}
       />
     </article>
   );

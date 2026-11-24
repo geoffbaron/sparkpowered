@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Byline from "@/components/Byline";
 import { Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
 import { QuickAnswer } from "@/components/guide-ui";
 import { HubHero, PhotoCredit } from "@/components/ui";
@@ -7,11 +8,11 @@ import { INSTALL_COST, OTHER_CHARGERS } from "@/data/buyer-guides";
 import { HOME_CHARGERS } from "@/data/chargers";
 import { formatDate } from "@/lib/energy";
 import { money } from "@/lib/products";
-import { JsonLd, pageMetadata, url } from "@/lib/seo";
+import { JsonLd, pageMetadata, url, AUTHOR_REF, pageUpdated } from "@/lib/seo";
 
 const PATH = "/ev-charger-extension-cord";
 const UPDATED = "2026-11-14";
-const TITLE = "Can You Use an Extension Cord With a Level 2 EV Charger? What the Makers Say";
+const TITLE = "Extension Cord for a Level 2 EV Charger? Makers Say";
 const DESCRIPTION =
   "Tesla, Lectron, Autel and EVIQO all say not to plug their chargers in through an extension cord. Why, what the 'EV extension cables' sold online are, and the safe ways to reach your car.";
 
@@ -104,16 +105,16 @@ export default function EvChargerExtensionCordPage() {
           url: url(PATH),
           datePublished: UPDATED,
           dateModified: UPDATED,
-          author: { "@id": url("/#organization") },
+          author: AUTHOR_REF,
           publisher: { "@id": url("/#organization") },
           isPartOf: { "@id": url("/#website") },
           mainEntityOfPage: url(PATH),
         }}
       />
       <HubHero
+        byline={<Byline path={PATH} tone="dark" />}
         image="ev"
         crumbs={[
-          { name: "Best home EV charger", path: "/best-home-ev-charger" },
           { name: "Extension cords", path: PATH },
         ]}
         eyebrow="Home charging safety"
@@ -216,7 +217,6 @@ export default function EvChargerExtensionCordPage() {
             </li>
             <li>
               <strong>Choose a charger with a longer cable.</strong> If yours is short, a {maxCable}-foot cable may reach where it didn&apos;t.
-              Compare cable lengths in our <Link href="/best-home-ev-charger" className="underline">home charger guide</Link>.
             </li>
             <li>
               <strong>Have an electrician move or add the outlet.</strong> A licensed electrician can run a new 240-volt circuit to where you
@@ -225,8 +225,7 @@ export default function EvChargerExtensionCordPage() {
             </li>
             <li>
               <strong>Or hardwire a charger where you park.</strong> If a new circuit is going in anyway, the charger can be wired in
-              directly, with no outlet at all. Ask the electrician which is better for your panel and your car; see{" "}
-              <Link href="/ev-charger-installation-cost" className="underline">installation costs by state</Link>.
+              directly, with no outlet at all. Ask the electrician which is better for your panel and your car.
             </li>
           </ol>
           <p className="text-stone-700 leading-relaxed mt-4">
@@ -239,15 +238,12 @@ export default function EvChargerExtensionCordPage() {
           General information, not electrical advice. Follow your charger&apos;s manual, and leave outlets, circuits and charger wiring to a
           licensed electrician.
         </Disclaimer>
-        <Sources items={Object.values(S)} />
         <RelatedLinks
           links={[
             { href: "/ev-charger-tripping-gfci", label: "Charger tripping a GFCI breaker?", desc: "Why it happens and the safe fix" },
-            { href: "/ev-charger-installation-cost", label: "EV charger installation cost", desc: "Average price in your state, and what adds to it" },
-            { href: "/best-home-ev-charger", label: "Best home EV charger", desc: "Cable length, amps and plug compared" },
-            { href: "/questions/ev-charging", label: "Home charging questions", desc: "Breaker size, dryer outlets and permits" },
           ]}
         />
+        <Sources checked={pageUpdated(PATH)} items={Object.values(S)} />
         <PhotoCredit name="ev" />
       </div>
     </article>

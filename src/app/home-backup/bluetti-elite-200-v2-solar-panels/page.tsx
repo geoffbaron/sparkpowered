@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Byline from "@/components/Byline";
 import { AffiliateDisclosure } from "@/components/affiliate";
 import { HomeBackupLinks, WhatWeChecked, type CheckedSource } from "@/components/home-backup";
 import { Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
@@ -9,11 +10,11 @@ import { whatItRunsPath } from "@/lib/can-it-run";
 import { formatDate } from "@/lib/energy";
 import { NEC_COLD_FACTORS, OFFGRID_SOURCES, coldVoc, pvLayout, type PvInput, type PvPanel } from "@/lib/offgrid";
 import { fullName, productById } from "@/lib/products";
-import { JsonLd, pageMetadata, url } from "@/lib/seo";
+import { JsonLd, pageMetadata, url, AUTHOR_REF, pageUpdated } from "@/lib/seo";
 
 const PATH = "/home-backup/bluetti-elite-200-v2-solar-panels";
 const UPDATED = "2026-11-14";
-const TITLE = "Bluetti Elite 200 V2 Solar Panels: Which Fit, Series or Parallel, and the Cold-Weather Voltage Check";
+const TITLE = "Bluetti Elite 200 V2 Solar Panels: Which Ones Fit";
 const DESCRIPTION =
   "The Elite 200 V2's solar input limits from Bluetti's manual (12-60 V, 20 A, 1,000 W, XT60), which Bluetti panels fit in series or parallel, the open-circuit voltage math with a cold-weather margin, and what a third-party panel needs.";
 
@@ -132,13 +133,14 @@ export default function EliteSolarPage() {
           url: url(PATH),
           datePublished: UPDATED,
           dateModified: UPDATED,
-          author: { "@id": url("/#organization") },
+          author: AUTHOR_REF,
           publisher: { "@id": url("/#organization") },
           isPartOf: { "@id": url("/#website") },
           mainEntityOfPage: url(PATH),
         }}
       />
       <HubHero
+        byline={<Byline path={PATH} tone="dark" />}
         image="solar-roof"
         crumbs={[
           { name: "Home backup", path: "/home-backup" },
@@ -156,7 +158,6 @@ export default function EliteSolarPage() {
         <p className="text-sm text-muted mb-4">
           Updated <time dateTime={UPDATED}>{formatDate(UPDATED)}</time>
         </p>
-        <AffiliateDisclosure className="mb-6" />
 
         <QuickAnswer>
           <p>
@@ -167,7 +168,6 @@ export default function EliteSolarPage() {
           </p>
         </QuickAnswer>
 
-        <WhatWeChecked items={DOCS} untested="the Elite 200 V2 or any of these panels" className="mt-8" />
 
         <Section title="The input limits, from Bluetti's manual" id="limits">
           <dl className="grid grid-cols-2 lg:grid-cols-4 gap-3">
@@ -308,6 +308,7 @@ export default function EliteSolarPage() {
 
         <section className="mt-12" aria-labelledby="pick-heading">
           <h2 id="pick-heading" className="text-2xl font-bold mb-4">The station this page is about</h2>
+          <AffiliateDisclosure className="mt-12 mb-4" />
           <OurPick
             label="Our homepage pick"
             name={fullName(e200)}
@@ -326,16 +327,16 @@ export default function EliteSolarPage() {
 
         <Faq items={faqs} path={PATH} />
         <Disclaimer />
-        <Sources items={DOCS.map((d) => ({ name: d.name, url: d.url, detail: d.what }))} />
         <HomeBackupLinks exclude={PATH} />
         <RelatedLinks
           links={[
             { href: "/home-backup", label: "Home backup: the four ways to connect", desc: "Cords, inlet and interlock, transfer switch, smart panel" },
             { href: whatItRunsPath(e200.id), label: "What the Elite 200 V2 runs", desc: "Run times for 15 household loads" },
             { href: "/power-outage-backup-calculator", label: "Power outage backup calculator", desc: "How much solar keeps it topped up in winter, by state" },
-            { href: "/best-portable-power-stations", label: "Best portable power stations", desc: "Every model we list, by spec" },
           ]}
         />
+        <Sources title="More sources" id="more-sources-heading" checked={pageUpdated(PATH)} items={DOCS.map((d) => ({ name: d.name, url: d.url, detail: d.what }))} />
+        <WhatWeChecked items={DOCS} untested="the Elite 200 V2 or any of these panels" className="mt-14" />
         <PhotoCredit name="solar-roof" />
       </div>
     </article>

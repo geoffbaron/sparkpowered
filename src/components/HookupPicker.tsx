@@ -303,9 +303,9 @@ export default function HookupPicker({ data }: { data: HookupData }) {
             {res.matches.length === 0 ? (
               <p className="mt-2 rounded-2xl border border-black/10 bg-surface-light p-4 text-sm text-stone-800" data-testid="hookup-nomatch">
                 None of the in-stock models from the brands we partner with fits these answers. Look for a 120/240 V power station with at least{" "}
-                {fmtWh(res.needWh)} and {fmtW(res.peakW)} of surge, or see{" "}
-                <Link href="/best-portable-power-stations" className="underline underline-offset-2 text-spark-orange">
-                  every model we track
+                {fmtWh(res.needWh)} and {fmtW(res.peakW)} of surge, or see the{" "}
+                <Link href="/compare" className="underline underline-offset-2 text-spark-orange">
+                  comparisons
                 </Link>
                 .
               </p>

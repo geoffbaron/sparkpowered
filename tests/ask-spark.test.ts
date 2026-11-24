@@ -126,7 +126,7 @@ test("visitor limits: 15 an hour, 40 a day, per visitor", () => {
 
 test("over-limit visitors get a polite refusal and no API call", async () => {
   const store = new AskStore(tmp());
-  const { create, calls } = mockCreate("Answer [Solar calculator](/solar-calculator).");
+  const { create, calls } = mockCreate("Answer [Outage calculator](/power-outage-backup-calculator).");
   const limiter = new RateLimiter(2, 40);
   const deps = { create, store, limiter, now: () => new Date("2026-11-15T12:00:00Z") };
   await ask({ question: "q1" }, "v", deps);
@@ -169,11 +169,13 @@ test("knowledge pack is built from the site's pages and data", () => {
   assert.match(KNOWLEDGE_PACK, /25D\): Not allowed for expenditures made after 31 December 2025/);
   assert.match(KNOWLEDGE_PACK, /25C\): Not allowed for property placed in service after 31 December 2025/);
   // Question answers, state data, calculators, the site index.
-  assert.match(KNOWLEDGE_PACK, /Page: \/questions\/costs-and-incentives#ev-charger-tax-credit-2026/);
-  assert.match(KNOWLEDGE_PACK, /Texas \| \/states\/texas \| \d/);
-  assert.match(KNOWLEDGE_PACK, /\/solar-calculator/);
+  assert.match(KNOWLEDGE_PACK, /Page: \/questions\/home-batteries-backup#plug-into-wall-outlet/);
+  assert.match(KNOWLEDGE_PACK, /Texas \| \d/);
+  assert.match(KNOWLEDGE_PACK, /\/power-outage-backup-calculator/);
   assert.match(KNOWLEDGE_PACK, /# SITE INDEX/);
-  assert.match(KNOWLEDGE_PACK, /Plug-in solar \(balcony solar\)/);
+  assert.match(KNOWLEDGE_PACK, /Home backup hookup picker/);
+  // Nov 24 2026: nothing from the removed sections.
+  assert.doesNotMatch(KNOWLEDGE_PACK, /\/solar-calculator|\/ev-charging-cost|\/states\/[a-z]|trolling/);
   // Every path written in the pack is a real page (no dead links to offer).
   for (const m of KNOWLEDGE_PACK.matchAll(/Page: (\/[\w/-]+)/g)) assert.ok(SITE_PAGES.has(m[1]), m[1]);
   assert.doesNotMatch(KNOWLEDGE_PACK, /amazon/i);
@@ -184,7 +186,7 @@ test("knowledge pack is built from the site's pages and data", () => {
 });
 
 test("product list is only tracked partner links from the site's own data, never Amazon", () => {
-  assert.ok(CATALOG.length >= 8);
+  assert.ok(CATALOG.length >= 4);
   for (const p of CATALOG) {
     assert.doesNotMatch(p.href, /amazon|amzn/i);
     assert.match(p.href, /awin1\.com|linksynergy\.com|^https:\/\/eviqo\.io\/products\/[^?]+\?ref=zycwdczj$/, `${p.id} link is not tracked`);
@@ -192,14 +194,9 @@ test("product list is only tracked partner links from the site's own data, never
     assert.ok(!("priceText" in p), `${p.id} carries a price`);
   }
   assert.ok(catalogById("bluetti-elite-100-v2"));
-  assert.ok(catalogById("lectron-nexus-j1772"));
-  for (const id of ["eviqo-l2-j1772", "eviqo-nacs-40a", "eviqo-nacs-hardwired-48a"]) {
-    const e = catalogById(id);
-    assert.ok(e, id);
-    assert.match(e!.href, /\?ref=zycwdczj$/, id);
-    assert.equal(e!.page, "/best-home-ev-charger");
-  }
-  assert.ok(catalogById("redodo-12v-100ah"));
+  // Only power stations and home batteries now: no chargers, no RV or boat batteries.
+  assert.equal(catalogById("lectron-nexus-j1772"), undefined);
+  assert.equal(catalogById("redodo-12v-100ah"), undefined);
   assert.equal(catalogById("jackery-explorer-1000-v2"), undefined, "untracked brands are not offered");
 });
 
@@ -207,7 +204,7 @@ test("product list is only tracked partner links from the site's own data, never
 
 test("every product mention carries the commission note and no price", () => {
   const p = CATALOG[0];
-  const r = renderAnswer(`For outages, look at {{product:${p.id}}}. See [backup guide](/best-portable-power-stations).`, ctx);
+  const r = renderAnswer(`For outages, look at {{product:${p.id}}}. See [backup guide](/home-backup).`, ctx);
   const parts = r.paras.flatMap((x) => x.parts);
   const prod = parts.filter((x) => x.t === "product");
   assert.equal(prod.length, 1);
@@ -225,23 +222,23 @@ test("every product mention carries the commission note and no price", () => {
 
 test("unknown products, outside links and bare URLs never reach the page", () => {
   const r = renderAnswer(
-    "Try {{product:made-up-thing}} or [this deal](https://www.amazon.com/dp/B0X) or https://evil.example/x and [our page](https://sparkpowered.com/incentives) or [nope](/not-a-page).",
+    "Try {{product:made-up-thing}} or [this deal](https://www.amazon.com/dp/B0X) or https://evil.example/x and [our page](https://sparkpowered.com/states) or [nope](/not-a-page).",
     ctx,
   );
   const parts = r.paras.flatMap((x) => x.parts);
   assert.ok(!parts.some((x) => x.t === "product"));
   const links = parts.filter((x) => x.t === "link");
-  assert.deepEqual(links.map((l) => l.t === "link" && l.href), ["/incentives"]);
+  assert.deepEqual(links.map((l) => l.t === "link" && l.href), ["/states"]);
   const all = JSON.stringify(r.paras);
   assert.doesNotMatch(all, /amazon\.com|evil\.example/);
-  assert.equal(sitePath("/states/texas#local", SITE_PAGES), "/states/texas#local");
+  assert.equal(sitePath("/home-backup#methods", SITE_PAGES), "/home-backup#methods");
   assert.equal(sitePath("//evil.example", SITE_PAGES), null);
 });
 
 test("lists and paragraphs render as separate parts", () => {
-  const r = renderAnswer("Short answer here.\n\n- one [EV cost](/ev-charging-cost)\n- two", ctx);
+  const r = renderAnswer("Short answer here.\n\n- one [Outage calculator](/power-outage-backup-calculator)\n- two", ctx);
   assert.deepEqual(r.paras.map((p) => p.kind), ["p", "li", "li"]);
-  assert.deepEqual(r.pages, ["/ev-charging-cost"]);
+  assert.deepEqual(r.pages, ["/power-outage-backup-calculator"]);
 });
 
 // ---------------------------------------------------------------- no key, full flow, logs
@@ -269,7 +266,7 @@ test("a mocked answer: cached system prompt, short output, spend recorded, anony
   const store = new AskStore(dir);
   const now = new Date("2026-11-15T12:00:00Z");
   const { create, calls } = mockCreate(
-    "The federal charger credit ended for chargers placed in service after June 30, 2026. [Incentives](/incentives). Check with a tax pro.\n\n- {{product:lectron-nexus-j1772}}",
+    "The federal charger credit ended for chargers placed in service after June 30, 2026. [Rebates by state](/states). Check with a tax pro.\n\n- {{product:bluetti-elite-200-v2}}",
     { input_tokens: 50, output_tokens: 80, cache_read_input_tokens: 40_000 },
   );
   const r = await ask({ question: "Is there still a charger tax credit? email me at jo@example.com or 555-123-4567" }, "hashed-visitor", {
@@ -297,7 +294,7 @@ test("a mocked answer: cached system prompt, short output, spend recorded, anony
   const log = readFileSync(join(dir, "logs", files[0]), "utf8");
   assert.doesNotMatch(log, /jo@example\.com|555-123-4567|hashed-visitor/);
   assert.match(log, /\[email\]/);
-  assert.match(log, /lectron-nexus-j1772/);
+  assert.match(log, /bluetti-elite-200-v2/);
 });
 
 test("a model refusal becomes a polite decline", async () => {

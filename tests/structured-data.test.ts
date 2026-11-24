@@ -38,7 +38,7 @@ function checkProduct(p: Node, where: string) {
   assert.equal(p.aggregateRating, undefined, `${where}: ${p.name} claims ratings we do not have`);
   const review = p.review as Node | undefined;
   assert.ok(review && review["@type"] === "Review", `${where}: ${p.name} is not marked as our review`);
-  assert.equal((review.author as Node).name, "Spark Powered", `${where}: review author`);
+  assert.equal((review.author as Node).name, "Geoff Baron", `${where}: review author`);
   assert.match(String(review.datePublished), /^\d{4}-\d{2}-\d{2}$/, `${where}: review date`);
   if (p.offers) {
     const o = p.offers as Node;

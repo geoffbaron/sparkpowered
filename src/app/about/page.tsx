@@ -1,18 +1,21 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { IMAGES } from "@/data/images";
-import { Breadcrumbs, PageIntro, Section } from "@/components/content";
-import { JsonLd, pageMetadata, url } from "@/lib/seo";
+import { ABOUT_TEXT } from "@/data/about";
+import { Breadcrumbs, Section } from "@/components/content";
+import { AUTHOR, JsonLd, pageMetadata, pageUpdated, url } from "@/lib/seo";
+import { formatDate } from "@/lib/energy";
 
 const PATH = "/about";
 export const metadata: Metadata = pageMetadata({
-  title: "About Spark Powered & Our Editorial Standards",
+  title: "About Geoff Baron and Spark Powered",
   description:
-    "Who runs Spark Powered, how we choose and check the numbers in our EV, solar and home battery tools, how we handle news from other publishers, and how the site is funded.",
+    "Who writes Spark Powered, how each answer is researched from makers' manuals and official sources, how mistakes get fixed, and how the site earns money.",
   path: PATH,
 });
 
 export default function AboutPage() {
+  const updated = pageUpdated(PATH);
   return (
     <article className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       <JsonLd
@@ -21,84 +24,76 @@ export default function AboutPage() {
           "@type": "AboutPage",
           "@id": `${url(PATH)}#webpage`,
           url: url(PATH),
-          name: "About Spark Powered",
+          name: "About Geoff Baron and Spark Powered",
+          dateModified: `${updated}T12:00:00+00:00`,
           isPartOf: { "@id": url("/#website") },
           about: { "@id": url("/#organization") },
-          mainEntity: {
-            "@type": "Person",
-            "@id": url("/about#editor"),
-            name: "Geoff Baron",
-            jobTitle: "Owner and editor",
-            email: "mailto:geoff@mylastlap.com",
-            worksFor: { "@id": url("/#organization") },
-          },
+          mainEntity: { "@id": url("/about#editor") },
         }}
       />
       <Breadcrumbs items={[{ name: "About", path: PATH }]} />
-      <PageIntro
-        eyebrow="About us"
-        title="About Spark Powered"
-        lede="Spark Powered helps US households work out whether an electric car, solar panels or a home battery makes sense for them, using free calculators built on public government data."
-      />
 
-      <Section title="Who runs the site">
-        <p className="text-stone-700 leading-relaxed">
-          Spark Powered is an independent site owned and edited by <strong>Geoff Baron</strong>. It is not
-          owned by, or paid by, any carmaker, solar installer, battery maker or utility. The editor decides
-          what the tools calculate and is responsible for everything published here.
-        </p>
-      </Section>
-
-      <Section title="Where our numbers come from">
-        <div className="text-stone-700 leading-relaxed space-y-3">
-          <p>
-            Our calculators and state pages use public data from the US Energy Information Administration
-            (electricity and gasoline prices, household usage), the Department of Energy&apos;s Alternative
-            Fuels Data Center (charging stations), the PVWatts model from the National Laboratory of the
-            Rockies (solar output) and EPA ratings on fueleconomy.gov (vehicle efficiency and range). Tax
-            rules come from the IRS. Every page lists its sources and the date the data was retrieved.
-          </p>
-          <p>
-            Read exactly how each figure is calculated, and what it leaves out, on our{" "}
-            <Link href="/methodology" className="underline text-spark-orange">
-              methodology page
-            </Link>
-            .
+      <header className="mb-10 flex flex-col sm:flex-row gap-6 sm:items-center">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={AUTHOR.photoLarge}
+          alt="Geoff Baron"
+          width={160}
+          height={160}
+          className="h-40 w-40 rounded-full object-cover shrink-0"
+          decoding="async"
+        />
+        <div>
+          <h1 className="text-3xl sm:text-4xl font-extrabold leading-tight">About Spark Powered</h1>
+          <p className="text-sm text-muted mt-2">
+            Last updated <time dateTime={updated}>{formatDate(updated)}</time>
           </p>
         </div>
-      </Section>
+      </header>
 
-      <Section title="How we use automation and AI">
+      <p className="text-lg text-stone-700 leading-relaxed" data-testid="about-text">
+        {ABOUT_TEXT}
+      </p>
+      <p className="text-stone-700 mt-4">
+        Email: <a className="underline text-spark-orange" href={`mailto:${AUTHOR.email}`}>{AUTHOR.email}</a> ·{" "}
+        <Link href="/contact" className="underline">Contact</Link>
+      </p>
+
+      <Section title="What the site covers">
         <p className="text-stone-700 leading-relaxed">
-          The vehicle list in the EV Finder and the product list in the Home Battery Sizer are refreshed by an
-          automated research step that uses an AI model with web search to collect specifications. Those
-          lists can contain errors or go out of date, so we show no prices (each link goes to the maker for
-          today&apos;s price), show EPA-rated range alongside the EV results where we can match a model, and tell you to confirm
-          details with the manufacturer. Our state data pages and calculators do not use AI-generated numbers;
-          they are computed directly from the government datasets above.
+          One thing: keeping a US home running in a power outage with a portable power station or home battery. That means how to connect
+          one to the house, what it will run and for how long, and which unit fits which job.
         </p>
       </Section>
 
-      <Section title="How we handle news from other publishers">
+      <Section title="How each page is checked">
+        <ul className="text-stone-700 leading-relaxed list-disc pl-5 space-y-2">
+          <li>Specs, outlets and limits come from the maker&apos;s manual, spec sheet or support pages, with the date I read them.</li>
+          <li>
+            Safety and wiring rules come from official sources: the National Electrical Code, OSHA, the Consumer Product Safety Commission,
+            the Department of Energy and utilities.
+          </li>
+          <li>Where a manual is silent, I may cite owners&apos; own reports on forums, and the page says that is what it is.</li>
+          <li>Every page ends with a dated list of its sources. If I couldn&apos;t back an answer, I left it out.</li>
+          <li>
+            The calculators&apos; formulas and assumptions are on the{" "}
+            <Link href="/methodology" className="underline text-spark-orange">methodology page</Link>.
+          </li>
+        </ul>
+      </Section>
+
+      <Section title="Ask Spark">
         <p className="text-stone-700 leading-relaxed">
-          Our{" "}
-          <Link href="/news" className="underline text-spark-orange">
-            headlines page
-          </Link>{" "}
-          lists recent articles from Electrek, CleanTechnica, InsideEVs and Solar Power World, taken from the
-          RSS feeds those publishers provide. We show only the headline, the publisher&apos;s name and the date,
-          and link straight to the original article. We do not copy articles or images, and we do not present
-          their reporting as our own. That page is kept out of search results because the reporting belongs to
-          those publishers.
+          The Ask Spark button answers questions with an AI model that works from this site&apos;s pages and links back to them. It can be
+          wrong; the pages and their sources are the record.
         </p>
       </Section>
 
-      <Section title="How the site is funded">
+      <Section title="How the site earns money">
         <p className="text-stone-700 leading-relaxed">
-          Some links on our product guides (portable power stations, home batteries, plug-in solar kits and
-          solar quote marketplaces) are affiliate or referral links: if you buy or sign up through one, we may
-          earn a commission at no cost to you. Pages with these links say so near the top, the links are marked
-          as sponsored, and they never change what a calculator returns or which products we pick. Read the{" "}
+          Some product links are affiliate links: if you buy through one, I may earn a commission at no cost to you. They are marked, they sit
+          below the answer, and they never decide what a calculator returns. I also name good products from makers that don&apos;t pay me.
+          Read the{" "}
           <Link href="/disclaimer#affiliate-disclosure" className="underline">
             full affiliate disclosure
           </Link>
@@ -106,9 +101,19 @@ export default function AboutPage() {
         </p>
       </Section>
 
+      <Section title="Corrections">
+        <p className="text-stone-700 leading-relaxed">
+          Spotted a number that is wrong or out of date? Email{" "}
+          <a className="underline" href={`mailto:${AUTHOR.email}`}>{AUTHOR.email}</a>. I correct the page itself and its &ldquo;Last
+          updated&rdquo; date changes.
+        </p>
+      </Section>
+
       <Section title="Photo credits">
         <div id="photo-credits" className="scroll-mt-24">
-          <p className="text-stone-700 mb-3">Photos are from Unsplash, used under the Unsplash License.</p>
+          <p className="text-stone-700 mb-3">
+            Apart from my own photo, photos are from Unsplash, used under the Unsplash License. They are illustrations, not pictures of my gear.
+          </p>
           <ul className="text-sm text-stone-700 space-y-1 list-disc pl-5">
             {Object.entries(IMAGES).map(([k, img]) => (
               <li key={k}>
@@ -118,23 +123,6 @@ export default function AboutPage() {
             ))}
           </ul>
         </div>
-      </Section>
-
-      <Section title="Our sister site">
-        <p className="text-stone-700 leading-relaxed">
-          Geoff also runs{" "}
-          <a href="https://campervolts.com" className="underline text-spark-orange">CamperVolts</a>, free planners and
-          guides for wiring a camper van, RV or boat: battery, solar, inverter and wire sizes, with the same plain-numbers
-          approach.
-        </p>
-      </Section>
-
-      <Section title="Corrections">
-        <p className="text-stone-700 leading-relaxed">
-          If you spot a number that is wrong or out of date, we want to fix it. Each data page shows when its
-          figures were last updated; corrections are made on the page itself and the update date changes. Email corrections or questions to{" "}
-          <a className="underline" href="mailto:geoff@mylastlap.com">geoff@mylastlap.com</a>.
-        </p>
       </Section>
     </article>
   );

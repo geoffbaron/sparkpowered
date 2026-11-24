@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Byline from "@/components/Byline";
 import { AffiliateDisclosure, PartnerLink } from "@/components/affiliate";
 import { Breadcrumbs, Callout, Disclaimer, Faq, RelatedLinks, Section } from "@/components/content";
 import { QuickAnswer } from "@/components/guide-ui";
@@ -9,11 +10,11 @@ import { HOME_BACKUP_HUB } from "@/data/home-backup";
 import { HOOKUP_COSTS, HOOKUP_PARTS, HOOKUP_SAFETY_SOURCES, range } from "@/data/hookup";
 import { formatDate } from "@/lib/energy";
 import { fullName, kwh, productById, watts } from "@/lib/products";
-import { JsonLd, pageMetadata, url } from "@/lib/seo";
+import { JsonLd, pageMetadata, url, AUTHOR_REF } from "@/lib/seo";
 
 const PATH = "/home-backup/bluetti-apex-300-hookup";
 const UPDATED = "2026-11-14";
-const TITLE = "Bluetti Apex 300 Transfer Switch Options: AT1, Interlock or Manual Switch";
+const TITLE = "Bluetti Apex 300 Hookup: AT1, Interlock or Switch";
 const DESCRIPTION =
   "How to connect a Bluetti Apex 300 to your house: Bluetti's AT1 panel, an inlet box with an interlock, or a manual transfer switch. What its 50 A outlet really delivers on battery, the neutral question, costs and the electrician rule.";
 
@@ -72,7 +73,7 @@ export default function Apex300Hookup() {
           url: url(PATH),
           datePublished: UPDATED,
           dateModified: UPDATED,
-          author: { "@id": url("/#organization") },
+          author: AUTHOR_REF,
           publisher: { "@id": url("/#organization") },
           isPartOf: { "@id": url("/#website") },
           mainEntityOfPage: url(PATH),
@@ -82,6 +83,7 @@ export default function Apex300Hookup() {
         <Breadcrumbs items={crumbs} />
         <p className="text-sm font-semibold uppercase tracking-wide text-spark-amber mb-2">Home backup</p>
         <h1 className="text-3xl sm:text-4xl font-extrabold leading-tight mb-6">Bluetti Apex 300: AT1, interlock or manual transfer switch</h1>
+        <Byline path={PATH} />
 
         <QuickAnswer>
           <p>
@@ -193,19 +195,6 @@ export default function Apex300Hookup() {
 
         <Faq items={faqs} path={PATH} />
 
-        <WhatWeChecked
-          untested="the Apex 300, the AT1 or any transfer switch with it"
-          items={[
-            { ...MANUAL, read: "2026-11-14", what: "14-50R: 50 A bypass, 16 A at 240 V on battery; TT-30R limits; voltage selector; no statement on neutral bonding" },
-            { ...HOOKUP_GUIDE, read: "2026-11-14", what: "neutral bonding matters most; listed transfer equipment or an approved interlock; electrician, permits, never backfeed" },
-            { name: `${P.bluettiAt1.name} product page`, url: P.bluettiAt1.url, read: P.bluettiAt1.retrieved, what: "automatic transfer; compatible with Apex 300 systems (up to three via Hub A1)" },
-            { name: `${P.bluettiApexKit.name} product page`, url: P.bluettiApexKit.url, read: P.bluettiApexKit.retrieved, what: "one-line description" },
-            { name: `${fullName(a)} product page`, url: a.sourceUrl, read: a.retrieved, what: "stock, outlets" },
-            { name: "HomeGuide, Generator transfer switch installation cost", url: C.interlock.url, read: C.interlock.retrieved, what: `installed-cost ranges (figures dated ${formatDate(C.interlock.sourceUpdated)})` },
-            { ...HOOKUP_SAFETY_SOURCES.cpsc, read: "2026-11-14", what: "backfeeding warning" },
-            { ...HOOKUP_SAFETY_SOURCES.osha, read: "2026-11-14", what: "transfer switch by a qualified electrician" },
-          ]}
-        />
 
         <HomeBackupLinks exclude={PATH} />
 
@@ -217,8 +206,20 @@ export default function Apex300Hookup() {
           links={[
             { href: HOME_BACKUP_HUB.path, label: "The four ways to connect a battery", desc: "Cords, interlock, transfer switch or smart panel" },
             { href: "/home-backup/anker-solix-f3800-plus-hookup", label: "Anker SOLIX F3800 Plus hookup", desc: "Home Power Panel or Anker's transfer switch" },
-            { href: "/best-portable-power-stations", label: "Best portable power stations", desc: "Every model compared by spec" },
             { href: "/power-outage-backup-calculator", label: "Power outage backup calculator", desc: "How much battery your outage needs" },
+          ]}
+        />
+        <WhatWeChecked className="mt-14"
+          untested="the Apex 300, the AT1 or any transfer switch with it"
+          items={[
+            { ...MANUAL, read: "2026-11-14", what: "14-50R: 50 A bypass, 16 A at 240 V on battery; TT-30R limits; voltage selector; no statement on neutral bonding" },
+            { ...HOOKUP_GUIDE, read: "2026-11-14", what: "neutral bonding matters most; listed transfer equipment or an approved interlock; electrician, permits, never backfeed" },
+            { name: `${P.bluettiAt1.name} product page`, url: P.bluettiAt1.url, read: P.bluettiAt1.retrieved, what: "automatic transfer; compatible with Apex 300 systems (up to three via Hub A1)" },
+            { name: `${P.bluettiApexKit.name} product page`, url: P.bluettiApexKit.url, read: P.bluettiApexKit.retrieved, what: "one-line description" },
+            { name: `${fullName(a)} product page`, url: a.sourceUrl, read: a.retrieved, what: "stock, outlets" },
+            { name: "HomeGuide, Generator transfer switch installation cost", url: C.interlock.url, read: C.interlock.retrieved, what: `installed-cost ranges (figures dated ${formatDate(C.interlock.sourceUpdated)})` },
+            { ...HOOKUP_SAFETY_SOURCES.cpsc, read: "2026-11-14", what: "backfeeding warning" },
+            { ...HOOKUP_SAFETY_SOURCES.osha, read: "2026-11-14", what: "transfer switch by a qualified electrician" },
           ]}
         />
       </div>

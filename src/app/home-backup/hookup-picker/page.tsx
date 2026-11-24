@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Byline from "@/components/Byline";
 import { AffiliateDisclosure } from "@/components/affiliate";
 import { Breadcrumbs, Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
 import { QuickAnswer } from "@/components/guide-ui";
@@ -10,10 +11,10 @@ import { DEFAULT_INPUT, METHOD_LABEL, partsFor, pick, type Method } from "@/lib/
 import { hookupData } from "@/lib/hookup-picker-data";
 import { USABLE_FRACTION, fmtWh, sourcesFor } from "@/lib/offgrid";
 import { fullName, money, productById } from "@/lib/products";
-import { JsonLd, pageMetadata, url } from "@/lib/seo";
+import { JsonLd, pageMetadata, url, pageUpdated } from "@/lib/seo";
 
 const PATH = "/home-backup/hookup-picker";
-const TITLE = "How to Connect a Power Station to Your House: 5-Question Hookup Picker";
+const TITLE = "Connect a Power Station to Your House: Picker";
 const DESCRIPTION =
   "Five questions (what must stay on, 120 or 240 V, own or rent, budget, electrician) give the safe way to connect a portable battery to your home, the battery size, in-stock models that fit and a parts list with sourced cost ranges.";
 
@@ -112,6 +113,7 @@ export default function HookupPickerPage() {
         />
         <p className="text-spark-amber font-bold uppercase tracking-wide text-xs mt-4">Home backup hookup picker</p>
         <h1 className="text-3xl sm:text-4xl font-extrabold text-ink leading-tight mt-1">How to connect a power station to your house</h1>
+        <Byline path={PATH} article={{ headline: TITLE, description: DESCRIPTION }} />
 
         <QuickAnswer>
           <p>
@@ -203,7 +205,14 @@ export default function HookupPickerPage() {
           General information, not electrical advice. Part and labor costs are published averages, not quotes, and vary by panel, area and
           store. We don&apos;t list product prices; the links go to each maker for today&apos;s price.
         </Disclaimer>
-        <Sources
+        <RelatedLinks
+          links={[
+            { href: "/home-backup", label: "Run your house from a portable battery", desc: "The four ways to connect one, in detail" },
+            { href: "/power-outage-backup-calculator", label: "Power outage backup calculator", desc: "Size a battery for your own list and days" },
+            { href: "/home-battery-backup", label: "Home battery backup", desc: "Installed whole-home batteries vs portable" },
+          ]}
+        />
+        <Sources checked={pageUpdated(PATH)}
           items={[
             { name: HOMEGUIDE_SWITCH.name, url: HOMEGUIDE_SWITCH.url, detail: `interlock kit, inlet box, cord, supplies, labor, 6- and 10-circuit switches, permits; figures dated ${formatDate(HOMEGUIDE_SWITCH.published!)}, read ${checked}` },
             { name: IRON_FORGE_CORDS.name, url: IRON_FORGE_CORDS.url, detail: `25 ft 12-gauge 2-pack and 50 ft 12/3 locking-end cord; checked ${formatDate(IRON_FORGE_CORDS.retrieved)}` },
@@ -212,14 +221,6 @@ export default function HookupPickerPage() {
             ...sourcesFor(["recsFridge", "recsAppliances", "eweb", "resmed", "doeLed", "router", "phone", "nfpa"]),
             ...kitSources,
             ...productSources,
-          ]}
-        />
-        <RelatedLinks
-          links={[
-            { href: "/home-backup", label: "Run your house from a portable battery", desc: "The four ways to connect one, in detail" },
-            { href: "/power-outage-backup-calculator", label: "Power outage backup calculator", desc: "Size a battery for your own list and days" },
-            { href: "/best-portable-power-stations", label: "Best portable power stations", desc: "Every model we track, by spec" },
-            { href: "/home-battery-backup", label: "Home battery backup", desc: "Installed whole-home batteries vs portable" },
           ]}
         />
       </div>

@@ -50,10 +50,6 @@ export const PRIVACY_NOTE =
 
 /** Calculators offered when the chat is resting or a question is out of scope. */
 export const CALCULATORS: { href: string; label: string }[] = [
-  { href: "/go-electric", label: "Go Electric savings calculator" },
-  { href: "/solar-calculator", label: "Solar panel calculator" },
-  { href: "/ev-charging-cost", label: "EV charging cost calculator" },
   { href: "/battery-calculator", label: "Home battery sizer" },
   { href: "/power-outage-backup-calculator", label: "Power outage backup calculator" },
-  { href: "/ev-charger-installation-cost", label: "EV charger installation cost" },
 ];

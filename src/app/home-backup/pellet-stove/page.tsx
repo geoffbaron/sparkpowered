@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Byline from "@/components/Byline";
 import { AffiliateDisclosure } from "@/components/affiliate";
 import { HomeBackupLinks, WhatWeChecked, type CheckedSource } from "@/components/home-backup";
 import { Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
@@ -11,11 +12,11 @@ import { hoursText, loadPageProducts, usableWh } from "@/lib/can-it-run";
 import { formatDate } from "@/lib/energy";
 import { OFFGRID_SOURCES, USABLE_FRACTION } from "@/lib/offgrid";
 import { fullName } from "@/lib/products";
-import { JsonLd, pageMetadata, url } from "@/lib/seo";
+import { JsonLd, pageMetadata, url, AUTHOR_REF, pageUpdated } from "@/lib/seo";
 
 const PATH = "/home-backup/pellet-stove";
 const UPDATED = "2026-11-14";
-const TITLE = "Power Station for a Pellet Stove: Igniter vs Running Watts, Hours and Switchover";
+const TITLE = "Power Station for a Pellet Stove: Watts and Hours";
 const DESCRIPTION =
   "What a pellet stove draws while the igniter is on and once it is burning, from US Stove, Harman and PelPro manuals; hours of heat from each power station; pure sine wave and UPS switchover time.";
 
@@ -161,13 +162,14 @@ export default function PelletStovePage() {
           url: url(PATH),
           datePublished: UPDATED,
           dateModified: UPDATED,
-          author: { "@id": url("/#organization") },
+          author: AUTHOR_REF,
           publisher: { "@id": url("/#organization") },
           isPartOf: { "@id": url("/#website") },
           mainEntityOfPage: url(PATH),
         }}
       />
       <HubHero
+        byline={<Byline path={PATH} tone="dark" />}
         image="power-station"
         crumbs={[
           { name: "Home backup", path: "/home-backup" },
@@ -185,7 +187,6 @@ export default function PelletStovePage() {
         <p className="text-sm text-muted mb-4">
           Updated <time dateTime={UPDATED}>{formatDate(UPDATED)}</time>
         </p>
-        <AffiliateDisclosure className="mb-6" />
 
         <QuickAnswer>
           <p>
@@ -196,7 +197,6 @@ export default function PelletStovePage() {
           </p>
         </QuickAnswer>
 
-        <WhatWeChecked items={DOCS} untested="a pellet stove on any power station" className="mt-8" />
 
         <Section title="Igniter watts vs running watts, from the manuals" id="watts">
           <div className="relative overflow-x-auto rounded-xl border border-black/8 bg-surface">
@@ -303,6 +303,7 @@ export default function PelletStovePage() {
 
         <section className="mt-12" aria-labelledby="pick-heading">
           <h2 id="pick-heading" className="text-2xl font-bold mb-4">Smallest that heats a full night</h2>
+          <AffiliateDisclosure className="mt-12 mb-4" />
           <OurPick
             label="Smallest that heats a 12-hour night, with a stated switchover"
             name={fullName(pick)}
@@ -319,16 +320,16 @@ export default function PelletStovePage() {
 
         <Faq items={faqs} path={PATH} />
         <Disclaimer />
-        <Sources items={[...DOCS.map((d) => ({ name: d.name, url: d.url, detail: d.what })), OFFGRID_SOURCES.readyOutage]} />
         <HomeBackupLinks exclude={PATH} />
         <RelatedLinks
           links={[
             { href: "/home-backup", label: "Home backup: the four ways to connect", desc: "Cords, inlet and interlock, transfer switch, smart panel" },
             { href: "/power-outage-backup-calculator", label: "Power outage backup calculator", desc: "Fridge, CPAP, well pump and furnace through an outage" },
             { href: "/home-backup/well-pump", label: "Power station for a well pump", desc: "Starting watts from the pump's nameplate" },
-            { href: "/best-portable-power-stations", label: "Best portable power stations", desc: "Every model we list, by spec" },
           ]}
         />
+        <Sources title="More sources" id="more-sources-heading" checked={pageUpdated(PATH)} items={[...DOCS.map((d) => ({ name: d.name, url: d.url, detail: d.what })), OFFGRID_SOURCES.readyOutage]} />
+        <WhatWeChecked items={DOCS} untested="a pellet stove on any power station" className="mt-14" />
         <PhotoCredit name="power-station" />
       </div>
     </article>

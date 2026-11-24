@@ -1,0 +1,3 @@
+/** Geoff's About paragraph (Nov 24 2026). One place, so the tests can check it stays honest. */
+export const ABOUT_TEXT =
+  "I'm Geoff Baron. I build software and run a small software company, LastLap Lab LLC, and I write every page on Spark Powered. I'm not an electrician, and I haven't tested the gear on this site myself. What I do is research: every answer is checked against the makers' own manuals and spec sheets and against official sources such as the National Electrical Code, the Department of Energy and the utilities, and each page ends with the sources I used and the date I read them. Where a job needs real wiring, I say so: a licensed electrician has to do it. If you find a mistake, email me and I'll fix it and change the page's date.";

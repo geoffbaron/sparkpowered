@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Byline from "@/components/Byline";
 import BatteryQuiz from "@/components/BatteryQuiz";
 import { Breadcrumbs, Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
 import { NATIONAL, POWERWALL_3_KWH, SOURCES, STATES, batteryFigures, num } from "@/lib/energy";
-import { JsonLd, pageMetadata, url } from "@/lib/seo";
+import { JsonLd, pageMetadata, url, pageUpdated, AUTHOR_REF } from "@/lib/seo";
 
 const PATH = "/battery-calculator";
 const TITLE = "Home Battery Size Calculator: How Many kWh Do You Need?";
@@ -52,11 +53,13 @@ export default function BatteryCalculatorPage() {
           description: DESCRIPTION,
           isPartOf: { "@id": url("/#website") },
           publisher: { "@id": url("/#organization") },
+          author: AUTHOR_REF,
           offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
         }}
       />
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
         <Breadcrumbs items={[{ name: "Home battery sizer", path: PATH }]} />
+        <Byline path={PATH} className="mb-0" />
       </div>
       <BatteryQuiz />
 
@@ -138,7 +141,12 @@ export default function BatteryCalculatorPage() {
           Product specifications and prices in the sizer are copied from manufacturers&apos; US websites and dated on
           our guides; installed costs are averages. Confirm them with the seller and installer.
         </Disclaimer>
-        <Sources
+        <RelatedLinks
+          links={[
+            { href: "/home-battery-backup", label: "Home battery backup guide", desc: "Whole-home vs portable, with real costs" },
+          ]}
+        />
+        <Sources checked={pageUpdated(PATH)}
           items={[
             { name: SOURCES.usage.name, url: SOURCES.usage.url, detail: SOURCES.usage.period },
             {
@@ -151,15 +159,6 @@ export default function BatteryCalculatorPage() {
               url: "https://www.irs.gov/newsroom/faqs-for-modification-of-sections-25c-25d-25e-30c-30d-45l-45w-and-179d-under-public-law-119-21-139-stat-72-july-4-2025-commonly-known-as-the-one-big-beautiful-bill-act-obbb",
               detail: "25D ends for expenditures after 31 December 2025",
             },
-          ]}
-        />
-        <RelatedLinks
-          links={[
-            { href: "/solar-calculator", label: "Solar panel calculator", desc: "Pair your battery with the right-size array" },
-            { href: "/home-battery-backup", label: "Home battery backup guide", desc: "Whole-home vs portable, with real costs" },
-            { href: "/best-portable-power-stations", label: "Best portable power stations", desc: "Every model we track in one table" },
-            { href: "/solar-finder", label: "Find installers", desc: "Companies serving your state" },
-            { href: "/lithium-rv-battery", label: "RV, van and boat batteries", desc: "Size a 12 V lithium battery for what you run" },
           ]}
         />
       </div>

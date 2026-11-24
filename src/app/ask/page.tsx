@@ -9,8 +9,8 @@ const PATH = "/ask";
 
 export const metadata: Metadata = {
   ...pageMetadata({
-    title: "Ask Spark: Questions About Going Electric",
-    description: "Ask about solar, backup power, EV charging at home, heat pumps, electric boats and incentives. Answers come from Spark Powered's fact-checked pages, with links.",
+    title: "Ask Spark: Home Backup Questions",
+    description: "Ask about power stations, home batteries and backup hookups. Answers come from Spark Powered's own pages, with links.",
     path: PATH,
   }),
   // A chat box is not content for search results.
@@ -23,7 +23,7 @@ export default function AskPage() {
       <Breadcrumbs items={[{ name: "Ask Spark", path: PATH }]} />
       <PageIntro
         title="Ask Spark"
-        lede="Questions about going electric in the US: solar, plug-in solar, power stations and backup, EV charging at home, heat pumps, electric boating, incentives and bills. Answers come only from our fact-checked pages, with a link to each one."
+        lede="Questions about keeping a US home powered in an outage: power stations, home batteries, hookups and what they run. Answers come only from this site's pages, with a link to each one."
       />
       <p className="mb-4 rounded-xl bg-amber-50 border border-amber-200 px-4 py-3 text-sm font-medium text-amber-900">{AI_LABEL}</p>
       <AskSpark />

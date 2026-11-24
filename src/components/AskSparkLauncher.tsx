@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import AskSpark from "@/components/AskSpark";
 
 /** Pages where the corner button would get in the way or repeat itself. */
-const HIDDEN_ON = ["/ask", "/admin", "/solartopia"];
+const HIDDEN_ON = ["/ask", "/admin"];
 
 /** Small "Ask Spark" button in the bottom-right corner that opens the chat in a panel. */
 export default function AskSparkLauncher() {

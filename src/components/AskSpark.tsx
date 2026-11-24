@@ -17,10 +17,10 @@ interface Msg {
 }
 
 const EXAMPLES = [
-  "Is solar still worth it without the tax credit?",
   "What size power station runs my fridge in an outage?",
-  "Do I need a Level 2 charger for my EV?",
-  "Does a heat pump save money over a gas furnace?",
+  "Can a power station run my well pump?",
+  "How do I connect a power station to my house?",
+  "Why does my EV charger keep tripping the GFCI?",
 ];
 
 /** LastLap analytics custom event; no message content is ever sent. */
@@ -201,7 +201,7 @@ export default function AskSpark() {
               send(q);
             }
           }}
-          placeholder="Ask a question about going electric"
+          placeholder="Ask about home backup power"
           className="w-full rounded-xl border border-black/20 px-3 py-2 text-base"
         />
         <div className="flex items-center justify-between gap-3">

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Byline from "@/components/Byline";
 import { AffiliateDisclosure, PartnerLink } from "@/components/affiliate";
 import { AFFILIATES } from "@/data/affiliates";
 import { Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
@@ -10,10 +11,10 @@ import { PriceFootnote, ProductListJsonLd, SpecTable } from "@/components/produc
 import { INSTALLED_BATTERY_COST, PRODUCTS, type Product } from "@/data/products";
 import { NATIONAL, POWERWALL_3_KWH, SOURCES, formatDate, num } from "@/lib/energy";
 import { fullName, kwh, maxWh, money, productById, watts } from "@/lib/products";
-import { pageMetadata } from "@/lib/seo";
+import { pageMetadata, pageUpdated } from "@/lib/seo";
 
 const PATH = "/home-battery-backup";
-const TITLE = "Home Battery Backup: Whole-Home vs Portable, Real Costs (2026)";
+const TITLE = "Home Battery Backup: Whole-Home vs Portable";
 const DESCRIPTION =
   "Whole-home batteries like Powerwall 3 and Enphase vs plug-in systems like EcoFlow DELTA Pro Ultra and portable power stations: real specs, what each can run, and how to size one.";
 
@@ -106,21 +107,20 @@ export default function HomeBatteryBackupPage() {
       <HubHero
         image="home-battery"
         crumbs={[{ name: "Home battery backup", path: PATH }]}
+        byline={<Byline path={PATH} tone="dark" article={{ headline: TITLE, description: DESCRIPTION }} />}
         eyebrow="Home battery backup"
-        title={<>Storm outside. <span className="text-amber-300">Lights on inside.</span></>}
+        title="Home battery backup: whole-home or portable?"
         sub={
           <>
-            A home battery switches on by itself when the grid goes down. The fridge stays cold, the Wi-Fi stays up and the
-            house stays quiet: no generator to start, no fuel to store, no fumes. Start with a 2 kWh battery for the
-            essentials or go whole-home.
+            An installed home battery switches over by itself when the grid goes down and can run chosen circuits; a portable
+            power station runs what you plug into it. Which one fits depends on what you need to run and for how long.
           </>
         }
       >
-        <a href="#picks" className="btn btn-primary">See our picks</a>
+        <a href="#options" className="btn btn-primary">Compare the options</a>
         <Link href="/battery-calculator" className="btn btn-light">Find the right size</Link>
       </HubHero>
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <AffiliateDisclosure className="mb-8" />
 
       <section aria-labelledby="keeps-heading">
         <h2 id="keeps-heading" className="text-2xl font-extrabold text-ink mb-4">What each size keeps running</h2>
@@ -136,41 +136,6 @@ export default function HomeBatteryBackupPage() {
         </div>
       </section>
 
-      <section id="picks" className="mt-10 grid gap-4 scroll-mt-24" aria-label="Our picks">
-        <OurPick
-          label="Our pick to keep the essentials on"
-          name={fullName(essentials)}
-          why="Plug the fridge, router and a lamp straight into it (no power strip or light extension cord) and leave them there. When the power cuts out it takes over in about a hundredth of a second. No electrician needed, as long as you never connect it to your house wiring."
-          life={[`Fridge alone: ${lifeSummary(essentials.capacityWh).fridge}`, `CPAP: ${lifeSummary(essentials.capacityWh).cpap}`]}
-          brand={essentials.brand}
-          productId={essentials.id}
-          productUrl={essentials.url}
-          category="battery"
-        />
-        <OurPick
-          label="Our pick for whole-home backup you can buy online"
-          name={fullName(wholeHome)}
-          why="240-volt power for a well pump or home circuits, room to grow into days of backup, and lots of solar input. An electrician connects it through a transfer switch or smart panel."
-          life={[`Fridge, Wi-Fi and lights: ${lifeSummary(wholeHome.capacityWh).essentials}`, `Expands to ${lifeSummary(maxWh(wholeHome)).essentials}`]}
-          brand={wholeHome.brand}
-          productId={wholeHome.id}
-          productUrl={wholeHome.url}
-          category="battery"
-        />
-        <OurPick
-          label="Our pick for an installed battery"
-          name={fullName(installedPick)}
-          icon="home"
-          why="One box that handles both solar and storage, switches over automatically, and is covered for 10 years. Sold through Tesla and certified installers."
-          life={[`Whole-home: ${Math.round((POWERWALL_3_KWH / usDaily) * 24)} hours of average use`, `Essentials: ${lifeSummary(installedPick.capacityWh).essentials}`]}
-          priceNote="Installed price by quote"
-          brand={installedPick.brand}
-          productId={installedPick.id}
-          productUrl={installedPick.url}
-          category="battery"
-          cta="Get a Powerwall quote from Tesla"
-        />
-      </section>
 
       <MythCallout m={lite("battery-without-solar")} className="mt-8" />
 
@@ -229,6 +194,46 @@ export default function HomeBatteryBackupPage() {
         </p>
       </Section>
 
+      <section aria-labelledby="picks-heading" className="mt-12">
+        <h2 id="picks-heading" className="text-2xl font-extrabold text-ink mb-4">Picks, if you are buying</h2>
+        <AffiliateDisclosure />
+        <section id="picks" className="mt-6 grid gap-4 scroll-mt-24" aria-label="Our picks">
+          <OurPick
+            label="Our pick to keep the essentials on"
+            name={fullName(essentials)}
+            why="Plug the fridge, router and a lamp straight into it (no power strip or light extension cord) and leave them there. When the power cuts out it takes over in about a hundredth of a second. No electrician needed, as long as you never connect it to your house wiring."
+            life={[`Fridge alone: ${lifeSummary(essentials.capacityWh).fridge}`, `CPAP: ${lifeSummary(essentials.capacityWh).cpap}`]}
+            brand={essentials.brand}
+            productId={essentials.id}
+            productUrl={essentials.url}
+            category="battery"
+          />
+          <OurPick
+            label="Our pick for whole-home backup you can buy online"
+            name={fullName(wholeHome)}
+            why="240-volt power for a well pump or home circuits, room to grow into days of backup, and lots of solar input. An electrician connects it through a transfer switch or smart panel."
+            life={[`Fridge, Wi-Fi and lights: ${lifeSummary(wholeHome.capacityWh).essentials}`, `Expands to ${lifeSummary(maxWh(wholeHome)).essentials}`]}
+            brand={wholeHome.brand}
+            productId={wholeHome.id}
+            productUrl={wholeHome.url}
+            category="battery"
+          />
+          <OurPick
+            label="Our pick for an installed battery"
+            name={fullName(installedPick)}
+            icon="home"
+            why="One box that handles both solar and storage, switches over automatically, and is covered for 10 years. Sold through Tesla and certified installers."
+            life={[`Whole-home: ${Math.round((POWERWALL_3_KWH / usDaily) * 24)} hours of average use`, `Essentials: ${lifeSummary(installedPick.capacityWh).essentials}`]}
+            priceNote="Installed price by quote"
+            brand={installedPick.brand}
+            productId={installedPick.id}
+            productUrl={installedPick.url}
+            category="battery"
+            cta="Get a Powerwall quote from Tesla"
+          />
+        </section>
+      </section>
+
       <Section title="Installed whole-home batteries" id="installed">
         <p className="text-stone-700 leading-relaxed max-w-3xl mb-4">
           These are sold through installers, so makers don&apos;t publish a price: you get a quote. Expect it to depend on
@@ -257,8 +262,8 @@ export default function HomeBatteryBackupPage() {
         <p className="text-stone-700 leading-relaxed max-w-3xl mb-4">
           For a fridge, CPAP, router and phones through a short outage, a 1 to 2 kWh power station is often enough
           and costs a fraction of an installed battery.{" "}
-          <Link href="/best-portable-power-stations" className="text-spark-orange underline underline-offset-2">
-            See our full power station guide and picks
+          <Link href="/power-outage-backup-calculator" className="text-spark-orange underline underline-offset-2">
+            Size yours with the outage calculator
           </Link>
           .
         </p>
@@ -282,14 +287,9 @@ export default function HomeBatteryBackupPage() {
               input watts.
             </li>
             <li>
-              <strong>Building your own off-grid or cabin system?</strong> 48 V and 12 V lithium batteries paired with
-              an inverter cost far less per kWh than a finished home battery; see{" "}
-              <Link href="/lithium-rv-battery" className="underline">lithium RV, boat and off-grid batteries</Link>.
-            </li>
-            <li>
               <strong>Incentives:</strong> the 30% federal credit for homeowners ended after 2025, but some utilities
               pay battery owners to share power at peak times. See{" "}
-              <Link href="/incentives" className="underline">2026 incentives</Link>.
+              <Link href="/states" className="underline">rebates by state</Link>.
             </li>
           </ul>
           <Callout>
@@ -307,7 +307,14 @@ export default function HomeBatteryBackupPage() {
         are marketplace averages, not product prices. Batteries connected to home wiring must be installed by a licensed electrician under
         local codes.
       </Disclaimer>
-      <Sources
+      <RelatedLinks
+        links={[
+          { href: "/battery-calculator", label: "Battery sizer", desc: "How many kWh you need, with matching systems" },
+          { href: "/questions/home-batteries-backup", label: "Backup power questions, answered", desc: "Run times, generators and safety, with sources" },
+          { href: "/compare", label: "Head-to-head comparisons", desc: "EcoFlow vs Anker vs Jackery vs Bluetti" },
+        ]}
+      />
+      <Sources checked={pageUpdated(PATH)}
         items={[
           { name: "EnergySage: how much do home batteries cost", url: ES_COST_URL, detail: "Installed cost by brand, first half of 2026" },
           { name: "EnergySage: home energy market, first half 2026", url: INSTALLED_BATTERY_COST.url, detail: `Home battery price ${money(INSTALLED_BATTERY_COST.medianPerKwh)}/kWh` },
@@ -318,16 +325,6 @@ export default function HomeBatteryBackupPage() {
             url: "https://www.irs.gov/newsroom/faqs-for-modification-of-sections-25c-25d-25e-30c-30d-45l-45w-and-179d-under-public-law-119-21-139-stat-72-july-4-2025-commonly-known-as-the-one-big-beautiful-bill-act-obbb",
             detail: "25D ends for expenditures after 31 December 2025",
           },
-        ]}
-      />
-      <RelatedLinks
-        links={[
-          { href: "/battery-calculator", label: "Battery sizer", desc: "How many kWh you need, with matching systems" },
-          { href: "/questions/home-batteries-backup", label: "Backup power questions, answered", desc: "Run times, generators and safety, with sources" },
-          { href: "/best-portable-power-stations", label: "Best portable power stations", desc: "Picks for camping, CPAP, RVs and apartments" },
-          { href: "/compare", label: "Head-to-head comparisons", desc: "EcoFlow vs Anker vs Jackery vs Bluetti" },
-          { href: "/plug-in-solar", label: "Plug-in solar", desc: "Small solar that plugs into an outlet" },
-          { href: "/lithium-rv-battery", label: "Lithium RV and boat batteries", desc: "12 V, 24 V and 48 V batteries that replace lead-acid" },
         ]}
       />
       <PhotoCredit name="home-battery" />

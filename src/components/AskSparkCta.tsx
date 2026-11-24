@@ -5,7 +5,7 @@ export default function AskSparkCta({ className = "" }: { className?: string }) 
   return (
     <aside className={`rounded-2xl border border-amber-200 bg-amber-50 p-5 flex flex-col sm:flex-row sm:items-center gap-3 sm:justify-between ${className}`}>
       <div>
-        <p className="font-bold text-ink">Have a question about going electric?</p>
+        <p className="font-bold text-ink">Have a question about home backup power?</p>
         <p className="text-sm text-stone-600">Ask Spark answers from our fact-checked pages and links each one. It&apos;s an AI assistant and can be wrong.</p>
       </div>
       <Link

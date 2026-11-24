@@ -144,12 +144,22 @@ export interface SourceRef {
   detail?: string;
 }
 
-export function Sources({ items }: { items: SourceRef[] }) {
+/**
+ * The dated source list every article ends with. `checked` is the date the
+ * list was last checked against the page (normally the page's content date).
+ */
+export function Sources({ items, checked, title = "Sources", id = "sources-heading" }: { items: SourceRef[]; checked?: string; title?: string; id?: string }) {
   return (
-    <section aria-labelledby="sources-heading" className="mt-14 border-t border-black/8 pt-8">
-      <h2 id="sources-heading" className="text-lg font-bold mb-3">
-        Sources
+    <section aria-labelledby={id} className="mt-14 border-t border-black/8 pt-8" data-testid="sources">
+      <h2 id={id} className="text-lg font-bold mb-1">
+        {title}
       </h2>
+      {checked && (
+        <p className="text-sm text-muted mb-3">
+          Checked against this page on <time dateTime={checked}>{formatDate(checked)}</time>. I haven&apos;t tested products myself; every
+          figure comes from these documents.
+        </p>
+      )}
       <ol className="list-decimal pl-5 space-y-2 text-sm text-stone-700">
         {items.map((s) => {
           const link = citationUrl(s.url);

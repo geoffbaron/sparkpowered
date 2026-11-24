@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Byline from "@/components/Byline";
 import { AffiliateDisclosure, PartnerLink } from "@/components/affiliate";
 import { Breadcrumbs, Callout, Disclaimer, Faq, RelatedLinks, Section } from "@/components/content";
 import { QuickAnswer } from "@/components/guide-ui";
@@ -8,11 +9,11 @@ import { HOME_BACKUP_HUB } from "@/data/home-backup";
 import { HOOKUP_COSTS, HOOKUP_PARTS, HOOKUP_SAFETY_SOURCES, range } from "@/data/hookup";
 import { formatDate } from "@/lib/energy";
 import { fullName, kwh, productById, watts } from "@/lib/products";
-import { JsonLd, pageMetadata, url } from "@/lib/seo";
+import { JsonLd, pageMetadata, url, AUTHOR_REF } from "@/lib/seo";
 
 const PATH = "/home-backup/anker-solix-f3800-plus-hookup";
 const UPDATED = "2026-11-14";
-const TITLE = "Anker SOLIX F3800 Plus Home Hookup: Transfer Switch, Inlet Box or Home Power Panel";
+const TITLE = "Anker F3800 Plus Home Hookup: Switch, Inlet or Panel";
 const DESCRIPTION =
   "How to connect an Anker SOLIX F3800 Plus to your house without the Home Power Panel, and when the panel is worth it: inlet box and interlock, Anker's 10-circuit manual transfer switch, circuits, 120/240 V, costs and stock.";
 
@@ -68,7 +69,7 @@ export default function F3800PlusHookup() {
           url: url(PATH),
           datePublished: UPDATED,
           dateModified: UPDATED,
-          author: { "@id": url("/#organization") },
+          author: AUTHOR_REF,
           publisher: { "@id": url("/#organization") },
           isPartOf: { "@id": url("/#website") },
           mainEntityOfPage: url(PATH),
@@ -78,6 +79,7 @@ export default function F3800PlusHookup() {
         <Breadcrumbs items={crumbs} />
         <p className="text-sm font-semibold uppercase tracking-wide text-spark-amber mb-2">Home backup</p>
         <h1 className="text-3xl sm:text-4xl font-extrabold leading-tight mb-6">Anker SOLIX F3800 Plus: connecting it to your house</h1>
+        <Byline path={PATH} />
 
         <QuickAnswer>
           <p>
@@ -199,21 +201,6 @@ export default function F3800PlusHookup() {
 
         <Faq items={faqs} path={PATH} />
 
-        <WhatWeChecked
-          untested="the F3800 Plus, the Home Power Panel or Anker's transfer switch"
-          items={[
-            { ...S.topQs, read: "2026-11-14", what: "25 A / 50 A subpanel backup; 120/240 V at 25 A per unit; solar and generator with the panel; L14-30R and TT-30R outlets" },
-            { ...S.sameSwitch, read: "2026-11-14", what: "works with a home transfer switch or inlet box; neutral and ground warning" },
-            { name: `${P.ankerMts30.name} product page`, url: P.ankerMts30.url, read: P.ankerMts30.retrieved, what: "option labeled for one F3800 Plus" },
-            { name: `${P.ankerMts50.name} product page`, url: P.ankerMts50.url, read: P.ankerMts50.retrieved, what: "not suitable for a single F3800 Plus; UL 1008; 120/240 V split-phase only for the Home Power Panel" },
-            { name: `${P.ankerHpp.name} product page`, url: P.ankerHpp.url, read: P.ankerHpp.retrieved, what: "licensed electrician required; 100 A breaker sold separately; install service" },
-            { name: `${kit.name} product page`, url: kit.url, read: kit.retrieved, what: "in stock" },
-            { name: `${fullName(f)} product page`, url: f.sourceUrl, read: f.retrieved, what: "sold out; specs" },
-            { name: "HomeGuide, Generator transfer switch installation cost", url: C.interlock.url, read: C.interlock.retrieved, what: `installed-cost ranges (figures dated ${formatDate(C.interlock.sourceUpdated)})` },
-            { ...HOOKUP_SAFETY_SOURCES.cpsc, read: "2026-11-14", what: "backfeeding warning" },
-            { ...HOOKUP_SAFETY_SOURCES.osha, read: "2026-11-14", what: "transfer switch by a qualified electrician" },
-          ]}
-        />
 
         <HomeBackupLinks exclude={PATH} />
 
@@ -227,6 +214,21 @@ export default function F3800PlusHookup() {
             { href: "/home-backup/bluetti-apex-300-hookup", label: "Bluetti Apex 300 hookup", desc: "The other 240 V unit: AT1, interlock or transfer switch" },
             { href: "/compare/anker-solix-vs-ecoflow", label: "EcoFlow vs Anker SOLIX", desc: "The F3800 Plus against the DELTA Pro 3" },
             { href: "/power-outage-backup-calculator", label: "Power outage backup calculator", desc: "How much battery your outage needs" },
+          ]}
+        />
+        <WhatWeChecked className="mt-14"
+          untested="the F3800 Plus, the Home Power Panel or Anker's transfer switch"
+          items={[
+            { ...S.topQs, read: "2026-11-14", what: "25 A / 50 A subpanel backup; 120/240 V at 25 A per unit; solar and generator with the panel; L14-30R and TT-30R outlets" },
+            { ...S.sameSwitch, read: "2026-11-14", what: "works with a home transfer switch or inlet box; neutral and ground warning" },
+            { name: `${P.ankerMts30.name} product page`, url: P.ankerMts30.url, read: P.ankerMts30.retrieved, what: "option labeled for one F3800 Plus" },
+            { name: `${P.ankerMts50.name} product page`, url: P.ankerMts50.url, read: P.ankerMts50.retrieved, what: "not suitable for a single F3800 Plus; UL 1008; 120/240 V split-phase only for the Home Power Panel" },
+            { name: `${P.ankerHpp.name} product page`, url: P.ankerHpp.url, read: P.ankerHpp.retrieved, what: "licensed electrician required; 100 A breaker sold separately; install service" },
+            { name: `${kit.name} product page`, url: kit.url, read: kit.retrieved, what: "in stock" },
+            { name: `${fullName(f)} product page`, url: f.sourceUrl, read: f.retrieved, what: "sold out; specs" },
+            { name: "HomeGuide, Generator transfer switch installation cost", url: C.interlock.url, read: C.interlock.retrieved, what: `installed-cost ranges (figures dated ${formatDate(C.interlock.sourceUpdated)})` },
+            { ...HOOKUP_SAFETY_SOURCES.cpsc, read: "2026-11-14", what: "backfeeding warning" },
+            { ...HOOKUP_SAFETY_SOURCES.osha, read: "2026-11-14", what: "transfer switch by a qualified electrician" },
           ]}
         />
       </div>

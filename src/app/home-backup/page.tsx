@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Byline from "@/components/Byline";
 import { AffiliateDisclosure, PartnerLink } from "@/components/affiliate";
 import { Breadcrumbs, Callout, Disclaimer, Faq, RelatedLinks, Section } from "@/components/content";
 import { QuickAnswer } from "@/components/guide-ui";
@@ -10,11 +11,11 @@ import { HOOKUP_COSTS, HOOKUP_PARTS, HOOKUP_SAFETY_SOURCES, MODEL_HOOKUPS, PARTS
 import type { Product } from "@/data/products";
 import { formatDate } from "@/lib/energy";
 import { fullName, money, productById } from "@/lib/products";
-import { JsonLd, pageMetadata, url } from "@/lib/seo";
+import { JsonLd, pageMetadata, url, AUTHOR_REF } from "@/lib/seo";
 
 const PATH = HOME_BACKUP_HUB.path;
 const UPDATED = "2026-11-14";
-const TITLE = "Run Your House From a Portable Battery: The 4 Ways to Connect One";
+const TITLE = "Run Your House From a Battery: 4 Ways to Connect";
 const DESCRIPTION =
   "Extension cords, an inlet box with an interlock, a manual transfer switch, or the maker's smart panel: what each one powers, what the parts cost, when you need an electrician, and which big batteries support it.";
 
@@ -77,7 +78,7 @@ export default function HomeBackupHub() {
           url: url(PATH),
           datePublished: UPDATED,
           dateModified: UPDATED,
-          author: { "@id": url("/#organization") },
+          author: AUTHOR_REF,
           publisher: { "@id": url("/#organization") },
           isPartOf: { "@id": url("/#website") },
           mainEntityOfPage: url(PATH),
@@ -87,6 +88,7 @@ export default function HomeBackupHub() {
         <Breadcrumbs items={[HOME_BACKUP_HUB]} />
         <p className="text-sm font-semibold uppercase tracking-wide text-spark-amber mb-2">Home backup</p>
         <h1 className="text-3xl sm:text-4xl font-extrabold leading-tight mb-6">Run your house from a portable battery: the four ways to connect one</h1>
+        <Byline path={PATH} />
 
         <QuickAnswer>
           <p>
@@ -121,7 +123,7 @@ export default function HomeBackupHub() {
                   <td className="p-3">Only what you plug in: fridge, lights, router, CPAP. Nothing wired in (furnace, well pump).</td>
                   <td className="p-3">{usd(PARTS.cords.usd)} for one to three 12-gauge outdoor cords</td>
                   <td className="p-3">No</td>
-                  <td className="p-3">Every power station we list (<Link href="/best-portable-power-stations" className="underline">see them all</Link>)</td>
+                  <td className="p-3">Every power station (<Link href="/compare" className="underline">comparisons</Link>)</td>
                 </tr>
                 <tr className="border-t border-black/6">
                   <th scope="row" className="p-3 font-semibold">2. Inlet box + interlock kit</th>
@@ -207,9 +209,7 @@ export default function HomeBackupHub() {
           <p className="text-stone-700 mt-4 max-w-3xl">
             Before any of this, size the battery: the{" "}
             <Link href="/power-outage-backup-calculator" className="text-spark-orange underline underline-offset-2">power outage backup calculator</Link>{" "}
-            adds up your appliances and outage length, and{" "}
-            <Link href="/best-portable-power-stations" className="text-spark-orange underline underline-offset-2">best portable power stations</Link>{" "}
-            compares every model by spec.
+            adds up your appliances and outage length.
           </p>
         </Section>
 
@@ -253,7 +253,19 @@ export default function HomeBackupHub() {
 
         <Faq items={faqs} path={PATH} />
 
-        <WhatWeChecked
+
+        <Disclaimer>
+          General information, not electrical advice. Codes and what inspectors accept differ by city and county. Specifications are
+          copied from makers&apos; US websites on the dates shown. We don&apos;t list product prices; the links go to each maker for today&apos;s price.
+        </Disclaimer>
+        <RelatedLinks
+          links={[
+            { href: "/power-outage-backup-calculator", label: "Power outage backup calculator", desc: "How big a battery your outage needs" },
+            { href: "/home-battery-backup", label: "Home battery backup", desc: "Installed whole-home batteries instead" },
+            { href: "/generator-runtime-calculator", label: "Generator runtime calculator", desc: "If you add a gas generator for long outages" },
+          ]}
+        />
+        <WhatWeChecked className="mt-14"
           untested="any of these batteries or hookup parts"
           items={[
             { ...HOOKUP_SAFETY_SOURCES.cpsc, read: "2026-11-14", what: "backfeeding warning; cord ratings" },
@@ -269,19 +281,6 @@ export default function HomeBackupHub() {
             { name: `${P.growattHub.name} product page`, url: P.growattHub.url, read: P.growattHub.retrieved, what: "two HELIOS 3600 units for 240 V" },
             { name: PARTS.cords.source.name, url: PARTS.cords.source.url, read: PARTS.cords.source.retrieved, what: "12-gauge outdoor cord prices" },
             ...panelReady.map(({ p }) => ({ name: `${fullName(p)} product page`, url: p.sourceUrl, read: p.retrieved })),
-          ]}
-        />
-
-        <Disclaimer>
-          General information, not electrical advice. Codes and what inspectors accept differ by city and county. Specifications are
-          copied from makers&apos; US websites on the dates shown. We don&apos;t list product prices; the links go to each maker for today&apos;s price.
-        </Disclaimer>
-        <RelatedLinks
-          links={[
-            { href: "/power-outage-backup-calculator", label: "Power outage backup calculator", desc: "How big a battery your outage needs" },
-            { href: "/best-portable-power-stations", label: "Best portable power stations", desc: "Every model compared by spec" },
-            { href: "/home-battery-backup", label: "Home battery backup", desc: "Installed whole-home batteries instead" },
-            { href: "/generator-runtime-calculator", label: "Generator runtime calculator", desc: "If you add a gas generator for long outages" },
           ]}
         />
       </div>

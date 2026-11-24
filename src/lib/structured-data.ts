@@ -24,7 +24,7 @@ export interface ReviewedProductInput {
   brand: string;
   /** One plain sentence from our copy or the specs we list. */
   description: string;
-  /** The guide page the product is reviewed on, e.g. "/best-portable-power-stations". */
+  /** The guide page the product is reviewed on, e.g. "/home-backup". */
   pagePath: string;
   /** The maker's or seller's product page. */
   url: string;
@@ -61,7 +61,7 @@ export function reviewedProduct(p: ReviewedProductInput): Record<string, unknown
       name: `${p.name} review`,
       url: url(p.pagePath),
       datePublished: p.reviewDate ?? pageDate(p.pagePath),
-      author: { "@type": "Organization", name: SITE_NAME, url: url("/") },
+      author: { "@type": "Person", "@id": url("/about#editor"), name: "Geoff Baron", url: url("/about") },
       publisher: { "@type": "Organization", name: SITE_NAME, url: url("/") },
     },
   };

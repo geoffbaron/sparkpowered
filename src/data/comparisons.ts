@@ -29,7 +29,8 @@ export interface Comparison {
 
 const U = "2026-10-15";
 
-export const COMPARISONS: Comparison[] = [
+/** Every comparison ever written. Only the home-backup ones below are published. */
+export const ALL_COMPARISONS: Comparison[] = [
   {
     slug: "ecoflow-delta-3-plus-vs-anker-solix-c1000-gen-2",
     title: "EcoFlow DELTA 3 Plus vs Anker SOLIX C1000 Gen 2",
@@ -63,7 +64,7 @@ export const COMPARISONS: Comparison[] = [
   },
   {
     slug: "anker-solix-vs-ecoflow",
-    title: "EcoFlow vs Anker SOLIX (2026): Power Stations Compared Size for Size",
+    title: "EcoFlow vs Anker SOLIX: Power Stations Size for Size",
     description: "EcoFlow or Anker SOLIX? Matched at 1 kWh, 2 kWh and home-backup sizes: capacity, output, solar input, and expansion from both makers' US sites, plus a link to how Bluetti compares.",
     pairs: [
       ["anker-solix-c1000-gen-2", "ecoflow-delta-3"],
@@ -77,7 +78,6 @@ export const COMPARISONS: Comparison[] = [
       "It splits by size. At 1 kWh the Anker C1000 Gen 2 has more output (2,000 W vs 1,800 W), but only the EcoFlow DELTA 3 can expand. At 2 kWh output is similar, but only the Anker C2000 Gen 2 accepts an expansion battery. For home backup the Anker F3800 Plus has more output (6,000 W vs 4,000 W), more solar input and far more expansion (26.9 kWh vs 12.3 kWh), though the EcoFlow DELTA Pro 3 holds a bit more (4.1 vs 3.84 kWh).",
     chooseA: "Choose Anker SOLIX for the most output at 1 kWh, an expandable 2 kWh unit, or the most powerful home-backup unit (F3800 Plus).",
     chooseB: "Choose EcoFlow for a 1 kWh unit you can expand later, and stated LFP chemistry and warranty across the range.",
-    see: { slug: "ecoflow-vs-bluetti", label: "Weighing up Bluetti too? See EcoFlow vs Bluetti" },
     updated: "2026-11-06",
   },
   {
@@ -192,5 +192,12 @@ export const COMPARISONS: Comparison[] = [
     updated: "2026-10-19",
   },
 ];
+
+/**
+ * Published comparisons. Nov 24 2026: the site covers home backup only, so the
+ * small-unit and brand-vs-brand pages were cut (src/lib/removed.ts redirects them).
+ */
+export const PUBLISHED_COMPARISONS = new Set(["anker-solix-vs-ecoflow", "anker-solix-f3800-plus-vs-jackery-explorer-5000-plus"]);
+export const COMPARISONS: Comparison[] = ALL_COMPARISONS.filter((c) => PUBLISHED_COMPARISONS.has(c.slug));
 
 export const comparisonBySlug = (slug: string) => COMPARISONS.find((c) => c.slug === slug);

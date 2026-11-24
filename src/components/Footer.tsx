@@ -1,43 +1,32 @@
 import Link from "next/link";
 import { DATA_UPDATED } from "@/lib/energy";
+import { AUTHOR } from "@/lib/seo";
 
 const TOOLS = [
-  { href: "/go-electric", label: "Go Electric savings calculator" },
-  { href: "/ev-charging-cost", label: "EV charging cost calculator" },
-  { href: "/solar-calculator", label: "Solar panel calculator" },
+  { href: "/power-outage-backup-calculator", label: "Outage backup calculator" },
+  { href: "/home-backup/hookup-picker", label: "Hookup picker" },
   { href: "/battery-calculator", label: "Home battery sizer" },
-  { href: "/calculator", label: "EV Finder" },
-  { href: "/solar-finder", label: "Solar Finder" },
+  { href: "/generator-runtime-calculator", label: "Generator runtime" },
 ];
 
 const GUIDES = [
-  { href: "/plug-in-solar", label: "Plug-in solar guide" },
-  { href: "/best-portable-power-stations", label: "Best portable power stations" },
-  { href: "/home-battery-backup", label: "Home battery backup" },
-  { href: "/lithium-rv-battery", label: "Lithium RV & boat batteries" },
-  { href: "/boating", label: "Electric boating & fishing" },
-  { href: "/best-trolling-motor-battery", label: "Trolling motor batteries" },
-  { href: "/trolling-motor-battery-life", label: "Trolling motor runtime" },
-  { href: "/electric-outboard-motor", label: "Electric outboard motors" },
-  { href: "/lithium-vs-agm-battery", label: "Lithium vs AGM" },
-  { href: "/best-power-station-for-cpap", label: "Power station for CPAP" },
+  { href: "/home-backup", label: "Connecting a battery to your house" },
+  { href: "/home-battery-backup", label: "Whole-home vs portable backup" },
+  { href: "/home-backup/well-pump", label: "Power station for a well pump" },
+  { href: "/home-backup/pellet-stove", label: "Power station for a pellet stove" },
   { href: "/power-station-for-refrigerator", label: "Power station for a fridge" },
-  { href: "/best-home-ev-charger", label: "Best home EV charger" },
-  { href: "/ev-charger-picker", label: "EV charger picker" },
-  { href: "/ev-charger-installation-cost", label: "EV charger installation cost" },
-  { href: "/compare", label: "Power station comparisons" },
-  { href: "/states", label: "Energy data by state" },
-  { href: "/incentives", label: "2026 incentives" },
-  { href: "/questions", label: "Questions, answered" },
-  { href: "/myths", label: "Myths, answered" },
-  { href: "/solartopia", label: "Solartopia, the solar game" },
-  { href: "/news", label: "Latest headlines" },
+  { href: "/ev-charger-tripping-gfci", label: "EV charger tripping GFCI" },
+  { href: "/compare", label: "Comparisons" },
+  { href: "/states", label: "Electricity and rebates by state" },
+  { href: "/questions/home-batteries-backup", label: "Questions answered" },
 ];
 
 const ABOUT = [
-  { href: "/about", label: "About & editorial standards" },
+  { href: "/about", label: "About Geoff Baron" },
+  { href: "/contact", label: "Contact" },
   { href: "/methodology", label: "Methodology" },
   { href: "/disclaimer", label: "Disclaimer" },
+  { href: "/disclaimer#affiliate-disclosure", label: "Affiliate disclosure" },
   { href: "/privacy", label: "Privacy" },
 ];
 
@@ -66,27 +55,23 @@ export default function Footer() {
           <div>
             <p className="text-lg font-bold text-spark-orange mb-3">Spark Powered</p>
             <p className="text-sm text-stone-700 leading-relaxed">
-              Helping US households go electric and keep more of their money, with numbers you can check. Not
-              owned by any carmaker, installer or utility; some product links earn us a commission.
+              Keeping your home powered in an outage. Written by {AUTHOR.name}, researched from makers&apos; manuals and official sources.
+              Some product links earn a commission.
+            </p>
+            <p className="text-sm text-stone-700 mt-3">
+              <a href={`mailto:${AUTHOR.email}`} className="underline hover:text-spark-orange">{AUTHOR.email}</a>
             </p>
           </div>
           <Column title="Tools" links={TOOLS} />
-          <Column title="Guides & data" links={GUIDES} />
+          <Column title="Guides" links={GUIDES} />
           <Column title="About" links={ABOUT} />
         </div>
         <div className="mt-8 pt-8 border-t border-black/8 text-sm text-stone-600">
-          &copy; {DATA_UPDATED.slice(0, 4)} Spark Powered. Estimates and general information only, not electrical, financial or tax advice. Have a licensed electrician do any wiring, and read our{" "}
+          &copy; {DATA_UPDATED.slice(0, 4)} Spark Powered. General information only, not electrical advice. Have a licensed electrician do any wiring, and read the{" "}
           <Link href="/disclaimer#safety" className="underline underline-offset-2">
             safety notes
           </Link>
           .
-          <p className="mt-2">
-            Wiring a van, RV or boat? Our sister site{" "}
-            <a href="https://campervolts.com" className="text-stone-700 underline hover:text-spark-orange">
-              CamperVolts
-            </a>{" "}
-            plans the whole electrical system.
-          </p>
         </div>
       </div>
     </footer>

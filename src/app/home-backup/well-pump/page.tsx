@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Byline from "@/components/Byline";
 import WellPumpCalc from "@/components/WellPumpCalc";
 import { AffiliateDisclosure } from "@/components/affiliate";
 import { ElectricianRule, HomeBackupLinks, WhatWeChecked, type CheckedSource } from "@/components/home-backup";
@@ -10,11 +11,11 @@ import { CAN_IT_RUN_IDS, hoursText, loadPageProducts, motorStation, whatItRunsPa
 import { formatDate } from "@/lib/energy";
 import { OFFGRID_SOURCES, PUMP_MOTORS, fmtW, pumpFit, pumpLoad, pumpMotor, type MotorStation } from "@/lib/offgrid";
 import { fullName, productById } from "@/lib/products";
-import { JsonLd, pageMetadata, url } from "@/lib/seo";
+import { JsonLd, pageMetadata, url, AUTHOR_REF, pageUpdated } from "@/lib/seo";
 
 const PATH = "/home-backup/well-pump";
 const UPDATED = "2026-11-14";
-const TITLE = "Power Station for a Well Pump (240 V): Starting Watts From the Nameplate";
+const TITLE = "Power Station for a Well Pump: Starting Watts";
 const DESCRIPTION =
   "Enter your well pump's volts, horsepower and amps: running and starting watts from Franklin Electric's motor tables, which in-stock power stations can run and start it, and the soft-start option.";
 
@@ -99,13 +100,14 @@ export default function WellPumpPage() {
           url: url(PATH),
           datePublished: UPDATED,
           dateModified: UPDATED,
-          author: { "@id": url("/#organization") },
+          author: AUTHOR_REF,
           publisher: { "@id": url("/#organization") },
           isPartOf: { "@id": url("/#website") },
           mainEntityOfPage: url(PATH),
         }}
       />
       <HubHero
+        byline={<Byline path={PATH} tone="dark" />}
         image="outage"
         crumbs={[
           { name: "Home backup", path: "/home-backup" },
@@ -123,7 +125,6 @@ export default function WellPumpPage() {
         <p className="text-sm text-muted mb-4">
           Updated <time dateTime={UPDATED}>{formatDate(UPDATED)}</time>
         </p>
-        <AffiliateDisclosure className="mb-6" />
 
         <QuickAnswer>
           <p>
@@ -134,7 +135,6 @@ export default function WellPumpPage() {
           </p>
         </QuickAnswer>
 
-        <WhatWeChecked items={DOCS} untested="any power station on a well pump" className="mt-8" />
 
         <Section title="Your pump: running and starting watts" id="calc">
           <p className="text-stone-700 mb-4 max-w-3xl">
@@ -238,6 +238,7 @@ export default function WellPumpPage() {
 
         <section className="mt-12" aria-labelledby="pick-heading">
           <h2 id="pick-heading" className="text-2xl font-bold mb-4">The best fit in stock for a 240 V pump</h2>
+          <AffiliateDisclosure className="mt-12 mb-4" />
           <OurPick
             label="Runs the most 240 V pump sizes"
             name={fullName(pick)}
@@ -259,7 +260,6 @@ export default function WellPumpPage() {
 
         <Faq items={faqs} path={PATH} />
         <Disclaimer />
-        <Sources items={[OFFGRID_SOURCES.franklinAim, OFFGRID_SOURCES.doeFormula, OFFGRID_SOURCES.eweb, { name: "BLUETTI Apex 300 user manual (section 5.3, Power Lifting Mode)", url: DOCS[3].url }]} />
         <HomeBackupLinks exclude={PATH} />
         <RelatedLinks
           links={[
@@ -268,9 +268,10 @@ export default function WellPumpPage() {
             ...(CAN_IT_RUN_IDS.includes(pick.id as (typeof CAN_IT_RUN_IDS)[number])
               ? [{ href: whatItRunsPath(pick.id), label: `What the ${fullName(pick)} runs`, desc: "Run times for 15 household loads" }]
               : []),
-            { href: "/best-portable-power-stations", label: "Best portable power stations", desc: "Every model we list, by spec" },
           ]}
         />
+        <Sources title="More sources" id="more-sources-heading" checked={pageUpdated(PATH)} items={[OFFGRID_SOURCES.franklinAim, OFFGRID_SOURCES.doeFormula, OFFGRID_SOURCES.eweb, { name: "BLUETTI Apex 300 user manual (section 5.3, Power Lifting Mode)", url: DOCS[3].url }]} />
+        <WhatWeChecked items={DOCS} untested="any power station on a well pump" className="mt-14" />
         <PhotoCredit name="outage" />
       </div>
     </article>

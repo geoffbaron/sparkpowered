@@ -161,6 +161,6 @@ test("sources are https or archived DOE pages, and related links cover the secti
     assert.ok(s.name.length > 5, `${k} name`);
   }
   const hrefs = OFFGRID_LINKS.map((l) => l.href);
-  for (const p of ["/off-grid-solar-calculator", "/off-grid-cabin-solar-kit", "/how-to-go-off-grid", "/power-outage-backup-calculator", "/generator-runtime-calculator", "/emergency-water-storage-calculator", "/noaa-weather-radio"])
+  for (const p of ["/power-outage-backup-calculator", "/generator-runtime-calculator"])
     assert.ok(hrefs.includes(p), p);
 });

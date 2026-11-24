@@ -6,13 +6,14 @@ import Header from "@/components/Header";
 import AskSparkLauncher from "@/components/AskSparkLauncher";
 import PartnerClickTracker from "@/components/PartnerClickTracker";
 import Footer from "@/components/Footer";
-import WhereNext from "@/components/WhereNext";
 import {
   JsonLd,
   OG_IMAGE,
   SITE_DESCRIPTION,
   SITE_NAME,
   SITE_URL,
+  AUTHOR,
+  authorPerson,
   url,
 } from "@/lib/seo";
 
@@ -25,15 +26,15 @@ const geistSans = Geist({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
-    default: "Spark Powered — EV, Solar & Home Battery Calculators",
+    default: "Spark Powered: Home Backup Power in an Outage",
     template: "%s | Spark Powered",
   },
   description: SITE_DESCRIPTION,
   applicationName: SITE_NAME,
-  authors: [{ name: SITE_NAME, url: SITE_URL }],
+  authors: [{ name: AUTHOR.name, url: url("/about") }],
   creator: SITE_NAME,
   publisher: SITE_NAME,
-  category: "Clean Energy",
+  category: "Home backup power",
   // No site-wide canonical here: each page sets its own via pageMetadata().
   // A default of "/" made pages without one (like the 404 page) point at the home page.
   openGraph: {
@@ -41,13 +42,13 @@ export const metadata: Metadata = {
     siteName: SITE_NAME,
     locale: "en_US",
     url: SITE_URL,
-    title: "Spark Powered — EV, Solar & Home Battery Calculators",
+    title: "Spark Powered: Home Backup Power in an Outage",
     description: SITE_DESCRIPTION,
     images: [OG_IMAGE],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Spark Powered — EV, Solar & Home Battery Calculators",
+    title: "Spark Powered: Home Backup Power in an Outage",
     description: SITE_DESCRIPTION,
     images: [OG_IMAGE.url],
   },
@@ -95,25 +96,13 @@ const organizationSchema = {
         height: 180,
       },
       description:
-        "Spark Powered publishes free, independent calculators and state-by-state data on electric vehicles, solar power and home battery storage for US households.",
+        "Spark Powered explains how to keep a US home powered in an outage with a portable power station or home battery, researched from makers' manuals and official sources.",
       founder: { "@id": url("/about#editor") },
+      email: `mailto:${AUTHOR.email}`,
       areaServed: { "@type": "Country", name: "United States" },
-      knowsAbout: [
-        "Electric vehicles",
-        "Solar power",
-        "Home battery storage",
-        "EV charging infrastructure",
-        "Clean energy incentives",
-      ],
+      knowsAbout: ["Home backup power", "Portable power stations", "Home battery storage", "Generator transfer switches and inlet boxes"],
     },
-    {
-      "@type": "Person",
-      "@id": url("/about#editor"),
-      name: "Geoff Baron",
-      jobTitle: "Owner and editor",
-      url: url("/about"),
-      worksFor: { "@id": url("/#organization") },
-    },
+    authorPerson(),
     {
       "@type": "WebSite",
       "@id": url("/#website"),
@@ -173,7 +162,6 @@ export default function RootLayout({
         <main id="main" className="flex-1">
           {children}
         </main>
-        <WhereNext />
         <Footer />
         <AskSparkLauncher />
         <PartnerClickTracker />

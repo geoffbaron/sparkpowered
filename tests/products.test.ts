@@ -108,7 +108,7 @@ test("battery sizer returns 2-4 real products that reach the computed size", () 
 });
 
 test("comparisons reference products in the dataset and have unique slugs", () => {
-  assert.ok(COMPARISONS.length >= 6 && COMPARISONS.length <= 14);
+  assert.ok(COMPARISONS.length >= 2 && COMPARISONS.length <= 14);
   const slugs = COMPARISONS.map((c) => c.slug);
   assert.equal(new Set(slugs).size, slugs.length);
   for (const c of COMPARISONS) {
@@ -123,6 +123,6 @@ test("comparisons reference products in the dataset and have unique slugs", () =
 
 test("new money pages are in the sitemap", () => {
   const paths = ROUTES.map((r) => r.path);
-  for (const p of ["/plug-in-solar", "/best-portable-power-stations", "/home-battery-backup", "/compare"])
+  for (const p of ["/home-backup", "/home-battery-backup", "/compare"])
     assert.ok(paths.includes(p), p);
 });

@@ -1,15 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Byline from "@/components/Byline";
 import GeneratorCalc from "@/components/offgrid/GeneratorCalc";
 import { HubHero, PhotoCredit } from "@/components/ui";
 import { QuickAnswer } from "@/components/guide-ui";
 import { Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
 import { LOAD_DEFS, relatedFor, sourcesFor } from "@/lib/offgrid";
-import { JsonLd, pageMetadata, url } from "@/lib/seo";
+import { JsonLd, pageMetadata, url, pageUpdated } from "@/lib/seo";
 
 const PATH = "/generator-runtime-calculator";
 const UPDATED = "2026-10-26";
-const TITLE = "Generator Runtime Calculator: Hours per Tank and Fuel to Store";
+const TITLE = "Generator Runtime Calculator: Hours per Tank";
 const DESCRIPTION =
   "How long your generator runs on a tank and how much gasoline, propane or diesel to store for an outage, worked out from your generator's own spec sheet, with the carbon monoxide rules that keep you safe.";
 
@@ -62,6 +63,7 @@ export default function GeneratorRuntimePage() {
         }}
       />
       <HubHero
+        byline={<Byline path={PATH} tone="dark" article={{ headline: TITLE, description: DESCRIPTION }} />}
         image="outage"
         crumbs={[{ name: "Generator runtime calculator", path: PATH }]}
         eyebrow="Generators"
@@ -142,8 +144,8 @@ export default function GeneratorRuntimePage() {
           <p className="text-stone-700 leading-relaxed max-w-3xl">
             A portable power station makes no fumes, so it can sit next to the fridge or the CPAP indoors. It holds far less energy than a tank of
             fuel, but solar panels can top it up. For the fridge and essentials it is often enough; see{" "}
-            <Link href="/power-station-for-refrigerator" className="underline">power stations for a refrigerator</Link> and{" "}
-            <Link href="/best-portable-power-stations" className="underline">the best portable power stations</Link>.
+            <Link href="/power-station-for-refrigerator" className="underline">power stations for a refrigerator</Link> and the{" "}
+            <Link href="/power-outage-backup-calculator" className="underline">outage backup calculator</Link>.
           </p>
         </Section>
 
@@ -152,8 +154,8 @@ export default function GeneratorRuntimePage() {
           Estimates only. Fuel use depends on your generator, its load and conditions; the maker&apos;s spec sheet and manual come first.
           Follow the manufacturer&apos;s instructions and local codes.
         </Disclaimer>
-        <Sources items={sourcesFor(["readyGenerators", "readyOutage", "cdcCo", "cpscCo", "cpscStandards", "nfpa", "eweb"])} />
         <RelatedLinks links={relatedFor(PATH)} />
+        <Sources checked={pageUpdated(PATH)} items={sourcesFor(["readyGenerators", "readyOutage", "cdcCo", "cpscCo", "cpscStandards", "nfpa", "eweb"])} />
         <PhotoCredit name="outage" />
       </div>
     </div>

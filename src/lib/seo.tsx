@@ -13,10 +13,10 @@ export const SITE_URL = (
 export const SITE_NAME = "Spark Powered";
 
 export const SITE_TAGLINE =
-  "EV, solar and home battery guidance for people going electric";
+  "Keeping your home powered in an outage, with a battery";
 
 export const SITE_DESCRIPTION =
-  "Free, independent calculators for EVs, solar panels and home batteries, built on government data: EV charging cost by state, solar panel sizing, home battery sizing, an EV matcher and a solar installer finder.";
+  "How to keep a US home running in a power outage with a portable power station or home battery: how to connect it to the house, what it will run and for how long, checked against the makers' manuals.";
 
 /**
  * Absolute URL for a site-relative path.
@@ -51,8 +51,10 @@ export function pageMetadata({
   path: string;
   type?: "website" | "article";
 }): Metadata {
+  // The layout adds " | Spark Powered"; leave it off when it would push the title past 60 characters.
+  const withBrand = `${title} | ${SITE_NAME}`;
   return {
-    title,
+    title: withBrand.length <= 60 ? title : { absolute: title },
     description,
     alternates: { canonical: path },
     openGraph: {
@@ -77,7 +79,7 @@ export const OG_IMAGE = {
   url: url("/opengraph-image"),
   width: 1200,
   height: 630,
-  alt: "Spark Powered — independent guidance on EVs, solar and home batteries",
+  alt: "Spark Powered: home backup power in an outage",
 };
 
 /**
@@ -95,88 +97,35 @@ export const QUESTIONS_UPDATED = "2026-10-25";
 export const QUESTIONS_UPDATED_AT = `${QUESTIONS_UPDATED}T12:00:00+00:00`;
 
 export const ROUTES: { path: string; lastModified: string }[] = [
-  { path: "/", lastModified: CONTENT_UPDATED },
-  { path: "/electric-vehicles", lastModified: "2026-11-02" },
-  { path: "/home-energy", lastModified: "2026-11-02" },
-  { path: "/outdoor-power", lastModified: "2026-11-02" },
-  { path: "/off-grid", lastModified: "2026-11-02" },
-  { path: "/learn", lastModified: "2026-11-02" },
-  { path: "/go-electric", lastModified: CONTENT_UPDATED },
-  { path: "/ev-charging-cost", lastModified: CONTENT_UPDATED },
-  { path: "/solar-calculator", lastModified: CONTENT_UPDATED },
+  { path: "/", lastModified: "2026-11-24" },
   { path: "/battery-calculator", lastModified: CONTENT_UPDATED },
-  { path: "/calculator", lastModified: CONTENT_UPDATED },
-  { path: "/solar-finder", lastModified: CONTENT_UPDATED },
-  { path: "/solar-panels-not-working", lastModified: "2026-11-09" },
-  { path: "/black-friday-deals", lastModified: "2026-11-24" },
-  { path: "/plug-in-solar", lastModified: CONTENT_UPDATED },
-  { path: "/best-portable-power-stations", lastModified: "2026-11-06" },
-  { path: "/home-battery-backup", lastModified: "2026-11-06" },
+  { path: "/home-battery-backup", lastModified: "2026-11-24" },
   { path: "/home-backup", lastModified: "2026-11-14" },
   { path: "/home-backup/anker-solix-f3800-plus-hookup", lastModified: "2026-11-14" },
   { path: "/home-backup/bluetti-apex-300-hookup", lastModified: "2026-11-14" },
   { path: "/compare/growatt-helios-3600-vs-bluetti-apex-300", lastModified: "2026-11-14" },
-  { path: "/lithium-rv-battery", lastModified: "2026-10-16" },
-  { path: "/lithium-vs-agm-battery", lastModified: "2026-10-19" },
-  { path: "/best-trolling-motor-battery", lastModified: "2026-10-19" },
-  { path: "/boating", lastModified: "2026-10-20" },
-  { path: "/trolling-motor-battery-life", lastModified: "2026-10-20" },
-  { path: "/kayak-trolling-motor-battery", lastModified: "2026-10-20" },
-  { path: "/e-bikes", lastModified: "2026-11-02" },
-  { path: "/e-bike-for-heavy-riders", lastModified: "2026-11-02" },
-  { path: "/e-bike-for-hills", lastModified: "2026-11-02" },
-  { path: "/commuter-e-bike-under-1500", lastModified: "2026-11-02" },
-  { path: "/folding-e-bike", lastModified: "2026-11-02" },
-  { path: "/electric-outboard-motor", lastModified: "2026-10-20" },
-  { path: "/fish-finder-battery", lastModified: "2026-10-20" },
-  { path: "/24v-vs-36v-trolling-motor", lastModified: "2026-10-20" },
-  { path: "/charge-lithium-battery-on-boat", lastModified: "2026-10-20" },
-  { path: "/best-power-station-for-cpap", lastModified: "2026-11-06" },
-  { path: "/power-station-for-refrigerator", lastModified: "2026-10-19" },
+  { path: "/power-station-for-refrigerator", lastModified: "2026-11-24" },
   { path: "/power-stations/anker-solix-c1000-gen-2/what-it-runs", lastModified: "2026-11-11" },
   { path: "/power-stations/bluetti-ac180/what-it-runs", lastModified: "2026-11-11" },
   { path: "/power-stations/bluetti-elite-200-v2/what-it-runs", lastModified: "2026-11-11" },
   { path: "/power-stations/anker-solix-c2000-gen-2/what-it-runs", lastModified: "2026-11-11" },
   { path: "/power-stations/bluetti-elite-300/what-it-runs", lastModified: "2026-11-11" },
-  { path: "/best-home-ev-charger", lastModified: "2026-10-19" },
-  { path: "/ev-charger-installation-cost", lastModified: "2026-10-31" },
   { path: "/ev-charger-tripping-gfci", lastModified: "2026-11-14" },
   { path: "/ev-charger-extension-cord", lastModified: "2026-11-14" },
-  { path: "/ev-charger-picker", lastModified: "2026-10-31" },
   { path: "/home-backup/hookup-picker", lastModified: "2026-11-14" },
-  { path: "/ev-or-plug-in-hybrid", lastModified: "2026-10-30" },
   { path: "/compare", lastModified: CONTENT_UPDATED },
-  { path: "/states", lastModified: CONTENT_UPDATED },
-  { path: "/incentives", lastModified: "2026-11-11" },
-  { path: "/myths", lastModified: "2026-11-06" },
-  { path: "/solartopia", lastModified: "2026-10-22" },
-  { path: "/christmas-lights-cost", lastModified: "2026-11-11" },
-  { path: "/space-heater-cost", lastModified: "2026-10-23" },
-  { path: "/questions", lastModified: QUESTIONS_UPDATED },
-  { path: "/questions/home-solar", lastModified: "2026-11-11" },
+  { path: "/states", lastModified: "2026-11-24" },
   { path: "/questions/home-batteries-backup", lastModified: "2026-11-11" },
-  { path: "/questions/ev-charging", lastModified: "2026-11-11" },
-  { path: "/questions/electric-boating", lastModified: "2026-11-11" },
-  { path: "/questions/costs-and-incentives", lastModified: "2026-11-11" },
-  { path: "/off-grid-solar-calculator", lastModified: "2026-10-26" },
-  { path: "/off-grid-cabin-solar-kit", lastModified: "2026-10-26" },
-  { path: "/off-grid-kit", lastModified: "2026-11-17" },
-  { path: "/how-to-go-off-grid", lastModified: "2026-10-26" },
-  { path: "/power-outage-backup-calculator", lastModified: "2026-11-06" },
+  { path: "/power-outage-backup-calculator", lastModified: "2026-11-24" },
   { path: "/home-backup/well-pump", lastModified: "2026-11-14" },
   { path: "/home-backup/pellet-stove", lastModified: "2026-11-14" },
   { path: "/home-backup/bluetti-elite-200-v2-solar-panels", lastModified: "2026-11-14" },
   { path: "/generator-runtime-calculator", lastModified: "2026-10-26" },
-  { path: "/emergency-water-storage-calculator", lastModified: "2026-10-26" },
-  { path: "/how-to-purify-water", lastModified: "2026-10-26" },
-  { path: "/best-emergency-water-filters", lastModified: "2026-10-26" },
-  { path: "/emergency-kit-checklist", lastModified: "2026-10-26" },
-  { path: "/emergency-food-calculator", lastModified: "2026-10-26" },
-  { path: "/noaa-weather-radio", lastModified: "2026-10-26" },
-  { path: "/about", lastModified: CONTENT_UPDATED },
+  { path: "/about", lastModified: "2026-11-24" },
   { path: "/methodology", lastModified: CONTENT_UPDATED },
   { path: "/disclaimer", lastModified: CONTENT_UPDATED },
   { path: "/privacy", lastModified: CONTENT_UPDATED },
+  { path: "/contact", lastModified: "2026-11-24" },
 ];
 
 /**
@@ -186,18 +135,8 @@ export const ROUTES: { path: string; lastModified: string }[] = [
  */
 export const DATA_ROUTES = new Set([
   "/",
-  "/go-electric",
-  "/ev-charging-cost",
-  "/solar-calculator",
-  "/solar-finder",
   "/states",
   "/methodology",
-  "/christmas-lights-cost",
-  "/space-heater-cost",
-  "/off-grid-solar-calculator",
-  "/off-grid-cabin-solar-kit",
-  "/off-grid-kit",
-  "/how-to-go-off-grid",
   "/power-outage-backup-calculator",
 ]);
 
@@ -212,4 +151,37 @@ export function JsonLd({ data }: { data: Record<string, unknown> }) {
       dangerouslySetInnerHTML={{ __html: JSON.stringify(data) }}
     />
   );
+}
+
+/**
+ * The person behind every article (Nov 24 2026: Geoff's name goes on the site).
+ * Articles reference him by @id; the full Person node lives in the root layout.
+ * sameAs lists only public pages confirmed to name him.
+ */
+export const AUTHOR = {
+  name: "Geoff Baron",
+  email: "geoff@mylastlap.com",
+  photo: "/images/geoff-baron-96.webp",
+  photoLarge: "/images/geoff-baron-320.webp",
+  sameAs: ["https://geoffbaron.com", "https://mylastlap.com", "https://anywargame.com/press"],
+} as const;
+
+export const AUTHOR_REF = { "@id": url("/about#editor") };
+
+export const authorPerson = () => ({
+  "@type": "Person",
+  "@id": url("/about#editor"),
+  name: AUTHOR.name,
+  url: url("/about"),
+  image: url(AUTHOR.photoLarge),
+  email: `mailto:${AUTHOR.email}`,
+  jobTitle: "Editor",
+  description: "Builds software and runs LastLap Lab LLC. Not an electrician; researches every page from makers' manuals, spec sheets and official sources.",
+  worksFor: { "@type": "Organization", name: "LastLap Lab LLC", url: "https://mylastlap.com" },
+  sameAs: [...AUTHOR.sameAs],
+});
+
+/** The honest "last updated" date of a page: its content date in ROUTES. */
+export function pageUpdated(path: string) {
+  return ROUTES.find((r) => r.path === path)?.lastModified ?? CONTENT_UPDATED;
 }

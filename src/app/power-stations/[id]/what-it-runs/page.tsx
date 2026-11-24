@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Byline from "@/components/Byline";
 import { notFound } from "next/navigation";
 import { AffiliateDisclosure, PartnerLink } from "@/components/affiliate";
 import { Breadcrumbs, Callout, Disclaimer, Faq, RelatedLinks, Section, Sources } from "@/components/content";
@@ -27,7 +28,7 @@ import {
 import { formatDate } from "@/lib/energy";
 import { OFFGRID_SOURCES } from "@/lib/offgrid";
 import { fullName, kwh, maxWh, productById, watts } from "@/lib/products";
-import { JsonLd, pageMetadata } from "@/lib/seo";
+import { JsonLd, pageMetadata, pageUpdated } from "@/lib/seo";
 
 export function generateStaticParams() {
   return CAN_IT_RUN_IDS.map((id) => ({ id }));
@@ -68,7 +69,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const fridge = runText(p, appliance("fridge"));
   const cpap = runText(p, appliance("cpap"));
   return pageMetadata({
-    title: `What Can the ${fullName(p)} Run? Fridge, CPAP, Space Heater Run Times`,
+    title: `What Can the ${fullName(p)} Run in an Outage?`,
     description: `${fullName(p)} (${kwh(p.capacityWh)}, ${watts(p.acOutputW)}): runs a typical fridge ${fridge}, a CPAP ${cpap}. Run times for 15 appliances, what it cannot run, from specs checked ${formatDate(p.retrieved)}.`,
     path: whatItRunsPath(id),
     type: "article",
@@ -162,19 +163,17 @@ export default async function WhatItRunsPage({ params }: Props) {
       <JsonLd data={{ "@context": "https://schema.org", ...productJson(p, path) }} />
       <Breadcrumbs
         items={[
-          { name: "Best portable power stations", path: "/best-portable-power-stations" },
           { name: `${name}: what it runs`, path },
         ]}
       />
       <header className="mt-6 mb-8">
         <p className="text-sm font-semibold uppercase tracking-wide text-spark-amber mb-3">Can it run it?</p>
         <h1 className="text-3xl sm:text-4xl font-extrabold leading-tight mb-4">What can the {name} run, and for how long?</h1>
+        <Byline path={path} className="mb-4" article={{ headline: `What can the ${name} run, and for how long?`, description: `${kwh(p.capacityWh)} of battery, ${watts(p.acOutputW)} continuous output: run times for 15 appliances from the maker's specs.` }} />
         <p className="text-lg text-stone-600 leading-relaxed max-w-3xl">
           {kwh(p.capacityWh)} of battery, {watts(p.acOutputW)} continuous output. {angle.who}
         </p>
       </header>
-
-      <AffiliateDisclosure className="mb-8" />
 
       <QuickAnswer>
         <p>
@@ -188,12 +187,7 @@ export default async function WhatItRunsPage({ params }: Props) {
             <> Its specs do not confirm it can start a {list(unconfirmed.map((r) => lower(r.a.label.replace(/ \(.*\)$/, ""))))}.</>
           )}
         </p>
-        <p>
-          Specs checked on {checked}.{" "}
-          <PartnerLink brand={p.brand} productId={p.id} productUrl={p.url} category="battery" disclose>
-            See today&apos;s price at {p.brand === "anker" ? "Anker" : "Bluetti"}
-          </PartnerLink>
-        </p>
+        <p>Specs from {p.brand === "anker" ? "Anker" : "Bluetti"}&apos;s US product page, checked on {checked}.</p>
       </QuickAnswer>
 
       <section aria-label="Key numbers" className="grid sm:grid-cols-3 gap-3 mt-8">
@@ -266,6 +260,8 @@ export default async function WhatItRunsPage({ params }: Props) {
           </li>
         </ul>
       </Section>
+
+      <AffiliateDisclosure className="mt-12" />
 
       <Section title="How it compares" id="compare">
         <ul className="space-y-3 max-w-3xl text-stone-700 leading-relaxed list-disc pl-5">
@@ -360,16 +356,6 @@ export default async function WhatItRunsPage({ params }: Props) {
 
       <Disclaimer />
 
-      <Sources
-        items={[
-          { name: `${name} product page`, url: p.sourceUrl, detail: `specs, checked ${checked}` },
-          ...(sameSize ? [{ name: `${fullName(sameSize)} product page`, url: sameSize.sourceUrl, detail: `checked ${formatDate(sameSize.retrieved)}` }] : []),
-          ...APPLIANCE_SOURCES.map((s) => ({ name: s.name, url: s.url, detail: s.detail })),
-          OFFGRID_SOURCES.foodsafety,
-          OFFGRID_SOURCES.readyGenerators,
-          OFFGRID_SOURCES.nfpa,
-        ]}
-      />
       <p className="text-xs text-muted mt-4">Appliance figures checked {formatDate(CAN_IT_RUN_CHECKED)}.</p>
 
       <HomeBackupLinks />
@@ -378,9 +364,16 @@ export default async function WhatItRunsPage({ params }: Props) {
           ...others.map((o) => ({ href: whatItRunsPath(o.id), label: `What the ${fullName(o)} runs`, desc: `${kwh(o.capacityWh)}: a fridge ${runText(o, fridge)}` })),
           { href: "/power-outage-backup-calculator", label: "Power outage backup calculator", desc: "Your own appliances, your outage length" },
           { href: "/power-station-for-refrigerator", label: "Power station for a refrigerator", desc: "Hours of fridge for every model we list" },
-          { href: "/best-power-station-for-cpap", label: "Best power station for CPAP", desc: "Nights of CPAP, humidifier on and off" },
-          { href: "/space-heater-cost", label: "Space heater cost by state", desc: "What 1,500 W costs an hour where you live" },
-          { href: "/best-portable-power-stations", label: "Best portable power stations", desc: "Every model compared by spec" },
+        ]}
+      />
+      <Sources checked={pageUpdated(path)}
+        items={[
+          { name: `${name} product page`, url: p.sourceUrl, detail: `specs, checked ${checked}` },
+          ...(sameSize ? [{ name: `${fullName(sameSize)} product page`, url: sameSize.sourceUrl, detail: `checked ${formatDate(sameSize.retrieved)}` }] : []),
+          ...APPLIANCE_SOURCES.map((s) => ({ name: s.name, url: s.url, detail: s.detail })),
+          OFFGRID_SOURCES.foodsafety,
+          OFFGRID_SOURCES.readyGenerators,
+          OFFGRID_SOURCES.nfpa,
         ]}
       />
     </article>

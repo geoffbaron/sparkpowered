@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Byline from "@/components/Byline";
 import { Breadcrumbs, PageIntro, RelatedLinks } from "@/components/content";
 import { COMPARISONS } from "@/data/comparisons";
 import { liveHomeBackupPages } from "@/data/home-backup";
 import { JsonLd, pageMetadata, url } from "@/lib/seo";
 
 const PATH = "/compare";
-const TITLE = "Portable Power Station & Home Battery Comparisons";
+const TITLE = "Home Backup Power Station Comparisons";
 const DESCRIPTION =
   "Side-by-side comparisons of EcoFlow, Anker SOLIX, Jackery and Bluetti power stations and home batteries, using the makers' published specs, with links to each maker's page for today's price.";
 
@@ -36,6 +37,7 @@ export default function CompareIndex() {
         title="Power station and home battery comparisons"
         lede="The match-ups people search for most, compared on the specs that matter: capacity, output, battery chemistry, expansion, solar input, warranty and price per kWh."
       />
+      <Byline path={PATH} />
       <ul className="grid sm:grid-cols-2 gap-3">
         {all.map((c) => (
           <li key={c.slug}>
@@ -51,9 +53,7 @@ export default function CompareIndex() {
       </ul>
       <RelatedLinks
         links={[
-          { href: "/best-portable-power-stations", label: "Best portable power stations", desc: "Full spec table and picks by use" },
           { href: "/home-battery-backup", label: "Home battery backup", desc: "Whole-home vs portable, real costs" },
-          { href: "/plug-in-solar", label: "Plug-in solar", desc: "Balcony solar kits and state rules" },
           { href: "/battery-calculator", label: "Battery sizer", desc: "How many kWh you need" },
         ]}
       />
